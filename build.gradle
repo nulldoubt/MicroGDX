@@ -214,7 +214,6 @@ tasks.register('fetchNatives', Copy) {
 	doNotTrackState("Don't track state")
 }
 
-apply from: rootProject.file('publish.gradle')
 
 if(rootProject.file('override.gradle').exists())
 	apply from: rootProject.file('override.gradle')
