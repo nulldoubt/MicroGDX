@@ -137,7 +137,7 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		}
 	}
 
-	public @Null V put (int key, @Null V value) {
+	public V put (int key, V value) {
 		if (key == 0) {
 			V oldValue = zeroValue;
 			zeroValue = value;
@@ -172,7 +172,7 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 	}
 
 	/** Skips checks for existing keys, doesn't increment size, doesn't need to handle key 0. */
-	private void putResize (int key, @Null V value) {
+	private void putResize (int key, V value) {
 		int[] keyTable = this.keyTable;
 		for (int i = place(key);; i = (i + 1) & mask) {
 			if (keyTable[i] == 0) {
@@ -189,14 +189,14 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		return i >= 0 ? valueTable[i] : null;
 	}
 
-	public V get (int key, @Null V defaultValue) {
+	public V get (int key, V defaultValue) {
 		if (key == 0) return hasZeroValue ? zeroValue : defaultValue;
 		int i = locateKey(key);
 		return i >= 0 ? valueTable[i] : defaultValue;
 	}
 
 	/** Returns the value for the removed key, or null if the key is not in the map. */
-	public @Null V remove (int key) {
+	public V remove (int key) {
 		if (key == 0) {
 			if (!hasZeroValue) return null;
 			hasZeroValue = false;
@@ -272,7 +272,7 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 	 * be an expensive operation.
 	 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
 	 *           {@link #equals(Object)}. */
-	public boolean containsValue (@Null Object value, boolean identity) {
+	public boolean containsValue (Object value, boolean identity) {
 		V[] valueTable = this.valueTable;
 		if (value == null) {
 			if (hasZeroValue && zeroValue == null) return true;
@@ -301,7 +301,7 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 	 * and compares every value, which may be an expensive operation.
 	 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
 	 *           {@link #equals(Object)}. */
-	public int findKey (@Null Object value, boolean identity, int notFound) {
+	public int findKey (Object value, boolean identity, int notFound) {
 		V[] valueTable = this.valueTable;
 		if (value == null) {
 			if (hasZeroValue && zeroValue == null) return 0;
@@ -393,7 +393,7 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 	}
 
 	/** Uses == for comparison of each value. */
-	public boolean equalsIdentity (@Null Object obj) {
+	public boolean equalsIdentity (Object obj) {
 		if (obj == this) return true;
 		if (!(obj instanceof IntMap)) return false;
 		IntMap other = (IntMap)obj;
@@ -511,17 +511,17 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		return keys2;
 	}
 
-	static public class Entry<V> {
+	public static class Entry<V> {
 		public int key;
-		public @Null V value;
+		public V value;
 
 		public String toString () {
 			return key + "=" + value;
 		}
 	}
 
-	static private class MapIterator<V> {
-		static private final int INDEX_ILLEGAL = -2;
+	private static class MapIterator<V> {
+		private static final int INDEX_ILLEGAL = -2;
 		static final int INDEX_ZERO = -1;
 
 		public boolean hasNext;
@@ -584,7 +584,7 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		}
 	}
 
-	static public class Entries<V> extends MapIterator<V> implements Iterable<Entry<V>>, Iterator<Entry<V>> {
+	public static class Entries<V> extends MapIterator<V> implements Iterable<Entry<V>>, Iterator<Entry<V>> {
 		private final Entry<V> entry = new Entry();
 
 		public Entries (IntMap map) {
@@ -618,7 +618,7 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		}
 	}
 
-	static public class Values<V> extends MapIterator<V> implements Iterable<V>, Iterator<V> {
+	public static class Values<V> extends MapIterator<V> implements Iterable<V>, Iterator<V> {
 		public Values (IntMap<V> map) {
 			super(map);
 		}
@@ -628,7 +628,7 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 			return hasNext;
 		}
 
-		public @Null V next () {
+		public V next () {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
 			V value;
@@ -654,7 +654,7 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		}
 	}
 
-	static public class Keys extends MapIterator {
+	public static class Keys extends MapIterator {
 		public Keys (IntMap map) {
 			super(map);
 		}

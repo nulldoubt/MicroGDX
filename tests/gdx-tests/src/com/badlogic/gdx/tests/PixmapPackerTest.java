@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -56,17 +56,17 @@ public class PixmapPackerTest extends GdxTest {
 		batch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
 
-		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
+		camera = new OrthographicCamera(Micro.graphics.getWidth(), Micro.graphics.getHeight());
+		camera.position.set(Micro.graphics.getWidth() / 2, Micro.graphics.getHeight() / 2, 0);
 		camera.update();
 
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 
-		Pixmap pixmap1 = new Pixmap(Gdx.files.internal("data/badlogic.jpg"));
-		Pixmap pixmap2 = new Pixmap(Gdx.files.internal("data/particle-fire.png"));
-		Pixmap pixmap3 = new Pixmap(Gdx.files.internal("data/isotile.png"));
-		Pixmap pixmap4 = new Pixmap(Gdx.files.internal("data/textfield.9.png"));
-		Pixmap pixmap5 = new Pixmap(Gdx.files.internal("data/badlogic-with-whitespace.png"));
+		Pixmap pixmap1 = new Pixmap(Micro.files.internal("data/badlogic.jpg"));
+		Pixmap pixmap2 = new Pixmap(Micro.files.internal("data/particle-fire.png"));
+		Pixmap pixmap3 = new Pixmap(Micro.files.internal("data/isotile.png"));
+		Pixmap pixmap4 = new Pixmap(Micro.files.internal("data/textfield.9.png"));
+		Pixmap pixmap5 = new Pixmap(Micro.files.internal("data/badlogic-with-whitespace.png"));
 
 		PixmapPacker packer = new PixmapPacker(1024, 1024, Format.RGBA8888, 8, false, true, true,
 			new PixmapPacker.GuillotineStrategy());
@@ -80,7 +80,7 @@ public class PixmapPackerTest extends GdxTest {
 		}
 
 		atlas = packer.generateTextureAtlas(TextureFilter.Nearest, TextureFilter.Nearest, false);
-		Gdx.app.log("PixmapPackerTest", "Number of initial textures: " + atlas.getTextures().size);
+		Micro.app.log("PixmapPackerTest", "Number of initial textures: " + atlas.getTextures().size);
 
 		packer.setPackToTexture(true);
 
@@ -108,8 +108,8 @@ public class PixmapPackerTest extends GdxTest {
 
 		textureRegions = new Array<TextureRegion>();
 		packer.updateTextureRegions(textureRegions, TextureFilter.Nearest, TextureFilter.Nearest, false);
-		Gdx.app.log("PixmapPackerTest", "Number of updated textures: " + atlas.getTextures().size);
-		Gdx.input.setInputProcessor(new InputAdapter() {
+		Micro.app.log("PixmapPackerTest", "Number of updated textures: " + atlas.getTextures().size);
+		Micro.input.setInputProcessor(new InputAdapter() {
 			@Override
 			public boolean keyDown (int keycode) {
 				if (keycode >= Input.Keys.NUM_0 && keycode <= Input.Keys.NUM_9) {
@@ -131,7 +131,7 @@ public class PixmapPackerTest extends GdxTest {
 	@Override
 	public void render () {
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
-		int size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		int size = Math.min(Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		int quarterSize = (int)(size / 4f);
 		batch.begin();
 		batch.draw(textureRegions.get(pageToShow), 0, 0, size, size);
@@ -144,7 +144,7 @@ public class PixmapPackerTest extends GdxTest {
 		shapeRenderer.rect(0, 0, size, size);
 		shapeRenderer.end();
 
-		stateTime += Gdx.graphics.getDeltaTime();
+		stateTime += Micro.graphics.getDeltaTime();
 	}
 
 	@Override

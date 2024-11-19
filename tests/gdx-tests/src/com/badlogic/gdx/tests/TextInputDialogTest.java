@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.GL20;
@@ -37,13 +37,13 @@ public class TextInputDialogTest extends GdxTest {
 	}
 
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		font.draw(batch, message, 10, 40);
 		batch.end();
 
-		if (Gdx.input.justTouched()) {
-			Gdx.input.getTextInput(new TextInputListener() {
+		if (Micro.input.justTouched()) {
+			Micro.input.getTextInput(new TextInputListener() {
 				@Override
 				public void input (String text) {
 					message = "message: " + text + ", type: " + Input.OnscreenKeyboardType.values()[inputType]

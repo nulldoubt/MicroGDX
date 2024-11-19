@@ -20,7 +20,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.charset.Charset;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL32;
@@ -54,11 +54,11 @@ public class GL32DebugControlTest extends GdxTest {
 		private static final int maxMessageLength;
 		static {
 			IntBuffer buf = BufferUtils.newIntBuffer(1);
-			Gdx.gl.glGetIntegerv(GL32.GL_MAX_DEBUG_MESSAGE_LENGTH, buf);
+			Micro.gl.glGetIntegerv(GL32.GL_MAX_DEBUG_MESSAGE_LENGTH, buf);
 			maxMessageLength = buf.get();
 
 			// default options
-			Gdx.gl.glEnable(GL32.GL_DEBUG_OUTPUT_SYNCHRONOUS);
+			Micro.gl.glEnable(GL32.GL_DEBUG_OUTPUT_SYNCHRONOUS);
 			setCallback(loggingCallback);
 		}
 
@@ -84,7 +84,7 @@ public class GL32DebugControlTest extends GdxTest {
 
 			public void fetchAndLog () {
 				for (;;) {
-					int count = Gdx.gl32.glGetDebugMessageLog(n, sources, types, ids, severities, lengths, messageLog);
+					int count = Micro.gl32.glGetDebugMessageLog(n, sources, types, ids, severities, lengths, messageLog);
 					if (count == 0) break;
 					for (int i = 0; i < count; i++) {
 						int source = sources.get();
@@ -111,16 +111,16 @@ public class GL32DebugControlTest extends GdxTest {
 
 		public static void enableOverall (boolean enabled) {
 			if (enabled) {
-				Gdx.gl.glEnable(GL32.GL_DEBUG_OUTPUT);
+				Micro.gl.glEnable(GL32.GL_DEBUG_OUTPUT);
 			} else {
-				Gdx.gl.glDisable(GL32.GL_DEBUG_OUTPUT);
+				Micro.gl.glDisable(GL32.GL_DEBUG_OUTPUT);
 			}
 		}
 
 		/** set the debug messages callback.
 		 * @param callback when null, messages can be logged using {@link #logPendingMessages()} but some messages may be lost. */
 		public static void setCallback (DebugProc callback) {
-			Gdx.gl32.glDebugMessageCallback(callback);
+			Micro.gl32.glDebugMessageCallback(callback);
 		}
 
 		public static void insertApplicationMessage (int type, int id, int severity, String message) {
@@ -133,10 +133,10 @@ public class GL32DebugControlTest extends GdxTest {
 
 		private static void insertMessage (int source, int type, int id, int severity, String message) {
 			if (message.length() + 1 > maxMessageLength) {
-				Gdx.app.error("GLDebug", "user message too long, it will be truncated");
+				Micro.app.error("GLDebug", "user message too long, it will be truncated");
 				message = message.substring(0, maxMessageLength - 1);
 			}
-			Gdx.gl32.glDebugMessageInsert(source, type, id, severity, message);
+			Micro.gl32.glDebugMessageInsert(source, type, id, severity, message);
 		}
 
 		public static void enableAll (boolean enabled) {
@@ -144,7 +144,7 @@ public class GL32DebugControlTest extends GdxTest {
 		}
 
 		public static void enable (boolean enabled, int source, int type, int severity) {
-			Gdx.gl32.glDebugMessageControl(source, type, severity, null, enabled);
+			Micro.gl32.glDebugMessageControl(source, type, severity, null, enabled);
 		}
 
 		public static void enableIDs (boolean enabled, int source, int type, int... ids) {
@@ -152,7 +152,7 @@ public class GL32DebugControlTest extends GdxTest {
 			idsBuffer.put(ids);
 			idsBuffer.flip();
 
-			Gdx.gl32.glDebugMessageControl(source, type, GL32.GL_DONT_CARE, idsBuffer, enabled);
+			Micro.gl32.glDebugMessageControl(source, type, GL32.GL_DONT_CARE, idsBuffer, enabled);
 		}
 
 		public static void log (int source, int type, int id, int severity, String message) {
@@ -209,7 +209,7 @@ public class GL32DebugControlTest extends GdxTest {
 				strSeverity = "UNKNOWN";
 			}
 
-			Gdx.app.log("GLDebug",
+			Micro.app.log("GLDebug",
 				"source:" + strSource + " type:" + strType + " id:" + id + " severity:" + strSeverity + " message:" + message);
 		}
 
@@ -237,33 +237,33 @@ public class GL32DebugControlTest extends GdxTest {
 		GLDebug.insertApplicationMessage(GL32.GL_DEBUG_TYPE_OTHER, 1234, GL32.GL_DEBUG_SEVERITY_NOTIFICATION, "application start");
 
 		// generate a fake error (once filtered, once reported)
-		Gdx.app.log("GDX", "error report disabled");
+		Micro.app.log("GDX", "error report disabled");
 		GLDebug.enableIDs(false, GL32.GL_DEBUG_SOURCE_API, GL32.GL_DEBUG_TYPE_ERROR, GL20.GL_INVALID_OPERATION);
-		Gdx.gl.glUseProgram(0);
-		Gdx.gl.glUniform1f(0, 0f);
+		Micro.gl.glUseProgram(0);
+		Micro.gl.glUniform1f(0, 0f);
 
-		Gdx.app.log("GDX", "error report enabled");
+		Micro.app.log("GDX", "error report enabled");
 		GLDebug.enableIDs(true, GL32.GL_DEBUG_SOURCE_API, GL32.GL_DEBUG_TYPE_ERROR, GL20.GL_INVALID_OPERATION);
-		Gdx.gl.glUseProgram(0);
-		Gdx.gl.glUniform1f(0, 0f);
+		Micro.gl.glUseProgram(0);
+		Micro.gl.glUniform1f(0, 0f);
 
 		// reset (enable all but notifications)
 		GLDebug.enableAll(true);
 		GLDebug.enable(enableNotifications, GL32.GL_DONT_CARE, GL32.GL_DONT_CARE, GL32.GL_DEBUG_SEVERITY_NOTIFICATION);
 
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 1, 1);
 
 		// Labeling
-		Gdx.gl32.glObjectLabel(GL20.GL_TEXTURE, texture.getTextureObjectHandle(), "myTexture");
-		String label = Gdx.gl32.glGetObjectLabel(GL20.GL_TEXTURE, texture.getTextureObjectHandle());
-		Gdx.app.log("Debug test", "texture handle " + texture.getTextureObjectHandle() + ": " + label);
+		Micro.gl32.glObjectLabel(GL20.GL_TEXTURE, texture.getTextureObjectHandle(), "myTexture");
+		String label = Micro.gl32.glGetObjectLabel(GL20.GL_TEXTURE, texture.getTextureObjectHandle());
+		Micro.app.log("Debug test", "texture handle " + texture.getTextureObjectHandle() + ": " + label);
 
 		// generate fake error
 		texture.bind();
-		Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, -1);
-		Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_EDGE);
+		Micro.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, -1);
+		Micro.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_EDGE);
 	}
 
 	@Override
@@ -277,24 +277,24 @@ public class GL32DebugControlTest extends GdxTest {
 	public void render () {
 
 		// example: enable/disable notifications
-		if (Gdx.input.justTouched()) {
+		if (Micro.input.justTouched()) {
 			enableNotifications = !enableNotifications;
 			GLDebug.enable(enableNotifications, GL32.GL_DONT_CARE, GL32.GL_DONT_CARE, GL32.GL_DEBUG_SEVERITY_NOTIFICATION);
 		}
 
 		ScreenUtils.clear(Color.CLEAR);
 
-		Gdx.gl32.glPushDebugGroup(GL32.GL_DEBUG_SOURCE_APPLICATION, 57, "sprite batch drawing 1");
+		Micro.gl32.glPushDebugGroup(GL32.GL_DEBUG_SOURCE_APPLICATION, 57, "sprite batch drawing 1");
 		batch.begin();
 		batch.draw(texture, 0, 0, 1, 1);
 		batch.end();
-		Gdx.gl32.glPopDebugGroup();
+		Micro.gl32.glPopDebugGroup();
 
-		Gdx.gl32.glPushDebugGroup(GL32.GL_DEBUG_SOURCE_APPLICATION, 57, "sprite batch drawing 2");
+		Micro.gl32.glPushDebugGroup(GL32.GL_DEBUG_SOURCE_APPLICATION, 57, "sprite batch drawing 2");
 		batch.begin();
 		batch.draw(texture, 0, 0, 1, 1);
 		batch.end();
-		Gdx.gl32.glPopDebugGroup();
+		Micro.gl32.glPopDebugGroup();
 
 		if (!useCallback) {
 			GLDebug.logPendingMessages();

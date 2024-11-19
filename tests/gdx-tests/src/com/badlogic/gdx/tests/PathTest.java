@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -55,16 +55,16 @@ public class PathTest extends GdxTest {
 	public void create () {
 		renderer = new ImmediateModeRenderer20(false, false, 0);
 		spriteBatch = new SpriteBatch();
-		obj = new Sprite(new Texture(Gdx.files.internal("data/badlogicsmall.jpg")));
+		obj = new Sprite(new Texture(Micro.files.internal("data/badlogicsmall.jpg")));
 		obj.setSize(40, 40);
 		obj.setOriginCenter();
-		obj2 = new Sprite(new Texture(Gdx.files.internal("data/bobrgb888-32x32.png")));
+		obj2 = new Sprite(new Texture(Micro.files.internal("data/bobrgb888-32x32.png")));
 		obj2.setSize(40, 40);
 		obj2.setOriginCenter();
-		ZIGZAG_SCALE = Gdx.graphics.getDensity() * 96; // 96DP
+		ZIGZAG_SCALE = Micro.graphics.getDensity() * 96; // 96DP
 
-		float w = Gdx.graphics.getWidth() - obj.getWidth();
-		float h = Gdx.graphics.getHeight() - obj.getHeight();
+		float w = Micro.graphics.getWidth() - obj.getWidth();
+		float h = Micro.graphics.getHeight() - obj.getHeight();
 
 		paths.add(new Bezier<Vector2>(new Vector2(0, 0), new Vector2(w, h)));
 		paths.add(new Bezier<Vector2>(new Vector2(0, 0), new Vector2(0, h), new Vector2(w, h)));
@@ -80,7 +80,7 @@ public class PathTest extends GdxTest {
 		pathLength = paths.get(currentPath).approxLength(500);
 		avg_speed = speed * pathLength;
 
-		Gdx.input.setInputProcessor(this);
+		Micro.input.setInputProcessor(this);
 	}
 
 	final Vector2 tmpV = new Vector2();
@@ -96,10 +96,10 @@ public class PathTest extends GdxTest {
 		ScreenUtils.clear(0.7f, 0.7f, 0.7f, 1);
 
 		if (wait > 0)
-			wait -= Gdx.graphics.getDeltaTime();
+			wait -= Micro.graphics.getDeltaTime();
 		else {
-			t += speed * Gdx.graphics.getDeltaTime();
-			zt += zspeed * Gdx.graphics.getDeltaTime();
+			t += speed * Micro.graphics.getDeltaTime();
+			zt += zspeed * Micro.graphics.getDeltaTime();
 			while (t >= 1f) {
 				currentPath = (currentPath + 1) % paths.size;
 				pathLength = paths.get(currentPath).approxLength(500);
@@ -122,7 +122,7 @@ public class PathTest extends GdxTest {
 			paths.get(currentPath).derivativeAt(tmpV2, t);
 
 			paths.get(currentPath).derivativeAt(tmpV3, t2);
-			t2 += avg_speed * Gdx.graphics.getDeltaTime() / tmpV3.len();
+			t2 += avg_speed * Micro.graphics.getDeltaTime() / tmpV3.len();
 
 			paths.get(currentPath).valueAt(tmpV4, t2);
 			// obj.setRotation(tmpV2.angle());
@@ -157,7 +157,7 @@ public class PathTest extends GdxTest {
 	}
 
 	private void touch (int x, int y) {
-		t = paths.get(currentPath).locate(tmpV.set(x, Gdx.graphics.getHeight() - y));
+		t = paths.get(currentPath).locate(tmpV.set(x, Micro.graphics.getHeight() - y));
 		paths.get(currentPath).valueAt(tmpV, t);
 		obj.setPosition(tmpV.x, tmpV.y);
 		wait = 0.2f;

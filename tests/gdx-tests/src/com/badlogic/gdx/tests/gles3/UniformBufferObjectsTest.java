@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.gles3;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -61,42 +61,42 @@ public class UniformBufferObjectsTest extends GdxTest {
 	public void create () {
 		random = new RandomXS128();
 		batch = new SpriteBatch();
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-		shaderProgram = new ShaderProgram(Gdx.files.internal("data/shaders/ubo.vert"), Gdx.files.internal("data/shaders/ubo.frag"));
+		shaderProgram = new ShaderProgram(Micro.files.internal("data/shaders/ubo.vert"), Micro.files.internal("data/shaders/ubo.frag"));
 
-		Gdx.app.log("UniformBufferObjectsTest", shaderProgram.getLog());
+		Micro.app.log("UniformBufferObjectsTest", shaderProgram.getLog());
 		if (shaderProgram.isCompiled()) {
-			Gdx.app.log("UniformBufferObjectsTest", "Shader compiled");
+			Micro.app.log("UniformBufferObjectsTest", "Shader compiled");
 			batch.setShader(shaderProgram);
 		}
 
 		IntBuffer tmpBuffer = BufferUtils.newIntBuffer(16);
 
 		// Get the block index for the uniform block
-		int blockIndex = Gdx.gl30.glGetUniformBlockIndex(shaderProgram.getHandle(), "u_bufferBlock");
+		int blockIndex = Micro.gl30.glGetUniformBlockIndex(shaderProgram.getHandle(), "u_bufferBlock");
 
 		// Use the index to get the active block uniform count
-		Gdx.gl30.glGetActiveUniformBlockiv(shaderProgram.getHandle(), blockIndex, GL30.GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, tmpBuffer);
+		Micro.gl30.glGetActiveUniformBlockiv(shaderProgram.getHandle(), blockIndex, GL30.GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, tmpBuffer);
 		int activeUniforms = tmpBuffer.get(0);
 
 		tmpBuffer.clear();
-		Gdx.gl30.glGenBuffers(1, tmpBuffer);
+		Micro.gl30.glGenBuffers(1, tmpBuffer);
 		int bufferHandle = tmpBuffer.get(0);
 
-		Gdx.gl.glBindBuffer(GL30.GL_UNIFORM_BUFFER, bufferHandle);
-		Gdx.gl.glBufferData(GL30.GL_UNIFORM_BUFFER, 16, uniformBuffer, GL30.GL_STATIC_DRAW);
+		Micro.gl.glBindBuffer(GL30.GL_UNIFORM_BUFFER, bufferHandle);
+		Micro.gl.glBufferData(GL30.GL_UNIFORM_BUFFER, 16, uniformBuffer, GL30.GL_STATIC_DRAW);
 
 		int bindingPoint = 0;
 		// Use the index to bind to a binding point, then bind the buffer
-		Gdx.gl30.glUniformBlockBinding(shaderProgram.getHandle(), blockIndex, bindingPoint);
-		Gdx.gl30.glBindBufferBase(GL30.GL_UNIFORM_BUFFER, bindingPoint, bufferHandle);
+		Micro.gl30.glUniformBlockBinding(shaderProgram.getHandle(), blockIndex, bindingPoint);
+		Micro.gl30.glBindBufferBase(GL30.GL_UNIFORM_BUFFER, bindingPoint, bufferHandle);
 
 		// UI
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 		stage = new Stage(new ScreenViewport());
-		Gdx.input.setInputProcessor(stage);
+		Micro.input.setInputProcessor(stage);
 
 		table = new Table();
 		table.add(new Label("Block Uniforms (2 is expected):" + activeUniforms, skin)).row();
@@ -107,7 +107,7 @@ public class UniformBufferObjectsTest extends GdxTest {
 	@Override
 	public void render () {
 		ScreenUtils.clear(0, 0, 0, 1);
-		elapsedTime += Gdx.graphics.getDeltaTime();
+		elapsedTime += Micro.graphics.getDeltaTime();
 
 		if (elapsedTime > 2f) {
 			elapsedTime = 0;
@@ -117,19 +117,19 @@ public class UniformBufferObjectsTest extends GdxTest {
 		}
 
 		// Update the colors
-		uniformBuffer.put(0, Interpolation.smooth.apply(uniformBuffer.get(0), lerpToR, Gdx.graphics.getDeltaTime() * 2));// ColorBuffer.R
-		uniformBuffer.put(1, Interpolation.smooth.apply(uniformBuffer.get(1), lerpToG, Gdx.graphics.getDeltaTime() * 2));// ColorBuffer.G
-		uniformBuffer.put(2, Interpolation.smooth.apply(uniformBuffer.get(2), lerpToB, Gdx.graphics.getDeltaTime() * 2));// ColorBuffer.B
+		uniformBuffer.put(0, Interpolation.smooth.apply(uniformBuffer.get(0), lerpToR, Micro.graphics.getDeltaTime() * 2));// ColorBuffer.R
+		uniformBuffer.put(1, Interpolation.smooth.apply(uniformBuffer.get(1), lerpToG, Micro.graphics.getDeltaTime() * 2));// ColorBuffer.G
+		uniformBuffer.put(2, Interpolation.smooth.apply(uniformBuffer.get(2), lerpToB, Micro.graphics.getDeltaTime() * 2));// ColorBuffer.B
 
 		// Update the positions
-		uniformBuffer.put(4, Interpolation.smooth.apply(uniformBuffer.get(4), lerpToR, Gdx.graphics.getDeltaTime() * 2));// Position.X
-		uniformBuffer.put(5, Interpolation.smooth.apply(uniformBuffer.get(5), lerpToG, Gdx.graphics.getDeltaTime() * 2));// Position.Y
+		uniformBuffer.put(4, Interpolation.smooth.apply(uniformBuffer.get(4), lerpToR, Micro.graphics.getDeltaTime() * 2));// Position.X
+		uniformBuffer.put(5, Interpolation.smooth.apply(uniformBuffer.get(5), lerpToG, Micro.graphics.getDeltaTime() * 2));// Position.Y
 
 		// Update the buffer data store
-		Gdx.gl30.glBufferSubData(GL30.GL_UNIFORM_BUFFER, 0, uniformBuffer.capacity() * 4, uniformBuffer);
+		Micro.gl30.glBufferSubData(GL30.GL_UNIFORM_BUFFER, 0, uniformBuffer.capacity() * 4, uniformBuffer);
 
 		batch.begin();
-		batch.draw(texture, 0, 0, Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+		batch.draw(texture, 0, 0, Micro.graphics.getWidth() / 2f, Micro.graphics.getHeight() / 2f);
 		batch.end();
 
 		stage.act();

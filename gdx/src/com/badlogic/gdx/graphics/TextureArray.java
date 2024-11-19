@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -50,21 +50,21 @@ public class TextureArray extends GLTexture {
 	}
 
 	public TextureArray (TextureArrayData data) {
-		super(GL30.GL_TEXTURE_2D_ARRAY, Gdx.gl.glGenTexture());
+		super(GL30.GL_TEXTURE_2D_ARRAY, Micro.gl.glGenTexture());
 
-		if (Gdx.gl30 == null) {
+		if (Micro.gl30 == null) {
 			throw new GdxRuntimeException("TextureArray requires a device running with GLES 3.0 compatibilty");
 		}
 
 		load(data);
 
-		if (data.isManaged()) addManagedTexture(Gdx.app, this);
+		if (data.isManaged()) addManagedTexture(Micro.app, this);
 	}
 
 	private static FileHandle[] getInternalHandles (String... internalPaths) {
 		FileHandle[] handles = new FileHandle[internalPaths.length];
 		for (int i = 0; i < internalPaths.length; i++) {
-			handles[i] = Gdx.files.internal(internalPaths[i]);
+			handles[i] = Micro.files.internal(internalPaths[i]);
 		}
 		return handles;
 	}
@@ -75,7 +75,7 @@ public class TextureArray extends GLTexture {
 		this.data = data;
 
 		bind();
-		Gdx.gl30.glTexImage3D(GL30.GL_TEXTURE_2D_ARRAY, 0, data.getInternalFormat(), data.getWidth(), data.getHeight(),
+		Micro.gl30.glTexImage3D(GL30.GL_TEXTURE_2D_ARRAY, 0, data.getInternalFormat(), data.getWidth(), data.getHeight(),
 			data.getDepth(), 0, data.getInternalFormat(), data.getGLType(), null);
 
 		if (!data.isPrepared()) data.prepare();
@@ -84,7 +84,7 @@ public class TextureArray extends GLTexture {
 
 		setFilter(minFilter, magFilter);
 		setWrap(uWrap, vWrap);
-		Gdx.gl.glBindTexture(glTarget, 0);
+		Micro.gl.glBindTexture(glTarget, 0);
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class TextureArray extends GLTexture {
 	@Override
 	protected void reload () {
 		if (!isManaged()) throw new GdxRuntimeException("Tried to reload an unmanaged TextureArray");
-		glHandle = Gdx.gl.glGenTexture();
+		glHandle = Micro.gl.glGenTexture();
 		load(data);
 	}
 
@@ -150,7 +150,7 @@ public class TextureArray extends GLTexture {
 
 	/** @return the number of managed TextureArrays currently loaded */
 	public static int getNumManagedTextureArrays () {
-		return managedTextureArrays.get(Gdx.app).size;
+		return managedTextureArrays.get(Micro.app).size;
 	}
 
 }

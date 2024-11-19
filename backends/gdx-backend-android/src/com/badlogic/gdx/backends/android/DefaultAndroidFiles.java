@@ -22,7 +22,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.AssetManager;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
@@ -132,10 +132,10 @@ public class DefaultAndroidFiles implements AndroidFiles {
 	public boolean setAPKExpansion (int mainVersion, int patchVersion) {
 		try {
 			Context context;
-			if (Gdx.app instanceof Activity) {
-				context = ((Activity)Gdx.app).getBaseContext();
-			} else if (Gdx.app instanceof Fragment) {
-				context = ((Fragment)Gdx.app).getActivity().getBaseContext();
+			if (Micro.app instanceof Activity) {
+				context = ((Activity) Micro.app).getBaseContext();
+			} else if (Micro.app instanceof Fragment) {
+				context = ((Fragment) Micro.app).getActivity().getBaseContext();
 			} else {
 				throw new GdxRuntimeException("APK expansion not supported for application type");
 			}

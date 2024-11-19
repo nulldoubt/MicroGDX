@@ -3,7 +3,7 @@ package com.badlogic.gdx.tests.lwjgl3;
 
 import java.awt.image.BufferedImage;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowAdapter;
@@ -30,8 +30,8 @@ public class DragNDropTest extends GdxTest {
 	public void create () {
 		BufferedImage image = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
 		stage = new Stage();
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		Gdx.input.setInputProcessor(stage);
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
+		Micro.input.setInputProcessor(stage);
 		root = new Table();
 		root.setFillParent(true);
 		root.align(Align.left | Align.top);
@@ -78,7 +78,7 @@ public class DragNDropTest extends GdxTest {
 			@Override
 			public void filesDropped (String[] files) {
 				for (String file : files) {
-					Gdx.app.log("GLWF Drop", file);
+					Micro.app.log("GLWF Drop", file);
 				}
 				test.addFiles(files);
 			}

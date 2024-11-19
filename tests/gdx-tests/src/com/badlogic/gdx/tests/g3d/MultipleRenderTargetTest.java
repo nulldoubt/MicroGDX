@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests.g3d;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
@@ -99,10 +99,10 @@ public class MultipleRenderTargetTest extends GdxTest {
 
 		modelCache = new ModelCache();
 
-		ShaderProgram.prependVertexCode = Gdx.app.getType().equals(Application.ApplicationType.Desktop)
+		ShaderProgram.prependVertexCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
 			? "#version 140\n #extension GL_ARB_explicit_attrib_location : enable\n"
 			: "#version 300 es\n";
-		ShaderProgram.prependFragmentCode = Gdx.app.getType().equals(Application.ApplicationType.Desktop)
+		ShaderProgram.prependFragmentCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
 			? "#version 140\n #extension GL_ARB_explicit_attrib_location : enable\n"
 			: "#version 300 es\n";
 
@@ -121,15 +121,15 @@ public class MultipleRenderTargetTest extends GdxTest {
 
 		};
 
-		mrtSceneShader = new ShaderProgram(Gdx.files.internal("data/g3d/shaders/mrtscene.vert"),
-			Gdx.files.internal("data/g3d/shaders/mrtscene.frag"));
+		mrtSceneShader = new ShaderProgram(Micro.files.internal("data/g3d/shaders/mrtscene.vert"),
+			Micro.files.internal("data/g3d/shaders/mrtscene.frag"));
 		if (!mrtSceneShader.isCompiled()) {
 			System.out.println(mrtSceneShader.getLog());
 		}
 
 		quad = createFullScreenQuad();
 
-		camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = new PerspectiveCamera(67, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		camera.near = 1f;
 		camera.far = 100f;
 		camera.position.set(3, 5, 10);
@@ -138,10 +138,10 @@ public class MultipleRenderTargetTest extends GdxTest {
 		camera.update();
 		cameraController = new FirstPersonCameraController(camera);
 		cameraController.setVelocity(50);
-		Gdx.input.setInputProcessor(cameraController);
+		Micro.input.setInputProcessor(cameraController);
 
-		GLFrameBuffer.FrameBufferBuilder frameBufferBuilder = new GLFrameBuffer.FrameBufferBuilder(Gdx.graphics.getWidth(),
-			Gdx.graphics.getHeight());
+		GLFrameBuffer.FrameBufferBuilder frameBufferBuilder = new GLFrameBuffer.FrameBufferBuilder(Micro.graphics.getWidth(),
+			Micro.graphics.getHeight());
 		frameBufferBuilder.addColorTextureAttachment(GL30.GL_RGBA8, GL30.GL_RGBA, GL30.GL_UNSIGNED_BYTE);
 		frameBufferBuilder.addColorTextureAttachment(GL30.GL_RGB8, GL30.GL_RGB, GL30.GL_UNSIGNED_BYTE);
 		frameBufferBuilder.addColorTextureAttachment(GL30.GL_RGB8, GL30.GL_RGB, GL30.GL_UNSIGNED_BYTE);
@@ -186,7 +186,7 @@ public class MultipleRenderTargetTest extends GdxTest {
 		meshPartBuilder.box(0, -0.1f, 0f, 20f, 0.1f, 20f);
 		floorInstance = new ModelInstance(modelBuilder.end());
 
-		Gdx.input.setInputProcessor(new InputMultiplexer(this, cameraController));
+		Micro.input.setInputProcessor(new InputMultiplexer(this, cameraController));
 	}
 
 	@Override
@@ -205,16 +205,16 @@ public class MultipleRenderTargetTest extends GdxTest {
 
 	@Override
 	public void render () {
-		track += Gdx.graphics.getDeltaTime();
+		track += Micro.graphics.getDeltaTime();
 
 		ScreenUtils.clear(0f, 0f, 0f, 1f, true);
 
-		cameraController.update(Gdx.graphics.getDeltaTime());
+		cameraController.update(Micro.graphics.getDeltaTime());
 
 		renderContext.begin();
 
 		frameBuffer.begin();
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		renerablePool.flush();
 		renderables.clear();
@@ -223,7 +223,7 @@ public class MultipleRenderTargetTest extends GdxTest {
 		modelCache.add(cannon);
 		modelCache.add(floorInstance);
 		for (Light light : lights) {
-			light.update(Gdx.graphics.getDeltaTime());
+			light.update(Micro.graphics.getDeltaTime());
 			modelCache.add(light.lightInstance);
 		}
 		modelCache.end();
@@ -269,14 +269,14 @@ public class MultipleRenderTargetTest extends GdxTest {
 
 		batch.disableBlending();
 		batch.begin();
-		batch.draw(frameBuffer.getTextureAttachments().get(DIFFUSE_ATTACHMENT), 0, 0, Gdx.graphics.getWidth() / 4f,
-			Gdx.graphics.getHeight() / 4f, 0f, 0f, 1f, 1f);
-		batch.draw(frameBuffer.getTextureAttachments().get(NORMAL_ATTACHMENT), Gdx.graphics.getWidth() / 4f, 0,
-			Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() / 4f, 0f, 0f, 1f, 1f);
-		batch.draw(frameBuffer.getTextureAttachments().get(POSITION_ATTACHMENT), 2 * Gdx.graphics.getWidth() / 4f, 0,
-			Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() / 4f, 0f, 0f, 1f, 1f);
-		batch.draw(frameBuffer.getTextureAttachments().get(DEPTH_ATTACHMENT), 3 * Gdx.graphics.getWidth() / 4f, 0,
-			Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() / 4f, 0f, 0f, 1f, 1f);
+		batch.draw(frameBuffer.getTextureAttachments().get(DIFFUSE_ATTACHMENT), 0, 0, Micro.graphics.getWidth() / 4f,
+			Micro.graphics.getHeight() / 4f, 0f, 0f, 1f, 1f);
+		batch.draw(frameBuffer.getTextureAttachments().get(NORMAL_ATTACHMENT), Micro.graphics.getWidth() / 4f, 0,
+			Micro.graphics.getWidth() / 4f, Micro.graphics.getHeight() / 4f, 0f, 0f, 1f, 1f);
+		batch.draw(frameBuffer.getTextureAttachments().get(POSITION_ATTACHMENT), 2 * Micro.graphics.getWidth() / 4f, 0,
+			Micro.graphics.getWidth() / 4f, Micro.graphics.getHeight() / 4f, 0f, 0f, 1f, 1f);
+		batch.draw(frameBuffer.getTextureAttachments().get(DEPTH_ATTACHMENT), 3 * Micro.graphics.getWidth() / 4f, 0,
+			Micro.graphics.getWidth() / 4f, Micro.graphics.getHeight() / 4f, 0f, 0f, 1f, 1f);
 		batch.end();
 	}
 
@@ -385,8 +385,8 @@ public class MultipleRenderTargetTest extends GdxTest {
 				prefix += "#define texturedFlag\n";
 			}
 
-			String vert = Gdx.files.internal("data/g3d/shaders/mrt.vert").readString();
-			String frag = Gdx.files.internal("data/g3d/shaders/mrt.frag").readString();
+			String vert = Micro.files.internal("data/g3d/shaders/mrt.vert").readString();
+			String frag = Micro.files.internal("data/g3d/shaders/mrt.frag").readString();
 			shaderProgram = new ShaderProgram(prefix + vert, prefix + frag);
 			if (!shaderProgram.isCompiled()) {
 				throw new GdxRuntimeException(shaderProgram.getLog());

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.tests.utils.GdxTest;
@@ -29,12 +29,12 @@ public class ExternalMusicTest extends GdxTest {
 	@Override
 	public void create () {
 		// copy an internal mp3 to the external storage
-		FileHandle src = Gdx.files.internal("data/8.12.mp3");
-		FileHandle dst = Gdx.files.external("8.12.mp3");
+		FileHandle src = Micro.files.internal("data/8.12.mp3");
+		FileHandle dst = Micro.files.external("8.12.mp3");
 		src.copyTo(dst);
 
 		// create a music instance and start playback
-		music = Gdx.audio.newMusic(dst);
+		music = Micro.audio.newMusic(dst);
 		music.play();
 	}
 
@@ -43,6 +43,6 @@ public class ExternalMusicTest extends GdxTest {
 		music.stop();
 		music.dispose();
 		// delete the copy on the external storage
-		Gdx.files.external("8.12.mp3").delete();
+		Micro.files.external("8.12.mp3").delete();
 	}
 }

@@ -16,10 +16,9 @@
 
 package com.badlogic.gdx.tests.g3d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
@@ -58,8 +57,8 @@ public class MaterialEmissiveTest extends GdxTest {
 
 	@Override
 	public void create () {
-		diffuseTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"), true);
-		emissiveTexture = new Texture(Gdx.files.internal("data/particle-star.png"), true);
+		diffuseTexture = new Texture(Micro.files.internal("data/badlogic.jpg"), true);
+		emissiveTexture = new Texture(Micro.files.internal("data/particle-star.png"), true);
 
 		// Create material attributes. Each material can contain x-number of attributes.
 		diffuseTextureAttribute = new TextureAttribute(TextureAttribute.Diffuse, diffuseTexture);
@@ -96,20 +95,20 @@ public class MaterialEmissiveTest extends GdxTest {
 		camera.direction.set(0, 0, -1);
 		camera.update();
 
-		Gdx.input.setInputProcessor(this);
+		Micro.input.setInputProcessor(this);
 	}
 
 	private float counter = 0.f;
 
 	@Override
 	public void render () {
-		counter = (counter + Gdx.graphics.getDeltaTime()) % 1.f;
+		counter = (counter + Micro.graphics.getDeltaTime()) % 1.f;
 		blendingAttribute.opacity = 0.25f + Math.abs(0.5f - counter);
 
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Micro.gl.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-		modelInstance.transform.rotate(Vector3.Y, 30 * Gdx.graphics.getDeltaTime());
+		modelInstance.transform.rotate(Vector3.Y, 30 * Micro.graphics.getDeltaTime());
 		modelBatch.begin(camera);
 		modelBatch.render(background);
 		modelBatch.render(modelInstance, environment);

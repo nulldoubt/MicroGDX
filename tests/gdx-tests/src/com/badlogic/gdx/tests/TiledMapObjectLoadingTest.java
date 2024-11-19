@@ -18,7 +18,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -60,8 +60,8 @@ public class TiledMapObjectLoadingTest extends GdxTest {
 
 	@Override
 	public void create () {
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+		float w = Micro.graphics.getWidth();
+		float h = Micro.graphics.getHeight();
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, (w / h) * 512, 512);
@@ -69,7 +69,7 @@ public class TiledMapObjectLoadingTest extends GdxTest {
 		camera.update();
 
 		cameraController = new OrthoCamController(camera);
-		Gdx.input.setInputProcessor(cameraController);
+		Micro.input.setInputProcessor(cameraController);
 
 		font = new BitmapFont();
 		batch = new SpriteBatch();
@@ -102,7 +102,7 @@ public class TiledMapObjectLoadingTest extends GdxTest {
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
 		shapeRenderer.setColor(Color.BLUE);
-		Gdx.gl20.glLineWidth(2);
+		Micro.gl20.glLineWidth(2);
 		MapLayer layer = map.getLayers().get("Objects");
 		AnimatedTiledMapTile.updateAnimationBaseTime();
 		for (MapObject mapObject : layer.getObjects()) {
@@ -151,7 +151,7 @@ public class TiledMapObjectLoadingTest extends GdxTest {
 			}
 		}
 		batch.begin();
-		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond() + "\n" + loadingStatus, 20, 500);
+		font.draw(batch, "FPS: " + Micro.graphics.getFPS() + "\n" + loadingStatus, 20, 500);
 		batch.end();
 	}
 

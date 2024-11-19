@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -60,9 +60,9 @@ public class GroupTest extends GdxTest {
 		renderer = new ShapeRenderer();
 
 		stage = new Stage(new ScreenViewport());
-		Gdx.input.setInputProcessor(stage);
+		Micro.input.setInputProcessor(stage);
 
-		region = new TextureRegion(new Texture(Gdx.files.internal("data/group-debug.png")));
+		region = new TextureRegion(new Texture(Micro.files.internal("data/group-debug.png")));
 
 		group2 = new TestGroup("group2");
 		group2.setTransform(true);
@@ -75,7 +75,7 @@ public class GroupTest extends GdxTest {
 		LabelStyle style = new LabelStyle();
 		style.font = new BitmapFont();
 
-		Texture texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		Texture texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 
 		horiz = new HorizontalGroup().pad(10, 20, 30, 40).top().space(5).reverse();
 		for (int i = 1; i <= 15; i++) {
@@ -123,7 +123,7 @@ public class GroupTest extends GdxTest {
 	public void render () {
 
 		horiz.setVisible(true);
-		horiz.setWidth(Gdx.input.getX() - horiz.getX());
+		horiz.setWidth(Micro.input.getX() - horiz.getX());
 		// horiz.setWidth(200);
 		horiz.setHeight(100);
 		horiz.fill();
@@ -133,13 +133,13 @@ public class GroupTest extends GdxTest {
 		horizWrap.setVisible(true);
 		horizWrap.fill();
 		horizWrap.expand();
-		horizWrap.setWidth(Gdx.input.getX() - horizWrap.getX());
+		horizWrap.setWidth(Micro.input.getX() - horizWrap.getX());
 		// horizWrap.setHeight(horizWrap.getPrefHeight());
 		horizWrap.setHeight(200);
 
-		vert.setHeight(Gdx.graphics.getHeight() - Gdx.input.getY() - vert.getY());
+		vert.setHeight(Micro.graphics.getHeight() - Micro.input.getY() - vert.getY());
 		// vert.setWidth(200);
-		vertWrap.setHeight(Gdx.graphics.getHeight() - Gdx.input.getY() - vertWrap.getY());
+		vertWrap.setHeight(Micro.graphics.getHeight() - Micro.input.getY() - vertWrap.getY());
 // vertWrap.setWidth(vertWrap.getPrefWidth());
 		vertWrap.setWidth(200);
 
@@ -161,14 +161,14 @@ public class GroupTest extends GdxTest {
 		renderer.begin(ShapeType.Filled);
 		if (MathUtils.randomBoolean()) { // So we see when they are drawn on top of each other (which should be always).
 			renderer.setColor(Color.GREEN);
-			renderer.circle(group1.toScreenCoordinates.x, Gdx.graphics.getHeight() - group1.toScreenCoordinates.y, 5);
+			renderer.circle(group1.toScreenCoordinates.x, Micro.graphics.getHeight() - group1.toScreenCoordinates.y, 5);
 			renderer.setColor(Color.RED);
-			renderer.circle(group1.localToParentCoordinates.x, Gdx.graphics.getHeight() - group1.localToParentCoordinates.y, 5);
+			renderer.circle(group1.localToParentCoordinates.x, Micro.graphics.getHeight() - group1.localToParentCoordinates.y, 5);
 		} else {
 			renderer.setColor(Color.RED);
-			renderer.circle(group1.localToParentCoordinates.x, Gdx.graphics.getHeight() - group1.localToParentCoordinates.y, 5);
+			renderer.circle(group1.localToParentCoordinates.x, Micro.graphics.getHeight() - group1.localToParentCoordinates.y, 5);
 			renderer.setColor(Color.GREEN);
-			renderer.circle(group1.toScreenCoordinates.x, Gdx.graphics.getHeight() - group1.toScreenCoordinates.y, 5);
+			renderer.circle(group1.toScreenCoordinates.x, Micro.graphics.getHeight() - group1.toScreenCoordinates.y, 5);
 		}
 		renderer.end();
 	}

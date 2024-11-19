@@ -95,7 +95,7 @@ public class DistanceFieldFont extends BitmapFont {
 
 	/** Returns a new instance of the distance field shader, see https://libgdx.com/wiki/graphics/2d/fonts/distance-field-fonts if
 	 * the u_smoothing uniform > 0.0. Otherwise the same code as the default SpriteBatch shader is used. */
-	static public ShaderProgram createDistanceFieldShader () {
+	public static ShaderProgram createDistanceFieldShader () {
 		String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
 			+ "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
 			+ "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
@@ -139,7 +139,7 @@ public class DistanceFieldFont extends BitmapFont {
 	/** Provides a font cache that uses distance field shader for rendering fonts. Attention: breaks batching because uniform is
 	 * needed for smoothing factor, so a flush is performed before and after every font rendering.
 	 * @author Florian Falkner */
-	static private class DistanceFieldFontCache extends BitmapFontCache {
+	private static class DistanceFieldFontCache extends BitmapFontCache {
 		public DistanceFieldFontCache (DistanceFieldFont font) {
 			super(font, font.usesIntegerPositions());
 		}

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -42,12 +42,12 @@ public class PixelPerfectTest extends GdxTest {
 		tex = new Texture(pixmap);
 		batch = new SpriteBatch();
 		cam = new OrthographicCamera();
-		cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam.setToOrtho(false, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 	}
 
 	@Override
 	public void resize (int width, int height) {
-		cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam.setToOrtho(false, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 	}
 
 	@Override

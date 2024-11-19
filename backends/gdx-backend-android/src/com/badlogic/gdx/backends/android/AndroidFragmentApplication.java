@@ -139,7 +139,7 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
 		this.clipboard = new AndroidClipboard(getActivity());
 
 		// Add a specialized audio lifecycle listener
-		addLifecycleListener(new LifecycleListener() {
+		register(new LifecycleListener() {
 
 			@Override
 			public void resume () {
@@ -157,12 +157,12 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
 			}
 		});
 
-		Gdx.app = this;
-		Gdx.input = this.getInput();
-		Gdx.audio = this.getAudio();
-		Gdx.files = this.getFiles();
-		Gdx.graphics = this.getGraphics();
-		Gdx.net = this.getNet();
+		Micro.app = this;
+		Micro.input = this.getInput();
+		Micro.audio = this.getAudio();
+		Micro.files = this.getFiles();
+		Micro.graphics = this.getGraphics();
+		Micro.net = this.getNet();
 		createWakeLock(config.useWakelock);
 		useImmersiveMode(config.useImmersiveMode);
 		if (config.useImmersiveMode) {
@@ -207,12 +207,12 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
 
 	@Override
 	public void onResume () {
-		Gdx.app = this;
-		Gdx.input = this.getInput();
-		Gdx.audio = this.getAudio();
-		Gdx.files = this.getFiles();
-		Gdx.graphics = this.getGraphics();
-		Gdx.net = this.getNet();
+		Micro.app = this;
+		Micro.input = this.getInput();
+		Micro.audio = this.getAudio();
+		Micro.files = this.getFiles();
+		Micro.graphics = this.getGraphics();
+		Micro.net = this.getNet();
 
 		input.onResume();
 
@@ -288,10 +288,10 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
 	}
 
 	@Override
-	public void postRunnable (Runnable runnable) {
+	public void post(Runnable runnable) {
 		synchronized (runnables) {
 			runnables.add(runnable);
-			Gdx.graphics.requestRendering();
+			Micro.graphics.requestRendering();
 		}
 	}
 
@@ -368,14 +368,14 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
 	}
 
 	@Override
-	public void addLifecycleListener (LifecycleListener listener) {
+	public void register(LifecycleListener listener) {
 		synchronized (lifecycleListeners) {
 			lifecycleListeners.add(listener);
 		}
 	}
 
 	@Override
-	public void removeLifecycleListener (LifecycleListener listener) {
+	public void unregister(LifecycleListener listener) {
 		synchronized (lifecycleListeners) {
 			lifecycleListeners.removeValue(listener, true);
 		}

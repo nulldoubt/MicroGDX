@@ -90,8 +90,8 @@ public class DefaultAndroidAudio implements AndroidAudio {
 
 	/** {@inheritDoc} */
 	@Override
-	public AudioDevice newAudioDevice (int samplingRate, boolean isMono) {
-		return new AndroidAudioDevice(samplingRate, isMono);
+	public AudioDevice newAudioDevice (int samplingRate, boolean mono) {
+		return new AndroidAudioDevice(samplingRate, mono);
 	}
 
 	/** {@inheritDoc} */
@@ -133,7 +133,7 @@ public class DefaultAndroidAudio implements AndroidAudio {
 	}
 
 	@Override
-	public boolean switchOutputDevice (String deviceIdentifier) {
+	public boolean switchOutputDevice (String device) {
 		return true;
 	}
 
@@ -191,8 +191,8 @@ public class DefaultAndroidAudio implements AndroidAudio {
 
 	/** {@inheritDoc} */
 	@Override
-	public AudioRecorder newAudioRecorder (int samplingRate, boolean isMono) {
-		return new AndroidAudioRecorder(samplingRate, isMono);
+	public AudioRecorder newAudioRecorder (int samplingRate, boolean mono) {
+		return new AndroidAudioRecorder(samplingRate, mono);
 	}
 
 	/** Kills the soundpool and all other resources */

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -87,13 +87,13 @@ public class ShaderMultitextureTest extends GdxTest {
 	}
 
 	public void render () {
-		Gdx.gl20.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
-		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl20.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
+		Micro.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		Gdx.gl20.glActiveTexture(GL20.GL_TEXTURE0);
+		Micro.gl20.glActiveTexture(GL20.GL_TEXTURE0);
 		texture.bind();
 
-		Gdx.gl20.glActiveTexture(GL20.GL_TEXTURE1);
+		Micro.gl20.glActiveTexture(GL20.GL_TEXTURE1);
 		texture2.bind();
 
 		shader.bind();

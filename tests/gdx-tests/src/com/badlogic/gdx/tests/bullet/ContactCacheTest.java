@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.bullet;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -41,12 +41,12 @@ public class ContactCacheTest extends BaseBulletTest {
 			if (match0) {
 				final BulletEntity e = (BulletEntity)(entities.get(userValue0));
 				e.setColor(Color.RED);
-				Gdx.app.log(Float.toString(time), "Contact started " + userValue0);
+				Micro.app.log(Float.toString(time), "Contact started " + userValue0);
 			}
 			if (match1) {
 				final BulletEntity e = (BulletEntity)(entities.get(userValue1));
 				e.setColor(Color.RED);
-				Gdx.app.log(Float.toString(time), "Contact started " + userValue1);
+				Micro.app.log(Float.toString(time), "Contact started " + userValue1);
 			}
 		}
 
@@ -55,12 +55,12 @@ public class ContactCacheTest extends BaseBulletTest {
 			if (match0) {
 				final BulletEntity e = (BulletEntity)(entities.get(userValue0));
 				e.setColor(Color.BLUE);
-				Gdx.app.log(Float.toString(time), "Contact ended " + userValue0);
+				Micro.app.log(Float.toString(time), "Contact ended " + userValue0);
 			}
 			if (match1) {
 				final BulletEntity e = (BulletEntity)(entities.get(userValue1));
 				e.setColor(Color.BLUE);
-				Gdx.app.log(Float.toString(time), "Contact ended " + userValue1);
+				Micro.app.log(Float.toString(time), "Contact ended " + userValue1);
 			}
 		}
 	}
@@ -75,12 +75,12 @@ public class ContactCacheTest extends BaseBulletTest {
 			if (match0) {
 				final BulletEntity e = (BulletEntity)(entities.get(userValue0));
 				e.setColor(Color.RED);
-				Gdx.app.log(Float.toString(time), "Contact started " + userValue0);
+				Micro.app.log(Float.toString(time), "Contact started " + userValue0);
 			}
 			if (match1) {
 				final BulletEntity e = (BulletEntity)(entities.get(userValue1));
 				e.setColor(Color.RED);
-				Gdx.app.log(Float.toString(time), "Contact started " + userValue1);
+				Micro.app.log(Float.toString(time), "Contact started " + userValue1);
 			}
 		}
 
@@ -91,12 +91,12 @@ public class ContactCacheTest extends BaseBulletTest {
 			if (match0) {
 				final BulletEntity e = (BulletEntity)(entities.get(userValue0));
 				e.setColor(Color.BLUE);
-				Gdx.app.log(Float.toString(time), "Contact ended " + userValue0);
+				Micro.app.log(Float.toString(time), "Contact ended " + userValue0);
 			}
 			if (match1) {
 				final BulletEntity e = (BulletEntity)(entities.get(userValue1));
 				e.setColor(Color.BLUE);
-				Gdx.app.log(Float.toString(time), "Contact ended " + userValue1);
+				Micro.app.log(Float.toString(time), "Contact ended " + userValue1);
 			}
 		}
 	}
@@ -127,7 +127,7 @@ public class ContactCacheTest extends BaseBulletTest {
 		sphereConstructor.bodyInfo.setRestitution(1f);
 		world.addConstructor("sphere", sphereConstructor);
 
-		final Model sceneModel = objLoader.loadModel(Gdx.files.internal("data/scene.obj"));
+		final Model sceneModel = objLoader.loadModel(Micro.files.internal("data/scene.obj"));
 		disposables.add(sceneModel);
 		final BulletConstructor sceneConstructor = new BulletConstructor(sceneModel, 0f,
 			new btBvhTriangleMeshShape(sceneModel.meshParts));
@@ -168,7 +168,7 @@ public class ContactCacheTest extends BaseBulletTest {
 
 	@Override
 	public void update () {
-		float delta = Gdx.graphics.getDeltaTime();
+		float delta = Micro.graphics.getDeltaTime();
 		time += delta;
 		super.update();
 		if (contactCache != null) contactCache.update(delta);

@@ -20,7 +20,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.Matrix;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
@@ -73,7 +73,7 @@ public class MatrixTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		font.draw(batch, results, 20, 300);
 		batch.end();

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.g3d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -61,7 +61,7 @@ public class Benchmark3DTest extends BaseG3dHudTest {
 	public void create () {
 		super.create();
 
-		glProfiler = new GLProfiler(Gdx.graphics);
+		glProfiler = new GLProfiler(Micro.graphics);
 		glProfiler.enable();
 
 		randomizeLights();

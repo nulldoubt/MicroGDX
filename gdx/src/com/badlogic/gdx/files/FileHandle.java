@@ -40,7 +40,7 @@ import java.nio.channels.FileChannel.MapMode;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StreamUtils;
 
@@ -129,7 +129,7 @@ public class FileHandle {
 	/** Returns a java.io.File that represents this file handle. Note the returned file will only be usable for
 	 * {@link FileType#Absolute} and {@link FileType#External} file handles. */
 	public File file () {
-		if (type == FileType.External) return new File(Gdx.files.getExternalStoragePath(), file.getPath());
+		if (type == FileType.External) return new File(Micro.files.getExternalStoragePath(), file.getPath());
 		return file;
 	}
 
@@ -674,7 +674,7 @@ public class FileHandle {
 		return file.getPath().replace('\\', '/');
 	}
 
-	static public FileHandle tempFile (String prefix) {
+	public static FileHandle tempFile (String prefix) {
 		try {
 			return new FileHandle(File.createTempFile(prefix, null));
 		} catch (IOException ex) {
@@ -682,7 +682,7 @@ public class FileHandle {
 		}
 	}
 
-	static public FileHandle tempDirectory (String prefix) {
+	public static FileHandle tempDirectory (String prefix) {
 		try {
 			File file = File.createTempFile(prefix, null);
 			if (!file.delete()) throw new IOException("Unable to delete temp file: " + file);
@@ -693,7 +693,7 @@ public class FileHandle {
 		}
 	}
 
-	static private void emptyDirectory (File file, boolean preserveTree) {
+	private static void emptyDirectory (File file, boolean preserveTree) {
 		if (file.exists()) {
 			File[] files = file.listFiles();
 			if (files != null) {
@@ -709,12 +709,12 @@ public class FileHandle {
 		}
 	}
 
-	static private boolean deleteDirectory (File file) {
+	private static boolean deleteDirectory (File file) {
 		emptyDirectory(file, false);
 		return file.delete();
 	}
 
-	static private void copyFile (FileHandle source, FileHandle dest) {
+	private static void copyFile (FileHandle source, FileHandle dest) {
 		try {
 			dest.write(source.read(), false);
 		} catch (Exception ex) {
@@ -723,7 +723,7 @@ public class FileHandle {
 		}
 	}
 
-	static private void copyDirectory (FileHandle sourceDir, FileHandle destDir) {
+	private static void copyDirectory (FileHandle sourceDir, FileHandle destDir) {
 		destDir.mkdirs();
 		FileHandle[] files = sourceDir.list();
 		for (int i = 0, n = files.length; i < n; i++) {

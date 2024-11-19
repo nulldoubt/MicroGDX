@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.bullet;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -103,7 +103,7 @@ public class BulletWorld extends BaseWorld<BulletEntity> {
 			performanceCounter.start();
 		}
 		if (collisionWorld instanceof btDynamicsWorld)
-			((btDynamicsWorld)collisionWorld).stepSimulation(Gdx.graphics.getDeltaTime(), maxSubSteps, fixedTimeStep);
+			((btDynamicsWorld)collisionWorld).stepSimulation(Micro.graphics.getDeltaTime(), maxSubSteps, fixedTimeStep);
 		if (performanceCounter != null) performanceCounter.stop();
 	}
 

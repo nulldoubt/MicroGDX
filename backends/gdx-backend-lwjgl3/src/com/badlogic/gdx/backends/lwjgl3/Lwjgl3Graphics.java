@@ -270,7 +270,7 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 	}
 	
 	@Override
-	public int getFramesPerSecond() {
+	public int getFPS() {
 		return fps;
 	}
 	
@@ -476,7 +476,7 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 	 * @param fps fps
 	 */
 	@Override
-	public void setForegroundFPS(int fps) {
+	public void setFPS(int fps) {
 		getWindow().getConfig().foregroundFPS = fps;
 	}
 	
@@ -529,8 +529,8 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 	public void dispose() {
 		this.resizeCallback.free();
 	}	@Override
-	public void setContinuousRendering(boolean isContinuous) {
-		this.isContinuous = isContinuous;
+	public void setContinuousRendering(boolean continuous) {
+		this.isContinuous = continuous;
 	}
 	
 	public static class Lwjgl3DisplayMode extends DisplayMode {

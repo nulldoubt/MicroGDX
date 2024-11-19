@@ -181,7 +181,7 @@ public class JsonTest extends GdxTest {
 			}
 
 			@Override
-			protected void push (@Null String name, boolean object) {
+			protected void push (String name, boolean object) {
 				indent();
 				if (object)
 					System.out.println(name != null ? name + ": {" : "{");
@@ -321,7 +321,7 @@ public class JsonTest extends GdxTest {
 		if (!a.equals(b)) throw new RuntimeException("Fail!\n" + a + "\n!=\n" + b);
 	}
 
-	static public class Test1 {
+	public static class Test1 {
 		// Primitives.
 		public boolean booleanField;
 		public byte byteField;

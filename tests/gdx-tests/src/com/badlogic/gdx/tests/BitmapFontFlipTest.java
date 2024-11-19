@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -41,7 +41,7 @@ public class BitmapFontFlipTest extends GdxTest {
 
 	@Override
 	public void create () {
-		Gdx.input.setInputProcessor(new InputAdapter() {
+		Micro.input.setInputProcessor(new InputAdapter() {
 			public boolean touchDown (int x, int y, int pointer, int newParam) {
 				renderMode = (renderMode + 1) % 4;
 				return false;
@@ -49,15 +49,15 @@ public class BitmapFontFlipTest extends GdxTest {
 		});
 
 		spriteBatch = new SpriteBatch();
-		spriteBatch.setProjectionMatrix(new Matrix4().setToOrtho(0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, 1));
+		spriteBatch.setProjectionMatrix(new Matrix4().setToOrtho(0, Micro.graphics.getWidth(), Micro.graphics.getHeight(), 0, 0, 1));
 
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 		logoSprite = new Sprite(texture);
 		logoSprite.flip(false, true);
 		logoSprite.setPosition(0, 320 - 256);
 		logoSprite.setColor(1, 1, 1, 0.5f);
 
-		font = new BitmapFont(Gdx.files.internal("data/verdana39.fnt"), Gdx.files.internal("data/verdana39.png"), true);
+		font = new BitmapFont(Micro.files.internal("data/verdana39.fnt"), Micro.files.internal("data/verdana39.png"), true);
 
 		cache1 = font.newFontCache();
 		cache2 = font.newFontCache();
@@ -97,9 +97,9 @@ public class BitmapFontFlipTest extends GdxTest {
 
 	@Override
 	public void render () {
-		red.a = (red.a + Gdx.graphics.getDeltaTime() * 0.1f) % 1;
+		red.a = (red.a + Micro.graphics.getDeltaTime() * 0.1f) % 1;
 
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.begin();
 		logoSprite.draw(spriteBatch);
 		switch (renderMode) {

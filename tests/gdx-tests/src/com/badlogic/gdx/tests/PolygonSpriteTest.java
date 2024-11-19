@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -47,10 +47,10 @@ public class PolygonSpriteTest extends GdxTest {
 
 	@Override
 	public void create () {
-		texture = new Texture(Gdx.files.internal("data/tree.png"));
+		texture = new Texture(Micro.files.internal("data/tree.png"));
 
 		PolygonRegionLoader loader = new PolygonRegionLoader();
-		region = loader.load(new TextureRegion(texture), Gdx.files.internal("data/tree.psh"));
+		region = loader.load(new TextureRegion(texture), Micro.files.internal("data/tree.psh"));
 
 		renderer = new ShapeRenderer();
 
@@ -81,8 +81,8 @@ public class PolygonSpriteTest extends GdxTest {
 
 		for (int i = 0; i < sprites.size; i++) {
 			PolygonSprite sprite = sprites.get(i);
-			sprite.rotate(45 * Gdx.graphics.getDeltaTime());
-			sprite.translateX(10 * Gdx.graphics.getDeltaTime());
+			sprite.rotate(45 * Micro.graphics.getDeltaTime());
+			sprite.translateX(10 * Micro.graphics.getDeltaTime());
 
 			if (sprite.getX() > 450) sprite.setX(-50);
 

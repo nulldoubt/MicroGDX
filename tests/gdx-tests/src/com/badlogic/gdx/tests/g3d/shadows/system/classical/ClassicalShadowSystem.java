@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.g3d.shadows.system.classical;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -77,8 +77,8 @@ public class ClassicalShadowSystem extends FirstPassBaseShadowSystem {
 	}
 
 	protected void init2 () {
-		frameBuffers[SECOND_PASS] = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getBackBufferWidth(),
-			Gdx.graphics.getBackBufferHeight(), true);
+		frameBuffers[SECOND_PASS] = new FrameBuffer(Pixmap.Format.RGBA8888, Micro.graphics.getBackBufferWidth(),
+			Micro.graphics.getBackBufferHeight(), true);
 		passShaderProviders[SECOND_PASS] = new Pass2ShaderProvider(new Pass2Shader.Config(this));
 	}
 

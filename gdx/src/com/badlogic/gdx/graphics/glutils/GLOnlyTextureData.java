@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics.glutils;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -75,7 +75,7 @@ public class GLOnlyTextureData implements TextureData {
 
 	@Override
 	public void consumeCustomData (int target) {
-		Gdx.gl.glTexImage2D(target, mipLevel, internalFormat, width, height, 0, format, type, null);
+		Micro.gl.glTexImage2D(target, mipLevel, internalFormat, width, height, 0, format, type, null);
 	}
 
 	@Override

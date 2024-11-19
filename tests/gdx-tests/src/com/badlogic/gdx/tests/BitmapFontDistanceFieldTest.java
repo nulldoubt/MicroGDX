@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -38,7 +38,7 @@ public class BitmapFontDistanceFieldTest extends GdxTest {
 
 	private static class DistanceFieldShader extends ShaderProgram {
 		public DistanceFieldShader () {
-			super(Gdx.files.internal("data/shaders/distancefield.vert"), Gdx.files.internal("data/shaders/distancefield.frag"));
+			super(Micro.files.internal("data/shaders/distancefield.vert"), Micro.files.internal("data/shaders/distancefield.frag"));
 			if (!isCompiled()) {
 				throw new RuntimeException("Shader compilation failed:\n" + getLog());
 			}
@@ -68,15 +68,15 @@ public class BitmapFontDistanceFieldTest extends GdxTest {
 		camera = new OrthographicCamera();
 		spriteBatch = new SpriteBatch();
 
-		descriptionFont = new BitmapFont(Gdx.files.internal("data/lsans-15.fnt"), true);
+		descriptionFont = new BitmapFont(Micro.files.internal("data/lsans-15.fnt"), true);
 		descriptionFont.setColor(Color.RED);
 
-		regularTexture = new Texture(Gdx.files.internal("data/verdana39.png"), true);
-		regularFont = new BitmapFont(Gdx.files.internal("data/verdana39.fnt"), new TextureRegion(regularTexture), true);
+		regularTexture = new Texture(Micro.files.internal("data/verdana39.png"), true);
+		regularFont = new BitmapFont(Micro.files.internal("data/verdana39.fnt"), new TextureRegion(regularTexture), true);
 		regularFont.setColor(COLOR);
 
-		distanceFieldTexture = new Texture(Gdx.files.internal("data/verdana39distancefield.png"), true);
-		distanceFieldFont = new BitmapFont(Gdx.files.internal("data/verdana39distancefield.fnt"),
+		distanceFieldTexture = new Texture(Micro.files.internal("data/verdana39distancefield.png"), true);
+		distanceFieldFont = new BitmapFont(Micro.files.internal("data/verdana39distancefield.fnt"),
 			new TextureRegion(distanceFieldTexture), true);
 		distanceFieldFont.setColor(COLOR);
 

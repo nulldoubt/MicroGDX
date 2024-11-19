@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.g3d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -62,7 +62,7 @@ public class SkeletonTest extends BaseG3dHudTest {
 	@Override
 	protected void render (ModelBatch batch, Array<ModelInstance> instances) {
 		for (ObjectMap.Entry<ModelInstance, AnimationController> e : animationControllers.entries())
-			e.value.update(Gdx.graphics.getDeltaTime());
+			e.value.update(Micro.graphics.getDeltaTime());
 		for (final ModelInstance instance : instances)
 			renderSkeleton(instance);
 		batch.render(instances);

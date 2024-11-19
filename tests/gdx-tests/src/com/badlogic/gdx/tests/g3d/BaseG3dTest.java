@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.g3d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -51,7 +51,7 @@ public abstract class BaseG3dTest extends GdxTest {
 
 		modelBatch = new ModelBatch();
 
-		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam = new PerspectiveCamera(67, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		cam.position.set(10f, 10f, 10f);
 		cam.lookAt(0, 0, 0);
 		cam.near = 0.1f;
@@ -60,7 +60,7 @@ public abstract class BaseG3dTest extends GdxTest {
 
 		createAxes();
 
-		Gdx.input.setInputProcessor(inputController = new CameraInputController(cam));
+		Micro.input.setInputProcessor(inputController = new CameraInputController(cam));
 	}
 
 	final float GRID_MIN = -10f;

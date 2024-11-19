@@ -1,7 +1,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -39,7 +39,7 @@ public class TiledMapObjectPropertyTest extends GdxTest {
 			TmxMapLoader loader = new TmxMapLoader();
 			// run multiple times to ensure reloading map works correctly
 			for (int i = 0; i < 3; i++) {
-				Gdx.app.log("-------------------------------------", "Running test " + (i + 1) + "/3\n");
+				Micro.app.log("-------------------------------------", "Running test " + (i + 1) + "/3\n");
 
 				StringBuilder builder = new StringBuilder();
 				builder.append("Expected results:\n").append("- Object with id 1 should have \"object\" props:\n")
@@ -49,10 +49,10 @@ public class TiledMapObjectPropertyTest extends GdxTest {
 					.append("- Object with id 3 should have \"object\" props:\n").append("\t- Points_To_ID_2 = id: 2\n")
 					.append("- Object with id 4 should have \"object\" props:\n").append("\t- Points_To_ID_1 = id: 1\n")
 					.append("- Objects with id's 5 and 6 should have \"object\" props:\n").append("\t- Placeholder = 0\n");
-				Gdx.app.log("TiledMapObjectPropertyTest", builder.toString());
+				Micro.app.log("TiledMapObjectPropertyTest", builder.toString());
 
-				float w = Gdx.graphics.getWidth();
-				float h = Gdx.graphics.getHeight();
+				float w = Micro.graphics.getWidth();
+				float h = Micro.graphics.getHeight();
 
 				camera = new OrthographicCamera();
 				camera.setToOrtho(false, (w / h) * 512, 512);
@@ -60,7 +60,7 @@ public class TiledMapObjectPropertyTest extends GdxTest {
 				camera.update();
 
 				OrthoCamController cameraController = new OrthoCamController(camera);
-				Gdx.input.setInputProcessor(cameraController);
+				Micro.input.setInputProcessor(cameraController);
 
 				map = loader.load("data/maps/tiled-objects/test-object-properties.tmx");
 
@@ -86,7 +86,7 @@ public class TiledMapObjectPropertyTest extends GdxTest {
 					builder.append("\n\t").append(entry.key).append(" -> ").append(entry.value);
 				}
 				builder.append("\n}\n");
-				Gdx.app.log("TiledMapObjectPropertyTest", builder.toString());
+				Micro.app.log("TiledMapObjectPropertyTest", builder.toString());
 
 				for (MapObject object1 : objects) {
 					int id = object1.getProperties().get("id", Integer.class);
@@ -153,10 +153,10 @@ public class TiledMapObjectPropertyTest extends GdxTest {
 						builder.append("\t\t").append(key).append(" -> ").append(value).append("\n");
 					}
 				}
-				Gdx.app.log("TiledMapObjectPropertyTest", builder.toString());
+				Micro.app.log("TiledMapObjectPropertyTest", builder.toString());
 			}
 		} catch (Exception e) {
-			Gdx.app.error("TiledMapObjectPropertyTest", "Failed to run test!", e);
+			Micro.app.error("TiledMapObjectPropertyTest", "Failed to run test!", e);
 			e.printStackTrace();
 			error = true;
 		}
@@ -165,8 +165,8 @@ public class TiledMapObjectPropertyTest extends GdxTest {
 	@Override
 	public void render () {
 		if (error) {
-			Gdx.app.error("TiledMapObjectPropertyTest", "Failed to run test!");
-			Gdx.app.exit();
+			Micro.app.error("TiledMapObjectPropertyTest", "Failed to run test!");
+			Micro.app.exit();
 		}
 
 		ScreenUtils.clear(0.55f, 0.55f, 0.55f, 1f);
@@ -178,7 +178,7 @@ public class TiledMapObjectPropertyTest extends GdxTest {
 		batch.setProjectionMatrix(camera.combined);
 
 		shapeRenderer.setColor(Color.BLUE);
-		Gdx.gl20.glLineWidth(2);
+		Micro.gl20.glLineWidth(2);
 		for (MapObject object : objects) {
 			if (!object.isVisible()) continue;
 			if (object instanceof RectangleMapObject) {

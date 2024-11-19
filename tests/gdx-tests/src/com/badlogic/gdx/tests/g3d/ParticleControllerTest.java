@@ -1,7 +1,7 @@
 
 package com.badlogic.gdx.tests.g3d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -178,9 +178,9 @@ public class ParticleControllerTest extends BaseG3dTest {
 	protected void render (ModelBatch batch, Array<ModelInstance> instances) {
 		if (emitters.size > 0) {
 			// Update
-			float delta = Gdx.graphics.getDeltaTime();
+			float delta = Micro.graphics.getDeltaTime();
 			builder.delete(0, builder.length());
-			builder.append(Gdx.graphics.getFramesPerSecond());
+			builder.append(Micro.graphics.getFPS());
 			fpsLabel.setText(builder);
 			ui.act(delta);
 

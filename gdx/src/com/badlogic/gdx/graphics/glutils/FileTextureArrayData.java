@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics.glutils;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -88,13 +88,13 @@ public class FileTextureArrayData implements TextureArrayData {
 					pixmap = temp;
 					disposePixmap = true;
 				}
-				Gdx.gl30.glTexSubImage3D(GL30.GL_TEXTURE_2D_ARRAY, 0, 0, 0, i, pixmap.getWidth(), pixmap.getHeight(), 1,
+				Micro.gl30.glTexSubImage3D(GL30.GL_TEXTURE_2D_ARRAY, 0, 0, 0, i, pixmap.getWidth(), pixmap.getHeight(), 1,
 					pixmap.getGLInternalFormat(), pixmap.getGLType(), pixmap.getPixels());
 				if (disposePixmap) pixmap.dispose();
 			}
 		}
 		if (useMipMaps && !containsCustomData) {
-			Gdx.gl20.glGenerateMipmap(GL30.GL_TEXTURE_2D_ARRAY);
+			Micro.gl20.glGenerateMipmap(GL30.GL_TEXTURE_2D_ARRAY);
 		}
 	}
 

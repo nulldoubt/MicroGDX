@@ -18,7 +18,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -45,8 +45,8 @@ public class TiledMapAnimationLoadingTest extends GdxTest {
 
 	@Override
 	public void create () {
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+		float w = Micro.graphics.getWidth();
+		float h = Micro.graphics.getHeight();
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, (w / h) * 512, 512);
@@ -54,7 +54,7 @@ public class TiledMapAnimationLoadingTest extends GdxTest {
 		camera.update();
 
 		cameraController = new OrthoCamController(camera);
-		Gdx.input.setInputProcessor(cameraController);
+		Micro.input.setInputProcessor(cameraController);
 
 		font = new BitmapFont();
 		batch = new SpriteBatch();

@@ -18,7 +18,7 @@ package com.badlogic.gdx.graphics.g2d.freetype;
 
 import java.nio.ByteBuffer;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -67,15 +67,15 @@ import com.badlogic.gdx.utils.Null;
  * @author Nathan Sweet
  * @author Rob Rendell */
 public class FreeTypeFontGenerator implements Disposable {
-	static public final String DEFAULT_CHARS = "\u0000ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890\"!`?'.,;:()[]{}<>|/@\\^$€-%+=#_&~*\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008A\u008B\u008C\u008D\u008E\u008F\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009A\u009B\u009C\u009D\u009E\u009F\u00A0\u00A1\u00A2\u00A3\u00A4\u00A5\u00A6\u00A7\u00A8\u00A9\u00AA\u00AB\u00AC\u00AD\u00AE\u00AF\u00B0\u00B1\u00B2\u00B3\u00B4\u00B5\u00B6\u00B7\u00B8\u00B9\u00BA\u00BB\u00BC\u00BD\u00BE\u00BF\u00C0\u00C1\u00C2\u00C3\u00C4\u00C5\u00C6\u00C7\u00C8\u00C9\u00CA\u00CB\u00CC\u00CD\u00CE\u00CF\u00D0\u00D1\u00D2\u00D3\u00D4\u00D5\u00D6\u00D7\u00D8\u00D9\u00DA\u00DB\u00DC\u00DD\u00DE\u00DF\u00E0\u00E1\u00E2\u00E3\u00E4\u00E5\u00E6\u00E7\u00E8\u00E9\u00EA\u00EB\u00EC\u00ED\u00EE\u00EF\u00F0\u00F1\u00F2\u00F3\u00F4\u00F5\u00F6\u00F7\u00F8\u00F9\u00FA\u00FB\u00FC\u00FD\u00FE\u00FF";
+	public static final String DEFAULT_CHARS = "\u0000ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890\"!`?'.,;:()[]{}<>|/@\\^$€-%+=#_&~*\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008A\u008B\u008C\u008D\u008E\u008F\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009A\u009B\u009C\u009D\u009E\u009F\u00A0\u00A1\u00A2\u00A3\u00A4\u00A5\u00A6\u00A7\u00A8\u00A9\u00AA\u00AB\u00AC\u00AD\u00AE\u00AF\u00B0\u00B1\u00B2\u00B3\u00B4\u00B5\u00B6\u00B7\u00B8\u00B9\u00BA\u00BB\u00BC\u00BD\u00BE\u00BF\u00C0\u00C1\u00C2\u00C3\u00C4\u00C5\u00C6\u00C7\u00C8\u00C9\u00CA\u00CB\u00CC\u00CD\u00CE\u00CF\u00D0\u00D1\u00D2\u00D3\u00D4\u00D5\u00D6\u00D7\u00D8\u00D9\u00DA\u00DB\u00DC\u00DD\u00DE\u00DF\u00E0\u00E1\u00E2\u00E3\u00E4\u00E5\u00E6\u00E7\u00E8\u00E9\u00EA\u00EB\u00EC\u00ED\u00EE\u00EF\u00F0\u00F1\u00F2\u00F3\u00F4\u00F5\u00F6\u00F7\u00F8\u00F9\u00FA\u00FB\u00FC\u00FD\u00FE\u00FF";
 
 	/** A hint to scale the texture as needed, without capping it at any maximum size */
-	static public final int NO_MAXIMUM = -1;
+	public static final int NO_MAXIMUM = -1;
 
 	/** The maximum texture size allowed by generateData, when storing in a texture atlas. Multiple texture pages will be created
 	 * if necessary. Default is 1024.
 	 * @see #setMaxTextureSize(int) */
-	static private int maxTextureSize = 1024;
+	private static int maxTextureSize = 1024;
 
 	final Library library;
 	final Face face;
@@ -211,12 +211,12 @@ public class FreeTypeFontGenerator implements Disposable {
 
 	public class GlyphAndBitmap {
 		public Glyph glyph;
-		public @Null Bitmap bitmap;
+		public Bitmap bitmap;
 	}
 
 	/** Returns null if glyph was not found in the font. If there is nothing to render, for example with various space characters,
 	 * then {@link GlyphAndBitmap#bitmap} will be null. */
-	public @Null GlyphAndBitmap generateGlyphAndBitmap (int c, int size, boolean flip) {
+	public GlyphAndBitmap generateGlyphAndBitmap (int c, int size, boolean flip) {
 		setPixelSizes(0, size);
 
 		SizeMetrics fontMetrics = face.getSize().getMetrics();
@@ -479,7 +479,7 @@ public class FreeTypeFontGenerator implements Disposable {
 	}
 
 	/** @return null if glyph was not found. */
-	protected @Null Glyph createGlyph (char c, FreeTypeBitmapFontData data, FreeTypeFontParameter parameter, Stroker stroker,
+	protected Glyph createGlyph (char c, FreeTypeBitmapFontData data, FreeTypeFontParameter parameter, Stroker stroker,
 		float baseLine, PixmapPacker packer) {
 
 		boolean missing = face.getCharIndex(c) == 0 && c != 0;
@@ -493,7 +493,7 @@ public class FreeTypeFontGenerator implements Disposable {
 			mainGlyph.toBitmap(parameter.mono ? FreeType.FT_RENDER_MODE_MONO : FreeType.FT_RENDER_MODE_NORMAL);
 		} catch (GdxRuntimeException e) {
 			mainGlyph.dispose();
-			Gdx.app.log("FreeTypeFontGenerator", "Couldn't render char: " + c);
+			Micro.app.log("FreeTypeFontGenerator", "Couldn't render char: " + c);
 			return null;
 		}
 		Bitmap mainBitmap = mainGlyph.getBitmap();
@@ -661,7 +661,7 @@ public class FreeTypeFontGenerator implements Disposable {
 	 * held in memory, thus the {@link #getImagePaths()} and {@link #getFontFile()} methods will return null.
 	 * @author mzechner
 	 * @author Nathan Sweet */
-	static public class FreeTypeBitmapFontData extends BitmapFontData implements Disposable {
+	public static class FreeTypeBitmapFontData extends BitmapFontData implements Disposable {
 		public Array<TextureRegion> regions;
 
 		// Fields for incremental glyph generation.

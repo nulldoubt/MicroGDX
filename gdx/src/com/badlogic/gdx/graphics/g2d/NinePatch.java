@@ -31,18 +31,18 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
  * for the ninepatch. That information is either passed to a constructor or defined implicitly by the size of the individual patch
  * textures. {@link TextureAtlas} is one way to generate a postprocessed ninepatch texture regions from ".9.png" files. */
 public class NinePatch {
-	static public final int TOP_LEFT = 0;
-	static public final int TOP_CENTER = 1;
-	static public final int TOP_RIGHT = 2;
-	static public final int MIDDLE_LEFT = 3;
-	static public final int MIDDLE_CENTER = 4;
-	static public final int MIDDLE_RIGHT = 5;
-	static public final int BOTTOM_LEFT = 6;
+	public static final int TOP_LEFT = 0;
+	public static final int TOP_CENTER = 1;
+	public static final int TOP_RIGHT = 2;
+	public static final int MIDDLE_LEFT = 3;
+	public static final int MIDDLE_CENTER = 4;
+	public static final int MIDDLE_RIGHT = 5;
+	public static final int BOTTOM_LEFT = 6;
 	/** Indices for the {@link #NinePatch(TextureRegion...)} constructor. */
-	static public final int BOTTOM_CENTER = 7; // This field has the javadoc comment because it appears first in the javadocs.
-	static public final int BOTTOM_RIGHT = 8;
+	public static final int BOTTOM_CENTER = 7; // This field has the javadoc comment because it appears first in the javadocs.
+	public static final int BOTTOM_RIGHT = 8;
 
-	static private final Color tmpDrawColor = new Color();
+	private static final Color tmpDrawColor = new Color();
 
 	private Texture texture;
 	private int bottomLeft, bottomCenter, bottomRight;

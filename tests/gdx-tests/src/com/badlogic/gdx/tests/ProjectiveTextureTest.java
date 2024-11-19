@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -72,9 +72,9 @@ public class ProjectiveTextureTest extends GdxTest {
 		setupUI();
 		setupShaders();
 
-		multiplexer.addProcessor(ui);
-		multiplexer.addProcessor(controller);
-		Gdx.input.setInputProcessor(multiplexer);
+		multiplexer.add(ui);
+		multiplexer.add(controller);
+		Micro.input.setInputProcessor(multiplexer);
 
 		// renderer = new ImmediateModeRenderer20(false, true, 0);
 	}
@@ -85,16 +85,16 @@ public class ProjectiveTextureTest extends GdxTest {
 		plane.setVertices(new float[] {-10, -1, 10, 0, 1, 0, 10, -1, 10, 0, 1, 0, 10, -1, -10, 0, 1, 0, -10, -1, -10, 0, 1, 0});
 		plane.setIndices(new short[] {3, 2, 1, 1, 0, 3});
 
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"), Format.RGB565, true);
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"), Format.RGB565, true);
 		texture.setFilter(TextureFilter.MipMap, TextureFilter.Nearest);
 
-		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam = new PerspectiveCamera(67, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		cam.position.set(0, 5, 10);
 		cam.lookAt(0, 0, 0);
 		cam.update();
 		controller = new PerspectiveCamController(cam);
 
-		projector = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		projector = new PerspectiveCamera(67, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		projector.position.set(2, 3, 2);
 		projector.lookAt(0, 0, 0);
 		projector.normalizeUp();
@@ -103,7 +103,7 @@ public class ProjectiveTextureTest extends GdxTest {
 
 	public void setupUI () {
 		ui = new Stage();
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 		TextButton reload = new TextButton("Reload Shaders", skin.get(TextButtonStyle.class));
 		camera = new SelectBox(skin.get(SelectBoxStyle.class));
 		camera.setItems("Camera", "Light");
@@ -119,10 +119,10 @@ public class ProjectiveTextureTest extends GdxTest {
 
 		reload.addListener(new ClickListener() {
 			public void clicked (InputEvent event, float x, float y) {
-				ShaderProgram prog = new ShaderProgram(Gdx.files.internal("data/shaders/projtex-vert.glsl").readString(),
-					Gdx.files.internal("data/shaders/projtex-frag.glsl").readString());
+				ShaderProgram prog = new ShaderProgram(Micro.files.internal("data/shaders/projtex-vert.glsl").readString(),
+					Micro.files.internal("data/shaders/projtex-frag.glsl").readString());
 				if (prog.isCompiled() == false) {
-					Gdx.app.log("GLSL ERROR", "Couldn't reload shaders:\n" + prog.getLog());
+					Micro.app.log("GLSL ERROR", "Couldn't reload shaders:\n" + prog.getLog());
 				} else {
 					projTexShader.dispose();
 					projTexShader = prog;
@@ -133,17 +133,17 @@ public class ProjectiveTextureTest extends GdxTest {
 
 	public void setupShaders () {
 		ShaderProgram.pedantic = false;
-		projTexShader = new ShaderProgram(Gdx.files.internal("data/shaders/projtex-vert.glsl").readString(),
-			Gdx.files.internal("data/shaders/projtex-frag.glsl").readString());
+		projTexShader = new ShaderProgram(Micro.files.internal("data/shaders/projtex-vert.glsl").readString(),
+			Micro.files.internal("data/shaders/projtex-frag.glsl").readString());
 		if (!projTexShader.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + projTexShader.getLog());
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Micro.gl.glEnable(GL20.GL_DEPTH_TEST);
 
-		angle += Gdx.graphics.getDeltaTime() * 20.0f;
+		angle += Micro.graphics.getDeltaTime() * 20.0f;
 		cubeTrans.setToRotation(Vector3.Y, angle);
 
 		cam.update();
@@ -165,7 +165,7 @@ public class ProjectiveTextureTest extends GdxTest {
 			 */
 		}
 
-		fps.setText("fps: " + Gdx.graphics.getFramesPerSecond());
+		fps.setText("fps: " + Micro.graphics.getFPS());
 		ui.act();
 		ui.draw();
 	}

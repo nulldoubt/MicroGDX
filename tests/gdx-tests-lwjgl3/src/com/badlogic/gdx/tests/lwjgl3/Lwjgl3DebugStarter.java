@@ -18,7 +18,7 @@ package com.badlogic.gdx.tests.lwjgl3;
 
 import java.awt.image.BufferedImage;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -49,27 +49,27 @@ public class Lwjgl3DebugStarter {
 
 			@Override
 			public void create () {
-				Gdx.app.addLifecycleListener(new LifecycleListener() {
+				Micro.app.register(new LifecycleListener() {
 					@Override
 					public void pause () {
-						Gdx.app.log("LifecycleListener", "Application pause()");
+						Micro.app.log("LifecycleListener", "Application pause()");
 					}
 
 					@Override
 					public void resume () {
-						Gdx.app.log("LifecycleListener", "Application resume()");
+						Micro.app.log("LifecycleListener", "Application resume()");
 					}
 
 					@Override
 					public void dispose () {
-						Gdx.app.log("LifecycleListener", "Application dispose()");
+						Micro.app.log("LifecycleListener", "Application dispose()");
 					}
 				});
 				BufferedImage image = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
 				texture = new Texture("data/badlogic.jpg");
 				batch = new SpriteBatch();
 				font = new BitmapFont();
-				Gdx.input.setInputProcessor(new InputAdapter() {
+				Micro.input.setInputProcessor(new InputAdapter() {
 
 					@Override
 					public boolean keyDown (int keycode) {
@@ -88,7 +88,7 @@ public class Lwjgl3DebugStarter {
 						System.out.println("Key typed: '" + character + "', " + (int)character);
 
 						if (character == 'f') {
-							Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+							Micro.graphics.setFullscreenMode(Micro.graphics.getDisplayMode());
 // DisplayMode[] modes = Gdx.graphics.getDisplayModes();
 // for(DisplayMode mode: modes) {
 // if(mode.width == 1920 && mode.height == 1080) {
@@ -98,15 +98,15 @@ public class Lwjgl3DebugStarter {
 // }
 						}
 						if (character == 'w') {
-							Gdx.graphics.setWindowedMode(MathUtils.random(400, 800), MathUtils.random(400, 800));
+							Micro.graphics.setWindowedMode(MathUtils.random(400, 800), MathUtils.random(400, 800));
 						}
 						if (character == 'e') {
 							throw new GdxRuntimeException("derp");
 						}
 						if (character == 'c') {
-							Gdx.input.setCursorCatched(!Gdx.input.isCursorCatched());
+							Micro.input.setCursorCatched(!Micro.input.isCursorCatched());
 						}
-						Lwjgl3Window window = ((Lwjgl3Graphics)Gdx.graphics).getWindow();
+						Lwjgl3Window window = ((Lwjgl3Graphics) Micro.graphics).getWindow();
 						if (character == 'v') {
 							window.setVisible(false);
 						}
@@ -126,7 +126,7 @@ public class Lwjgl3DebugStarter {
 							window.restoreWindow();
 						}
 						if (character == 'u') {
-							Gdx.net.openURI("https://google.com");
+							Micro.net.openURI("https://google.com");
 						}
 						return false;
 					}
@@ -138,37 +138,37 @@ public class Lwjgl3DebugStarter {
 			@Override
 			public void render () {
 				ScreenUtils.clear(1, 0, 0, 1);
-				HdpiUtils.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-				batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				HdpiUtils.glViewport(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
+				batch.getProjectionMatrix().setToOrtho2D(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 				batch.begin();
 				font.draw(batch,
-					Gdx.graphics.getWidth() + "x" + Gdx.graphics.getHeight() + ", " + Gdx.graphics.getBackBufferWidth() + "x"
-						+ Gdx.graphics.getBackBufferHeight() + ", " + Gdx.input.getX() + ", " + Gdx.input.getY() + ", "
-						+ Gdx.input.getDeltaX() + ", " + Gdx.input.getDeltaY(),
+					Micro.graphics.getWidth() + "x" + Micro.graphics.getHeight() + ", " + Micro.graphics.getBackBufferWidth() + "x"
+						+ Micro.graphics.getBackBufferHeight() + ", " + Micro.input.getX() + ", " + Micro.input.getY() + ", "
+						+ Micro.input.getDeltaX() + ", " + Micro.input.getDeltaY(),
 					0, 20);
-				batch.draw(texture, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				batch.draw(texture, Micro.input.getX(), Micro.graphics.getHeight() - Micro.input.getY());
 				batch.end();
 				fps.log();
 			}
 
 			@Override
 			public void resize (int width, int height) {
-				Gdx.app.log("Test", "Resized " + width + "x" + height);
+				Micro.app.log("Test", "Resized " + width + "x" + height);
 			}
 
 			@Override
 			public void resume () {
-				Gdx.app.log("Test", "resuming");
+				Micro.app.log("Test", "resuming");
 			}
 
 			@Override
 			public void pause () {
-				Gdx.app.log("Test", "pausing");
+				Micro.app.log("Test", "pausing");
 			}
 
 			@Override
 			public void dispose () {
-				Gdx.app.log("Test", "disposing");
+				Micro.app.log("Test", "disposing");
 			}
 		};
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
@@ -176,45 +176,45 @@ public class Lwjgl3DebugStarter {
 		config.setWindowListener(new Lwjgl3WindowListener() {
 			@Override
 			public void created (Lwjgl3Window window) {
-				Gdx.app.log("Window", "created");
+				Micro.app.log("Window", "created");
 			}
 
 			@Override
 			public void iconified (boolean isIconified) {
-				Gdx.app.log("Window", "iconified: " + (isIconified ? "true" : "false"));
+				Micro.app.log("Window", "iconified: " + (isIconified ? "true" : "false"));
 			}
 
 			@Override
 			public void maximized (boolean isMaximized) {
-				Gdx.app.log("Window", "maximized: " + (isMaximized ? "true" : "false"));
+				Micro.app.log("Window", "maximized: " + (isMaximized ? "true" : "false"));
 			}
 
 			@Override
 			public void focusLost () {
-				Gdx.app.log("Window", "focus lost");
+				Micro.app.log("Window", "focus lost");
 			}
 
 			@Override
 			public void focusGained () {
-				Gdx.app.log("Window", "focus gained");
+				Micro.app.log("Window", "focus gained");
 			}
 
 			@Override
 			public boolean closeRequested () {
-				Gdx.app.log("Window", "closing");
+				Micro.app.log("Window", "closing");
 				return false;
 			}
 
 			@Override
 			public void filesDropped (String[] files) {
 				for (String file : files) {
-					Gdx.app.log("Window", "File dropped: " + file);
+					Micro.app.log("Window", "File dropped: " + file);
 				}
 			}
 
 			@Override
 			public void refreshRequested () {
-				Gdx.app.log("Window", "refreshRequested");
+				Micro.app.log("Window", "refreshRequested");
 			}
 		});
 		for (DisplayMode mode : Lwjgl3ApplicationConfiguration.getDisplayModes()) {

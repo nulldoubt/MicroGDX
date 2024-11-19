@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.g3d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -117,19 +117,19 @@ public class Animation3DTest extends BaseG3dHudTest {
 	@Override
 	public void render () {
 		if (character != null) {
-			animation.update(Gdx.graphics.getDeltaTime());
-			if (Gdx.input.isKeyPressed(Keys.UP)) {
+			animation.update(Micro.graphics.getDeltaTime());
+			if (Micro.input.isKeyPressed(Keys.UP)) {
 				if (!animation.inAction) {
-					trTmp.idt().lerp(trForward, Gdx.graphics.getDeltaTime() / animation.current.animation.duration);
+					trTmp.idt().lerp(trForward, Micro.graphics.getDeltaTime() / animation.current.animation.duration);
 					character.transform.mul(trTmp.toMatrix4(tmpMatrix));
 				}
 				if (status != walk) {
 					animation.animate("Walk", -1, 1f, null, 0.2f);
 					status = walk;
 				}
-			} else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+			} else if (Micro.input.isKeyPressed(Keys.DOWN)) {
 				if (!animation.inAction) {
-					trTmp.idt().lerp(trBackward, Gdx.graphics.getDeltaTime() / animation.current.animation.duration);
+					trTmp.idt().lerp(trBackward, Micro.graphics.getDeltaTime() / animation.current.animation.duration);
 					character.transform.mul(trTmp.toMatrix4(tmpMatrix));
 				}
 				if (status != back) {
@@ -140,17 +140,17 @@ public class Animation3DTest extends BaseG3dHudTest {
 				animation.animate("Idle", -1, 1f, null, 0.2f);
 				status = idle;
 			}
-			if (Gdx.input.isKeyPressed(Keys.RIGHT) && (status == walk || status == back) && !animation.inAction) {
-				trTmp.idt().lerp(trRight, Gdx.graphics.getDeltaTime() / animation.current.animation.duration);
+			if (Micro.input.isKeyPressed(Keys.RIGHT) && (status == walk || status == back) && !animation.inAction) {
+				trTmp.idt().lerp(trRight, Micro.graphics.getDeltaTime() / animation.current.animation.duration);
 				character.transform.mul(trTmp.toMatrix4(tmpMatrix));
-			} else if (Gdx.input.isKeyPressed(Keys.LEFT) && (status == walk || status == back) && !animation.inAction) {
-				trTmp.idt().lerp(trLeft, Gdx.graphics.getDeltaTime() / animation.current.animation.duration);
+			} else if (Micro.input.isKeyPressed(Keys.LEFT) && (status == walk || status == back) && !animation.inAction) {
+				trTmp.idt().lerp(trLeft, Micro.graphics.getDeltaTime() / animation.current.animation.duration);
 				character.transform.mul(trTmp.toMatrix4(tmpMatrix));
 			}
-			if (Gdx.input.isKeyPressed(Keys.SPACE) && !animation.inAction) {
+			if (Micro.input.isKeyPressed(Keys.SPACE) && !animation.inAction) {
 				animation.action("Attack", 1, 1f, null, 0.2f);
 			}
-			if (Gdx.input.isKeyJustPressed(Keys.Z)) ship.parts.get(0).enabled = !ship.parts.get(0).enabled;
+			if (Micro.input.isKeyJustPressed(Keys.Z)) ship.parts.get(0).enabled = !ship.parts.get(0).enabled;
 		}
 
 		if (character != null) {
@@ -202,7 +202,7 @@ public class Animation3DTest extends BaseG3dHudTest {
 			animation.animate("Idle", -1, 1f, null, 0.2f);
 			status = idle;
 			for (Animation anim : character.animations)
-				Gdx.app.log("Test", anim.id);
+				Micro.app.log("Test", anim.id);
 			// Now attach the node of another model at the tip of this knights sword:
 			ship = assets.get("data/g3d/ship.obj", Model.class).nodes.get(0).copy();
 			ship.detach();

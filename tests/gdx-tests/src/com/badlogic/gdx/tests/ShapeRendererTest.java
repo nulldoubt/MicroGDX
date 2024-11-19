@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -39,18 +39,18 @@ public class ShapeRendererTest extends GdxTest {
 
 	public void create () {
 		renderer = new ShapeRenderer();
-		cam = new PerspectiveCamera(47, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam = new PerspectiveCamera(47, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		cam.position.set(0, 0, 2);
 		cam.near = 0.1f;
 		controller = new PerspectiveCamController(cam);
-		Gdx.input.setInputProcessor(controller);
+		Micro.input.setInputProcessor(controller);
 		batch = new SpriteBatch();
-		font = new BitmapFont(Gdx.files.internal("data/lsans-15.fnt"), false);
+		font = new BitmapFont(Micro.files.internal("data/lsans-15.fnt"), false);
 	}
 
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Micro.gl.glEnable(GL20.GL_DEPTH_TEST);
 		cam.update();
 		renderer.setProjectionMatrix(cam.combined);
 		renderer.identity();
@@ -67,7 +67,7 @@ public class ShapeRendererTest extends GdxTest {
 
 		renderer.end();
 
-		if (Gdx.input.isKeyPressed(Keys.F)) {
+		if (Micro.input.isKeyPressed(Keys.F)) {
 			renderer.begin(ShapeType.Filled);
 
 			renderer.setColor(Color.RED);
@@ -122,7 +122,7 @@ public class ShapeRendererTest extends GdxTest {
 		}
 
 		batch.begin();
-		font.draw(batch, "fps: " + Gdx.graphics.getFramesPerSecond(), 0, 20);
+		font.draw(batch, "fps: " + Micro.graphics.getFPS(), 0, 20);
 		batch.end();
 	}
 

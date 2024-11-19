@@ -19,7 +19,7 @@ package com.badlogic.gdx.tests.g3d.shadows.system;
 import java.util.EnumSet;
 import java.util.Set;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Cubemap;
 import com.badlogic.gdx.graphics.Cubemap.CubemapSide;
@@ -390,8 +390,8 @@ public abstract class BaseShadowSystem implements ShadowSystem, Disposable {
 
 		// We don't use HdpiUtils
 		// gl commands related to shadow map size and not to screen size
-		Gdx.gl.glViewport(r.x, r.y, r.width, r.height);
-		Gdx.gl.glScissor(r.x + 1, r.y + 1, r.width - 2, r.height - 2);
+		Micro.gl.glViewport(r.x, r.y, r.width, r.height);
+		Micro.gl.glScissor(r.x + 1, r.y + 1, r.width - 2, r.height - 2);
 		region.setRegion(r.x, r.y, r.width, r.height);
 
 		if (cameraViewport) {

@@ -178,7 +178,7 @@ public class ImmediateModeRenderer20 implements ImmediateModeRenderer {
 		mesh.dispose();
 	}
 
-	static private String createVertexShader (boolean hasNormals, boolean hasColors, int numTexCoords) {
+	private static String createVertexShader (boolean hasNormals, boolean hasColors, int numTexCoords) {
 		String shader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n"
 			+ (hasNormals ? "attribute vec3 " + ShaderProgram.NORMAL_ATTRIBUTE + ";\n" : "")
 			+ (hasColors ? "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "");
@@ -208,7 +208,7 @@ public class ImmediateModeRenderer20 implements ImmediateModeRenderer {
 		return shader;
 	}
 
-	static private String createFragmentShader (boolean hasNormals, boolean hasColors, int numTexCoords) {
+	private static String createFragmentShader (boolean hasNormals, boolean hasColors, int numTexCoords) {
 		String shader = "#ifdef GL_ES\n" + "precision mediump float;\n" + "#endif\n";
 
 		if (hasColors) shader += "varying vec4 v_col;\n";
@@ -235,7 +235,7 @@ public class ImmediateModeRenderer20 implements ImmediateModeRenderer {
 	}
 
 	/** Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified. */
-	static public ShaderProgram createDefaultShader (boolean hasNormals, boolean hasColors, int numTexCoords) {
+	public static ShaderProgram createDefaultShader (boolean hasNormals, boolean hasColors, int numTexCoords) {
 		String vertexShader = createVertexShader(hasNormals, hasColors, numTexCoords);
 		String fragmentShader = createFragmentShader(hasNormals, hasColors, numTexCoords);
 		ShaderProgram program = new ShaderProgram(vertexShader, fragmentShader);

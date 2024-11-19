@@ -1,7 +1,7 @@
 
 package com.badlogic.gdx.tests.bullet;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -19,7 +19,7 @@ public class GimpactTest extends BaseBulletTest {
 	public void create () {
 		super.create();
 
-		final Model chassisModel = objLoader.loadModel(Gdx.files.internal("data/car.obj"));
+		final Model chassisModel = objLoader.loadModel(Micro.files.internal("data/car.obj"));
 		disposables.add(chassisModel);
 		chassisModel.materials.get(0).clear();
 		chassisModel.materials.get(0).set(ColorAttribute.createDiffuse(Color.RED), ColorAttribute.createSpecular(Color.WHITE));

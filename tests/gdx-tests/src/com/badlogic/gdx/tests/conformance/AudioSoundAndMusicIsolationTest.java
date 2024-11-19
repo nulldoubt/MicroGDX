@@ -1,7 +1,7 @@
 
 package com.badlogic.gdx.tests.conformance;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
@@ -18,15 +18,15 @@ public class AudioSoundAndMusicIsolationTest extends GdxTest {
 
 	@Override
 	public void create () {
-		sound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/shotgun.ogg", FileType.Internal));
-		music = Gdx.audio.newMusic(Gdx.files.internal("data/8.12.loop.wav"));
+		sound = Micro.audio.newSound(Micro.files.getFileHandle("data/shotgun.ogg", FileType.Internal));
+		music = Micro.audio.newMusic(Micro.files.internal("data/8.12.loop.wav"));
 
 		soundID = sound.play();
 	}
 
 	@Override
 	public void render () {
-		time += Gdx.graphics.getDeltaTime();
+		time += Micro.graphics.getDeltaTime();
 		if (time > 5 && !music.isPlaying()) {
 			music.play();
 		}

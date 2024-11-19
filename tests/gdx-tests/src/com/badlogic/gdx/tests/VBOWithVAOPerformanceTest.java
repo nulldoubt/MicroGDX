@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Mesh;
@@ -65,7 +65,7 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 
 	@Override
 	public void create () {
-		if (Gdx.gl30 == null) {
+		if (Micro.gl30 == null) {
 			throw new GdxRuntimeException("GLES 3.0 profile required for this test");
 		}
 		String vertexShader = "attribute vec4 a_position;    \n" + "attribute vec4 a_color;\n" + "attribute vec2 a_texCoord0;\n"
@@ -80,8 +80,8 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		if (shader.isCompiled() == false) {
-			Gdx.app.log("ShaderTest", shader.getLog());
-			Gdx.app.exit();
+			Micro.app.log("ShaderTest", shader.getLog());
+			Micro.app.exit();
 		}
 
 		int numSprites = 1000;
@@ -118,7 +118,7 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 		oldVBOWithVAOMesh.setVertices(vertexArray);
 		oldVBOWithVAOMesh.setIndices(indexArray);
 
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 
 		batch = new SpriteBatch();
 		bitmapFont = new BitmapFont();
@@ -198,12 +198,12 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl20.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
-		Gdx.gl20.glClearColor(0.2f, 0.2f, 0.2f, 1);
-		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Gdx.gl20.glEnable(GL20.GL_TEXTURE_2D);
-		Gdx.gl20.glEnable(GL20.GL_BLEND);
-		Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Micro.gl20.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
+		Micro.gl20.glClearColor(0.2f, 0.2f, 0.2f, 1);
+		Micro.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl20.glEnable(GL20.GL_TEXTURE_2D);
+		Micro.gl20.glEnable(GL20.GL_BLEND);
+		Micro.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
 		texture.bind();
 		shader.bind();
@@ -212,10 +212,10 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 
 		long beforeOld = System.nanoTime();
 		oldVBOWithVAOMesh.render(shader, GL20.GL_TRIANGLES);
-		Gdx.gl.glFlush();
+		Micro.gl.glFlush();
 		oldCounter.addValue((System.nanoTime() - beforeOld));
 
-		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		texture.bind();
 		shader.bind();
@@ -224,10 +224,10 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 
 		long beforeNew = System.nanoTime();
 		newVBOWithVAOMesh.render(shader, GL20.GL_TRIANGLES);
-		Gdx.gl.glFlush();
+		Micro.gl.glFlush();
 		newCounter.addValue((System.nanoTime() - beforeNew));
 
-		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		texture.bind();
 		shader.bind();
@@ -237,10 +237,10 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 		long beforeOldStress = System.nanoTime();
 		for (int i = 0; i < 100; i++)
 			oldVBOWithVAOMesh.render(shader, GL20.GL_TRIANGLES);
-		Gdx.gl.glFlush();
+		Micro.gl.glFlush();
 		oldCounterStress.addValue((System.nanoTime() - beforeOldStress));
 
-		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		texture.bind();
 		shader.bind();
@@ -250,7 +250,7 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 		long beforeNewStress = System.nanoTime();
 		for (int i = 0; i < 100; i++)
 			newVBOWithVAOMesh.render(shader, GL20.GL_TRIANGLES);
-		Gdx.gl.glFlush();
+		Micro.gl.glFlush();
 		newCounterStress.addValue((System.nanoTime() - beforeNewStress));
 
 		batch.begin();
@@ -327,7 +327,7 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 			buffer = byteBuffer.asFloatBuffer();
 			((Buffer)buffer).flip();
 			((Buffer)byteBuffer).flip();
-			bufferHandle = Gdx.gl20.glGenBuffer();
+			bufferHandle = Micro.gl20.glGenBuffer();
 			usage = isStatic ? GL20.GL_STATIC_DRAW : GL20.GL_DYNAMIC_DRAW;
 		}
 
@@ -361,7 +361,7 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 
 		private void bufferChanged () {
 			if (isBound) {
-				Gdx.gl20.glBufferData(GL20.GL_ARRAY_BUFFER, byteBuffer.limit(), byteBuffer, usage);
+				Micro.gl20.glBufferData(GL20.GL_ARRAY_BUFFER, byteBuffer.limit(), byteBuffer, usage);
 				isDirty = false;
 			}
 		}
@@ -393,7 +393,7 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 
 		@Override
 		public void bind (ShaderProgram shader, int[] locations) {
-			GL30 gl = Gdx.gl30;
+			GL30 gl = Micro.gl30;
 			if (vaoDirty || !gl.glIsVertexArray(vaoHandle)) {
 				// initialize the VAO with our vertex attributes and buffer:
 				((Buffer)tmpHandle).clear();
@@ -416,7 +416,7 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 		}
 
 		private void bindAttributes (ShaderProgram shader, int[] locations) {
-			final GL20 gl = Gdx.gl20;
+			final GL20 gl = Micro.gl20;
 			gl.glBindBuffer(GL20.GL_ARRAY_BUFFER, bufferHandle);
 			final int numAttributes = attributes.size();
 			if (locations == null) {
@@ -459,21 +459,21 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 
 		@Override
 		public void unbind (final ShaderProgram shader, final int[] locations) {
-			GL30 gl = Gdx.gl30;
+			GL30 gl = Micro.gl30;
 			gl.glBindVertexArray(0);
 			isBound = false;
 		}
 
 		@Override
 		public void invalidate () {
-			bufferHandle = Gdx.gl20.glGenBuffer();
+			bufferHandle = Micro.gl20.glGenBuffer();
 			isDirty = true;
 			vaoDirty = true;
 		}
 
 		@Override
 		public void dispose () {
-			GL30 gl = Gdx.gl30;
+			GL30 gl = Micro.gl30;
 
 			gl.glBindBuffer(GL20.GL_ARRAY_BUFFER, 0);
 			gl.glDeleteBuffer(bufferHandle);

@@ -1,6 +1,6 @@
 package com.badlogic.gdx.graphics;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -67,11 +67,11 @@ public class Pixmap implements Disposable {
 	}
 	
 	public static Pixmap createFromFrameBuffer(int x, int y, int w, int h) {
-		Gdx.gl.glPixelStorei(GL20.GL_PACK_ALIGNMENT, 1);
+		Micro.gl.glPixelStorei(GL20.GL_PACK_ALIGNMENT, 1);
 		
 		final Pixmap pixmap = new Pixmap(w, h, Format.RGBA8888);
 		ByteBuffer pixels = pixmap.getPixels();
-		Gdx.gl.glReadPixels(x, y, w, h, GL20.GL_RGBA, GL20.GL_UNSIGNED_BYTE, pixels);
+		Micro.gl.glReadPixels(x, y, w, h, GL20.GL_RGBA, GL20.GL_UNSIGNED_BYTE, pixels);
 		
 		return pixmap;
 	}
@@ -201,7 +201,7 @@ public class Pixmap implements Disposable {
 	
 	public void dispose() {
 		if (disposed) {
-			Gdx.app.error("Pixmap", "Pixmap already disposed!");
+			Micro.app.error("Pixmap", "Pixmap already disposed!");
 			return;
 		}
 		pixmap.dispose();

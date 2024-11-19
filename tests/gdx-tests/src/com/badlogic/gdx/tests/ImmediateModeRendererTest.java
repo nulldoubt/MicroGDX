@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer;
@@ -36,8 +36,8 @@ public class ImmediateModeRendererTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glEnable(GL20.GL_TEXTURE_2D);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glEnable(GL20.GL_TEXTURE_2D);
 		texture.bind();
 		renderer.begin(projMatrix, GL20.GL_TRIANGLES);
 		renderer.texCoord(0, 0);
@@ -55,6 +55,6 @@ public class ImmediateModeRendererTest extends GdxTest {
 	@Override
 	public void create () {
 		renderer = new ImmediateModeRenderer20(false, true, 1);
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 	}
 }

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.utils;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Matrix4;
@@ -103,7 +103,7 @@ public class PerspectiveCamController extends InputAdapter {
 
 	@Override
 	public boolean scrolled (float amountX, float amountY) {
-		cam.fieldOfView -= -amountY * Gdx.graphics.getDeltaTime() * 100;
+		cam.fieldOfView -= -amountY * Micro.graphics.getDeltaTime() * 100;
 		cam.update();
 		return true;
 	}

@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
@@ -38,7 +38,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.I18NBundle;
-import com.badlogic.gdx.utils.TimeUtils;
 
 import java.nio.IntBuffer;
 import java.util.Locale;
@@ -54,7 +53,7 @@ public class AssetManagerTest extends GdxTest implements AssetErrorListener {
 	float elapsed = 0;
 
 	public void create () {
-		Gdx.app.setLogLevel(Application.LOG_ERROR);
+		Micro.app.setLogLevel(Application.LOG_ERROR);
 
 		Resolution[] resolutions = {new Resolution(320, 480, ".320480"), new Resolution(480, 800, ".480800"),
 			new Resolution(480, 856, ".480854")};
@@ -65,7 +64,7 @@ public class AssetManagerTest extends GdxTest implements AssetErrorListener {
 		load();
 		Texture.setAssetManager(manager);
 		batch = new SpriteBatch();
-		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), false);
+		font = new BitmapFont(Micro.files.internal("data/font.fnt"), false);
 		skin = new Skin();
 
 	}
@@ -84,19 +83,19 @@ public class AssetManagerTest extends GdxTest implements AssetErrorListener {
 
 	private void load () {
 // Gdx.app.setLogLevel(Logger.DEBUG);
-		start = TimeUtils.nanoTime();
+		start = System.nanoTime();
 		tex1 = new Texture("data/animation.png");
-		tex2 = new TextureAtlas(Gdx.files.internal("data/pack.atlas"));
-		font2 = new BitmapFont(Gdx.files.internal("data/verdana39.fnt"), false);
+		tex2 = new TextureAtlas(Micro.files.internal("data/pack.atlas"));
+		font2 = new BitmapFont(Micro.files.internal("data/verdana39.fnt"), false);
 // tex3 = new Texture("data/test.etc1");
 // map = TiledLoader.createMap(Gdx.files.internal("data/tiledmap/tilemap csv.tmx"));
 // atlas = new TileAtlas(map, Gdx.files.internal("data/tiledmap/"));
 // renderer = new TileMapRenderer(map, atlas, 8, 8);
-		shader = new ShaderProgram(Gdx.files.internal("data/g2d/batchCommon.vert").readString(),
-			Gdx.files.internal("data/g2d/monochrome.frag").readString());
-		System.out.println("plain took: " + (TimeUtils.nanoTime() - start) / 1000000000.0f);
-
-		start = TimeUtils.nanoTime();
+		shader = new ShaderProgram(Micro.files.internal("data/g2d/batchCommon.vert").readString(),
+			Micro.files.internal("data/g2d/monochrome.frag").readString());
+		System.out.println("plain took: " + (System.nanoTime() - start) / 1000000000.0f);
+		
+		start = System.nanoTime();
 		// this is a test for lazy loading on GWT
 		manager.load("data/animation_gwt_lazy.png", Texture.class);
 		manager.load("data/animation.png", Texture.class);
@@ -146,20 +145,20 @@ public class AssetManagerTest extends GdxTest implements AssetErrorListener {
 	private void invalidateTexture (Texture texture) {
 		IntBuffer buffer = BufferUtils.newIntBuffer(1);
 		buffer.put(0, texture.getTextureObjectHandle());
-		Gdx.gl.glDeleteTextures(1, buffer);
+		Micro.gl.glDeleteTextures(1, buffer);
 	}
 
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		boolean result = manager.update(16);
 		if (result) {
 			if (!diagnosed) {
 				diagnosed = true;
-				System.out.println("took: " + (TimeUtils.nanoTime() - start) / 1000000000.0f);
+				System.out.println("took: " + (System.nanoTime() - start) / 1000000000.0f);
 				elapsed = 0;
 			} else {
-				elapsed += Gdx.graphics.getDeltaTime();
+				elapsed += Micro.graphics.getDeltaTime();
 				if (elapsed > 0.2f) {
 					unload();
 					load();
@@ -215,7 +214,7 @@ public class AssetManagerTest extends GdxTest implements AssetErrorListener {
 
 	@Override
 	public void error (AssetDescriptor asset, Throwable throwable) {
-		Gdx.app.error("AssetManagerTest", "Couldn't load asset: " + asset, (Exception)throwable);
+		Micro.app.error("AssetManagerTest", "Couldn't load asset: " + asset, (Exception)throwable);
 	}
 
 	@Override

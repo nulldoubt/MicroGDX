@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
@@ -47,7 +47,7 @@ public class ViewportTest1 extends GdxTest {
 
 	public void create () {
 		stage = new Stage();
-		Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		Skin skin = new Skin(Micro.files.internal("data/uiskin.json"));
 
 		label = new Label("", skin);
 
@@ -67,14 +67,14 @@ public class ViewportTest1 extends GdxTest {
 		stage.setViewport(viewports.first());
 		label.setText(names.first());
 
-		Gdx.input.setInputProcessor(new InputMultiplexer(new InputAdapter() {
+		Micro.input.setInputProcessor(new InputMultiplexer(new InputAdapter() {
 			public boolean keyDown (int keycode) {
 				if (keycode == Input.Keys.SPACE) {
 					int index = (viewports.indexOf(stage.getViewport(), true) + 1) % viewports.size;
 					label.setText(names.get(index));
 					Viewport viewport = viewports.get(index);
 					stage.setViewport(viewport);
-					resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+					resize(Micro.graphics.getWidth(), Micro.graphics.getHeight());
 				}
 				return false;
 			}
@@ -84,7 +84,7 @@ public class ViewportTest1 extends GdxTest {
 	public void render () {
 		stage.act();
 
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.draw();
 	}
 
@@ -96,7 +96,7 @@ public class ViewportTest1 extends GdxTest {
 		stage.dispose();
 	}
 
-	static public Array<String> getViewportNames () {
+	public static Array<String> getViewportNames () {
 		Array<String> names = new Array();
 		names.add("StretchViewport");
 		names.add("FillViewport");
@@ -109,7 +109,7 @@ public class ViewportTest1 extends GdxTest {
 		return names;
 	}
 
-	static public Array<Viewport> getViewports (Camera camera) {
+	public static Array<Viewport> getViewports (Camera camera) {
 		int minWorldWidth = 640;
 		int minWorldHeight = 480;
 		int maxWorldWidth = 800;

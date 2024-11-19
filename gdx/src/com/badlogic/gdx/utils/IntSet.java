@@ -354,14 +354,14 @@ public class IntSet {
 		return iterator2;
 	}
 
-	static public IntSet with (int... array) {
+	public static IntSet with (int... array) {
 		IntSet set = new IntSet();
 		set.addAll(array);
 		return set;
 	}
 
-	static public class IntSetIterator {
-		static private final int INDEX_ILLEGAL = -2, INDEX_ZERO = -1;
+	public static class IntSetIterator {
+		private static final int INDEX_ILLEGAL = -2, INDEX_ZERO = -1;
 
 		public boolean hasNext;
 

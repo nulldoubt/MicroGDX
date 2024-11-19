@@ -271,7 +271,7 @@ public class Gdx2DPixmap implements Disposable {
 		return getFormatString(format);
 	}
 
-	static private String getFormatString (int format) {
+	private static String getFormatString (int format) {
 		switch (format) {
 		case GDX2D_FORMAT_ALPHA:
 			return "alpha";

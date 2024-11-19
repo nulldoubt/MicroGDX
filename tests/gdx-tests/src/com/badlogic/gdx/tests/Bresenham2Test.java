@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -109,8 +109,8 @@ public class Bresenham2Test extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		int x = Gdx.input.getX() >> 2, y = Gdx.input.getY() >> 2;
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		int x = Micro.input.getX() >> 2, y = Micro.input.getY() >> 2;
 		if ((lastX != x || lastY != y) && x >= 0 && x < 160 && y >= 0 && y < 120) {
 			lastX = x;
 			lastY = y;

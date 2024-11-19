@@ -116,7 +116,7 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
 		this.clipboard = new AndroidClipboard(this);
 
 		// Add a specialized audio lifecycle listener
-		addLifecycleListener(new LifecycleListener() {
+		register(new LifecycleListener() {
 
 			@Override
 			public void resume () {
@@ -135,12 +135,12 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
 			}
 		});
 
-		Gdx.app = this;
-		Gdx.input = this.getInput();
-		Gdx.audio = this.getAudio();
-		Gdx.files = this.getFiles();
-		Gdx.graphics = this.getGraphics();
-		Gdx.net = this.getNet();
+		Micro.app = this;
+		Micro.input = this.getInput();
+		Micro.audio = this.getAudio();
+		Micro.files = this.getFiles();
+		Micro.graphics = this.getGraphics();
+		Micro.net = this.getNet();
 
 		if (!isForView) {
 			setFullscreen(true);
@@ -185,12 +185,12 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
 
 	@Override
 	public void onDreamingStarted () {
-		Gdx.app = this;
-		Gdx.input = this.getInput();
-		Gdx.audio = this.getAudio();
-		Gdx.files = this.getFiles();
-		Gdx.graphics = this.getGraphics();
-		Gdx.net = this.getNet();
+		Micro.app = this;
+		Micro.input = this.getInput();
+		Micro.audio = this.getAudio();
+		Micro.files = this.getFiles();
+		Micro.graphics = this.getGraphics();
+		Micro.net = this.getNet();
 
 		input.onDreamingStarted();
 
@@ -271,10 +271,10 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
 	}
 
 	@Override
-	public void postRunnable (Runnable runnable) {
+	public void post(Runnable runnable) {
 		synchronized (runnables) {
 			runnables.add(runnable);
-			Gdx.graphics.requestRendering();
+			Micro.graphics.requestRendering();
 		}
 	}
 
@@ -347,14 +347,14 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
 	}
 
 	@Override
-	public void addLifecycleListener (LifecycleListener listener) {
+	public void register(LifecycleListener listener) {
 		synchronized (lifecycleListeners) {
 			lifecycleListeners.add(listener);
 		}
 	}
 
 	@Override
-	public void removeLifecycleListener (LifecycleListener listener) {
+	public void unregister(LifecycleListener listener) {
 		synchronized (lifecycleListeners) {
 			lifecycleListeners.removeValue(listener, true);
 		}

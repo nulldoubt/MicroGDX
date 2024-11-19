@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.graphics.profiling.GLErrorListener;
@@ -49,9 +49,9 @@ public class GLProfilerErrorTest extends GdxTest {
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-		Gdx.input.setInputProcessor(this);
+		Micro.input.setInputProcessor(this);
 
-		glProfiler = new GLProfiler(Gdx.graphics);
+		glProfiler = new GLProfiler(Micro.graphics);
 	}
 
 	@Override
@@ -63,19 +63,19 @@ public class GLProfilerErrorTest extends GdxTest {
 		if (makeGlError) {
 			makeGlError = false;
 			try {
-				Gdx.gl.glClear(42); // Random invalid value, will raise GL_INVALID_VALUE (0x501, 1281)
+				Micro.gl.glClear(42); // Random invalid value, will raise GL_INVALID_VALUE (0x501, 1281)
 			} catch (GdxRuntimeException glError) {
 				if ("GLProfiler: Got gl error GL_INVALID_VALUE".equals(glError.getMessage())) {
 					message = "Got expected exception.";
 				} else {
 					message = "Got GdxRuntimeException (correct) but with unexpected message: " + glError.getMessage();
 				}
-				Gdx.app.log("GLProfilerTest", "Caught exception: ", glError);
+				Micro.app.log("GLProfilerTest", "Caught exception: ", glError);
 			}
 		}
 
 		int x = 10;
-		int y = Gdx.graphics.getHeight() - 10;
+		int y = Micro.graphics.getHeight() - 10;
 		y -= font.draw(batch, "e - Enable debugging\n" + "d - Disable debugging\n" + "l - Test log error listener\n"
 			+ "t - Test throw error listener\n" + "c - Test custom listener\n\n" + "Expected error: GL_INVALID_VALUE (0x501, 1281)",
 			x, y).height;

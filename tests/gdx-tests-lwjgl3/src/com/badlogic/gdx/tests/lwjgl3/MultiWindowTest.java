@@ -3,7 +3,7 @@ package com.badlogic.gdx.tests.lwjgl3;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowAdapter;
@@ -36,7 +36,7 @@ public class MultiWindowTest {
 
 		@Override
 		public void create () {
-			System.out.println(Gdx.graphics.getGLVersion().getRendererString());
+			System.out.println(Micro.graphics.getGLVersion().getRendererString());
 			sharedSpriteBatch = new SpriteBatch();
 			sharedTexture = new Texture("data/badlogic.jpg");
 		}
@@ -44,15 +44,15 @@ public class MultiWindowTest {
 		@Override
 		public void render () {
 			ScreenUtils.clear(1, 0, 0, 1);
-			sharedSpriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			sharedSpriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 			sharedSpriteBatch.begin();
-			sharedSpriteBatch.draw(sharedTexture, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY() - 1);
+			sharedSpriteBatch.draw(sharedTexture, Micro.input.getX(), Micro.graphics.getHeight() - Micro.input.getY() - 1);
 			sharedSpriteBatch.end();
 
-			if (Gdx.input.justTouched()) {
-				Lwjgl3Application app = (Lwjgl3Application)Gdx.app;
+			if (Micro.input.justTouched()) {
+				Lwjgl3Application app = (Lwjgl3Application) Micro.app;
 				Lwjgl3WindowConfiguration config = new Lwjgl3WindowConfiguration();
-				DisplayMode mode = Gdx.graphics.getDisplayMode();
+				DisplayMode mode = Micro.graphics.getDisplayMode();
 				config.setWindowPosition(MathUtils.random(0, mode.width - 640), MathUtils.random(0, mode.height - 480));
 				config.setTitle("Child window");
 				config.useVsync(false);
@@ -67,7 +67,7 @@ public class MultiWindowTest {
 				app.newWindow(listener, config);
 			}
 
-			if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && latestWindow != null) {
+			if (Micro.input.isKeyJustPressed(Input.Keys.SPACE) && latestWindow != null) {
 				latestWindow.setTitle("Retitled window");
 				int size = 48;
 				Pixmap icon = new Pixmap(size, size, Pixmap.Format.RGBA8888);

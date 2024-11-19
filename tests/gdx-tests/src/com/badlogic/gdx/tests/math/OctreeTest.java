@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests.math;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -73,7 +73,7 @@ public class OctreeTest extends GdxTest implements ApplicationListener {
 		lights.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.f));
 		lights.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
-		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam = new PerspectiveCamera(67, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		cam.position.set(0f, 0f, 15f);
 		cam.lookAt(0, 0, 1);
 		cam.near = 0.1f;
@@ -81,7 +81,7 @@ public class OctreeTest extends GdxTest implements ApplicationListener {
 		cam.update(true);
 
 		camController = new FirstPersonCameraController(cam);
-		Gdx.input.setInputProcessor(this);
+		Micro.input.setInputProcessor(this);
 
 		Vector3 min = new Vector3(-AREA_SIZE / 2, -AREA_SIZE / 2, -AREA_SIZE / 2);
 		Vector3 max = new Vector3(AREA_SIZE / 2, AREA_SIZE / 2, AREA_SIZE / 2);
@@ -119,14 +119,14 @@ public class OctreeTest extends GdxTest implements ApplicationListener {
 	public void render () {
 		camController.update();
 
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Micro.gl.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		modelBatch.begin(cam);
 
 		octree.query(cam.frustum, tmpResult);
 		for (GameObject gameObject : tmpResult) {
-			Gdx.app.log("", "Rendering: " + tmpResult.size);
+			Micro.app.log("", "Rendering: " + tmpResult.size);
 			modelBatch.render(gameObject.instance, lights);
 			modelBatch.render(gameObject.boxEdges);
 		}

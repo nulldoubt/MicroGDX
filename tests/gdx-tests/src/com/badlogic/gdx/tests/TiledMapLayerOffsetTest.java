@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -57,8 +57,8 @@ public class TiledMapLayerOffsetTest extends GdxTest {
 
 	@Override
 	public void create () {
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+		float w = Micro.graphics.getWidth();
+		float h = Micro.graphics.getHeight();
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, (w / h) * 10, 10);
@@ -66,7 +66,7 @@ public class TiledMapLayerOffsetTest extends GdxTest {
 		camera.update();
 
 		cameraController = new OrthoCamController(camera);
-		Gdx.input.setInputProcessor(cameraController);
+		Micro.input.setInputProcessor(cameraController);
 
 		font = new BitmapFont();
 		batch = new SpriteBatch();
@@ -87,14 +87,14 @@ public class TiledMapLayerOffsetTest extends GdxTest {
 
 	@Override
 	public void render () {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+		if (Micro.input.isKeyJustPressed(Input.Keys.NUM_1)) {
 			if (mapType != 0) {
 				if (renderer instanceof Disposable) ((Disposable)renderer).dispose();
 				mapType = 0;
 				map = assetManager.get(MAP_ORTHO);
 				renderer = new OrthogonalTiledMapRenderer(map, 1f / 32f);
 			}
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+		} else if (Micro.input.isKeyJustPressed(Input.Keys.NUM_2)) {
 			if (mapType != 1) {
 				if (renderer instanceof Disposable) ((Disposable)renderer).dispose();
 				mapType = 1;
@@ -102,28 +102,28 @@ public class TiledMapLayerOffsetTest extends GdxTest {
 				renderer = new OrthoCachedTiledMapRenderer(map, 1f / 32f);
 				((OrthoCachedTiledMapRenderer)renderer).setBlending(true);
 			}
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+		} else if (Micro.input.isKeyJustPressed(Input.Keys.NUM_3)) {
 			if (mapType != 2) {
 				if (renderer instanceof Disposable) ((Disposable)renderer).dispose();
 				mapType = 2;
 				map = assetManager.get(MAP_ISO);
 				renderer = new IsometricTiledMapRenderer(map, 1f / 48f);
 			}
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
+		} else if (Micro.input.isKeyJustPressed(Input.Keys.NUM_4)) {
 			if (mapType != 3) {
 				if (renderer instanceof Disposable) ((Disposable)renderer).dispose();
 				mapType = 3;
 				map = assetManager.get(MAP_ISO_STAG);
 				renderer = new IsometricStaggeredTiledMapRenderer(map, 1f / 48f);
 			}
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)) {
+		} else if (Micro.input.isKeyJustPressed(Input.Keys.NUM_5)) {
 			if (mapType != 4) {
 				if (renderer instanceof Disposable) ((Disposable)renderer).dispose();
 				mapType = 4;
 				map = assetManager.get(MAP_HEX_X);
 				renderer = new HexagonalTiledMapRenderer(map, 1f / 48f);
 			}
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6)) {
+		} else if (Micro.input.isKeyJustPressed(Input.Keys.NUM_6)) {
 			if (mapType != 5) {
 				if (renderer instanceof Disposable) ((Disposable)renderer).dispose();
 				mapType = 5;
@@ -158,9 +158,9 @@ public class TiledMapLayerOffsetTest extends GdxTest {
 		shapeRenderer.end();
 
 		batch.begin();
-		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
-		font.draw(batch, "Switch type with 1-6", Gdx.graphics.getHeight() - 100, 50);
-		font.draw(batch, renderer.getClass().getSimpleName(), Gdx.graphics.getHeight() - 100, 20);
+		font.draw(batch, "FPS: " + Micro.graphics.getFPS(), 10, 20);
+		font.draw(batch, "Switch type with 1-6", Micro.graphics.getHeight() - 100, 50);
+		font.draw(batch, renderer.getClass().getSimpleName(), Micro.graphics.getHeight() - 100, 20);
 		batch.end();
 	}
 }

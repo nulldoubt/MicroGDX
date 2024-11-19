@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -62,9 +62,9 @@ public class StageTest extends GdxTest implements InputProcessor {
 
 	@Override
 	public void create () {
-		texture = new Texture(Gdx.files.internal("data/badlogicsmall.jpg"));
+		texture = new Texture(Micro.files.internal("data/badlogicsmall.jpg"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		font = new BitmapFont(Gdx.files.internal("data/lsans-15.fnt"), false);
+		font = new BitmapFont(Micro.files.internal("data/lsans-15.fnt"), false);
 
 		stage = new Stage(new ScreenViewport());
 
@@ -79,7 +79,7 @@ public class StageTest extends GdxTest implements InputProcessor {
 			stage.addActor(group);
 		}
 
-		uiTexture = new Texture(Gdx.files.internal("data/ui.png"));
+		uiTexture = new Texture(Micro.files.internal("data/ui.png"));
 		uiTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		ui = new Stage(new ScreenViewport());
 
@@ -151,7 +151,7 @@ public class StageTest extends GdxTest implements InputProcessor {
 		ui.addActor(fps);
 
 		renderer = new ShapeRenderer();
-		Gdx.input.setInputProcessor(this);
+		Micro.input.setInputProcessor(this);
 	}
 
 	private void fillGroup (Group group, Texture texture) {
@@ -172,11 +172,11 @@ public class StageTest extends GdxTest implements InputProcessor {
 
 	@Override
 	public void render () {
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+		Micro.gl.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 
-		if (Gdx.input.isTouched()) {
-			stage.screenToStageCoordinates(stageCoords.set(Gdx.input.getX(), Gdx.input.getY()));
+		if (Micro.input.isTouched()) {
+			stage.screenToStageCoordinates(stageCoords.set(Micro.input.getX(), Micro.input.getY()));
 			Actor actor = stage.hit(stageCoords.x, stageCoords.y, true);
 			if (actor != null)
 				actor.setColor((float)Math.random(), (float)Math.random(), (float)Math.random(), 0.5f + 0.5f * (float)Math.random());
@@ -186,10 +186,10 @@ public class StageTest extends GdxTest implements InputProcessor {
 		int len = actors.size;
 		if (rotateSprites) {
 			for (int i = 0; i < len; i++)
-				actors.get(i).rotateBy(Gdx.graphics.getDeltaTime() * 10);
+				actors.get(i).rotateBy(Micro.graphics.getDeltaTime() * 10);
 		}
 
-		scale += vScale * Gdx.graphics.getDeltaTime();
+		scale += vScale * Micro.graphics.getDeltaTime();
 		if (scale > 1) {
 			scale = 1;
 			vScale = -vScale;
@@ -203,7 +203,7 @@ public class StageTest extends GdxTest implements InputProcessor {
 		for (int i = 0; i < len; i++) {
 			Actor sprite = sprites.get(i);
 			if (rotateSprites)
-				sprite.rotateBy(-40 * Gdx.graphics.getDeltaTime());
+				sprite.rotateBy(-40 * Micro.graphics.getDeltaTime());
 			else
 				sprite.setRotation(0);
 
@@ -225,7 +225,7 @@ public class StageTest extends GdxTest implements InputProcessor {
 		}
 		renderer.end();
 
-		fps.setText("fps: " + Gdx.graphics.getFramesPerSecond() + ", actors " + sprites.size + ", groups " + sprites.size);
+		fps.setText("fps: " + Micro.graphics.getFPS() + ", actors " + sprites.size + ", groups " + sprites.size);
 		ui.draw();
 	}
 

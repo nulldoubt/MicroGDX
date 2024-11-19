@@ -1,7 +1,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -19,12 +19,12 @@ public class ContainerTest extends GdxTest {
 
 	@Override
 	public void create () {
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
+		Micro.input.setInputProcessor(stage);
 
 		TextureRegionDrawable logo = new TextureRegionDrawable(
-			new TextureRegion(new Texture(Gdx.files.internal("data/badlogic.jpg"))));
+			new TextureRegion(new Texture(Micro.files.internal("data/badlogic.jpg"))));
 
 		Table root = new Table();
 		root.setFillParent(true);

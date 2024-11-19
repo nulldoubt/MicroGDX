@@ -24,7 +24,7 @@ import com.badlogic.gdx.files.FileHandle;
 public class AssetDescriptor<T> {
 	public final String fileName;
 	public final Class<T> type;
-	public final AssetLoaderParameters params;
+	public final AssetLoaderParameters<T> params;
 	/** The resolved file. May be null if the fileName has not been resolved yet. */
 	public FileHandle file;
 

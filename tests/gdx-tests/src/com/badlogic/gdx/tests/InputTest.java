@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -27,7 +27,7 @@ public class InputTest extends GdxTest implements InputProcessor {
 	@Override
 	public void create () {
 // Gdx.input = new RemoteInput();
-		Gdx.input.setInputProcessor(this);
+		Micro.input.setInputProcessor(this);
 // Gdx.input.setCursorCatched(true);
 //
 // Gdx.input.getTextInput(new Input.TextInputListener() {
@@ -45,16 +45,16 @@ public class InputTest extends GdxTest implements InputProcessor {
 
 	@Override
 	public void render () {
-		if (Gdx.input.justTouched()) {
-			Gdx.app.log("Input Test", "just touched, button: " + (Gdx.input.isButtonPressed(Buttons.LEFT) ? "left " : "")
-				+ (Gdx.input.isButtonPressed(Buttons.MIDDLE) ? "middle " : "")
-				+ (Gdx.input.isButtonPressed(Buttons.RIGHT) ? "right" : "") + (Gdx.input.isButtonPressed(Buttons.BACK) ? "back" : "")
-				+ (Gdx.input.isButtonPressed(Buttons.FORWARD) ? "forward" : ""));
+		if (Micro.input.justTouched()) {
+			Micro.app.log("Input Test", "just touched, button: " + (Micro.input.isButtonPressed(Buttons.LEFT) ? "left " : "")
+				+ (Micro.input.isButtonPressed(Buttons.MIDDLE) ? "middle " : "")
+				+ (Micro.input.isButtonPressed(Buttons.RIGHT) ? "right" : "") + (Micro.input.isButtonPressed(Buttons.BACK) ? "back" : "")
+				+ (Micro.input.isButtonPressed(Buttons.FORWARD) ? "forward" : ""));
 		}
 
 		for (int i = 0; i < 10; i++) {
-			if (Gdx.input.getDeltaX(i) != 0 || Gdx.input.getDeltaY(i) != 0) {
-				Gdx.app.log("Input Test", "delta[" + i + "]: " + Gdx.input.getDeltaX(i) + ", " + Gdx.input.getDeltaY(i));
+			if (Micro.input.getDeltaX(i) != 0 || Micro.input.getDeltaY(i) != 0) {
+				Micro.app.log("Input Test", "delta[" + i + "]: " + Micro.input.getDeltaX(i) + ", " + Micro.input.getDeltaY(i));
 			}
 		}
 // Gdx.input.setCursorPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
@@ -65,50 +65,50 @@ public class InputTest extends GdxTest implements InputProcessor {
 
 	@Override
 	public boolean keyDown (int keycode) {
-		Gdx.app.log("Input Test", "key down: " + keycode);
-		if (keycode == Keys.G) Gdx.input.setCursorCatched(!Gdx.input.isCursorCatched());
+		Micro.app.log("Input Test", "key down: " + keycode);
+		if (keycode == Keys.G) Micro.input.setCursorCatched(!Micro.input.isCursorCatched());
 		return false;
 	}
 
 	@Override
 	public boolean keyTyped (char character) {
-		Gdx.app.log("Input Test", "key typed: '" + character + "'");
+		Micro.app.log("Input Test", "key typed: '" + character + "'");
 		return false;
 	}
 
 	@Override
 	public boolean keyUp (int keycode) {
-		Gdx.app.log("Input Test", "key up: " + keycode);
+		Micro.app.log("Input Test", "key up: " + keycode);
 		return false;
 	}
 
 	@Override
 	public boolean touchDown (int x, int y, int pointer, int button) {
-		Gdx.app.log("Input Test", "touch down: " + x + ", " + y + ", button: " + getButtonString(button));
+		Micro.app.log("Input Test", "touch down: " + x + ", " + y + ", button: " + getButtonString(button));
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged (int x, int y, int pointer) {
-		Gdx.app.log("Input Test", "touch dragged: " + x + ", " + y + ", pointer: " + pointer);
+		Micro.app.log("Input Test", "touch dragged: " + x + ", " + y + ", pointer: " + pointer);
 		return false;
 	}
 
 	@Override
 	public boolean touchUp (int x, int y, int pointer, int button) {
-		Gdx.app.log("Input Test", "touch up: " + x + ", " + y + ", button: " + getButtonString(button));
+		Micro.app.log("Input Test", "touch up: " + x + ", " + y + ", button: " + getButtonString(button));
 		return false;
 	}
 
 	@Override
 	public boolean mouseMoved (int x, int y) {
-		Gdx.app.log("Input Test", "touch moved: " + x + ", " + y);
+		Micro.app.log("Input Test", "touch moved: " + x + ", " + y);
 		return false;
 	}
 
 	@Override
 	public boolean scrolled (float amountX, float amountY) {
-		Gdx.app.log("Input Test", "scrolled: " + amountY);
+		Micro.app.log("Input Test", "scrolled: " + amountY);
 		return false;
 	}
 

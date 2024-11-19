@@ -179,7 +179,7 @@ public class OrderedSet<T> extends ObjectSet<T> {
 		return items.toString(separator);
 	}
 
-	static public class OrderedSetIterator<K> extends ObjectSetIterator<K> {
+	public static class OrderedSetIterator<K> extends ObjectSetIterator<K> {
 		private Array<K> items;
 
 		public OrderedSetIterator (OrderedSet<K> set) {
@@ -219,7 +219,7 @@ public class OrderedSet<T> extends ObjectSet<T> {
 		}
 	}
 
-	static public <T> OrderedSet<T> with (T... array) {
+	public static <T> OrderedSet<T> with (T... array) {
 		OrderedSet<T> set = new OrderedSet<T>();
 		set.addAll(array);
 		return set;

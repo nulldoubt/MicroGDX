@@ -378,12 +378,12 @@ public class OpenALLwjgl3Audio implements Lwjgl3Audio {
 		alcCloseDevice(device);
 	}
 	
-	public AudioDevice newAudioDevice(int sampleRate, final boolean isMono) {
+	public AudioDevice newAudioDevice(int sampleRate, final boolean mono) {
 		if (noDevice)
 			return new AudioDevice() {
 				@Override
 				public boolean isMono() {
-					return isMono;
+					return mono;
 				}
 				
 				@Override
@@ -415,10 +415,10 @@ public class OpenALLwjgl3Audio implements Lwjgl3Audio {
 				public void resume() {
 				}
 			};
-		return new OpenALAudioDevice(this, sampleRate, isMono, deviceBufferSize, deviceBufferCount);
+		return new OpenALAudioDevice(this, sampleRate, mono, deviceBufferSize, deviceBufferCount);
 	}
 	
-	public AudioRecorder newAudioRecorder(int samplingRate, boolean isMono) {
+	public AudioRecorder newAudioRecorder(int samplingRate, boolean mono) {
 		if (noDevice)
 			return new AudioRecorder() {
 				@Override
@@ -429,7 +429,7 @@ public class OpenALLwjgl3Audio implements Lwjgl3Audio {
 				public void dispose() {
 				}
 			};
-		return new JavaSoundAudioRecorder(samplingRate, isMono);
+		return new JavaSoundAudioRecorder(samplingRate, mono);
 	}
 	
 	public OpenALSound newSound(FileHandle file) {
@@ -451,8 +451,8 @@ public class OpenALLwjgl3Audio implements Lwjgl3Audio {
 	}
 	
 	@Override
-	public boolean switchOutputDevice(String deviceIdentifier) {
-		return switchOutputDevice(deviceIdentifier, true);
+	public boolean switchOutputDevice(String device) {
+		return switchOutputDevice(device, true);
 	}
 	
 	@Override

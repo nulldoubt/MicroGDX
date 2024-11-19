@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Colors;
 import com.badlogic.gdx.graphics.GL20;
@@ -51,13 +51,13 @@ public class BitmapFontTest extends GdxTest {
 	public void create () {
 		spriteBatch = new SpriteBatch();
 		// font = new BitmapFont(Gdx.files.internal("data/verdana39.fnt"), false);
-		font = new BitmapFont(Gdx.files.internal("data/lsans-32-pad.fnt"), false);
+		font = new BitmapFont(Micro.files.internal("data/lsans-32-pad.fnt"), false);
 		smallFont = new BitmapFont(); // uses LSans 15, the default
 		// font = new FreeTypeFontGenerator(Gdx.files.internal("data/lsans.ttf")).generateFont(new FreeTypeFontParameter());
 		font.getData().markupEnabled = true;
 		font.getData().breakChars = new char[] {'-'};
 
-		multiPageFont = new BitmapFont(Gdx.files.internal("data/multipagefont.fnt"));
+		multiPageFont = new BitmapFont(Micro.files.internal("data/multipagefont.fnt"));
 
 		// Add user defined color
 		Colors.put("PERU", Color.valueOf("CD853F"));
@@ -67,7 +67,7 @@ public class BitmapFontTest extends GdxTest {
 
 		stage = new Stage(new ScreenViewport());
 
-		Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		Skin skin = new Skin(Micro.files.internal("data/uiskin.json"));
 
 		BitmapFont labelFont = skin.get("default-font", BitmapFont.class);
 		labelFont.getData().markupEnabled = true;
@@ -90,7 +90,7 @@ public class BitmapFontTest extends GdxTest {
 	public void render () {
 		// red.a = (red.a + Gdx.graphics.getDeltaTime() * 0.1f) % 1;
 
-		int viewHeight = Gdx.graphics.getHeight();
+		int viewHeight = Micro.graphics.getHeight();
 
 		ScreenUtils.clear(0, 0, 0, 1);
 
@@ -104,7 +104,7 @@ public class BitmapFontTest extends GdxTest {
 			font.getData().setScale(2f);
 			renderer.begin(ShapeRenderer.ShapeType.Line);
 			renderer.setColor(0, 1, 0, 1);
-			float w = Gdx.input.getX() - 10;
+			float w = Micro.input.getX() - 10;
 			// w = 855;
 			renderer.rect(10, 10, w, 500);
 			renderer.end();
@@ -125,8 +125,8 @@ public class BitmapFontTest extends GdxTest {
 			font.draw(spriteBatch, layout, 10, 10 + meowy);
 			spriteBatch.end();
 
-			Gdx.gl.glEnable(GL20.GL_BLEND);
-			Gdx.gl.glBlendFunc(GL20.GL_ONE, GL20.GL_ONE);
+			Micro.gl.glEnable(GL20.GL_BLEND);
+			Micro.gl.glBlendFunc(GL20.GL_ONE, GL20.GL_ONE);
 			renderer.begin(ShapeRenderer.ShapeType.Line);
 			float c = 0.8f;
 
@@ -160,7 +160,7 @@ public class BitmapFontTest extends GdxTest {
 			label.setWrap(true);
 // label.setEllipsis(true);
 			label.setAlignment(Align.center, Align.right);
-			label.setWidth(Gdx.input.getX() - label.getX());
+			label.setWidth(Micro.input.getX() - label.getX());
 			label.setHeight(label.getPrefHeight());
 		} else {
 			// Test various font features.
@@ -242,7 +242,7 @@ public class BitmapFontTest extends GdxTest {
 			renderer.end();
 		}
 
-		stage.act(Gdx.graphics.getDeltaTime());
+		stage.act(Micro.graphics.getDeltaTime());
 		stage.draw();
 	}
 

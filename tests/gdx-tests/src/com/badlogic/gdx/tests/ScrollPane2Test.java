@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -34,9 +34,9 @@ public class ScrollPane2Test extends GdxTest {
 
 	public void create () {
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
+		Micro.input.setInputProcessor(stage);
 
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 
 		ScrollPane pane2 = new ScrollPane(new Image(new Texture("data/group-debug.png")), skin);
 		pane2.setScrollingDisabled(false, true);
@@ -67,11 +67,11 @@ public class ScrollPane2Test extends GdxTest {
 			// This sizes the pane to the size of it's contents.
 			pane.pack();
 			// Then the height is hardcoded, leaving the pane the width of it's contents.
-			pane.setHeight(Gdx.graphics.getHeight());
+			pane.setHeight(Micro.graphics.getHeight());
 		} else {
 			// This shows a hardcoded size.
 			pane.setWidth(300);
-			pane.setHeight(Gdx.graphics.getHeight());
+			pane.setHeight(Micro.graphics.getHeight());
 		}
 
 		stage.addActor(pane);
@@ -79,7 +79,7 @@ public class ScrollPane2Test extends GdxTest {
 
 	public void render () {
 		ScreenUtils.clear(0, 0, 0, 1);
-		stage.act(Gdx.graphics.getDeltaTime());
+		stage.act(Micro.graphics.getDeltaTime());
 		stage.draw();
 	}
 

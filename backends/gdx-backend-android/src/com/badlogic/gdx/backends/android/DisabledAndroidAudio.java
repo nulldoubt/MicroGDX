@@ -23,17 +23,17 @@ public class DisabledAndroidAudio implements AndroidAudio {
 	}
 
 	@Override
-	public AudioDevice newAudioDevice (int samplingRate, boolean isMono) {
+	public AudioDevice newAudioDevice (int samplingRate, boolean mono) {
 		throw new GdxRuntimeException("Android audio is not enabled by the application config");
 	}
 
 	@Override
-	public AudioRecorder newAudioRecorder (int samplingRate, boolean isMono) {
+	public AudioRecorder newAudioRecorder (int samplingRate, boolean mono) {
 		throw new GdxRuntimeException("Android audio is not enabled by the application config");
 	}
 
 	@Override
-	public Sound newSound (FileHandle fileHandle) {
+	public Sound newSound (FileHandle file) {
 		throw new GdxRuntimeException("Android audio is not enabled by the application config");
 	}
 
@@ -43,7 +43,7 @@ public class DisabledAndroidAudio implements AndroidAudio {
 	}
 
 	@Override
-	public boolean switchOutputDevice (String deviceIdentifier) {
+	public boolean switchOutputDevice (String device) {
 		return false;
 	}
 

@@ -18,7 +18,7 @@ package com.badlogic.gdx.tests.gles31;
 
 import java.nio.IntBuffer;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL31;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -39,19 +39,19 @@ public class GL31ProgramIntrospectionTest extends GdxTest {
 
 		IntBuffer int1 = BufferUtils.newIntBuffer(1);
 
-		Gdx.gl31.glGetProgramInterfaceiv(program, GL31.GL_UNIFORM, GL31.GL_ACTIVE_RESOURCES, int1);
+		Micro.gl31.glGetProgramInterfaceiv(program, GL31.GL_UNIFORM, GL31.GL_ACTIVE_RESOURCES, int1);
 		int nbRes = int1.get();
 
 		for (int i = 0; i < nbRes; i++) {
-			String name = Gdx.gl31.glGetProgramResourceName(program, GL31.GL_UNIFORM, i);
-			Gdx.app.log("Gdx", name);
+			String name = Micro.gl31.glGetProgramResourceName(program, GL31.GL_UNIFORM, i);
+			Micro.app.log("Gdx", name);
 		}
 
-		int u_texture_index = Gdx.gl31.glGetProgramResourceIndex(program, GL31.GL_UNIFORM, "u_texture");
-		Gdx.app.log("Gdx", "u_texture: index:" + u_texture_index);
+		int u_texture_index = Micro.gl31.glGetProgramResourceIndex(program, GL31.GL_UNIFORM, "u_texture");
+		Micro.app.log("Gdx", "u_texture: index:" + u_texture_index);
 
-		int resLoc = Gdx.gl31.glGetProgramResourceLocation(program, GL31.GL_UNIFORM, "u_texture");
-		Gdx.app.log("Gdx", "u_texture: loc:" + resLoc);
+		int resLoc = Micro.gl31.glGetProgramResourceLocation(program, GL31.GL_UNIFORM, "u_texture");
+		Micro.app.log("Gdx", "u_texture: loc:" + resLoc);
 
 		IntBuffer props = BufferUtils.newIntBuffer(16);
 		props.put(GL31.GL_TYPE);
@@ -64,7 +64,7 @@ public class GL31ProgramIntrospectionTest extends GdxTest {
 
 		IntBuffer results = BufferUtils.newIntBuffer(16);
 
-		Gdx.gl31.glGetProgramResourceiv(program, GL31.GL_UNIFORM, u_texture_index, props, int1, results);
+		Micro.gl31.glGetProgramResourceiv(program, GL31.GL_UNIFORM, u_texture_index, props, int1, results);
 		int count = int1.get();
 		if (count == 4) {
 			int type = results.get();
@@ -72,9 +72,9 @@ public class GL31ProgramIntrospectionTest extends GdxTest {
 			boolean vs = results.get() == GL20.GL_TRUE;
 			boolean fs = results.get() == GL20.GL_TRUE;
 			boolean sampler2D = type == GL20.GL_SAMPLER_2D;
-			Gdx.app.log("Gdx", "u_texture: sampler2D:" + sampler2D + " " + loc + " vertex:" + vs + " fragment:" + fs);
+			Micro.app.log("Gdx", "u_texture: sampler2D:" + sampler2D + " " + loc + " vertex:" + vs + " fragment:" + fs);
 		} else {
-			Gdx.app.error("Gdx", "result count mismatch");
+			Micro.app.error("Gdx", "result count mismatch");
 		}
 
 		shader.dispose();

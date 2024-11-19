@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
@@ -53,14 +53,14 @@ public class SpriteBatchPerformanceTest extends GdxTest {
 
 	@Override
 	public void create () {
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 		spriteBatch = new SpriteBatch(8191);
 		bitmapFont = new BitmapFont();
 
-		if (Gdx.graphics.isGL30Available()) {
+		if (Micro.graphics.isGL30Available()) {
 			perfTests.add(new PerfTest(Mesh.VertexDataType.VertexBufferObjectWithVAO));
 
-			if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
+			if (Micro.app.getType() != Application.ApplicationType.Desktop) {
 				perfTests.add(new PerfTest(Mesh.VertexDataType.VertexBufferObject));
 			}
 		} else {
@@ -68,7 +68,7 @@ public class SpriteBatchPerformanceTest extends GdxTest {
 			perfTests.add(new PerfTest(Mesh.VertexDataType.VertexBufferObject));
 		}
 
-		GLProfiler glProfiler = new GLProfiler(Gdx.graphics);
+		GLProfiler glProfiler = new GLProfiler(Micro.graphics);
 		glProfiler.setListener(new GLErrorListener() {
 			@Override
 			public void onError (int error) {
@@ -81,9 +81,9 @@ public class SpriteBatchPerformanceTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl20.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
-		Gdx.gl20.glClearColor(0.2f, 0.2f, 0.2f, 1);
-		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl20.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
+		Micro.gl20.glClearColor(0.2f, 0.2f, 0.2f, 1);
+		Micro.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		int draws = 100;
 		int spritesToFill = 8190;
@@ -92,7 +92,7 @@ public class SpriteBatchPerformanceTest extends GdxTest {
 			SpriteBatch.overrideVertexType = perfTest.vertexDataType;
 
 			SpriteBatch testingBatch = new SpriteBatch(8191);
-			Gdx.gl.glFlush();
+			Micro.gl.glFlush();
 			testingBatch.begin();
 			for (int i = 0; i < draws; i++) {
 				for (int j = 0; j < spritesToFill; j++) {
@@ -101,7 +101,7 @@ public class SpriteBatchPerformanceTest extends GdxTest {
 
 				long beforeFlush = System.nanoTime();
 				testingBatch.flush();
-				Gdx.gl.glFlush();
+				Micro.gl.glFlush();
 				long afterFlush = System.nanoTime();
 
 				perfTest.counter.addValue(afterFlush - beforeFlush);
@@ -109,7 +109,7 @@ public class SpriteBatchPerformanceTest extends GdxTest {
 
 			testingBatch.end();
 			testingBatch.dispose();
-			Gdx.gl.glFlush();
+			Micro.gl.glFlush();
 		}
 
 		spriteBatch.begin();

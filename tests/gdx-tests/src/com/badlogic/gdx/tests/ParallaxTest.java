@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -60,7 +60,7 @@ public class ParallaxTest extends GdxTest {
 
 	@Override
 	public void create () {
-		Texture texture = new Texture(Gdx.files.internal("data/layers.png"));
+		Texture texture = new Texture(Micro.files.internal("data/layers.png"));
 		layers = new TextureRegion[3];
 		layers[0] = new TextureRegion(texture, 0, 0, 542, 363);
 		layers[1] = new TextureRegion(texture, 0, 363, 1024, 149);
@@ -68,9 +68,9 @@ public class ParallaxTest extends GdxTest {
 
 		camera = new ParallaxCamera(480, 320);
 		controller = new OrthoCamController(camera);
-		Gdx.input.setInputProcessor(controller);
+		Micro.input.setInputProcessor(controller);
 		batch = new SpriteBatch();
-		font = new BitmapFont(Gdx.files.internal("data/lsans-15.fnt"), false);
+		font = new BitmapFont(Micro.files.internal("data/lsans-15.fnt"), false);
 	}
 
 	@Override
@@ -131,9 +131,9 @@ public class ParallaxTest extends GdxTest {
 		batch.end();
 
 		// draw fps
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		batch.begin();
-		font.draw(batch, "fps: " + Gdx.graphics.getFramesPerSecond(), 0, 30);
+		font.draw(batch, "fps: " + Micro.graphics.getFPS(), 0, 30);
 		batch.end();
 	}
 }

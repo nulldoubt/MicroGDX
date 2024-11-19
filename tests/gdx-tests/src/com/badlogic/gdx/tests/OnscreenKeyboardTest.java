@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.OnscreenKeyboardType;
 import com.badlogic.gdx.graphics.GL20;
@@ -35,18 +35,18 @@ public class OnscreenKeyboardTest extends GdxTest implements InputProcessor {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		text = "";
-		Gdx.input.setInputProcessor(this);
+		Micro.input.setInputProcessor(this);
 	}
 
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		font.draw(batch, "input [" + type + "]: " + text, 0, Gdx.graphics.getHeight());
+		font.draw(batch, "input [" + type + "]: " + text, 0, Micro.graphics.getHeight());
 		batch.end();
 
-		if (Gdx.input.justTouched()) {
+		if (Micro.input.justTouched()) {
 			type = OnscreenKeyboardType.values()[(type.ordinal() + 1) % OnscreenKeyboardType.values().length];
-			Gdx.input.setOnscreenKeyboardVisible(true, type);
+			Micro.input.setOnscreenKeyboardVisible(true, type);
 		}
 	}
 
@@ -66,7 +66,7 @@ public class OnscreenKeyboardTest extends GdxTest implements InputProcessor {
 		if (character == '\b' && text.length() >= 1) {
 			text = text.substring(0, text.length() - 1);
 		} else if (character == '\n') {
-			Gdx.input.setOnscreenKeyboardVisible(false);
+			Micro.input.setOnscreenKeyboardVisible(false);
 		} else {
 			text += character;
 		}

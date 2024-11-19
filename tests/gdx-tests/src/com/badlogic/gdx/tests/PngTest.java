@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests;
 
 import java.io.IOException;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -33,21 +33,21 @@ public class PngTest extends GdxTest {
 
 	public void create () {
 		batch = new SpriteBatch();
-		badlogic = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		badlogic = new Texture(Micro.files.internal("data/badlogic.jpg"));
 	}
 
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		if (screenshot == null) {
-			int width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHeight();
+			int width = Micro.graphics.getWidth(), height = Micro.graphics.getHeight();
 			for (int i = 0; i < 100; i++)
 				batch.draw(badlogic, MathUtils.random(width), MathUtils.random(height));
 			batch.flush();
 
 			FileHandle file = FileHandle.tempFile("screenshot-");
 			System.out.println(file.file().getAbsolutePath());
-			Pixmap pixmap = Pixmap.createFromFrameBuffer(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			Pixmap pixmap = Pixmap.createFromFrameBuffer(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 			try {
 				PNG writer = new PNG((int)(pixmap.getWidth() * pixmap.getHeight() * 1.5f));
 				// writer.setCompression(Deflater.NO_COMPRESSION);

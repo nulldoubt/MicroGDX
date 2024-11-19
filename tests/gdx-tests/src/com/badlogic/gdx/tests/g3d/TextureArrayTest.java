@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests.g3d;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -54,37 +54,37 @@ public class TextureArrayTest extends GdxTest {
 
 	@Override
 	public void create () {
-		glProfiler = new GLProfiler(Gdx.graphics);
+		glProfiler = new GLProfiler(Micro.graphics);
 		glProfiler.enable();
 
-		ShaderProgram.prependVertexCode = Gdx.app.getType().equals(Application.ApplicationType.Desktop)
+		ShaderProgram.prependVertexCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
 			? "#version 140\n #extension GL_EXT_texture_array : enable\n"
 			: "#version 300 es\n";
-		ShaderProgram.prependFragmentCode = Gdx.app.getType().equals(Application.ApplicationType.Desktop)
+		ShaderProgram.prependFragmentCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
 			? "#version 140\n #extension GL_EXT_texture_array : enable\n"
 			: "#version 300 es\n";
 
 		String[] texPaths = new String[] {"data/g3d/materials/Searing Gorge.jpg", "data/g3d/materials/Lava Cracks.jpg",
 			"data/g3d/materials/Deep Fire.jpg"};
 
-		camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = new PerspectiveCamera(67, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		camera.position.set(8, 10f, 20f);
 		camera.lookAt(10, 0, 10);
 		camera.up.set(0, 1, 0);
 		camera.update();
 		cameraController = new FirstPersonCameraController(camera);
-		Gdx.input.setInputProcessor(cameraController);
+		Micro.input.setInputProcessor(cameraController);
 
 		FileHandle[] texFiles = new FileHandle[texPaths.length];
 		for (int i = 0; i < texPaths.length; i++) {
-			texFiles[i] = Gdx.files.internal(texPaths[i]);
+			texFiles[i] = Micro.files.internal(texPaths[i]);
 		}
 
 		textureArray = new TextureArray(true, texFiles);
 		textureArray.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 		textureArray.setFilter(TextureFilter.MipMapLinearLinear, TextureFilter.Linear);
-		shaderProgram = new ShaderProgram(Gdx.files.internal("data/shaders/texturearray.vert"),
-			Gdx.files.internal("data/shaders/texturearray.frag"));
+		shaderProgram = new ShaderProgram(Micro.files.internal("data/shaders/texturearray.vert"),
+			Micro.files.internal("data/shaders/texturearray.frag"));
 		System.out.println(shaderProgram.getLog());
 
 		int vertexStride = 6;
@@ -92,7 +92,7 @@ public class TextureArrayTest extends GdxTest {
 		terrain = new Mesh(false, vertexCount * 6, 0, new VertexAttributes(VertexAttribute.Position(),
 			new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 3, ShaderProgram.TEXCOORD_ATTRIBUTE + 0)));
 
-		Pixmap data = new Pixmap(Gdx.files.internal("data/g3d/heightmap.png"));
+		Pixmap data = new Pixmap(Micro.files.internal("data/g3d/heightmap.png"));
 		float[] vertices = new float[vertexCount * vertexStride * 6];
 		int idx = 0;
 		for (int i = 0; i < 100 - 1; i++) {
@@ -127,12 +127,12 @@ public class TextureArrayTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-		Gdx.gl.glDepthFunc(GL20.GL_LEQUAL);
-		Gdx.gl.glCullFace(GL20.GL_BACK);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Micro.gl.glEnable(GL20.GL_DEPTH_TEST);
+		Micro.gl.glDepthFunc(GL20.GL_LEQUAL);
+		Micro.gl.glCullFace(GL20.GL_BACK);
 
-		modelView.translate(10f, 0, 10f).rotate(0, 1f, 0, 2f * Gdx.graphics.getDeltaTime()).translate(-10f, 0, -10f);
+		modelView.translate(10f, 0, 10f).rotate(0, 1f, 0, 2f * Micro.graphics.getDeltaTime()).translate(-10f, 0, -10f);
 
 		cameraController.update();
 

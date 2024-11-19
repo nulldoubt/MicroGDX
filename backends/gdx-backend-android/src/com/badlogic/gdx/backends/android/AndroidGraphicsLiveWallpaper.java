@@ -20,7 +20,7 @@ package com.badlogic.gdx.backends.android;
 import android.opengl.GLSurfaceView.EGLConfigChooser;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
 import com.badlogic.gdx.backends.android.surfaceview.ResolutionStrategy;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -102,7 +102,7 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 					requestRendering();
 					synch.wait();
 				} catch (InterruptedException ignored) {
-					Gdx.app.log("AndroidGraphics", "waiting for resume synchronization failed!");
+					Micro.app.log("AndroidGraphics", "waiting for resume synchronization failed!");
 				}
 			}
 		}
@@ -149,7 +149,7 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 		if (lresume) {
 			// ((AndroidAudio)app.getAudio()).resume(); // jw: moved to AndroidLiveWallpaper.onResume
 			app.getApplicationListener().resume();
-			Gdx.app.log("AndroidGraphics", "resumed");
+			Micro.app.log("AndroidGraphics", "resumed");
 		}
 
 		// HACK: added null check to handle set wallpaper from preview null
@@ -186,14 +186,14 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 		if (lpause) {
 			app.getApplicationListener().pause();
 			// ((AndroidAudio)app.getAudio()).pause(); jw: moved to AndroidLiveWallpaper.onPause
-			Gdx.app.log("AndroidGraphics", "paused");
+			Micro.app.log("AndroidGraphics", "paused");
 		}
 
 		// jw: never called on lwp, why? see description in AndroidLiveWallpaper.onPause
 		if (ldestroy) {
 			app.getApplicationListener().dispose();
 			// ((AndroidAudio)app.getAudio()).dispose(); jw: moved to AndroidLiveWallpaper.onDestroy
-			Gdx.app.log("AndroidGraphics", "destroyed");
+			Micro.app.log("AndroidGraphics", "destroyed");
 		}
 
 		if (time - frameStart > 1000000000) {

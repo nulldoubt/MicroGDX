@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -45,9 +45,9 @@ public class VertexBufferObjectShaderTest extends GdxTest {
 
 	@Override
 	public void render () {
-		GL20 gl = Gdx.gl20;
-		gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
-		Gdx.gl.glClearColor(0.7f, 0, 0, 1);
+		GL20 gl = Micro.gl20;
+		gl.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
+		Micro.gl.glClearColor(0.7f, 0, 0, 1);
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		shader.bind();
@@ -88,7 +88,7 @@ public class VertexBufferObjectShaderTest extends GdxTest {
 		//@on
 
 		shader = new ShaderProgram(vertexShader, fragmentShader);
-		if (Gdx.gl30 != null) {
+		if (Micro.gl30 != null) {
 			vbo = new VertexBufferObjectWithVAO(true, 3, new VertexAttribute(VertexAttributes.Usage.Position, 2, "a_position"),
 				new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, "a_texCoords"),
 				new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, "a_color"));
@@ -104,7 +104,7 @@ public class VertexBufferObjectShaderTest extends GdxTest {
 		indices = new IndexBufferObject(3);
 		indices.setIndices(new short[] {0, 1, 2}, 0, 3);
 
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 	}
 
 	@Override

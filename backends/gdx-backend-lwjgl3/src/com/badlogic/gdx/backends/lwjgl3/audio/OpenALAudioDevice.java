@@ -33,7 +33,7 @@ import static org.lwjgl.openal.AL10.*;
  */
 public class OpenALAudioDevice implements AudioDevice {
 	
-	static private final int bytesPerSample = 2;
+	private static final int bytesPerSample = 2;
 	
 	private final OpenALLwjgl3Audio audio;
 	private final int channels;

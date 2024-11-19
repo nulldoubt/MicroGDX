@@ -22,7 +22,7 @@
 
 package com.badlogic.gdx.backends.lwjgl3.audio;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StreamUtils;
 import com.jcraft.jogg.Packet;
@@ -302,7 +302,7 @@ public class OggInputStream extends InputStream {
 					if (result == 0) {
 						break; // need more data
 					} else if (result == -1) { // missing or corrupt data at this page position
-						Gdx.app.error("gdx-audio", "Error reading OGG: Corrupt or missing data in bitstream.");
+						Micro.app.error("gdx-audio", "Error reading OGG: Corrupt or missing data in bitstream.");
 					} else {
 						streamState.pagein(page); // can safely ignore errors at this point
 						while (true) {

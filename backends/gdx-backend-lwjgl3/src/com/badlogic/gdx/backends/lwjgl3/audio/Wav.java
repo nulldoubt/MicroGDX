@@ -26,7 +26,7 @@ import java.io.IOException;
 
 public class Wav {
 	
-	static public class Music extends OpenALMusic {
+	public static class Music extends OpenALMusic {
 		
 		private WavInputStream input;
 		
@@ -57,7 +57,7 @@ public class Wav {
 		
 	}
 	
-	static public class Sound extends OpenALSound {
+	public static class Sound extends OpenALSound {
 		
 		public Sound(OpenALLwjgl3Audio audio, FileHandle file) {
 			super(audio);
@@ -85,7 +85,7 @@ public class Wav {
 	/**
 	 * @author Nathan Sweet
 	 */
-	static public class WavInputStream extends FilterInputStream {
+	public static class WavInputStream extends FilterInputStream {
 		
 		public int channels, bitDepth, sampleRate, dataRemaining, type;
 		

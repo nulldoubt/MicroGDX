@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -26,12 +26,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
 
 public class SpriteBatchTest extends GdxTest implements InputProcessor {
 	int SPRITES = 100 / 2;
 
-	long startTime = TimeUtils.nanoTime();
+	long startTime = System.nanoTime();
 	int frames = 0;
 
 	Texture texture;
@@ -63,8 +62,8 @@ public class SpriteBatchTest extends GdxTest implements InputProcessor {
 		float draw2 = 0;
 		float drawText = 0;
 
-		angle += ROTATION_SPEED * Gdx.graphics.getDeltaTime();
-		scale += SCALE_SPEED * Gdx.graphics.getDeltaTime();
+		angle += ROTATION_SPEED * Micro.graphics.getDeltaTime();
+		scale += SCALE_SPEED * Micro.graphics.getDeltaTime();
 		if (scale < 0.5f) {
 			scale = 0.5f;
 			SCALE_SPEED = 1;
@@ -73,38 +72,38 @@ public class SpriteBatchTest extends GdxTest implements InputProcessor {
 			scale = 1.0f;
 			SCALE_SPEED = -1;
 		}
-
-		long start = TimeUtils.nanoTime();
+		
+		long start = System.nanoTime();
 		spriteBatch.begin();
-		begin = (TimeUtils.nanoTime() - start) / 1000000000.0f;
-
-		start = TimeUtils.nanoTime();
+		begin = (System.nanoTime() - start) / 1000000000.0f;
+		
+		start = System.nanoTime();
 		for (int i = 0; i < sprites.length; i += 6)
 			spriteBatch.draw(texture, sprites[i], sprites[i + 1], 16, 16, 32, 32, scale, scale, angle, 0, 0, 32, 32, false, false);
-		draw1 = (TimeUtils.nanoTime() - start) / 1000000000.0f;
-
-		start = TimeUtils.nanoTime();
+		draw1 = (System.nanoTime() - start) / 1000000000.0f;
+		
+		start = System.nanoTime();
 		for (int i = 0; i < sprites2.length; i += 6)
 			spriteBatch.draw(texture2, sprites2[i], sprites2[i + 1], 16, 16, 32, 32, scale, scale, angle, 0, 0, 32, 32, false,
 				false);
-		draw2 = (TimeUtils.nanoTime() - start) / 1000000000.0f;
-
-		start = TimeUtils.nanoTime();
+		draw2 = (System.nanoTime() - start) / 1000000000.0f;
+		
+		start = System.nanoTime();
 // spriteBatch.drawText(font, "Question?", 100, 300, Color.RED);
 // spriteBatch.drawText(font, "and another this is a test", 200, 100, Color.WHITE);
 // spriteBatch.drawText(font, "all hail and another this is a test", 200, 200, Color.WHITE);
 // spriteBatch.drawText(font, "normal fps: " + Gdx.graphics.getFramesPerSecond(), 10, 30, Color.RED);
-		drawText = (TimeUtils.nanoTime() - start) / 1000000000.0f;
-
-		start = TimeUtils.nanoTime();
+		drawText = (System.nanoTime() - start) / 1000000000.0f;
+		
+		start = System.nanoTime();
 		spriteBatch.end();
-		end = (TimeUtils.nanoTime() - start) / 1000000000.0f;
-
-		if (TimeUtils.nanoTime() - startTime > 1000000000) {
-			Gdx.app.log("SpriteBatch", "fps: " + frames + ", render calls: " + spriteBatch.renderCalls + ", " + begin + ", " + draw1
+		end = (System.nanoTime() - start) / 1000000000.0f;
+		
+		if (System.nanoTime() - startTime > 1000000000) {
+			Micro.app.log("SpriteBatch", "fps: " + frames + ", render calls: " + spriteBatch.renderCalls + ", " + begin + ", " + draw1
 				+ ", " + draw2 + ", " + drawText + ", " + end);
 			frames = 0;
-			startTime = TimeUtils.nanoTime();
+			startTime = System.nanoTime();
 		}
 		frames++;
 
@@ -118,13 +117,13 @@ public class SpriteBatchTest extends GdxTest implements InputProcessor {
 		float draw1 = 0;
 		float draw2 = 0;
 		float drawText = 0;
-
-		long start = TimeUtils.nanoTime();
+		
+		long start = System.nanoTime();
 		spriteBatch.begin();
-		begin = (TimeUtils.nanoTime() - start) / 1000000000.0f;
+		begin = (System.nanoTime() - start) / 1000000000.0f;
 
-		float angleInc = ROTATION_SPEED * Gdx.graphics.getDeltaTime();
-		scale += SCALE_SPEED * Gdx.graphics.getDeltaTime();
+		float angleInc = ROTATION_SPEED * Micro.graphics.getDeltaTime();
+		scale += SCALE_SPEED * Micro.graphics.getDeltaTime();
 		if (scale < 0.5f) {
 			scale = 0.5f;
 			SCALE_SPEED = 1;
@@ -133,39 +132,39 @@ public class SpriteBatchTest extends GdxTest implements InputProcessor {
 			scale = 1.0f;
 			SCALE_SPEED = -1;
 		}
-
-		start = TimeUtils.nanoTime();
+		
+		start = System.nanoTime();
 		for (int i = 0; i < SPRITES; i++) {
 			if (angleInc != 0) sprites3[i].rotate(angleInc); // this is aids
 			if (scale != 1) sprites3[i].setScale(scale); // this is aids
 			sprites3[i].draw(spriteBatch);
 		}
-		draw1 = (TimeUtils.nanoTime() - start) / 1000000000.0f;
-
-		start = TimeUtils.nanoTime();
+		draw1 = (System.nanoTime() - start) / 1000000000.0f;
+		
+		start = System.nanoTime();
 		for (int i = SPRITES; i < SPRITES << 1; i++) {
 			if (angleInc != 0) sprites3[i].rotate(angleInc); // this is aids
 			if (scale != 1) sprites3[i].setScale(scale); // this is aids
 			sprites3[i].draw(spriteBatch);
 		}
-		draw2 = (TimeUtils.nanoTime() - start) / 1000000000.0f;
-
-		start = TimeUtils.nanoTime();
+		draw2 = (System.nanoTime() - start) / 1000000000.0f;
+		
+		start = System.nanoTime();
 // spriteBatch.drawText(font, "Question?", 100, 300, Color.RED);
 // spriteBatch.drawText(font, "and another this is a test", 200, 100, Color.WHITE);
 // spriteBatch.drawText(font, "all hail and another this is a test", 200, 200, Color.WHITE);
 // spriteBatch.drawText(font, "Sprite fps: " + Gdx.graphics.getFramesPerSecond(), 10, 30, Color.RED);
-		drawText = (TimeUtils.nanoTime() - start) / 1000000000.0f;
-
-		start = TimeUtils.nanoTime();
+		drawText = (System.nanoTime() - start) / 1000000000.0f;
+		
+		start = System.nanoTime();
 		spriteBatch.end();
-		end = (TimeUtils.nanoTime() - start) / 1000000000.0f;
-
-		if (TimeUtils.nanoTime() - startTime > 1000000000) {
-			Gdx.app.log("SpriteBatch", "fps: " + frames + ", render calls: " + spriteBatch.renderCalls + ", " + begin + ", " + draw1
+		end = (System.nanoTime() - start) / 1000000000.0f;
+		
+		if (System.nanoTime() - startTime > 1000000000) {
+			Micro.app.log("SpriteBatch", "fps: " + frames + ", render calls: " + spriteBatch.renderCalls + ", " + begin + ", " + draw1
 				+ ", " + draw2 + ", " + drawText + ", " + end);
 			frames = 0;
-			startTime = TimeUtils.nanoTime();
+			startTime = System.nanoTime();
 		}
 		frames++;
 	}
@@ -174,7 +173,7 @@ public class SpriteBatchTest extends GdxTest implements InputProcessor {
 	public void create () {
 		spriteBatch = new SpriteBatch(1000);
 
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("data/badlogicsmall.jpg"));
+		Pixmap pixmap = new Pixmap(Micro.files.internal("data/badlogicsmall.jpg"));
 		texture = new Texture(32, 32, Format.RGB565);
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		texture.draw(pixmap, 0, 0);
@@ -187,14 +186,14 @@ public class SpriteBatchTest extends GdxTest implements InputProcessor {
 		pixmap.dispose();
 
 		for (int i = 0; i < sprites.length; i += 6) {
-			sprites[i] = (int)(Math.random() * (Gdx.graphics.getWidth() - 32));
-			sprites[i + 1] = (int)(Math.random() * (Gdx.graphics.getHeight() - 32));
+			sprites[i] = (int)(Math.random() * (Micro.graphics.getWidth() - 32));
+			sprites[i + 1] = (int)(Math.random() * (Micro.graphics.getHeight() - 32));
 			sprites[i + 2] = 0;
 			sprites[i + 3] = 0;
 			sprites[i + 4] = 32;
 			sprites[i + 5] = 32;
-			sprites2[i] = (int)(Math.random() * (Gdx.graphics.getWidth() - 32));
-			sprites2[i + 1] = (int)(Math.random() * (Gdx.graphics.getHeight() - 32));
+			sprites2[i] = (int)(Math.random() * (Micro.graphics.getWidth() - 32));
+			sprites2[i + 1] = (int)(Math.random() * (Micro.graphics.getHeight() - 32));
 			sprites2[i + 2] = 0;
 			sprites2[i + 3] = 0;
 			sprites2[i + 4] = 32;
@@ -202,8 +201,8 @@ public class SpriteBatchTest extends GdxTest implements InputProcessor {
 		}
 
 		for (int i = 0; i < SPRITES * 2; i++) {
-			int x = (int)(Math.random() * (Gdx.graphics.getWidth() - 32));
-			int y = (int)(Math.random() * (Gdx.graphics.getHeight() - 32));
+			int x = (int)(Math.random() * (Micro.graphics.getWidth() - 32));
+			int y = (int)(Math.random() * (Micro.graphics.getHeight() - 32));
 
 			if (i >= SPRITES)
 				sprites3[i] = new Sprite(texture2, 32, 32);
@@ -213,12 +212,12 @@ public class SpriteBatchTest extends GdxTest implements InputProcessor {
 			sprites3[i].setOrigin(16, 16);
 		}
 
-		Gdx.input.setInputProcessor(this);
+		Micro.input.setInputProcessor(this);
 	}
 
 	@Override
 	public void resize (int width, int height) {
-		Gdx.app.log("SpriteBatchTest", "resized: " + width + ", " + height);
+		Micro.app.log("SpriteBatchTest", "resized: " + width + ", " + height);
 	}
 
 	@Override

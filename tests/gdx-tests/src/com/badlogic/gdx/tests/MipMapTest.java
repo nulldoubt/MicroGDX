@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
@@ -56,7 +56,7 @@ public class MipMapTest extends GdxTest {
 
 	@Override
 	public void create () {
-		camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = new PerspectiveCamera(67, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		camera.position.set(0, 1.5f, 1.5f);
 		camera.lookAt(0, 0, 0);
 		camera.update();
@@ -67,25 +67,25 @@ public class MipMapTest extends GdxTest {
 		mesh.setVertices(new float[] {-1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, -1, 1, 0, -1, 0, -1, 0, 0,});
 		mesh.setIndices(new short[] {0, 1, 2, 3});
 
-		shader = new ShaderProgram(Gdx.files.internal("data/shaders/flattex-vert.glsl").readString(),
-			Gdx.files.internal("data/shaders/flattex-frag.glsl").readString());
+		shader = new ShaderProgram(Micro.files.internal("data/shaders/flattex-vert.glsl").readString(),
+			Micro.files.internal("data/shaders/flattex-frag.glsl").readString());
 		if (!shader.isCompiled()) throw new GdxRuntimeException("shader error: " + shader.getLog());
 
-		textureHW = new Texture(Gdx.files.internal("data/badlogic.jpg"), Format.RGB565, true);
+		textureHW = new Texture(Micro.files.internal("data/badlogic.jpg"), Format.RGB565, true);
 		MipMapGenerator.setUseHardwareMipMap(false);
-		textureSW = new Texture(Gdx.files.internal("data/badlogic.jpg"), Format.RGB565, true);
+		textureSW = new Texture(Micro.files.internal("data/badlogic.jpg"), Format.RGB565, true);
 		currTexture = textureHW;
 
 		createUI();
 
 		multiplexer = new InputMultiplexer();
-		Gdx.input.setInputProcessor(multiplexer);
-		multiplexer.addProcessor(ui);
-		multiplexer.addProcessor(controller);
+		Micro.input.setInputProcessor(multiplexer);
+		multiplexer.add(ui);
+		multiplexer.add(controller);
 	}
 
 	private void createUI () {
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 		ui = new Stage();
 
 		String[] filters = new String[TextureFilter.values().length];
@@ -113,7 +113,7 @@ public class MipMapTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
 

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -52,7 +52,7 @@ public class StagePerformanceTest extends GdxTest {
 		regions = new TextureRegion[8 * 8];
 		sprites = new Sprite[24 * 12];
 
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 		for (int y = 0; y < 8; y++) {
 			for (int x = 0; x < 8; x++) {
 				regions[x + y * 8] = new TextureRegion(texture, x * 32, y * 32, 32, 32);
@@ -75,10 +75,10 @@ public class StagePerformanceTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if (useStage) {
-			stage.act(Gdx.graphics.getDeltaTime());
+			stage.act(Micro.graphics.getDeltaTime());
 			stage.getBatch().disableBlending();
 			Group root = stage.getRoot();
 			Array<Actor> actors = root.getChildren();
@@ -103,10 +103,10 @@ public class StagePerformanceTest extends GdxTest {
 		batch.begin();
 		font.setColor(0, 0, 1, 1);
 		font.getData().setScale(2);
-		font.draw(batch, "fps: " + Gdx.graphics.getFramesPerSecond() + (useStage ? ", stage" : "sprite"), 10, 40);
+		font.draw(batch, "fps: " + Micro.graphics.getFPS() + (useStage ? ", stage" : "sprite"), 10, 40);
 		batch.end();
 
-		if (Gdx.input.justTouched()) {
+		if (Micro.input.justTouched()) {
 			useStage = !useStage;
 		}
 	}

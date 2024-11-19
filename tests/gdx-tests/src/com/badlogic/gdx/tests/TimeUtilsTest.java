@@ -28,14 +28,14 @@ public class TimeUtilsTest extends GdxTest {
 	@Override
 	public void create () {
 		// test nanos -> millis -> nanos
-		long now = TimeUtils.nanoTime();
+		long now = System.nanoTime();
 		long nowConvertToMillis = TimeUtils.nanosToMillis(now);
 		long nowConvertBackToNanos = TimeUtils.millisToNanos(nowConvertToMillis);
 
 		assertEpsilonEqual(now, nowConvertBackToNanos, "Nano -> Millis conversion");
 
 		// test millis -> nanos -> millis
-		long millis = TimeUtils.millis();
+		long millis = System.currentTimeMillis();
 		long millisToNanos = TimeUtils.millisToNanos(millis);
 		long nanosToMillis = TimeUtils.nanosToMillis(millisToNanos);
 

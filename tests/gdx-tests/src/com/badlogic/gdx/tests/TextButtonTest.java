@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -32,12 +32,12 @@ public class TextButtonTest extends GdxTest {
 	@Override
 	public void create () {
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		Micro.input.setInputProcessor(stage);
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 		for (int i = 0; i < 1; i++) {
 			TextButton t = new TextButton("Button" + i, skin);
-			t.setX(MathUtils.random(0, Gdx.graphics.getWidth()));
-			t.setY(MathUtils.random(0, Gdx.graphics.getHeight()));
+			t.setX(MathUtils.random(0, Micro.graphics.getWidth()));
+			t.setY(MathUtils.random(0, Micro.graphics.getHeight()));
 			t.setWidth(MathUtils.random(50, 200));
 			t.setHeight(MathUtils.random(0, 100));
 			stage.addActor(t);
@@ -48,9 +48,9 @@ public class TextButtonTest extends GdxTest {
 	public void render () {
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 		stage.draw();
-		Gdx.app.log("X", "FPS: " + Gdx.graphics.getFramesPerSecond());
+		Micro.app.log("X", "FPS: " + Micro.graphics.getFPS());
 		SpriteBatch spriteBatch = (SpriteBatch)stage.getBatch();
-		Gdx.app.log("X", "render calls: " + spriteBatch.totalRenderCalls);
+		Micro.app.log("X", "render calls: " + spriteBatch.totalRenderCalls);
 		spriteBatch.totalRenderCalls = 0;
 	}
 

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,7 +39,7 @@ public class DragAndDropTest extends GdxTest {
 
 	public void create () {
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
+		Micro.input.setInputProcessor(stage);
 
 		final Skin skin = new Skin();
 		skin.add("default", new LabelStyle(new BitmapFont(), Color.WHITE));
@@ -107,8 +107,8 @@ public class DragAndDropTest extends GdxTest {
 	}
 
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.act(Gdx.graphics.getDeltaTime());
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		stage.act(Micro.graphics.getDeltaTime());
 		stage.draw();
 	}
 

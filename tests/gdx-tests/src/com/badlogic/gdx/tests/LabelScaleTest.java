@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -35,9 +35,9 @@ public class LabelScaleTest extends GdxTest {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
+		Micro.input.setInputProcessor(stage);
 
 		Table table = new Table();
 		stage.addActor(table);
@@ -67,7 +67,7 @@ public class LabelScaleTest extends GdxTest {
 	public void render () {
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		stage.act(Math.min(Micro.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 	}
 

@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests.g3d;
 
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Cubemap;
@@ -87,14 +87,14 @@ public class ShaderCollectionTest extends BaseG3dHudTest {
 			try {
 				return super.getShader(renderable);
 			} catch (Throwable e) {
-				if (tempFolder != null && Gdx.app.getType() == ApplicationType.Desktop)
-					Gdx.files.absolute(tempFolder).child(name + ".log.txt").writeString(e.getMessage(), false);
+				if (tempFolder != null && Micro.app.getType() == ApplicationType.Desktop)
+					Micro.files.absolute(tempFolder).child(name + ".log.txt").writeString(e.getMessage(), false);
 				if (!revert()) {
-					Gdx.app.error("ShaderCollectionTest", e.getMessage());
+					Micro.app.error("ShaderCollectionTest", e.getMessage());
 					throw new GdxRuntimeException("Error creating shader, cannot revert to default shader", e);
 				}
 				error = true;
-				Gdx.app.error("ShaderTest", "Could not create shader, reverted to default shader.", e);
+				Micro.app.error("ShaderTest", "Could not create shader, reverted to default shader.", e);
 				return super.getShader(renderable);
 			}
 		}
@@ -102,14 +102,14 @@ public class ShaderCollectionTest extends BaseG3dHudTest {
 		@Override
 		protected Shader createShader (Renderable renderable) {
 			if (config.vertexShader != null && config.fragmentShader != null && tempFolder != null
-				&& Gdx.app.getType() == ApplicationType.Desktop) {
+				&& Micro.app.getType() == ApplicationType.Desktop) {
 				String prefix = DefaultShader.createPrefix(renderable, config);
-				Gdx.files.absolute(tempFolder).child(name + ".vertex.glsl").writeString(prefix + config.vertexShader, false);
-				Gdx.files.absolute(tempFolder).child(name + ".fragment.glsl").writeString(prefix + config.fragmentShader, false);
+				Micro.files.absolute(tempFolder).child(name + ".vertex.glsl").writeString(prefix + config.vertexShader, false);
+				Micro.files.absolute(tempFolder).child(name + ".fragment.glsl").writeString(prefix + config.fragmentShader, false);
 			}
 			BaseShader result = new MultiPassShader(renderable, config);
-			if (tempFolder != null && Gdx.app.getType() == ApplicationType.Desktop)
-				Gdx.files.absolute(tempFolder).child(name + ".log.txt").writeString(result.program.getLog(), false);
+			if (tempFolder != null && Micro.app.getType() == ApplicationType.Desktop)
+				Micro.files.absolute(tempFolder).child(name + ".log.txt").writeString(result.program.getLog(), false);
 			return result;
 		}
 	}
@@ -143,8 +143,8 @@ public class ShaderCollectionTest extends BaseG3dHudTest {
 
 		onModelClicked("g3d/shapes/teapot.g3dj");
 
-		shaderRoot = (hotLoadFolder != null && Gdx.app.getType() == ApplicationType.Desktop) ? Gdx.files.absolute(hotLoadFolder)
-			: Gdx.files.internal("data/g3d/shaders");
+		shaderRoot = (hotLoadFolder != null && Micro.app.getType() == ApplicationType.Desktop) ? Micro.files.absolute(hotLoadFolder)
+			: Micro.files.internal("data/g3d/shaders");
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class ShaderCollectionTest extends BaseG3dHudTest {
 				shaderProvider.clear();
 			}
 		} else {
-			FileHandle root = Gdx.files.internal("data/g3d/environment");
+			FileHandle root = Micro.files.internal("data/g3d/environment");
 			FacedCubemapData faces = new FacedCubemapData(root.child(name + "_PX.png"), root.child(name + "_NX.png"),
 				root.child(name + "_PY.png"), root.child(name + "_NY.png"), root.child(name + "_PZ.png"),
 				root.child(name + "_NZ.png"), false); // FIXME mipmapping on desktop
@@ -184,7 +184,7 @@ public class ShaderCollectionTest extends BaseG3dHudTest {
 	public void setMaterial (String name) {
 		if (name == null) return;
 		if (currentlyLoading != null) {
-			Gdx.app.error("ModelTest", "Wait for the current model/material to be loaded.");
+			Micro.app.error("ModelTest", "Wait for the current model/material to be loaded.");
 			return;
 		}
 
@@ -221,11 +221,11 @@ public class ShaderCollectionTest extends BaseG3dHudTest {
 
 	@Override
 	public void render (Array<ModelInstance> instances) {
-		dirLight.direction.rotate(dirLightRotAxis, Gdx.graphics.getDeltaTime() * 45f);
+		dirLight.direction.rotate(dirLightRotAxis, Micro.graphics.getDeltaTime() * 45f);
 
 		super.render(null);
 		for (ObjectMap.Entry<ModelInstance, AnimationController> e : animationControllers.entries())
-			e.value.update(Gdx.graphics.getDeltaTime());
+			e.value.update(Micro.graphics.getDeltaTime());
 		shaderBatch.begin(cam);
 		shaderBatch.render(instances, environment);
 		shaderBatch.end();
@@ -253,7 +253,7 @@ public class ShaderCollectionTest extends BaseG3dHudTest {
 	protected void onModelClicked (final String name) {
 		if (name == null) return;
 		if (currentlyLoading != null) {
-			Gdx.app.error("ModelTest", "Wait for the current model/material to be loaded.");
+			Micro.app.error("ModelTest", "Wait for the current model/material to be loaded.");
 			return;
 		}
 

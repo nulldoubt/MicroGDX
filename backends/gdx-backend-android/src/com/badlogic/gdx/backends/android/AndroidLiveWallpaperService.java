@@ -26,7 +26,7 @@ import android.app.WallpaperColors;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 
 /** An implementation of the {@link Application} interface dedicated for android live wallpapers.
@@ -284,8 +284,8 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService {
 
 			notifyPreviewState();
 			notifyOffsetsChanged();
-			if (!Gdx.graphics.isContinuousRendering()) {
-				Gdx.graphics.requestRendering();
+			if (!Micro.graphics.isContinuousRendering()) {
+				Micro.graphics.requestRendering();
 			}
 		}
 
@@ -396,8 +396,8 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService {
 
 				notifyPreviewState();
 				notifyOffsetsChanged();
-				if (!Gdx.graphics.isContinuousRendering()) {
-					Gdx.graphics.requestRendering();
+				if (!Micro.graphics.isContinuousRendering()) {
+					Micro.graphics.requestRendering();
 				}
 			}
 		}
@@ -490,7 +490,7 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService {
 				if (!iconDropConsumed) { // same type of synchronization as in notifyOffsetsChanged()
 					iconDropConsumed = true;
 
-					app.postRunnable(new Runnable() {
+					app.post(new Runnable() {
 						@Override
 						public void run () {
 							boolean isCurrent = false;
@@ -539,8 +539,8 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService {
 
 			// can fail if linkedApp == null, so we repeat it in Engine.onResume
 			notifyOffsetsChanged();
-			if (!Gdx.graphics.isContinuousRendering()) {
-				Gdx.graphics.requestRendering();
+			if (!Micro.graphics.isContinuousRendering()) {
+				Micro.graphics.requestRendering();
 			}
 
 			super.onOffsetsChanged(xOffset, yOffset, xOffsetStep, yOffsetStep, xPixelOffset, yPixelOffset);
@@ -552,7 +552,7 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService {
 // times and with various patterns on various devices - user application must be prepared for that
 					offsetsConsumed = true;
 
-					app.postRunnable(new Runnable() {
+					app.post(new Runnable() {
 						@Override
 						public void run () {
 							boolean isCurrent = false;
@@ -572,7 +572,7 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService {
 			// notify preview state to app listener
 			if (linkedEngine == this && app.listener instanceof AndroidWallpaperListener) {
 				final boolean currentPreviewState = linkedEngine.isPreview();
-				app.postRunnable(new Runnable() {
+				app.post(new Runnable() {
 					@Override
 					public void run () {
 						boolean shouldNotify = false;
@@ -597,7 +597,7 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService {
 
 		@Override
 		public WallpaperColors onComputeColors () {
-			Application app = Gdx.app;
+			Application app = Micro.app;
 			if (Build.VERSION.SDK_INT >= 27 && app instanceof AndroidLiveWallpaper) {
 				AndroidLiveWallpaper liveWallpaper = (AndroidLiveWallpaper)app;
 				Color[] colors = liveWallpaper.wallpaperColors;

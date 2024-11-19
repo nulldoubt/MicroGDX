@@ -25,19 +25,19 @@ import java.util.UUID;
 import java.util.zip.CRC32;
 
 public class ANGLELoader {
-	static public boolean isWindows = System.getProperty("os.name").contains("Windows");
-	static public boolean isLinux = System.getProperty("os.name").contains("Linux")
+	public static boolean isWindows = System.getProperty("os.name").contains("Windows");
+	public static boolean isLinux = System.getProperty("os.name").contains("Linux")
 		|| System.getProperty("os.name").contains("FreeBSD");
-	static public boolean isMac = System.getProperty("os.name").contains("Mac");
-	static public boolean isARM = System.getProperty("os.arch").startsWith("arm")
+	public static boolean isMac = System.getProperty("os.name").contains("Mac");
+	public static boolean isARM = System.getProperty("os.arch").startsWith("arm")
 		|| System.getProperty("os.arch").startsWith("aarch64");
-	static public boolean is64Bit = System.getProperty("os.arch").contains("64")
+	public static boolean is64Bit = System.getProperty("os.arch").contains("64")
 		|| System.getProperty("os.arch").startsWith("armv8");
 
-	static private final Random random = new Random();
-	static private File egl;
-	static private File gles;
-	static private File lastWorkingDir;
+	private static final Random random = new Random();
+	private static File egl;
+	private static File gles;
+	private static File lastWorkingDir;
 
 	public static void closeQuietly (Closeable c) {
 		if (c != null) {

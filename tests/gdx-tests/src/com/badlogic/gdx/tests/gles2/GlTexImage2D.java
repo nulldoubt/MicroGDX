@@ -19,7 +19,7 @@ package com.badlogic.gdx.tests.gles2;
 import java.nio.FloatBuffer;
 import java.nio.ByteBuffer;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -82,7 +82,7 @@ public class GlTexImage2D extends GdxTest {
 		 * check if OpenGL context needs to be reloaded; checking only texture should be sufficient; but i guess this check is
 		 * redundant
 		 */
-		if (!Gdx.gl20.glIsTexture(texture)) {
+		if (!Micro.gl20.glIsTexture(texture)) {
 			reload();
 		}
 
@@ -91,55 +91,55 @@ public class GlTexImage2D extends GdxTest {
 			textureColorData.put(colorComponent, (byte)(textureColorData.get(colorComponent) + 1));
 		}
 		textureColorData.rewind();
-		Gdx.gl20.glActiveTexture(GL20.GL_TEXTURE1);
-		Gdx.gl20.glTexImage2D(GL20.GL_TEXTURE_2D, 0, GL20.GL_RGB, 2, 2, 0, GL20.GL_RGB, GL20.GL_UNSIGNED_BYTE, textureColorData);
-		Gdx.gl20.glActiveTexture(GL20.GL_TEXTURE0);
+		Micro.gl20.glActiveTexture(GL20.GL_TEXTURE1);
+		Micro.gl20.glTexImage2D(GL20.GL_TEXTURE_2D, 0, GL20.GL_RGB, 2, 2, 0, GL20.GL_RGB, GL20.GL_UNSIGNED_BYTE, textureColorData);
+		Micro.gl20.glActiveTexture(GL20.GL_TEXTURE0);
 
 		/* init drawing */
-		Gdx.gl20.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
-		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl20.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
+		Micro.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		/* draw texture built from bytes */
-		Gdx.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, vertsBuffer);
-		Gdx.gl20.glVertexAttribPointer(shader.getAttributeLocation("vPosition"), 2, GL20.GL_FLOAT, false, 0, 0);
+		Micro.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, vertsBuffer);
+		Micro.gl20.glVertexAttribPointer(shader.getAttributeLocation("vPosition"), 2, GL20.GL_FLOAT, false, 0, 0);
 		shader.setUniformi("uTex2d", 1);
-		Gdx.gl20.glDrawArrays(GL20.GL_TRIANGLE_FAN, 0, 4);
+		Micro.gl20.glDrawArrays(GL20.GL_TRIANGLE_FAN, 0, 4);
 
 		/* draw pixmap */
-		Gdx.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, pixmapBuffer);
-		Gdx.gl20.glVertexAttribPointer(shader.getAttributeLocation("vPosition"), 2, GL20.GL_FLOAT, false, 0, 0);
+		Micro.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, pixmapBuffer);
+		Micro.gl20.glVertexAttribPointer(shader.getAttributeLocation("vPosition"), 2, GL20.GL_FLOAT, false, 0, 0);
 		shader.setUniformi("uTex2d", 2);
-		Gdx.gl20.glDrawArrays(GL20.GL_TRIANGLE_FAN, 0, 4);
+		Micro.gl20.glDrawArrays(GL20.GL_TRIANGLE_FAN, 0, 4);
 
 	}
 
 	private void reload () {
 
 		/* common */
-		Gdx.gl20.glPixelStorei(GL20.GL_UNPACK_ALIGNMENT, 1);
+		Micro.gl20.glPixelStorei(GL20.GL_UNPACK_ALIGNMENT, 1);
 
 		/* generate texture */
-		texture = Gdx.gl20.glGenTexture();
-		Gdx.gl20.glActiveTexture(GL20.GL_TEXTURE1);
-		Gdx.gl20.glBindTexture(GL20.GL_TEXTURE_2D, texture);
-		Gdx.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_EDGE);
-		Gdx.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_CLAMP_TO_EDGE);
-		Gdx.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_LINEAR);
-		Gdx.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR);
-		Gdx.gl20.glTexImage2D(GL20.GL_TEXTURE_2D, 0, GL20.GL_RGB, 2, 2, 0, GL20.GL_RGB, GL20.GL_UNSIGNED_BYTE, textureColorData);
+		texture = Micro.gl20.glGenTexture();
+		Micro.gl20.glActiveTexture(GL20.GL_TEXTURE1);
+		Micro.gl20.glBindTexture(GL20.GL_TEXTURE_2D, texture);
+		Micro.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_EDGE);
+		Micro.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_CLAMP_TO_EDGE);
+		Micro.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_LINEAR);
+		Micro.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR);
+		Micro.gl20.glTexImage2D(GL20.GL_TEXTURE_2D, 0, GL20.GL_RGB, 2, 2, 0, GL20.GL_RGB, GL20.GL_UNSIGNED_BYTE, textureColorData);
 
 		/* load pixmap to verify that pixmap was not broken */
-		pixmapCheck = new Pixmap(Gdx.files.internal("data/walkanim.png"));
+		pixmapCheck = new Pixmap(Micro.files.internal("data/walkanim.png"));
 
 		/* generate texture for pixmap */
-		pixmapTexture = Gdx.gl20.glGenTexture();
-		Gdx.gl20.glActiveTexture(GL20.GL_TEXTURE2);
-		Gdx.gl20.glBindTexture(GL20.GL_TEXTURE_2D, pixmapTexture);
-		Gdx.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_EDGE);
-		Gdx.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_CLAMP_TO_EDGE);
-		Gdx.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_LINEAR);
-		Gdx.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR);
-		Gdx.gl20.glTexImage2D(GL20.GL_TEXTURE_2D, 0, GL20.GL_RGBA, pixmapCheck.getWidth(), pixmapCheck.getHeight(), 0, GL20.GL_RGBA,
+		pixmapTexture = Micro.gl20.glGenTexture();
+		Micro.gl20.glActiveTexture(GL20.GL_TEXTURE2);
+		Micro.gl20.glBindTexture(GL20.GL_TEXTURE_2D, pixmapTexture);
+		Micro.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_EDGE);
+		Micro.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_CLAMP_TO_EDGE);
+		Micro.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_LINEAR);
+		Micro.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR);
+		Micro.gl20.glTexImage2D(GL20.GL_TEXTURE_2D, 0, GL20.GL_RGBA, pixmapCheck.getWidth(), pixmapCheck.getHeight(), 0, GL20.GL_RGBA,
 			GL20.GL_UNSIGNED_BYTE, pixmapCheck.getPixels());
 
 		/* set shader */
@@ -147,27 +147,27 @@ public class GlTexImage2D extends GdxTest {
 		shader.bind();
 
 		/* set vertices */
-		vertsBuffer = Gdx.gl20.glGenBuffer();
-		Gdx.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, vertsBuffer);
-		Gdx.gl20.glBufferData(GL20.GL_ARRAY_BUFFER, 8 * 4, verticesData, GL20.GL_STATIC_DRAW);
+		vertsBuffer = Micro.gl20.glGenBuffer();
+		Micro.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, vertsBuffer);
+		Micro.gl20.glBufferData(GL20.GL_ARRAY_BUFFER, 8 * 4, verticesData, GL20.GL_STATIC_DRAW);
 
 		/* set pixmap verts */
-		pixmapBuffer = Gdx.gl20.glGenBuffer();
-		Gdx.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, pixmapBuffer);
-		Gdx.gl20.glBufferData(GL20.GL_ARRAY_BUFFER, 8 * 4, pixmapVerticesData, GL20.GL_STATIC_DRAW);
+		pixmapBuffer = Micro.gl20.glGenBuffer();
+		Micro.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, pixmapBuffer);
+		Micro.gl20.glBufferData(GL20.GL_ARRAY_BUFFER, 8 * 4, pixmapVerticesData, GL20.GL_STATIC_DRAW);
 
 		/* set uvs */
-		uvBuffer = Gdx.gl20.glGenBuffer();
-		Gdx.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, uvBuffer);
-		Gdx.gl20.glBufferData(GL20.GL_ARRAY_BUFFER, 8 * 4, uvData, GL20.GL_STATIC_DRAW);
-		Gdx.gl20.glVertexAttribPointer(shader.getAttributeLocation("vTexCoords"), 2, GL20.GL_FLOAT, false, 0, 0);
+		uvBuffer = Micro.gl20.glGenBuffer();
+		Micro.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, uvBuffer);
+		Micro.gl20.glBufferData(GL20.GL_ARRAY_BUFFER, 8 * 4, uvData, GL20.GL_STATIC_DRAW);
+		Micro.gl20.glVertexAttribPointer(shader.getAttributeLocation("vTexCoords"), 2, GL20.GL_FLOAT, false, 0, 0);
 
 		/* finalize setup */
-		Gdx.gl20.glEnableVertexAttribArray(shader.getAttributeLocation("vPosition"));
-		Gdx.gl20.glEnableVertexAttribArray(shader.getAttributeLocation("vTexCoords"));
+		Micro.gl20.glEnableVertexAttribArray(shader.getAttributeLocation("vPosition"));
+		Micro.gl20.glEnableVertexAttribArray(shader.getAttributeLocation("vTexCoords"));
 
-		Gdx.gl20.glActiveTexture(GL20.GL_TEXTURE0);
-		Gdx.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, 0);
+		Micro.gl20.glActiveTexture(GL20.GL_TEXTURE0);
+		Micro.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, 0);
 	}
 
 	@Override
@@ -182,15 +182,15 @@ public class GlTexImage2D extends GdxTest {
 
 	@Override
 	public void dispose () {
-		Gdx.gl20.glDisableVertexAttribArray(shader.getAttributeLocation("vPosition"));
-		Gdx.gl20.glDisableVertexAttribArray(shader.getAttributeLocation("vTexCoords"));
+		Micro.gl20.glDisableVertexAttribArray(shader.getAttributeLocation("vPosition"));
+		Micro.gl20.glDisableVertexAttribArray(shader.getAttributeLocation("vTexCoords"));
 
-		Gdx.gl20.glDeleteBuffer(vertsBuffer);
-		Gdx.gl20.glDeleteBuffer(pixmapBuffer);
-		Gdx.gl20.glDeleteBuffer(uvBuffer);
+		Micro.gl20.glDeleteBuffer(vertsBuffer);
+		Micro.gl20.glDeleteBuffer(pixmapBuffer);
+		Micro.gl20.glDeleteBuffer(uvBuffer);
 
-		Gdx.gl20.glDeleteTexture(texture);
-		Gdx.gl20.glDeleteTexture(pixmapTexture);
+		Micro.gl20.glDeleteTexture(texture);
+		Micro.gl20.glDeleteTexture(pixmapTexture);
 
 		shader.dispose();
 		pixmapCheck.dispose();

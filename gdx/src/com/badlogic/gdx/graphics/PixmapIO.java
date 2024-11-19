@@ -45,21 +45,21 @@ public class PixmapIO {
 	 * height and format, remaining bytes are zlib compressed pixels. To be able to load the Pixmap to a Texture, use ".cim" as the
 	 * file suffix. Throws a GdxRuntimeException in case the Pixmap couldn't be written to the file.
 	 * @param file the file to write the Pixmap to */
-	static public void writeCIM (FileHandle file, Pixmap pixmap) {
+	public static void writeCIM (FileHandle file, Pixmap pixmap) {
 		CIM.write(file, pixmap);
 	}
 
 	/** Reads the {@link Pixmap} from the given file, assuming the Pixmap was written with the
 	 * {@link PixmapIO#writeCIM(FileHandle, Pixmap)} method. Throws a GdxRuntimeException in case the file couldn't be read.
 	 * @param file the file to read the Pixmap from */
-	static public Pixmap readCIM (FileHandle file) {
+	public static Pixmap readCIM (FileHandle file) {
 		return CIM.read(file);
 	}
 
 	/** Writes the pixmap as a PNG. See {@link PNG} to write out multiple PNGs with minimal allocation.
 	 * @param compression sets the deflate compression level. Default is {@link Deflater#DEFAULT_COMPRESSION}
 	 * @param flipY flips the Pixmap vertically if true */
-	static public void writePNG (FileHandle file, Pixmap pixmap, int compression, boolean flipY) {
+	public static void writePNG (FileHandle file, Pixmap pixmap, int compression, boolean flipY) {
 		try {
 			PNG writer = new PNG((int)(pixmap.getWidth() * pixmap.getHeight() * 1.5f)); // Guess at deflated size.
 			try {
@@ -76,17 +76,17 @@ public class PixmapIO {
 
 	/** Writes the pixmap as a PNG with compression. See {@link PNG} to configure the compression level, more efficiently flip the
 	 * pixmap vertically, and to write out multiple PNGs with minimal allocation. */
-	static public void writePNG (FileHandle file, Pixmap pixmap) {
+	public static void writePNG (FileHandle file, Pixmap pixmap) {
 		writePNG(file, pixmap, Deflater.DEFAULT_COMPRESSION, false);
 	}
 
 	/** @author mzechner */
-	static private class CIM {
-		static private final int BUFFER_SIZE = 32000;
-		static private final byte[] writeBuffer = new byte[BUFFER_SIZE];
-		static private final byte[] readBuffer = new byte[BUFFER_SIZE];
+	private static class CIM {
+		private static final int BUFFER_SIZE = 32000;
+		private static final byte[] writeBuffer = new byte[BUFFER_SIZE];
+		private static final byte[] readBuffer = new byte[BUFFER_SIZE];
 
-		static public void write (FileHandle file, Pixmap pixmap) {
+		public static void write (FileHandle file, Pixmap pixmap) {
 			DataOutputStream out = null;
 
 			try {
@@ -122,7 +122,7 @@ public class PixmapIO {
 			}
 		}
 
-		static public Pixmap read (FileHandle file) {
+		public static Pixmap read (FileHandle file) {
 			DataInputStream in = null;
 
 			try {
@@ -181,14 +181,14 @@ public class PixmapIO {
 	 * 
 	 * @author Matthias Mann
 	 * @author Nathan Sweet */
-	static public class PNG implements Disposable {
-		static private final byte[] SIGNATURE = {(byte)137, 80, 78, 71, 13, 10, 26, 10};
-		static private final int IHDR = 0x49484452, IDAT = 0x49444154, IEND = 0x49454E44;
-		static private final byte COLOR_ARGB = 6;
-		static private final byte COMPRESSION_DEFLATE = 0;
-		static private final byte FILTER_NONE = 0;
-		static private final byte INTERLACE_NONE = 0;
-		static private final byte PAETH = 4;
+	public static class PNG implements Disposable {
+		private static final byte[] SIGNATURE = {(byte)137, 80, 78, 71, 13, 10, 26, 10};
+		private static final int IHDR = 0x49484452, IDAT = 0x49444154, IEND = 0x49454E44;
+		private static final byte COLOR_ARGB = 6;
+		private static final byte COMPRESSION_DEFLATE = 0;
+		private static final byte FILTER_NONE = 0;
+		private static final byte INTERLACE_NONE = 0;
+		private static final byte PAETH = 4;
 
 		private final ChunkBuffer buffer;
 		private final Deflater deflater;

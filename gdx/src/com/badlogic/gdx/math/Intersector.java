@@ -211,14 +211,14 @@ public final class Intersector {
 	}
 
 	/** Returns true if the specified poygons intersect. */
-	static public boolean intersectPolygons (FloatArray polygon1, FloatArray polygon2) {
+	public static boolean intersectPolygons (FloatArray polygon1, FloatArray polygon2) {
 		if (Intersector.isPointInPolygon(polygon1.items, 0, polygon1.size, polygon2.items[0], polygon2.items[1])) return true;
 		if (Intersector.isPointInPolygon(polygon2.items, 0, polygon2.size, polygon1.items[0], polygon1.items[1])) return true;
 		return intersectPolygonEdges(polygon1, polygon2);
 	}
 
 	/** Returns true if the lines of the specified poygons intersect. */
-	static public boolean intersectPolygonEdges (FloatArray polygon1, FloatArray polygon2) {
+	public static boolean intersectPolygonEdges (FloatArray polygon1, FloatArray polygon2) {
 		int last1 = polygon1.size - 2, last2 = polygon2.size - 2;
 		float[] p1 = polygon1.items, p2 = polygon2.items;
 		float x1 = p1[last1], y1 = p1[last1 + 1];
@@ -652,7 +652,7 @@ public final class Intersector {
 
 	/** Quick check whether the given {@link Ray} and {@link BoundingBox} intersect.
 	 * @return Whether the ray and the bounding box intersect. */
-	static public boolean intersectRayBoundsFast (Ray ray, BoundingBox box) {
+	public static boolean intersectRayBoundsFast (Ray ray, BoundingBox box) {
 		return intersectRayBoundsFast(ray, box.getCenter(tmp1), box.getDimensions(tmp2));
 	}
 
@@ -660,7 +660,7 @@ public final class Intersector {
 	 * @param center The center of the bounding box
 	 * @param dimensions The dimensions (width, height and depth) of the bounding box
 	 * @return Whether the ray and the bounding box intersect. */
-	static public boolean intersectRayBoundsFast (Ray ray, Vector3 center, Vector3 dimensions) {
+	public static boolean intersectRayBoundsFast (Ray ray, Vector3 center, Vector3 dimensions) {
 		final float divX = 1f / ray.direction.x;
 		final float divY = 1f / ray.direction.y;
 		final float divZ = 1f / ray.direction.z;
@@ -698,7 +698,7 @@ public final class Intersector {
 	/** Check whether the given {@link Ray} and {@link OrientedBoundingBox} intersect.
 	 *
 	 * @return Whether the ray and the oriented bounding box intersect. */
-	static public boolean intersectRayOrientedBoundsFast (Ray ray, OrientedBoundingBox obb) {
+	public static boolean intersectRayOrientedBoundsFast (Ray ray, OrientedBoundingBox obb) {
 		return intersectRayOrientedBounds(ray, obb, null);
 	}
 
@@ -706,7 +706,7 @@ public final class Intersector {
 	 * @param transform - the BoundingBox transformation
 	 *
 	 * @return Whether the ray and the oriented bounding box intersect. */
-	static public boolean intersectRayOrientedBoundsFast (Ray ray, BoundingBox bounds, Matrix4 transform) {
+	public static boolean intersectRayOrientedBoundsFast (Ray ray, BoundingBox bounds, Matrix4 transform) {
 		return intersectRayOrientedBounds(ray, bounds, transform, null);
 	}
 
@@ -714,7 +714,7 @@ public final class Intersector {
 	 *
 	 * @param intersection The intersection point (optional)
 	 * @return Whether an intersection is present. */
-	static public boolean intersectRayOrientedBounds (Ray ray, OrientedBoundingBox obb, Vector3 intersection) {
+	public static boolean intersectRayOrientedBounds (Ray ray, OrientedBoundingBox obb, Vector3 intersection) {
 		BoundingBox bounds = obb.getBounds();
 		Matrix4 transform = obb.getTransform();
 		return intersectRayOrientedBounds(ray, bounds, transform, intersection);
@@ -725,7 +725,7 @@ public final class Intersector {
 	 * Based on code at: https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_custom.cpp#L83
 	 * @param intersection The intersection point (optional)
 	 * @return Whether an intersection is present. */
-	static public boolean intersectRayOrientedBounds (Ray ray, BoundingBox bounds, Matrix4 transform, Vector3 intersection) {
+	public static boolean intersectRayOrientedBounds (Ray ray, BoundingBox bounds, Matrix4 transform, Vector3 intersection) {
 		float tMin = 0.0f;
 		float tMax = Float.MAX_VALUE;
 		float t1, t2;
@@ -1027,7 +1027,7 @@ public final class Intersector {
 	/** Determines whether the given rectangles intersect and, if they do, sets the supplied {@code intersection} rectangle to the
 	 * area of overlap.
 	 * @return Whether the rectangles intersect */
-	static public boolean intersectRectangles (Rectangle rectangle1, Rectangle rectangle2, Rectangle intersection) {
+	public static boolean intersectRectangles (Rectangle rectangle1, Rectangle rectangle2, Rectangle intersection) {
 		if (rectangle1.overlaps(rectangle2)) {
 			intersection.x = Math.max(rectangle1.x, rectangle2.x);
 			intersection.width = Math.min(rectangle1.x + rectangle1.width, rectangle2.x + rectangle2.width) - intersection.x;

@@ -1,7 +1,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -47,9 +47,9 @@ public class CoordinatesTest extends GdxTest {
 	@Override
 	public void create () {
 
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 		TextureRegionDrawable logo = new TextureRegionDrawable(
-			new TextureRegion(new Texture(Gdx.files.internal("data/badlogic.jpg"))));
+			new TextureRegion(new Texture(Micro.files.internal("data/badlogic.jpg"))));
 
 		stageViewport = new FitViewport(500, 500);
 		stageViewport = new Viewport() {
@@ -62,10 +62,10 @@ public class CoordinatesTest extends GdxTest {
 		stageViewport.setCamera(new OrthographicCamera());
 		gameViewport = new FitViewport(100, 100);
 
-		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = new OrthographicCamera(Micro.graphics.getWidth(), Micro.graphics.getHeight());
 
 		stage = new Stage(stageViewport);
-		Gdx.input.setInputProcessor(stage);
+		Micro.input.setInputProcessor(stage);
 
 		shapeRenderer = new ShapeRenderer();
 
@@ -102,11 +102,11 @@ public class CoordinatesTest extends GdxTest {
 	@Override
 	public void render () {
 
-		final float screenHeight = Gdx.graphics.getHeight();
+		final float screenHeight = Micro.graphics.getHeight();
 
 		// display screen coordinates for actor, stage, viewport, and camera
-		int pointerX = Gdx.input.getX();
-		int pointerY = Gdx.input.getY();
+		int pointerX = Micro.input.getX();
+		int pointerY = Micro.input.getY();
 		inScreenLabel.setText("input: " + pointerX + " " + pointerY);
 
 		gameViewport.unproject(vec2.set(pointerX, pointerY));
@@ -143,12 +143,12 @@ public class CoordinatesTest extends GdxTest {
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 
 		// clear viewport virtual screen with lighter color
-		Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
-		Gdx.gl.glScissor(gameViewport.getScreenX(), gameViewport.getScreenY(), gameViewport.getScreenWidth(),
+		Micro.gl.glEnable(GL20.GL_SCISSOR_TEST);
+		Micro.gl.glScissor(gameViewport.getScreenX(), gameViewport.getScreenY(), gameViewport.getScreenWidth(),
 			gameViewport.getScreenHeight());
-		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
+		Micro.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glDisable(GL20.GL_SCISSOR_TEST);
 
 		// test stage world coordinates
 		img.setPosition(stWorldX, stWorldY);
@@ -165,7 +165,7 @@ public class CoordinatesTest extends GdxTest {
 		shapeRenderer.end();
 
 		// test camera world coordinates
-		HdpiUtils.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		HdpiUtils.glViewport(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setColor(Color.GREEN);

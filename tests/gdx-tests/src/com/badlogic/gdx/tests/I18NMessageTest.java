@@ -19,7 +19,7 @@ package com.badlogic.gdx.tests;
 import java.util.Date;
 import java.util.Locale;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -51,7 +51,7 @@ public class I18NMessageTest extends GdxTest {
 		I18NBundle.setSimpleFormatter(false);
 
 		try {
-			FileHandle bfh = Gdx.files.internal("data/i18n/message1");
+			FileHandle bfh = Micro.files.internal("data/i18n/message1");
 			rb_root = I18NBundle.createBundle(bfh, new Locale("", "", "")); // Locale.ROOT doesn't exist in Android API level 8
 			rb_default = I18NBundle.createBundle(bfh);
 			rb_en = I18NBundle.createBundle(bfh, new Locale("en", "US"));
@@ -74,12 +74,12 @@ public class I18NMessageTest extends GdxTest {
 			println(getParametricMessage("it", rb_it));
 			println(getParametricMessage("unsupported", rb_unsupported));
 
-			Gdx.app.log("", message);
+			Micro.app.log("", message);
 
 		} catch (Throwable t) {
 			message = "FAILED: " + t.getMessage() + "\n";
 			message += t.getClass();
-			Gdx.app.error(I18NMessageTest.class.getSimpleName(), "Error", t);
+			Micro.app.error(I18NMessageTest.class.getSimpleName(), "Error", t);
 		}
 	}
 
@@ -98,9 +98,9 @@ public class I18NMessageTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		font.draw(batch, message, 20, Gdx.graphics.getHeight() - 20);
+		font.draw(batch, message, 20, Micro.graphics.getHeight() - 20);
 		batch.end();
 	}
 

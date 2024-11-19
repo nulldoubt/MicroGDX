@@ -68,7 +68,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 		if (config.title == null)
 			config.title = listener.getClass().getSimpleName();
 		
-		Gdx.app = this;
+		Micro.app = this;
 		if (!config.disableAudio) {
 			try {
 				this.audio = createAudio(config);
@@ -79,8 +79,8 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 		} else {
 			this.audio = new MockAudio();
 		}
-		Gdx.audio = audio;
-		this.files = Gdx.files = createFiles();
+		Micro.audio = audio;
+		this.files = Micro.files = createFiles();
 		this.clipboard = new Lwjgl3Clipboard();
 		
 		this.sync = new Sync();
@@ -536,7 +536,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 	 * Creates a new {@link Lwjgl3Window} using the provided listener and {@link Lwjgl3WindowConfiguration}.
 	 * <p>
 	 * This function only just instantiates a {@link Lwjgl3Window} and returns immediately. The actual window creation is postponed
-	 * with {@link Application#postRunnable(Runnable)} until after all existing windows are updated.
+	 * with {@link Application#post(Runnable)} until after all existing windows are updated.
 	 */
 	public Lwjgl3Window newWindow(ApplicationListener listener, Lwjgl3WindowConfiguration config) {
 		Lwjgl3ApplicationConfiguration appConfig = Lwjgl3ApplicationConfiguration.copy(this.config);
@@ -558,7 +558,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 			createWindow(window, config, sharedContext);
 		} else {
 			// creation of additional windows is deferred to avoid GL context trouble
-			postRunnable(new Runnable() {
+			post(new Runnable() {
 				public void run() {
 					createWindow(window, config, sharedContext);
 					windows.add(window);
@@ -623,7 +623,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 	}
 	
 	@Override
-	public void postRunnable(Runnable runnable) {
+	public void post(Runnable runnable) {
 		synchronized (runnables) {
 			runnables.add(runnable);
 		}
@@ -635,14 +635,14 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 	}
 	
 	@Override
-	public void addLifecycleListener(LifecycleListener listener) {
+	public void register(LifecycleListener listener) {
 		synchronized (lifecycleListeners) {
 			lifecycleListeners.add(listener);
 		}
 	}
 	
 	@Override
-	public void removeLifecycleListener(LifecycleListener listener) {
+	public void unregister(LifecycleListener listener) {
 		synchronized (lifecycleListeners) {
 			lifecycleListeners.removeValue(listener, true);
 		}

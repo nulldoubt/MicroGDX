@@ -48,7 +48,7 @@ import android.window.OnBackInvokedDispatcher;
 
 import com.badlogic.gdx.AbstractInput;
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -259,7 +259,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 				alert.setView(input);
 				alert.setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 					public void onClick (DialogInterface dialog, int whichButton) {
-						Gdx.app.postRunnable(new Runnable() {
+						Micro.app.post(new Runnable() {
 							@Override
 							public void run () {
 								listener.input(input.getText().toString());
@@ -269,7 +269,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 				});
 				alert.setNegativeButton(context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
 					public void onClick (DialogInterface dialog, int whichButton) {
-						Gdx.app.postRunnable(new Runnable() {
+						Micro.app.post(new Runnable() {
 							@Override
 							public void run () {
 								listener.canceled();
@@ -280,7 +280,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 				alert.setOnCancelListener(new OnCancelListener() {
 					@Override
 					public void onCancel (DialogInterface arg0) {
-						Gdx.app.postRunnable(new Runnable() {
+						Micro.app.post(new Runnable() {
 							@Override
 							public void run () {
 								listener.canceled();
@@ -674,7 +674,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 	private TextInputWrapper textInputWrapper;
 
 	private int getSoftButtonsBarHeight () {
-		AndroidApplication androidApplication = (AndroidApplication)Gdx.app;
+		AndroidApplication androidApplication = (AndroidApplication) Micro.app;
 
 		DisplayMetrics metrics = new DisplayMetrics();
 		androidApplication.getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -730,7 +730,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 		}
 		relativeLayoutField.animate()
 				.y(-height)
-				.scaleX(((float) Gdx.graphics.getWidth() - rightInset - leftInset) / Gdx.graphics.getWidth())
+				.scaleX(((float) Micro.graphics.getWidth() - rightInset - leftInset) / Micro.graphics.getWidth())
 				.x((float) (leftInset - rightInset) / 2)
 				.setDuration(100)
 				.setListener(new Animator.AnimatorListener() {
@@ -788,7 +788,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 			@Override
 			public boolean onKeyPreIme (int keyCode, android.view.KeyEvent event) {
 				if (event.getKeyCode() == android.view.KeyEvent.KEYCODE_BACK) {
-					Gdx.input.closeTextInputField(false);
+					Micro.input.closeTextInputField(false);
 				}
 				return super.onKeyPreIme(keyCode, event);
 			}
@@ -876,7 +876,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 					@Override
 					public boolean onEditorAction (TextView textView, int actionId, android.view.KeyEvent keyEvent) {
 						if (actionId == EditorInfo.IME_ACTION_DONE) {
-							Gdx.input.closeTextInputField(true);
+							Micro.input.closeTextInputField(true);
 							return true;
 						}
 						return true;
@@ -903,7 +903,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 					editText.setInputType(editText.getInputType() | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 					editText.setImeOptions(editText.getImeOptions() | EditorInfo.IME_FLAG_NO_FULLSCREEN);
 					// For cursor control support
-					editText.setWidth(Gdx.graphics.getWidth());
+					editText.setWidth(Micro.graphics.getWidth());
 					editText.setLines(3);
 				} else {
 					editText.setImeOptions(editText.getImeOptions() | EditorInfo.IME_FLAG_NO_FULLSCREEN);
@@ -1034,7 +1034,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 				EditText editText = getEditTextForNativeInput();
 				final String text = editText.getText().toString();
 				final int selection = editText.getSelectionStart();
-				Gdx.app.postRunnable(new Runnable() {
+				Micro.app.post(new Runnable() {
 					TextInputWrapper wrapper = textInputWrapper;
 
 					@Override
@@ -1047,7 +1047,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 						}
 
 						// This is getting ridiculous...
-						Gdx.app.postRunnable(new Runnable() {
+						Micro.app.post(new Runnable() {
 							@Override
 							public void run () {
 								if (wrapper.shouldClose()) {
@@ -1232,7 +1232,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 			}
 		} else
 			compassAvailable = false;
-		Gdx.app.log("AndroidInput", "sensor listener setup");
+		Micro.app.log("AndroidInput", "sensor listener setup");
 	}
 
 	void unregisterSensorListeners () {
@@ -1255,7 +1255,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 			}
 			manager = null;
 		}
-		Gdx.app.log("AndroidInput", "sensor listener tear down");
+		Micro.app.log("AndroidInput", "sensor listener tear down");
 	}
 
 	@Override
@@ -1324,7 +1324,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 		for (int i = 0; i < len; i++) {
 			sb.append(i + ":" + realId[i] + " ");
 		}
-		Gdx.app.log("AndroidInput", "Pointer ID lookup failed: " + pointerId + ", " + sb.toString());
+		Micro.app.log("AndroidInput", "Pointer ID lookup failed: " + pointerId + ", " + sb.toString());
 		return -1;
 	}
 

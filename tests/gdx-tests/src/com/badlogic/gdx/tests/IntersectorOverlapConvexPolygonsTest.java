@@ -2,7 +2,7 @@
 package com.badlogic.gdx.tests;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -34,7 +34,7 @@ public class IntersectorOverlapConvexPolygonsTest extends GdxTest {
 
 	@Override
 	public void create () {
-		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+		Micro.app.setLogLevel(Application.LOG_DEBUG);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false);
 		camera.position.set(0, 0, 0);
@@ -53,29 +53,29 @@ public class IntersectorOverlapConvexPolygonsTest extends GdxTest {
 	}
 
 	private void update (float deltaTime) {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+		if (Micro.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			Intersector.overlapConvexPolygons(shape1, shape2, mtv);
 			float x = shape1.getX() + (mtv.normal.x * mtv.depth);
 			float y = shape1.getY() + (mtv.normal.y * mtv.depth);
 			shape1.setPosition(x, y);
-			Gdx.app.debug(TAG, mtv.normal + " " + mtv.depth);
+			Micro.app.debug(TAG, mtv.normal + " " + mtv.depth);
 		}
-		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-			mouseCoords.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+		if (Micro.input.isButtonPressed(Input.Buttons.LEFT)) {
+			mouseCoords.set(Micro.input.getX(), Micro.input.getY(), 0);
 			camera.unproject(mouseCoords);
 			shape1.setPosition(mouseCoords.x, mouseCoords.y);
 			boolean overlaps = Intersector.overlapConvexPolygons(shape1, shape2, mtv);
-			Gdx.app.debug(TAG, mtv.normal + " " + mtv.depth + " overlaps: " + overlaps + " " + mouseCoords);
-		} else if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+			Micro.app.debug(TAG, mtv.normal + " " + mtv.depth + " overlaps: " + overlaps + " " + mouseCoords);
+		} else if (Micro.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
 			shape1.rotate(90);
 			boolean overlaps = Intersector.overlapConvexPolygons(shape1, shape2, mtv);
-			Gdx.app.debug(TAG, mtv.normal + " " + mtv.depth + " overlaps: " + overlaps);
+			Micro.app.debug(TAG, mtv.normal + " " + mtv.depth + " overlaps: " + overlaps);
 		}
 	}
 
 	@Override
 	public void render () {
-		update(Gdx.graphics.getDeltaTime());
+		update(Micro.graphics.getDeltaTime());
 		camera.update();
 		ScreenUtils.clear(0f, 0f, 0f, 0f, true);
 		shapeRenderer.setProjectionMatrix(camera.combined);

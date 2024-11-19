@@ -23,7 +23,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -45,7 +45,7 @@ public class ComplexActionTest extends GdxTest {
 		Action complexAction = forever(sequence(parallel(rotateBy(180, 2), scaleTo(1.4f, 1.4f, 2), alpha(0.7f, 2)),
 			parallel(rotateBy(180, 2), scaleTo(1.0f, 1.0f, 2), alpha(1.0f, 2))));
 
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"), false);
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"), false);
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		final Image img1 = new Image(new TextureRegion(texture));
@@ -67,8 +67,8 @@ public class ComplexActionTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		stage.act(Math.min(Micro.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 	}
 

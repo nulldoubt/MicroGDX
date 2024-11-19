@@ -22,16 +22,16 @@ public class MultiWindowCursorTest {
 			if (MathUtils.randomBoolean()) {
 				Cursor.SystemCursor[] systemCursors = Cursor.SystemCursor.values();
 				Cursor.SystemCursor systemCursor = systemCursors[MathUtils.random(systemCursors.length - 1)];
-				Gdx.graphics.setSystemCursor(systemCursor);
+				Micro.graphics.setSystemCursor(systemCursor);
 			} else {
 				Pixmap pixmap;
 				if (MathUtils.randomBoolean()) {
-					pixmap = new Pixmap(Gdx.files.internal("data/particle-star.png"));
+					pixmap = new Pixmap(Micro.files.internal("data/particle-star.png"));
 				} else {
-					pixmap = new Pixmap(Gdx.files.internal("data/ps-bobargb8888-32x32.png"));
+					pixmap = new Pixmap(Micro.files.internal("data/ps-bobargb8888-32x32.png"));
 				}
-				Cursor cursor = Gdx.graphics.newCursor(pixmap, pixmap.getWidth() / 2, pixmap.getHeight() / 2);
-				Gdx.graphics.setCursor(cursor);
+				Cursor cursor = Micro.graphics.newCursor(pixmap, pixmap.getWidth() / 2, pixmap.getHeight() / 2);
+				Micro.graphics.setCursor(cursor);
 				pixmap.dispose();
 			}
 		}

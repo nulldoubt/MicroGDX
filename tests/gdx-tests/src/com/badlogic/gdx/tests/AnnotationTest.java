@@ -21,7 +21,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -45,7 +45,7 @@ public class AnnotationTest extends GdxTest {
 	/** Sample annotation. It is required to annotate annotations themselves with {@link RetentionPolicy}.RUNTIME to become
 	 * available to the {@link ClassReflection} package. */
 	@Retention(RetentionPolicy.RUNTIME)
-	static public @interface TestAnnotation {
+	public static @interface TestAnnotation {
 		// String parameter, no default
 		String name();
 
@@ -58,7 +58,7 @@ public class AnnotationTest extends GdxTest {
 
 	/** Sample usage of class and field annotations. */
 	@TestAnnotation(name = "MyAnnotatedClass", someEnum = TestEnum.EnumB)
-	static public class AnnotatedClass {
+	public static class AnnotatedClass {
 		public int unanottatedField;
 
 		public int unannotatedMethod () {
@@ -75,15 +75,15 @@ public class AnnotationTest extends GdxTest {
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Inherited
-	static public @interface TestInheritAnnotation {
+	public static @interface TestInheritAnnotation {
 	}
 
 	@TestInheritAnnotation
-	static public class InheritClassA {
+	public static class InheritClassA {
 	}
 
 	@TestAnnotation(name = "MyInheritClassB")
-	static public class InheritClassB extends InheritClassA {
+	public static class InheritClassB extends InheritClassA {
 	}
 
 	@Override
@@ -151,9 +151,9 @@ public class AnnotationTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		font.draw(batch, message, 20, Gdx.graphics.getHeight() - 20);
+		font.draw(batch, message, 20, Micro.graphics.getHeight() - 20);
 		batch.end();
 	}
 

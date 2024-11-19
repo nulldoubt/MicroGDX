@@ -429,7 +429,7 @@ public class LongArray {
 	}
 
 	/** @see #LongArray(long[]) */
-	static public LongArray with (long... array) {
+	public static LongArray with (long... array) {
 		return new LongArray(array);
 	}
 }

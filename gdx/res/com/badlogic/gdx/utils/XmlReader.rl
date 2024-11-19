@@ -225,7 +225,7 @@ public class XmlReader {
 		current.setAttribute(name, value);
 	}
 
-	protected @Null String entity (String name) {
+	protected String entity (String name) {
 		if (name.equals("lt")) return "<";
 		if (name.equals("gt")) return ">";
 		if (name.equals("amp")) return "&";
@@ -245,7 +245,7 @@ public class XmlReader {
 		current = elements.size > 0 ? elements.peek() : null;
 	}
 
-	static public class Element {
+	public static class Element {
 		private final String name;
 		private ObjectMap<String, String> attributes;
 		private Array<Element> children;
@@ -385,7 +385,7 @@ public class XmlReader {
 
 		/** @param name the name of the child {@link Element}
 		 * @return the first child having the given name or null, does not recurse */
-		public @Null Element getChildByName (String name) {
+		public Element getChildByName (String name) {
 			if (children == null) return null;
 			for (int i = 0; i < children.size; i++) {
 				Element element = children.get(i);
@@ -401,7 +401,7 @@ public class XmlReader {
 
 		/** @param name the name of the child {@link Element}
 		 * @return the first child having the given name or null, recurses */
-		public @Null Element getChildByNameRecursive (String name) {
+		public Element getChildByNameRecursive (String name) {
 			if (children == null) return null;
 			for (int i = 0; i < children.size; i++) {
 				Element element = children.get(i);

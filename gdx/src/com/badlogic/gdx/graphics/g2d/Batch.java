@@ -239,24 +239,24 @@ public interface Batch extends Disposable {
 	/** @return true if currently between begin and end. */
 	public boolean isDrawing ();
 
-	static public final int X1 = 0;
-	static public final int Y1 = 1;
-	static public final int C1 = 2;
-	static public final int U1 = 3;
-	static public final int V1 = 4;
-	static public final int X2 = 5;
-	static public final int Y2 = 6;
-	static public final int C2 = 7;
-	static public final int U2 = 8;
-	static public final int V2 = 9;
-	static public final int X3 = 10;
-	static public final int Y3 = 11;
-	static public final int C3 = 12;
-	static public final int U3 = 13;
-	static public final int V3 = 14;
-	static public final int X4 = 15;
-	static public final int Y4 = 16;
-	static public final int C4 = 17;
-	static public final int U4 = 18;
-	static public final int V4 = 19;
+	public static final int X1 = 0;
+	public static final int Y1 = 1;
+	public static final int C1 = 2;
+	public static final int U1 = 3;
+	public static final int V1 = 4;
+	public static final int X2 = 5;
+	public static final int Y2 = 6;
+	public static final int C2 = 7;
+	public static final int U2 = 8;
+	public static final int V2 = 9;
+	public static final int X3 = 10;
+	public static final int Y3 = 11;
+	public static final int C3 = 12;
+	public static final int U3 = 13;
+	public static final int V3 = 14;
+	public static final int X4 = 15;
+	public static final int Y4 = 16;
+	public static final int C4 = 17;
+	public static final int U4 = 18;
+	public static final int V4 = 19;
 }

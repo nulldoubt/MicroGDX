@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -41,8 +41,8 @@ public class VibratorTest extends GdxTest {
 	public void create () {
 		batch = new SpriteBatch();
 		stage = new Stage();
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		Gdx.input.setInputProcessor(stage);
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
+		Micro.input.setInputProcessor(stage);
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
@@ -54,7 +54,7 @@ public class VibratorTest extends GdxTest {
 		button.addListener(new ChangeListener() {
 			@Override
 			public void changed (ChangeEvent event, Actor actor) {
-				Gdx.input.vibrate(50);
+				Micro.input.vibrate(50);
 			}
 		});
 		final Button buttonVibrateAmplitude = getButton("Vibrate \n Amplitude \n Random");
@@ -63,8 +63,8 @@ public class VibratorTest extends GdxTest {
 			public void changed (ChangeEvent event, Actor actor) {
 				int randomLength = MathUtils.random(10, 200);
 				int randomAmplitude = MathUtils.random(0, 255);
-				Gdx.input.vibrate(randomLength, randomAmplitude, fallbackCheckbox.isChecked());
-				Gdx.app.log("VibratorTest", "Length: " + randomLength + "ms, Amplitude: " + randomAmplitude);
+				Micro.input.vibrate(randomLength, randomAmplitude, fallbackCheckbox.isChecked());
+				Micro.app.log("VibratorTest", "Length: " + randomLength + "ms, Amplitude: " + randomAmplitude);
 			}
 		});
 		final Button buttonVibrateType = getButton("Vibrate \n Type \n Random");
@@ -73,8 +73,8 @@ public class VibratorTest extends GdxTest {
 			public void changed (ChangeEvent event, Actor actor) {
 				Input.VibrationType vibrationType = Input.VibrationType.values()[MathUtils.random(0,
 					Input.VibrationType.values().length - 1)];
-				Gdx.input.vibrate(vibrationType);
-				Gdx.app.log("VibratorTest", "VibrationType: " + vibrationType.name());
+				Micro.input.vibrate(vibrationType);
+				Micro.app.log("VibratorTest", "VibrationType: " + vibrationType.name());
 			}
 		});
 
@@ -96,8 +96,8 @@ public class VibratorTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		stage.act(Math.min(Micro.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 	}
 

@@ -18,7 +18,7 @@ package com.badlogic.gdx.tests;
 
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,7 +28,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.tests.utils.OrthoCamController;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
 
 public class IsometricTileTest extends GdxTest {
 	static final int LAYERS = 1;
@@ -47,16 +46,16 @@ public class IsometricTileTest extends GdxTest {
 	OrthographicCamera cam;
 	OrthoCamController camController;
 	ShapeRenderer renderer;
-	long startTime = TimeUtils.nanoTime();
-
+	long startTime = System.nanoTime();
+	
 	@Override
 	public void create () {
 		cam = new OrthographicCamera(480, 320);
 		camController = new OrthoCamController(cam);
-		Gdx.input.setInputProcessor(camController);
+		Micro.input.setInputProcessor(camController);
 
 		renderer = new ShapeRenderer();
-		texture = new Texture(Gdx.files.internal("data/isotile.png"));
+		texture = new Texture(Micro.files.internal("data/isotile.png"));
 
 		Random rand = new Random();
 		for (int i = 0; i < LAYERS; i++) {
@@ -93,8 +92,8 @@ public class IsometricTileTest extends GdxTest {
 		ScreenUtils.clear(0.7f, 0.7f, 0.7f, 1f);
 		cam.update();
 
-		Gdx.gl.glEnable(GL20.GL_BLEND);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Micro.gl.glEnable(GL20.GL_BLEND);
+		Micro.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		for (int i = 0; i < LAYERS; i++) {
 			SpriteCache cache = caches[i];
 			cache.setProjectionMatrix(cam.combined);

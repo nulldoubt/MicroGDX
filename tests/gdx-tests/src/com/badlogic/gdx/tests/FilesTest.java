@@ -24,7 +24,7 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -41,15 +41,15 @@ public class FilesTest extends GdxTest {
 
 	@Override
 	public void create () {
-		font = new BitmapFont(Gdx.files.internal("data/lsans-15.fnt"), false);
+		font = new BitmapFont(Micro.files.internal("data/lsans-15.fnt"), false);
 		batch = new SpriteBatch();
 
-		if (Gdx.files.isExternalStorageAvailable()) {
+		if (Micro.files.isExternalStorageAvailable()) {
 			message += "External storage available\n";
-			message += "External storage path: " + Gdx.files.getExternalStoragePath() + "\n";
+			message += "External storage path: " + Micro.files.getExternalStoragePath() + "\n";
 
 			try {
-				InputStream in = Gdx.files.internal("data/cube.obj").read();
+				InputStream in = Micro.files.internal("data/cube.obj").read();
 				StreamUtils.closeQuietly(in);
 				message += "Open internal success\n";
 			} catch (Throwable e) {
@@ -58,7 +58,7 @@ public class FilesTest extends GdxTest {
 
 			BufferedWriter out = null;
 			try {
-				out = new BufferedWriter(new OutputStreamWriter(Gdx.files.external("test.txt").write(false)));
+				out = new BufferedWriter(new OutputStreamWriter(Micro.files.external("test.txt").write(false)));
 				out.write("test");
 				message += "Write external success\n";
 			} catch (GdxRuntimeException ex) {
@@ -70,7 +70,7 @@ public class FilesTest extends GdxTest {
 			}
 
 			try {
-				InputStream in = Gdx.files.external("test.txt").read();
+				InputStream in = Micro.files.external("test.txt").read();
 				StreamUtils.closeQuietly(in);
 				message += "Open external success\n";
 			} catch (Throwable e) {
@@ -79,7 +79,7 @@ public class FilesTest extends GdxTest {
 
 			BufferedReader in = null;
 			try {
-				in = new BufferedReader(new InputStreamReader(Gdx.files.external("test.txt").read()));
+				in = new BufferedReader(new InputStreamReader(Micro.files.external("test.txt").read()));
 				if (!in.readLine().equals("test"))
 					message += "Read result wrong\n";
 				else
@@ -92,17 +92,17 @@ public class FilesTest extends GdxTest {
 				StreamUtils.closeQuietly(in);
 			}
 
-			if (!Gdx.files.external("test.txt").delete()) message += "Couldn't delete externalstorage/test.txt";
+			if (!Micro.files.external("test.txt").delete()) message += "Couldn't delete externalstorage/test.txt";
 		} else {
 			message += "External storage not available";
 		}
-		if (Gdx.files.isLocalStorageAvailable()) {
+		if (Micro.files.isLocalStorageAvailable()) {
 			message += "Local storage available\n";
-			message += "Local storage path: " + Gdx.files.getLocalStoragePath() + "\n";
+			message += "Local storage path: " + Micro.files.getLocalStoragePath() + "\n";
 
 			BufferedWriter out = null;
 			try {
-				out = new BufferedWriter(new OutputStreamWriter(Gdx.files.local("test.txt").write(false)));
+				out = new BufferedWriter(new OutputStreamWriter(Micro.files.local("test.txt").write(false)));
 				out.write("test");
 				message += "Write local success\n";
 			} catch (GdxRuntimeException ex) {
@@ -114,7 +114,7 @@ public class FilesTest extends GdxTest {
 			}
 
 			try {
-				InputStream in = Gdx.files.local("test.txt").read();
+				InputStream in = Micro.files.local("test.txt").read();
 				StreamUtils.closeQuietly(in);
 				message += "Open local success\n";
 			} catch (Throwable e) {
@@ -123,7 +123,7 @@ public class FilesTest extends GdxTest {
 
 			BufferedReader in = null;
 			try {
-				in = new BufferedReader(new InputStreamReader(Gdx.files.local("test.txt").read()));
+				in = new BufferedReader(new InputStreamReader(Micro.files.local("test.txt").read()));
 				if (!in.readLine().equals("test"))
 					message += "Read result wrong\n";
 				else
@@ -137,7 +137,7 @@ public class FilesTest extends GdxTest {
 			}
 
 			try {
-				byte[] testBytes = Gdx.files.local("test.txt").readBytes();
+				byte[] testBytes = Micro.files.local("test.txt").readBytes();
 				if (Arrays.equals("test".getBytes(), testBytes))
 					message += "Read into byte array success\n";
 				else
@@ -146,12 +146,12 @@ public class FilesTest extends GdxTest {
 				message += "Couldn't read localstorage/test.txt\n" + e.getMessage() + "\n";
 			}
 
-			if (!Gdx.files.local("test.txt").delete()) message += "Couldn't delete localstorage/test.txt";
+			if (!Micro.files.local("test.txt").delete()) message += "Couldn't delete localstorage/test.txt";
 		}
 		try {
 			testClasspath();
 			testInternal();
-			if (!(Gdx.app.getType() == ApplicationType.WebGL)) {
+			if (!(Micro.app.getType() == ApplicationType.WebGL)) {
 				testExternal();
 				testAbsolute();
 				testLocal();
@@ -163,8 +163,8 @@ public class FilesTest extends GdxTest {
 
 	private void testClasspath () throws IOException {
 		// no classpath support on ios
-		if (Gdx.app.getType() == ApplicationType.iOS) return;
-		FileHandle handle = Gdx.files.classpath("com/badlogic/gdx/utils/lsans-15.png");
+		if (Micro.app.getType() == ApplicationType.iOS) return;
+		FileHandle handle = Micro.files.classpath("com/badlogic/gdx/utils/lsans-15.png");
 		if (!handle.exists()) fail();
 		if (handle.isDirectory()) fail();
 		try {
@@ -182,7 +182,7 @@ public class FilesTest extends GdxTest {
 			fail();
 		} catch (Exception ignored) {
 		}
-		FileHandle dir = Gdx.files.classpath("com/badlogic/gdx/utils");
+		FileHandle dir = Micro.files.classpath("com/badlogic/gdx/utils");
 		if (dir.isDirectory()) fail();
 		FileHandle child = dir.child("lsans-15.fnt");
 		if (!child.name().equals("lsans-15.fnt")) fail();
@@ -193,7 +193,7 @@ public class FilesTest extends GdxTest {
 	}
 
 	private void testInternal () throws IOException {
-		FileHandle handle = Gdx.files.internal("data/badlogic.jpg");
+		FileHandle handle = Micro.files.internal("data/badlogic.jpg");
 		if (!handle.exists()) fail("Couldn't find internal file");
 		if (handle.isDirectory()) fail("Internal file shouldn't be a directory");
 		try {
@@ -202,7 +202,7 @@ public class FilesTest extends GdxTest {
 		} catch (Exception expected) {
 		}
 		if (handle.list().length != 0) fail("File length shouldn't be 0");
-		if (Gdx.app.getType() != ApplicationType.Android) {
+		if (Micro.app.getType() != ApplicationType.Android) {
 			if (!handle.parent().exists()) fail("Parent doesn't exist");
 		}
 		try {
@@ -210,22 +210,22 @@ public class FilesTest extends GdxTest {
 			fail();
 		} catch (Exception ignored) {
 		}
-		FileHandle dir = Gdx.files.internal("data");
-		if (Gdx.app.getType() != ApplicationType.Android) {
+		FileHandle dir = Micro.files.internal("data");
+		if (Micro.app.getType() != ApplicationType.Android) {
 			if (!dir.exists()) fail();
 		}
 		if (!dir.isDirectory()) fail();
 		if (dir.list().length == 0) fail();
-		Gdx.app.log("FilesTest", "Files in data: " + Arrays.toString(dir.list()) + " (" + dir.list().length + ")");
+		Micro.app.log("FilesTest", "Files in data: " + Arrays.toString(dir.list()) + " (" + dir.list().length + ")");
 		FileHandle child = dir.child("badlogic.jpg");
 		if (!child.name().equals("badlogic.jpg")) fail();
 		if (!child.nameWithoutExtension().equals("badlogic")) fail();
 		if (!child.extension().equals("jpg")) fail();
-		if (Gdx.app.getType() != ApplicationType.Android) {
+		if (Micro.app.getType() != ApplicationType.Android) {
 			if (!child.parent().exists()) fail();
 		}
-		if (!(Gdx.app.getType() == ApplicationType.WebGL)) {
-			FileHandle copy = Gdx.files.external("badlogic.jpg-copy");
+		if (!(Micro.app.getType() == ApplicationType.WebGL)) {
+			FileHandle copy = Micro.files.external("badlogic.jpg-copy");
 			copy.delete();
 			if (copy.exists()) fail();
 			handle.copyTo(copy);
@@ -240,7 +240,7 @@ public class FilesTest extends GdxTest {
 
 	private void testExternal () throws IOException {
 		String path = "meow";
-		FileHandle handle = Gdx.files.external(path);
+		FileHandle handle = Micro.files.external(path);
 		handle.delete();
 		if (handle.exists()) fail();
 		if (handle.isDirectory()) fail();
@@ -269,13 +269,13 @@ public class FilesTest extends GdxTest {
 		output.close();
 		if (!handle.exists()) fail();
 		if (handle.length() != 3) fail();
-		FileHandle copy = Gdx.files.external(path + "-copy");
+		FileHandle copy = Micro.files.external(path + "-copy");
 		copy.delete();
 		if (copy.exists()) fail();
 		handle.copyTo(copy);
 		if (!copy.exists()) fail();
 		if (copy.length() != 3) fail();
-		FileHandle move = Gdx.files.external(path + "-move");
+		FileHandle move = Micro.files.external(path + "-move");
 		move.delete();
 		if (move.exists()) fail();
 		copy.moveTo(move);
@@ -309,8 +309,8 @@ public class FilesTest extends GdxTest {
 	}
 
 	private void testAbsolute () throws IOException {
-		String path = new File(Gdx.files.getExternalStoragePath(), "meow").getAbsolutePath();
-		FileHandle handle = Gdx.files.absolute(path);
+		String path = new File(Micro.files.getExternalStoragePath(), "meow").getAbsolutePath();
+		FileHandle handle = Micro.files.absolute(path);
 		handle.delete();
 		if (handle.exists()) fail();
 		if (handle.isDirectory()) fail();
@@ -339,13 +339,13 @@ public class FilesTest extends GdxTest {
 		output.close();
 		if (!handle.exists()) fail();
 		if (handle.length() != 3) fail();
-		FileHandle copy = Gdx.files.absolute(path + "-copy");
+		FileHandle copy = Micro.files.absolute(path + "-copy");
 		copy.delete();
 		if (copy.exists()) fail();
 		handle.copyTo(copy);
 		if (!copy.exists()) fail();
 		if (copy.length() != 3) fail();
-		FileHandle move = Gdx.files.absolute(path + "-move");
+		FileHandle move = Micro.files.absolute(path + "-move");
 		move.delete();
 		if (move.exists()) fail();
 		copy.moveTo(move);
@@ -380,7 +380,7 @@ public class FilesTest extends GdxTest {
 
 	private void testLocal () throws IOException {
 		String path = "meow";
-		FileHandle handle = Gdx.files.local(path);
+		FileHandle handle = Micro.files.local(path);
 		handle.delete();
 		if (handle.exists()) fail();
 		if (handle.isDirectory()) fail();
@@ -409,13 +409,13 @@ public class FilesTest extends GdxTest {
 		output.close();
 		if (!handle.exists()) fail();
 		if (handle.length() != 3) fail();
-		FileHandle copy = Gdx.files.local(path + "-copy");
+		FileHandle copy = Micro.files.local(path + "-copy");
 		copy.delete();
 		if (copy.exists()) fail();
 		handle.copyTo(copy);
 		if (!copy.exists()) fail();
 		if (copy.length() != 3) fail();
-		FileHandle move = Gdx.files.local(path + "-move");
+		FileHandle move = Micro.files.local(path + "-move");
 		move.delete();
 		if (move.exists()) fail();
 		copy.moveTo(move);
@@ -458,9 +458,9 @@ public class FilesTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		font.draw(batch, message, 20, Gdx.graphics.getHeight() - 20);
+		font.draw(batch, message, 20, Micro.graphics.getHeight() - 20);
 		batch.end();
 	}
 

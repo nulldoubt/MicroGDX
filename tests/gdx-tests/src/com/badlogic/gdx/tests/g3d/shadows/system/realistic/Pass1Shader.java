@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.g3d.shadows.system.realistic;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -27,7 +27,7 @@ public class Pass1Shader extends DefaultShader {
 	private static String defaultVertexShader = null;
 
 	public static String getDefaultVertexShader () {
-		if (defaultVertexShader == null) defaultVertexShader = Gdx.files
+		if (defaultVertexShader == null) defaultVertexShader = Micro.files
 			.classpath("com/badlogic/gdx/tests/g3d/shadows/system/realistic/pass1.vertex.glsl").readString();
 		return defaultVertexShader;
 	}
@@ -35,7 +35,7 @@ public class Pass1Shader extends DefaultShader {
 	private static String defaultFragmentShader = null;
 
 	public static String getDefaultFragmentShader () {
-		if (defaultFragmentShader == null) defaultFragmentShader = Gdx.files
+		if (defaultFragmentShader == null) defaultFragmentShader = Micro.files
 			.classpath("com/badlogic/gdx/tests/g3d/shadows/system/realistic/pass1.fragment.glsl").readString();
 		return defaultFragmentShader;
 	}

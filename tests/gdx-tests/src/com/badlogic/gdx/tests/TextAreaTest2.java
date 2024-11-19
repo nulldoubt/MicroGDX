@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -32,8 +32,8 @@ public class TextAreaTest2 extends GdxTest {
 	@Override
 	public void create () {
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		Micro.input.setInputProcessor(stage);
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 
 		// Create a string that perfectly fills the float array used in the textarea float array
 		FloatArray dummyArray = new FloatArray();
@@ -56,9 +56,9 @@ public class TextAreaTest2 extends GdxTest {
 	public void render () {
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 		stage.draw();
-		Gdx.app.log("X", "FPS: " + Gdx.graphics.getFramesPerSecond());
+		Micro.app.log("X", "FPS: " + Micro.graphics.getFPS());
 		SpriteBatch spriteBatch = (SpriteBatch)stage.getBatch();
-		Gdx.app.log("X", "render calls: " + spriteBatch.totalRenderCalls);
+		Micro.app.log("X", "render calls: " + spriteBatch.totalRenderCalls);
 		spriteBatch.totalRenderCalls = 0;
 	}
 

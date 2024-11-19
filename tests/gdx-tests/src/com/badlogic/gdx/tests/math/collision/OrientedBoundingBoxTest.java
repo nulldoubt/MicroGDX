@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests.math.collision;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
@@ -63,16 +63,16 @@ public class OrientedBoundingBoxTest extends GdxTest implements ApplicationListe
 
 	@Override
 	public void create () {
-		font = new BitmapFont(Gdx.files.internal("data/lsans-15.fnt"), false);
+		font = new BitmapFont(Micro.files.internal("data/lsans-15.fnt"), false);
 		batch = new SpriteBatch();
 		modelBatch = new ModelBatch();
 
 		setupScene();
 		setupCamera();
 		InputMultiplexer inputMultiplexer = new InputMultiplexer();
-		inputMultiplexer.addProcessor(cameraController);
-		inputMultiplexer.addProcessor(this);
-		Gdx.input.setInputProcessor(inputMultiplexer);
+		inputMultiplexer.add(cameraController);
+		inputMultiplexer.add(this);
+		Micro.input.setInputProcessor(inputMultiplexer);
 	}
 
 	private void setupScene () {
@@ -91,7 +91,7 @@ public class OrientedBoundingBoxTest extends GdxTest implements ApplicationListe
 	}
 
 	private void setupCamera () {
-		camera = new PerspectiveCamera(60f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = new PerspectiveCamera(60f, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		camera.near = 0.01f;
 		camera.far = 100f;
 		camera.position.set(0, 5, -2);
@@ -103,13 +103,13 @@ public class OrientedBoundingBoxTest extends GdxTest implements ApplicationListe
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0, 0, 0, 0);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Micro.gl.glClearColor(0, 0, 0, 0);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		// Draw FPS
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		batch.begin();
-		font.draw(batch, "fps: " + Gdx.graphics.getFramesPerSecond(), 0, 30);
+		font.draw(batch, "fps: " + Micro.graphics.getFPS(), 0, 30);
 		font.draw(batch, "seed: " + seed, 0, 50);
 		batch.end();
 
@@ -126,7 +126,7 @@ public class OrientedBoundingBoxTest extends GdxTest implements ApplicationListe
 	}
 
 	private void checkCollision () {
-		Ray ray = camera.getPickRay(Gdx.input.getX(), Gdx.input.getY());
+		Ray ray = camera.getPickRay(Micro.input.getX(), Micro.input.getY());
 
 		// Reset all boxes
 		for (Box box : boxes) {

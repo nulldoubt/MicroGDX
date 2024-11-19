@@ -1,7 +1,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,14 +17,14 @@ public class GLES30Test extends GdxTest {
 
 	@Override
 	public void create () {
-		Gdx.app.log("GLES30Test", "GL_VERSION = " + Gdx.gl.glGetString(GL20.GL_VERSION));
+		Micro.app.log("GLES30Test", "GL_VERSION = " + Micro.gl.glGetString(GL20.GL_VERSION));
 		batch = new SpriteBatch();
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
-		shaderProgram = new ShaderProgram(Gdx.files.internal("data/shaders/gles30sprite.vert"),
-			Gdx.files.internal("data/shaders/gles30sprite.frag"));
-		Gdx.app.log("GLES30Test", shaderProgram.getLog());
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
+		shaderProgram = new ShaderProgram(Micro.files.internal("data/shaders/gles30sprite.vert"),
+			Micro.files.internal("data/shaders/gles30sprite.frag"));
+		Micro.app.log("GLES30Test", shaderProgram.getLog());
 		if (shaderProgram.isCompiled()) {
-			Gdx.app.log("GLES30Test", "Shader compiled");
+			Micro.app.log("GLES30Test", "Shader compiled");
 			batch.setShader(shaderProgram);
 		}
 	}
@@ -34,7 +34,7 @@ public class GLES30Test extends GdxTest {
 		ScreenUtils.clear(0, 0, 0, 1);
 
 		batch.begin();
-		batch.draw(texture, 0, 0, Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+		batch.draw(texture, 0, 0, Micro.graphics.getWidth() / 2f, Micro.graphics.getHeight() / 2f);
 		batch.end();
 	}
 

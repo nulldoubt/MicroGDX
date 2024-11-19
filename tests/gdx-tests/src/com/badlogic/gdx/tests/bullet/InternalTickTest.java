@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.bullet;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObjectArray;
 import com.badlogic.gdx.physics.bullet.dynamics.InternalTickCallback;
 import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld;
@@ -89,7 +89,7 @@ public class InternalTickTest extends BaseBulletTest {
 	public void render () {
 		super.render();
 		if (internalTickCallback == null) return;
-		if ((toggleTime += Gdx.graphics.getDeltaTime()) > 1.0f) {
+		if ((toggleTime += Micro.graphics.getDeltaTime()) > 1.0f) {
 			toggleTime -= 1.0f;
 			if (toggleAttach)
 				internalTickCallback.detach();

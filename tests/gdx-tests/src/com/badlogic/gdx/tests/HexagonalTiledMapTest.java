@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -41,17 +41,17 @@ public class HexagonalTiledMapTest extends GdxTest {
 	@Override
 	public void create () {
 		super.create();
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+		float w = Micro.graphics.getWidth();
+		float h = Micro.graphics.getHeight();
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, (w / h) * 480, 480);
 		camera.update();
 
 		cameraController = new OrthoCamController(camera);
-		Gdx.input.setInputProcessor(cameraController);
+		Micro.input.setInputProcessor(cameraController);
 
-		hexture = new Texture(Gdx.files.internal("data/maps/tiled/hex/hexes.png"));
+		hexture = new Texture(Micro.files.internal("data/maps/tiled/hex/hexes.png"));
 		TextureRegion[][] hexes = TextureRegion.split(hexture, 112, 97);
 		map = new TiledMap();
 		MapLayers layers = map.getLayers();

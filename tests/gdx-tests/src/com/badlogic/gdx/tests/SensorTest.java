@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -89,7 +89,7 @@ public class SensorTest extends BaseG3dTest {
 		tmpUp.set(cam.up);
 		tmpDirection.set(cam.direction);
 
-		Input input = Gdx.input;
+		Input input = Micro.input;
 		tmpRotation.setEulerAngles(-input.getAzimuth(), -input.getPitch(), -input.getRoll());
 
 		cam.position.set(5, 10, 5);

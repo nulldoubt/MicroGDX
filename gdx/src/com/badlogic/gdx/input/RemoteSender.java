@@ -19,7 +19,7 @@ package com.badlogic.gdx.input;
 import java.io.DataOutputStream;
 import java.net.Socket;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.InputProcessor;
 
@@ -50,11 +50,11 @@ public class RemoteSender implements InputProcessor {
 			socket.setTcpNoDelay(true);
 			socket.setSoTimeout(3000);
 			out = new DataOutputStream(socket.getOutputStream());
-			out.writeBoolean(Gdx.input.isPeripheralAvailable(Peripheral.MultitouchScreen));
+			out.writeBoolean(Micro.input.isPeripheralAvailable(Peripheral.MultitouchScreen));
 			connected = true;
-			Gdx.input.setInputProcessor(this);
+			Micro.input.setInputProcessor(this);
 		} catch (Exception e) {
-			Gdx.app.log("RemoteSender", "couldn't connect to " + ip + ":" + port);
+			Micro.app.log("RemoteSender", "couldn't connect to " + ip + ":" + port);
 		}
 	}
 
@@ -64,20 +64,20 @@ public class RemoteSender implements InputProcessor {
 		}
 		try {
 			out.writeInt(ACCEL);
-			out.writeFloat(Gdx.input.getAccelerometerX());
-			out.writeFloat(Gdx.input.getAccelerometerY());
-			out.writeFloat(Gdx.input.getAccelerometerZ());
+			out.writeFloat(Micro.input.getAccelerometerX());
+			out.writeFloat(Micro.input.getAccelerometerY());
+			out.writeFloat(Micro.input.getAccelerometerZ());
 			out.writeInt(COMPASS);
-			out.writeFloat(Gdx.input.getAzimuth());
-			out.writeFloat(Gdx.input.getPitch());
-			out.writeFloat(Gdx.input.getRoll());
+			out.writeFloat(Micro.input.getAzimuth());
+			out.writeFloat(Micro.input.getPitch());
+			out.writeFloat(Micro.input.getRoll());
 			out.writeInt(SIZE);
-			out.writeFloat(Gdx.graphics.getWidth());
-			out.writeFloat(Gdx.graphics.getHeight());
+			out.writeFloat(Micro.graphics.getWidth());
+			out.writeFloat(Micro.graphics.getHeight());
 			out.writeInt(GYRO);
-			out.writeFloat(Gdx.input.getGyroscopeX());
-			out.writeFloat(Gdx.input.getGyroscopeY());
-			out.writeFloat(Gdx.input.getGyroscopeZ());
+			out.writeFloat(Micro.input.getGyroscopeX());
+			out.writeFloat(Micro.input.getGyroscopeY());
+			out.writeFloat(Micro.input.getGyroscopeZ());
 		} catch (Throwable t) {
 			out = null;
 			connected = false;

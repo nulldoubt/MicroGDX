@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.g2d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,7 +37,7 @@ public class ProgressiveJPEGTest extends GdxTest {
 	public void create () {
 		batch = new SpriteBatch();
 
-		texture = new Texture(Gdx.files.internal("data/g2d/progressive-libgdx.jpg"));
+		texture = new Texture(Micro.files.internal("data/g2d/progressive-libgdx.jpg"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		drawable = new TextureRegionDrawable(new TextureRegion(texture));
 	}
@@ -47,7 +47,7 @@ public class ProgressiveJPEGTest extends GdxTest {
 		ScreenUtils.clear(1, 1, 1, 1);
 
 		batch.begin();
-		drawable.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		drawable.draw(batch, 0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		batch.end();
 	}
 

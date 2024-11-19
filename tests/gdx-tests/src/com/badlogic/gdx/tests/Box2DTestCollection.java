@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector;
@@ -61,15 +61,15 @@ public class Box2DTestCollection extends GdxTest implements InputProcessor, Gest
 	@Override
 	public void create () {
 		if (this.app == null) {
-			this.app = Gdx.app;
+			this.app = Micro.app;
 			Box2DTest test = tests[testIndex];
 			test.create();
 		}
 
 		InputMultiplexer multiplexer = new InputMultiplexer();
-		multiplexer.addProcessor(this);
-		multiplexer.addProcessor(new GestureDetector(this));
-		Gdx.input.setInputProcessor(multiplexer);
+		multiplexer.add(this);
+		multiplexer.add(new GestureDetector(this));
+		Micro.input.setInputProcessor(multiplexer);
 	}
 
 	@Override

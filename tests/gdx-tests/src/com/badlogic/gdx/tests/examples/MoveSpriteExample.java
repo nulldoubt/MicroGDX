@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.examples;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -39,7 +39,7 @@ public class MoveSpriteExample extends GdxTest {
 
 		// load the sprite's texture. note: usually you have more than
 		// one sprite in a texture, see {@see TextureAtlas} and {@see TextureRegion}.
-		texture = new Texture(Gdx.files.internal("data/bobargb8888-32x32.png"));
+		texture = new Texture(Micro.files.internal("data/bobargb8888-32x32.png"));
 
 		// create an {@link OrthographicCamera} which is used to transform
 		// touch coordinates to world coordinates.
@@ -61,11 +61,11 @@ public class MoveSpriteExample extends GdxTest {
 		batch.end();
 
 		// if a finger is down, set the sprite's x/y coordinate.
-		if (Gdx.input.isTouched()) {
+		if (Micro.input.isTouched()) {
 			// the unproject method takes a Vector3 in window coordinates (origin in
 			// upper left corner, y-axis pointing down) and transforms it to world
 			// coordinates.
-			camera.unproject(spritePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			camera.unproject(spritePosition.set(Micro.input.getX(), Micro.input.getY(), 0));
 		}
 	}
 }

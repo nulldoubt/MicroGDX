@@ -16,9 +16,8 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.tests.utils.GdxTest;
-import com.badlogic.gdx.utils.TimeUtils;
 
 public class DeltaTimeTest extends GdxTest {
 
@@ -26,15 +25,15 @@ public class DeltaTimeTest extends GdxTest {
 
 	@Override
 	public void create () {
-		lastFrameTime = TimeUtils.nanoTime();
+		lastFrameTime = System.nanoTime();
 	}
 
 	@Override
 	public void render () {
-		long frameTime = TimeUtils.nanoTime();
+		long frameTime = System.nanoTime();
 		float deltaTime = (frameTime - lastFrameTime) / 1000000000.0f;
 		lastFrameTime = frameTime;
 
-		Gdx.app.log("DeltaTimeTest", "delta: " + deltaTime + ", gdx delta: " + Gdx.graphics.getDeltaTime());
+		Micro.app.log("DeltaTimeTest", "delta: " + deltaTime + ", gdx delta: " + Micro.graphics.getDeltaTime());
 	}
 }

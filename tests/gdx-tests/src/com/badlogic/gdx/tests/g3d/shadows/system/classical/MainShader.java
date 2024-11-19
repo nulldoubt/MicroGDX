@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.g3d.shadows.system.classical;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.g3d.Attributes;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
@@ -55,7 +55,7 @@ public class MainShader extends DefaultShader {
 			@Override
 			public void set (BaseShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
 				// Value must be float type to work !
-				shader.set(inputID, (float)Gdx.graphics.getBackBufferWidth(), (float)Gdx.graphics.getBackBufferHeight());
+				shader.set(inputID, (float) Micro.graphics.getBackBufferWidth(), (float) Micro.graphics.getBackBufferHeight());
 			}
 		};
 	}
@@ -65,7 +65,7 @@ public class MainShader extends DefaultShader {
 	private static String defaultVertexShader = null;
 
 	public static String getDefaultVertexShader () {
-		if (defaultVertexShader == null) defaultVertexShader = Gdx.files
+		if (defaultVertexShader == null) defaultVertexShader = Micro.files
 			.classpath("com/badlogic/gdx/tests/g3d/shadows/system/classical/main.vertex.glsl").readString();
 		return defaultVertexShader;
 	}
@@ -73,7 +73,7 @@ public class MainShader extends DefaultShader {
 	private static String defaultFragmentShader = null;
 
 	public static String getDefaultFragmentShader () {
-		if (defaultFragmentShader == null) defaultFragmentShader = Gdx.files
+		if (defaultFragmentShader == null) defaultFragmentShader = Micro.files
 			.classpath("com/badlogic/gdx/tests/g3d/shadows/system/classical/main.fragment.glsl").readString();
 		return defaultFragmentShader;
 	}

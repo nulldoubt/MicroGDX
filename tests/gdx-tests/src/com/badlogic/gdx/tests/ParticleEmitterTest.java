@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
@@ -41,8 +41,8 @@ public class ParticleEmitterTest extends GdxTest {
 		spriteBatch = new SpriteBatch();
 
 		effect = new ParticleEffect();
-		effect.load(Gdx.files.internal("data/test.p"), Gdx.files.internal("data"));
-		effect.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+		effect.load(Micro.files.internal("data/test.p"), Micro.files.internal("data"));
+		effect.setPosition(Micro.graphics.getWidth() / 2, Micro.graphics.getHeight() / 2);
 		// Of course, a ParticleEffect is normally just used, without messing around with its emitters.
 		emitters = new Array(effect.getEmitters());
 		effect.getEmitters().clear();
@@ -51,7 +51,7 @@ public class ParticleEmitterTest extends GdxTest {
 		inputProcessor = new InputAdapter() {
 
 			public boolean touchDragged (int x, int y, int pointer) {
-				effect.setPosition(x, Gdx.graphics.getHeight() - y);
+				effect.setPosition(x, Micro.graphics.getHeight() - y);
 				return false;
 			}
 
@@ -100,7 +100,7 @@ public class ParticleEmitterTest extends GdxTest {
 			}
 		};
 
-		Gdx.input.setInputProcessor(inputProcessor);
+		Micro.input.setInputProcessor(inputProcessor);
 	}
 
 	@Override
@@ -110,9 +110,9 @@ public class ParticleEmitterTest extends GdxTest {
 	}
 
 	public void render () {
-		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		float delta = Gdx.graphics.getDeltaTime();
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
+		float delta = Micro.graphics.getDeltaTime();
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.begin();
 		effect.draw(spriteBatch, delta);
 		spriteBatch.end();
@@ -120,7 +120,7 @@ public class ParticleEmitterTest extends GdxTest {
 		if (fpsCounter > 3) {
 			fpsCounter = 0;
 			int activeCount = emitters.get(emitterIndex).getActiveCount();
-			Gdx.app.log("libGDX", activeCount + "/" + particleCount + " particles, FPS: " + Gdx.graphics.getFramesPerSecond());
+			Micro.app.log("libGDX", activeCount + "/" + particleCount + " particles, FPS: " + Micro.graphics.getFPS());
 		}
 	}
 

@@ -29,7 +29,7 @@
 package com.badlogic.gdx.tests.box2d;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -46,7 +46,6 @@ import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
-import com.badlogic.gdx.utils.TimeUtils;
 
 /** Base class for all Box2D Testbed tests, all subclasses must implement the createWorld() method.
  * 
@@ -81,21 +80,21 @@ public abstract class Box2DTest implements ApplicationListener, InputProcessor {
 	@Override
 	public void render () {
 		// update the world with a fixed time step
-		long startTime = TimeUtils.nanoTime();
-		world.step(Gdx.app.getGraphics().getDeltaTime(), 3, 3);
-		float updateTime = (TimeUtils.nanoTime() - startTime) / 1000000000.0f;
-
-		startTime = TimeUtils.nanoTime();
+		long startTime = System.nanoTime();
+		world.step(Micro.app.getGraphics().getDeltaTime(), 3, 3);
+		float updateTime = (System.nanoTime() - startTime) / 1000000000.0f;
+		
+		startTime = System.nanoTime();
 		// clear the screen and setup the projection matrix
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 
 		// render the world using the debug renderer
 		renderer.render(world, camera.combined);
-		float renderTime = (TimeUtils.nanoTime() - startTime) / 1000000000.0f;
+		float renderTime = (System.nanoTime() - startTime) / 1000000000.0f;
 
 		batch.begin();
-		font.draw(batch, "fps:" + Gdx.graphics.getFramesPerSecond() + ", update: " + updateTime + ", render: " + renderTime, 0, 20);
+		font.draw(batch, "fps:" + Micro.graphics.getFPS() + ", update: " + updateTime + ", render: " + renderTime, 0, 20);
 		batch.end();
 	}
 
@@ -126,7 +125,7 @@ public abstract class Box2DTest implements ApplicationListener, InputProcessor {
 		createWorld(world);
 
 		batch = new SpriteBatch();
-		font = new BitmapFont(Gdx.files.internal("data/lsans-15.fnt"), false);
+		font = new BitmapFont(Micro.files.internal("data/lsans-15.fnt"), false);
 	}
 
 	@Override

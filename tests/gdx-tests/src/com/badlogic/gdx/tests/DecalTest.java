@@ -18,7 +18,7 @@ package com.badlogic.gdx.tests;
 
 import java.util.LinkedList;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -48,29 +48,29 @@ public class DecalTest extends GdxTest {
 
 	@Override
 	public void create () {
-		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-		Gdx.gl.glDepthFunc(GL20.GL_LESS);
+		Micro.gl.glEnable(GL20.GL_DEPTH_TEST);
+		Micro.gl.glDepthFunc(GL20.GL_LESS);
 
-		egg = new Texture(Gdx.files.internal("data/egg.png"));
+		egg = new Texture(Micro.files.internal("data/egg.png"));
 		egg.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		egg.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
-		wheel = new Texture(Gdx.files.internal("data/sys.png"));
+		wheel = new Texture(Micro.files.internal("data/sys.png"));
 		wheel.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		wheel.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
 
-		w = Gdx.graphics.getWidth() / 0.8f;
-		h = Gdx.graphics.getHeight() / 0.8f;
+		w = Micro.graphics.getWidth() / 0.8f;
+		h = Micro.graphics.getHeight() / 0.8f;
 		for (int i = 0; i < INITIAL_RENDERED; i++) {
 			toRender.add(makeDecal());
 		}
-		cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam = new OrthographicCamera(Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		cam.near = 0.1f;
 		cam.far = 10f;
 		cam.position.set(0, 0, 0.1f);
 		cam.direction.set(0, 0, -1f);
 		batch = new DecalBatch(new CameraGroupStrategy(cam));
 
-		Gdx.gl.glClearColor(1, 1, 0, 1);
+		Micro.gl.glClearColor(1, 1, 0, 1);
 	}
 
 	@Override
@@ -82,9 +82,9 @@ public class DecalTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-		float elapsed = Gdx.graphics.getDeltaTime();
+		float elapsed = Micro.graphics.getDeltaTime();
 		float scale = timePassed > 0.5 ? 1 - timePassed / 2 : 0.5f + timePassed / 2;
 
 		for (Decal decal : toRender) {
@@ -122,8 +122,8 @@ public class DecalTest extends GdxTest {
 
 	@Override
 	public void resize (int width, int height) {
-		w = Gdx.graphics.getWidth() / 0.8f;
-		h = Gdx.graphics.getHeight() / 0.8f;
+		w = Micro.graphics.getWidth() / 0.8f;
+		h = Micro.graphics.getHeight() / 0.8f;
 		cam = new OrthographicCamera(width, height);
 		cam.near = 0.1f;
 		cam.far = 10f;

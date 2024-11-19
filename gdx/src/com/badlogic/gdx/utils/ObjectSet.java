@@ -243,7 +243,7 @@ public class ObjectSet<T> implements Iterable<T> {
 		return locateKey(key) >= 0;
 	}
 
-	public @Null T get (T key) {
+	public T get (T key) {
 		int i = locateKey(key);
 		return i < 0 ? null : keyTable[i];
 	}
@@ -345,7 +345,7 @@ public class ObjectSet<T> implements Iterable<T> {
 		return iterator2;
 	}
 
-	static public <T> ObjectSet<T> with (T... array) {
+	public static <T> ObjectSet<T> with (T... array) {
 		ObjectSet<T> set = new ObjectSet<T>();
 		set.addAll(array);
 		return set;
@@ -358,7 +358,7 @@ public class ObjectSet<T> implements Iterable<T> {
 		return tableSize;
 	}
 
-	static public class ObjectSetIterator<K> implements Iterable<K>, Iterator<K> {
+	public static class ObjectSetIterator<K> implements Iterable<K>, Iterator<K> {
 		public boolean hasNext;
 
 		final ObjectSet<K> set;

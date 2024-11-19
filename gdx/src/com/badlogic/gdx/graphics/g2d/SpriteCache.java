@@ -23,7 +23,7 @@ import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
@@ -67,7 +67,7 @@ import com.badlogic.gdx.utils.IntArray;
  * SpriteCache must be disposed once it is no longer needed.
  * @author Nathan Sweet */
 public class SpriteCache implements Disposable {
-	static private final float[] tempVertices = new float[VERTEX_SIZE * 6];
+	private static final float[] tempVertices = new float[VERTEX_SIZE * 6];
 
 	private final Mesh mesh;
 	private boolean drawing;
@@ -136,7 +136,7 @@ public class SpriteCache implements Disposable {
 			mesh.setIndices(indices);
 		}
 
-		projectionMatrix.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		projectionMatrix.setToOrtho2D(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 	}
 
 	/** Sets the color used to tint images when they are added to the SpriteCache. Default is {@link Color#WHITE}. */
@@ -855,7 +855,7 @@ public class SpriteCache implements Disposable {
 		renderCalls = 0;
 		combinedMatrix.set(projectionMatrix).mul(transformMatrix);
 
-		Gdx.gl20.glDepthMask(false);
+		Micro.gl20.glDepthMask(false);
 
 		if (customShader != null) {
 			customShader.bind();
@@ -878,7 +878,7 @@ public class SpriteCache implements Disposable {
 		if (!drawing) throw new IllegalStateException("begin must be called before end.");
 		drawing = false;
 
-		GL20 gl = Gdx.gl20;
+		GL20 gl = Micro.gl20;
 		gl.glDepthMask(true);
 		if (customShader != null)
 			mesh.unbind(customShader);
@@ -964,7 +964,7 @@ public class SpriteCache implements Disposable {
 		transformMatrix.set(transform);
 	}
 
-	static private class Cache {
+	private static class Cache {
 		final int id;
 		final int offset;
 		int maxCount;

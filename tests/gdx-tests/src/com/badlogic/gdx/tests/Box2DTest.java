@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -50,7 +50,6 @@ import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 
@@ -104,15 +103,15 @@ public class Box2DTest extends GdxTest implements InputProcessor {
 
 		// next we create a SpriteBatch and a font
 		batch = new SpriteBatch();
-		font = new BitmapFont(Gdx.files.internal("data/lsans-15.fnt"), false);
+		font = new BitmapFont(Micro.files.internal("data/lsans-15.fnt"), false);
 		font.setColor(Color.RED);
-		textureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/badlogicsmall.jpg")));
+		textureRegion = new TextureRegion(new Texture(Micro.files.internal("data/badlogicsmall.jpg")));
 
 		// next we create out physics world.
 		createPhysicsWorld();
 
 		// register ourselfs as an InputProcessor
-		Gdx.input.setInputProcessor(this);
+		Micro.input.setInputProcessor(this);
 	}
 
 	private void createPhysicsWorld () {
@@ -236,13 +235,13 @@ public class Box2DTest extends GdxTest implements InputProcessor {
 		// we use the delta time provided by the Graphics
 		// instance. Normally you'll want to fix the time
 		// step.
-		long start = TimeUtils.nanoTime();
-		world.step(Gdx.graphics.getDeltaTime(), 8, 3);
-		float updateTime = (TimeUtils.nanoTime() - start) / 1000000000.0f;
+		long start = System.nanoTime();
+		world.step(Micro.graphics.getDeltaTime(), 8, 3);
+		float updateTime = (System.nanoTime() - start) / 1000000000.0f;
 
 		// next we clear the color buffer and set the camera
 		// matrices
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 
 		// next we render the ground body
@@ -297,9 +296,9 @@ public class Box2DTest extends GdxTest implements InputProcessor {
 		// finally we render the time it took to update the world
 		// for this we have to set the projection matrix again, so
 		// we work in pixel coordinates
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		batch.begin();
-		font.draw(batch, "fps: " + Gdx.graphics.getFramesPerSecond() + " update time: " + updateTime, 0, 20);
+		font.draw(batch, "fps: " + Micro.graphics.getFPS() + " update time: " + updateTime, 0, 20);
 		batch.end();
 	}
 

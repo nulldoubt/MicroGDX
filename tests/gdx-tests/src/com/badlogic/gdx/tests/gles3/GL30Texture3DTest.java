@@ -19,7 +19,7 @@ package com.badlogic.gdx.tests.gles3;
 import java.nio.IntBuffer;
 
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
@@ -74,7 +74,7 @@ public class GL30Texture3DTest extends GdxTest {
 			+ "}";
 
 		String prepend;
-		if (Gdx.app.getType() == ApplicationType.Desktop) {
+		if (Micro.app.getType() == ApplicationType.Desktop) {
 			prepend = "#version 130\n";
 		} else {
 			prepend = "#version 300 es\n";
@@ -123,14 +123,14 @@ public class GL30Texture3DTest extends GdxTest {
 
 	@Override
 	public void render () {
-		time += Gdx.graphics.getDeltaTime();
+		time += Micro.graphics.getDeltaTime();
 		float pingPong = Math.abs(time % 2f - 1);
 
 		renderShader.bind();
 		renderShader.setUniformf("u_time", pingPong);
 		renderShader.setUniformi("u_texture3D", 1);
 		texture3D.bind(1);
-		Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
+		Micro.gl.glActiveTexture(GL20.GL_TEXTURE0);
 
 		batch.begin();
 		batch.draw(texture, 0, 0, 1, 1);

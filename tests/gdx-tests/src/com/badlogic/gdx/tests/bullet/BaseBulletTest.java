@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests.bullet;
 
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -55,11 +55,11 @@ public class BaseBulletTest extends BulletTest {
 	public static void init () {
 		if (initialized) return;
 		// Need to initialize bullet before using it.
-		if (Gdx.app.getType() == ApplicationType.Desktop && customDesktopLib != null) {
+		if (Micro.app.getType() == ApplicationType.Desktop && customDesktopLib != null) {
 			System.load(customDesktopLib);
 		} else
 			Bullet.init();
-		Gdx.app.log("Bullet", "Version = " + LinearMath.btGetVersion());
+		Micro.app.log("Bullet", "Version = " + LinearMath.btGetVersion());
 		initialized = true;
 	}
 
@@ -96,8 +96,8 @@ public class BaseBulletTest extends BulletTest {
 		world = createWorld();
 		world.performanceCounter = performanceCounter;
 
-		final float width = Gdx.graphics.getWidth();
-		final float height = Gdx.graphics.getHeight();
+		final float width = Micro.graphics.getWidth();
+		final float height = Micro.graphics.getHeight();
 		if (width > height)
 			camera = new PerspectiveCamera(67f, 3f * width / height, 3f);
 		else
@@ -149,7 +149,7 @@ public class BaseBulletTest extends BulletTest {
 	}
 
 	public void render (boolean update) {
-		fpsCounter.put(Gdx.graphics.getFramesPerSecond());
+		fpsCounter.put(Micro.graphics.getFPS());
 
 		if (update) update();
 
@@ -157,9 +157,9 @@ public class BaseBulletTest extends BulletTest {
 
 		renderWorld();
 
-		Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
+		Micro.gl.glDisable(GL20.GL_DEPTH_TEST);
 		if (debugMode != DebugDrawModes.DBG_NoDebug) world.setDebugMode(debugMode);
-		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+		Micro.gl.glEnable(GL20.GL_DEPTH_TEST);
 
 		performance.setLength(0);
 		performance.append("FPS: ").append(fpsCounter.value).append(", Bullet: ")
@@ -167,9 +167,9 @@ public class BaseBulletTest extends BulletTest {
 	}
 
 	protected void beginRender (boolean lighting) {
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
-		Gdx.gl.glClearColor(0, 0, 0, 0);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Micro.gl.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
+		Micro.gl.glClearColor(0, 0, 0, 0);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		camera.update();
 	}
 

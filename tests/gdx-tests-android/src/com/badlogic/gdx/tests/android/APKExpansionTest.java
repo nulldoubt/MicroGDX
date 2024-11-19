@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.android;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -56,10 +56,10 @@ public class APKExpansionTest extends GdxTest {
 
 	@Override
 	public void create () {
-		if ((((AndroidFiles)Gdx.files)).setAPKExpansion(1, 0)) {
+		if ((((AndroidFiles) Micro.files)).setAPKExpansion(1, 0)) {
 			resolver = new ZipFileHandleResolver();
 		} else {
-			Gdx.app.error("libgdx", "No Expansion can be opened");
+			Micro.app.error("libgdx", "No Expansion can be opened");
 		}
 
 		assetManager = new AssetManager();
@@ -73,13 +73,13 @@ public class APKExpansionTest extends GdxTest {
 		assetManager.load("data/" + extensionPrefix + "testpackobb", TextureAtlas.class);
 		assetManager.finishLoading();
 
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/" + extensionPrefix + "chirp.ogg"));
+		sound = Micro.audio.newSound(Micro.files.internal("data/" + extensionPrefix + "chirp.ogg"));
 		sound.play();
 		texture = new Texture(resolver.resolve("data/" + extensionPrefix + "badlogic.jpg"));
 		batch = new SpriteBatch();
 		TextureAtlas atlas = assetManager.get("data/" + extensionPrefix + "testpackobb");
 		atlasTextureRegion = new TextureRegion(atlas.findRegion("water"));
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/shotgun.ogg"));
+		sound = Micro.audio.newSound(Micro.files.internal("data/shotgun.ogg"));
 		sound.play();
 	}
 

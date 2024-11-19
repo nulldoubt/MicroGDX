@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.gles2;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -81,19 +81,19 @@ public class MipMap2D extends GdxTest {
 	}
 
 	public void render () {
-		Gdx.gl20.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
-		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl20.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
+		Micro.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		Gdx.gl20.glActiveTexture(GL20.GL_TEXTURE0);
+		Micro.gl20.glActiveTexture(GL20.GL_TEXTURE0);
 		texture.bind();
 		shader.bind();
 		shader.setUniformf("s_texture", 0);
 
-		Gdx.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_NEAREST);
+		Micro.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_NEAREST);
 		shader.setUniformf("u_offset", -0.6f);
 		mesh.render(shader, GL20.GL_TRIANGLES);
 
-		Gdx.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR_MIPMAP_LINEAR);
+		Micro.gl20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR_MIPMAP_LINEAR);
 		shader.setUniformf("u_offset", 0.6f);
 		mesh.render(shader, GL20.GL_TRIANGLES);
 	}

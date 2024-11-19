@@ -1,7 +1,7 @@
 
 package com.badlogic.gdx.tests.bullet;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -36,7 +36,7 @@ public class HeightFieldTest extends BaseBulletTest {
 	public void create () {
 		super.create();
 
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 		disposables.add(texture);
 
 		createSpheres();
@@ -45,7 +45,7 @@ public class HeightFieldTest extends BaseBulletTest {
 
 	private void createTerrain (float size, float heightScale) {
 		// Create the height field model
-		Pixmap data = new Pixmap(Gdx.files.internal("data/g3d/heightmap.png"));
+		Pixmap data = new Pixmap(Micro.files.internal("data/g3d/heightmap.png"));
 		field = new HeightField(true, data, true, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal
 			| VertexAttributes.Usage.ColorUnpacked | VertexAttributes.Usage.TextureCoordinates);
 		data.dispose();

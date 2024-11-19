@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -43,8 +43,8 @@ public class SimpleAnimationTest extends GdxTest {
 
 	@Override
 	public void create () {
-		Gdx.input.setInputProcessor(this);
-		texture = new Texture(Gdx.files.internal("data/animation.png"));
+		Micro.input.setInputProcessor(this);
+		texture = new Texture(Micro.files.internal("data/animation.png"));
 		TextureRegion[][] regions = TextureRegion.split(texture, 32, 48);
 		TextureRegion[] downWalkReg = regions[0];
 		TextureRegion[] leftWalkReg = regions[1];
@@ -64,8 +64,8 @@ public class SimpleAnimationTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		currentFrameTime += Gdx.graphics.getDeltaTime();
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		currentFrameTime += Micro.graphics.getDeltaTime();
 
 		spriteBatch.begin();
 		TextureRegion frame = currentWalk.getKeyFrame(currentFrameTime, true);
@@ -76,7 +76,7 @@ public class SimpleAnimationTest extends GdxTest {
 	@Override
 	public boolean touchDown (int x, int y, int pointer, int button) {
 		position.x = x;
-		position.y = Gdx.graphics.getHeight() - y;
+		position.y = Micro.graphics.getHeight() - y;
 		return true;
 	}
 

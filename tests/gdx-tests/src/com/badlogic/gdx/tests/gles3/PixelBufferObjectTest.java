@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -44,7 +44,7 @@ public class PixelBufferObjectTest extends GdxTest {
 				@Override
 				public void run () {
 					// load the pixmap in order to get header information
-					pixmap = new Pixmap(Gdx.files.internal("data/badlogic.jpg"));
+					pixmap = new Pixmap(Micro.files.internal("data/badlogic.jpg"));
 					pixmapSizeBytes = pixmap.getWidth() * pixmap.getHeight() * 3;
 					pixmapReady = true;
 
@@ -65,13 +65,13 @@ public class PixelBufferObjectTest extends GdxTest {
 			if (pixmapReady && texture == null) {
 				texture = new Texture(pixmap.getWidth(), pixmap.getHeight(), pixmap.getFormat());
 
-				pboHandle = Gdx.gl.glGenBuffer();
-				Gdx.gl.glBindBuffer(GL30.GL_PIXEL_UNPACK_BUFFER, pboHandle);
-				Gdx.gl.glBufferData(GL30.GL_PIXEL_UNPACK_BUFFER, pixmapSizeBytes, null, GL30.GL_STREAM_DRAW);
+				pboHandle = Micro.gl.glGenBuffer();
+				Micro.gl.glBindBuffer(GL30.GL_PIXEL_UNPACK_BUFFER, pboHandle);
+				Micro.gl.glBufferData(GL30.GL_PIXEL_UNPACK_BUFFER, pixmapSizeBytes, null, GL30.GL_STREAM_DRAW);
 
-				mappedBuffer = Gdx.gl30.glMapBufferRange(GL30.GL_PIXEL_UNPACK_BUFFER, 0, pixmapSizeBytes,
+				mappedBuffer = Micro.gl30.glMapBufferRange(GL30.GL_PIXEL_UNPACK_BUFFER, 0, pixmapSizeBytes,
 					GL30.GL_MAP_WRITE_BIT | GL30.GL_MAP_UNSYNCHRONIZED_BIT);
-				Gdx.gl.glBindBuffer(GL30.GL_PIXEL_UNPACK_BUFFER, 0);
+				Micro.gl.glBindBuffer(GL30.GL_PIXEL_UNPACK_BUFFER, 0);
 
 				lock.unlock();
 			}
@@ -79,27 +79,27 @@ public class PixelBufferObjectTest extends GdxTest {
 			if (!textureReady && pboTransferComplete) {
 
 				// transfer data to texture (GL Thread)
-				Gdx.gl.glBindBuffer(GL30.GL_PIXEL_UNPACK_BUFFER, pboHandle);
-				Gdx.gl30.glUnmapBuffer(GL30.GL_PIXEL_UNPACK_BUFFER);
+				Micro.gl.glBindBuffer(GL30.GL_PIXEL_UNPACK_BUFFER, pboHandle);
+				Micro.gl30.glUnmapBuffer(GL30.GL_PIXEL_UNPACK_BUFFER);
 
-				Gdx.gl.glBindTexture(GL20.GL_TEXTURE_2D, texture.getTextureObjectHandle());
+				Micro.gl.glBindTexture(GL20.GL_TEXTURE_2D, texture.getTextureObjectHandle());
 
 				// for testing purpose: use glTexSubImage2D or glTexImage2D
 				if (useSubImage) {
-					Gdx.gl30.glTexSubImage2D(GL20.GL_TEXTURE_2D, 0, 0, 0, pixmap.getWidth(), pixmap.getHeight(), pixmap.getGLFormat(),
+					Micro.gl30.glTexSubImage2D(GL20.GL_TEXTURE_2D, 0, 0, 0, pixmap.getWidth(), pixmap.getHeight(), pixmap.getGLFormat(),
 						pixmap.getGLType(), 0);
 				} else {
-					Gdx.gl30.glTexImage2D(GL20.GL_TEXTURE_2D, 0, pixmap.getGLInternalFormat(), pixmap.getWidth(), pixmap.getHeight(),
+					Micro.gl30.glTexImage2D(GL20.GL_TEXTURE_2D, 0, pixmap.getGLInternalFormat(), pixmap.getWidth(), pixmap.getHeight(),
 						0, pixmap.getGLFormat(), pixmap.getGLType(), 0);
 				}
 
-				Gdx.gl.glBindTexture(GL20.GL_TEXTURE_2D, 0);
+				Micro.gl.glBindTexture(GL20.GL_TEXTURE_2D, 0);
 
-				Gdx.gl.glBindBuffer(GL30.GL_PIXEL_UNPACK_BUFFER, 0);
+				Micro.gl.glBindBuffer(GL30.GL_PIXEL_UNPACK_BUFFER, 0);
 
 				// cleanup
 				mappedBuffer = null;
-				Gdx.gl.glDeleteBuffer(pboHandle);
+				Micro.gl.glDeleteBuffer(pboHandle);
 				pboHandle = 0;
 				pixmap.dispose();
 				pixmap = null;
@@ -137,11 +137,11 @@ public class PixelBufferObjectTest extends GdxTest {
 
 		batch.begin();
 		if (demo1.isTextureReady()) {
-			batch.draw(demo1.getTexture(), 0, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+			batch.draw(demo1.getTexture(), 0, 0, Micro.graphics.getWidth() / 2, Micro.graphics.getHeight() / 2);
 		}
 		if (demo2.isTextureReady()) {
-			batch.draw(demo2.getTexture(), Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2,
-				Gdx.graphics.getHeight() / 2);
+			batch.draw(demo2.getTexture(), Micro.graphics.getWidth() / 2, 0, Micro.graphics.getWidth() / 2,
+				Micro.graphics.getHeight() / 2);
 		}
 		batch.end();
 	}

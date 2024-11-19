@@ -81,12 +81,12 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 		// Unlike activity, fragment and daydream applications there's no need for a specialized audio listener.
 		// See description in onPause method.
 
-		Gdx.app = this;
-		Gdx.input = input;
-		Gdx.audio = audio;
-		Gdx.files = files;
-		Gdx.graphics = graphics;
-		Gdx.net = net;
+		Micro.app = this;
+		Micro.input = input;
+		Micro.audio = audio;
+		Micro.files = files;
+		Micro.graphics = graphics;
+		Micro.net = net;
 	}
 
 	public void onPause () {
@@ -121,12 +121,12 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 	}
 
 	public void onResume () {
-		Gdx.app = this;
-		Gdx.input = input;
-		Gdx.audio = audio;
-		Gdx.files = files;
-		Gdx.graphics = graphics;
-		Gdx.net = net;
+		Micro.app = this;
+		Micro.input = input;
+		Micro.audio = audio;
+		Micro.files = files;
+		Micro.graphics = graphics;
+		Micro.net = net;
 
 		input.onResume();
 
@@ -180,7 +180,7 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 	}
 
 	@Override
-	public void postRunnable (Runnable runnable) {
+	public void post(Runnable runnable) {
 		synchronized (runnables) {
 			runnables.add(runnable);
 		}
@@ -297,14 +297,14 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 	}
 
 	@Override
-	public void addLifecycleListener (LifecycleListener listener) {
+	public void register(LifecycleListener listener) {
 		synchronized (lifecycleListeners) {
 			lifecycleListeners.add(listener);
 		}
 	}
 
 	@Override
-	public void removeLifecycleListener (LifecycleListener listener) {
+	public void unregister(LifecycleListener listener) {
 		synchronized (lifecycleListeners) {
 			lifecycleListeners.removeValue(listener, true);
 		}

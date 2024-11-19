@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.bullet;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.bullet.collision.ContactListener;
 import com.badlogic.gdx.utils.Array;
@@ -37,14 +37,14 @@ public class ContactCallbackTest extends BaseBulletTest {
 				// Disable future callbacks for this entity
 				e.body.setContactCallbackFilter(0);
 				e.setColor(Color.RED);
-				Gdx.app.log("ContactCallbackTest", "Contact processed " + (++c));
+				Micro.app.log("ContactCallbackTest", "Contact processed " + (++c));
 			}
 			if (match1) {
 				final BulletEntity e = (BulletEntity)(entities.get(userValue1));
 				// Disable future callbacks for this entity
 				e.body.setContactCallbackFilter(0);
 				e.setColor(Color.RED);
-				Gdx.app.log("ContactCallbackTest", "Contact processed " + (++c));
+				Micro.app.log("ContactCallbackTest", "Contact processed " + (++c));
 			}
 		}
 	}

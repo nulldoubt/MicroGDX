@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -26,7 +26,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -40,7 +39,7 @@ public class AudioDeviceTest extends GdxTest {
 	@Override
 	public void create () {
 
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
 		ui = new Stage(new FitViewport(640, 400));
 
 		Table table = new Table(skin);
@@ -54,7 +53,7 @@ public class AudioDeviceTest extends GdxTest {
 
 		ui.addActor(table);
 
-		Gdx.input.setInputProcessor(ui);
+		Micro.input.setInputProcessor(ui);
 
 		pan.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
@@ -65,7 +64,7 @@ public class AudioDeviceTest extends GdxTest {
 
 		if (thread == null) {
 			final int samplingFrequency = 44100;
-			final AudioDevice device = Gdx.app.getAudio().newAudioDevice(samplingFrequency, false);
+			final AudioDevice device = Micro.app.getAudio().newAudioDevice(samplingFrequency, false);
 			thread = new Thread(new Runnable() {
 				@Override
 				public void run () {
@@ -99,8 +98,8 @@ public class AudioDeviceTest extends GdxTest {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		ui.act(Gdx.graphics.getDeltaTime());
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		ui.act(Micro.graphics.getDeltaTime());
 		ui.draw();
 	}
 

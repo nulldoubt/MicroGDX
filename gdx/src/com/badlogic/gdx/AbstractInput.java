@@ -4,19 +4,20 @@ package com.badlogic.gdx;
 import com.badlogic.gdx.utils.IntSet;
 
 public abstract class AbstractInput implements Input {
+	
 	protected final boolean[] pressedKeys;
 	protected final boolean[] justPressedKeys;
 	private final IntSet keysToCatch = new IntSet();
 	protected int pressedKeyCount;
 	protected boolean keyJustPressed;
-
-	public AbstractInput () {
+	
+	public AbstractInput() {
 		pressedKeys = new boolean[Keys.MAX_KEYCODE + 1];
 		justPressedKeys = new boolean[Keys.MAX_KEYCODE + 1];
 	}
-
+	
 	@Override
-	public boolean isKeyPressed (int key) {
+	public boolean isKeyPressed(int key) {
 		if (key == Input.Keys.ANY_KEY) {
 			return pressedKeyCount > 0;
 		}
@@ -25,9 +26,9 @@ public abstract class AbstractInput implements Input {
 		}
 		return pressedKeys[key];
 	}
-
+	
 	@Override
-	public boolean isKeyJustPressed (int key) {
+	public boolean isKeyJustPressed(int key) {
 		if (key == Input.Keys.ANY_KEY) {
 			return keyJustPressed;
 		}
@@ -36,19 +37,19 @@ public abstract class AbstractInput implements Input {
 		}
 		return justPressedKeys[key];
 	}
-
+	
 	@Override
-	public void setCatchKey (int keycode, boolean catchKey) {
+	public void setCatchKey(int keycode, boolean catchKey) {
 		if (!catchKey) {
 			keysToCatch.remove(keycode);
 		} else {
 			keysToCatch.add(keycode);
 		}
 	}
-
+	
 	@Override
-	public boolean isCatchKey (int keycode) {
+	public boolean isCatchKey(int keycode) {
 		return keysToCatch.contains(keycode);
 	}
-
+	
 }

@@ -1,26 +1,8 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package com.badlogic.gdx.graphics.g2d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 
 import java.io.BufferedReader;
@@ -29,15 +11,16 @@ import java.io.Writer;
 import java.util.Arrays;
 
 public class ParticleEmitter {
-	static private final int UPDATE_SCALE = 1 << 0;
-	static private final int UPDATE_ANGLE = 1 << 1;
-	static private final int UPDATE_ROTATION = 1 << 2;
-	static private final int UPDATE_VELOCITY = 1 << 3;
-	static private final int UPDATE_WIND = 1 << 4;
-	static private final int UPDATE_GRAVITY = 1 << 5;
-	static private final int UPDATE_TINT = 1 << 6;
-	static private final int UPDATE_SPRITE = 1 << 7;
-
+	
+	private static final int UPDATE_SCALE = 1;
+	private static final int UPDATE_ANGLE = 1 << 1;
+	private static final int UPDATE_ROTATION = 1 << 2;
+	private static final int UPDATE_VELOCITY = 1 << 3;
+	private static final int UPDATE_WIND = 1 << 4;
+	private static final int UPDATE_GRAVITY = 1 << 5;
+	private static final int UPDATE_TINT = 1 << 6;
+	private static final int UPDATE_SPRITE = 1 << 7;
+	
 	private RangedNumericValue delayValue = new RangedNumericValue();
 	private IndependentScaledNumericValue lifeOffsetValue = new IndependentScaledNumericValue();
 	private RangedNumericValue durationValue = new RangedNumericValue();
@@ -57,11 +40,11 @@ public class ParticleEmitter {
 	private ScaledNumericValue spawnWidthValue = new ScaledNumericValue();
 	private ScaledNumericValue spawnHeightValue = new ScaledNumericValue();
 	private SpawnShapeValue spawnShapeValue = new SpawnShapeValue();
-
+	
 	private RangedNumericValue[] xSizeValues;
 	private RangedNumericValue[] ySizeValues;
 	private RangedNumericValue[] motionValues;
-
+	
 	private float accumulator;
 	private Array<Sprite> sprites;
 	private SpriteMode spriteMode = SpriteMode.single;
@@ -76,8 +59,7 @@ public class ParticleEmitter {
 	private boolean flipX, flipY;
 	private int updateFlags;
 	private boolean allowCompletion;
-	private BoundingBox bounds;
-
+	
 	private int emission, emissionDiff, emissionDelta;
 	private int lifeOffset, lifeOffsetDiff;
 	private int life, lifeDiff;
@@ -85,7 +67,7 @@ public class ParticleEmitter {
 	private float spawnHeight, spawnHeightDiff;
 	public float duration = 1, durationTimer;
 	private float delay, delayTimer;
-
+	
 	private boolean attached;
 	private boolean continuous;
 	private boolean aligned;
@@ -93,17 +75,17 @@ public class ParticleEmitter {
 	private boolean additive = true;
 	private boolean premultipliedAlpha = false;
 	boolean cleansUpBlendFunction = true;
-
-	public ParticleEmitter () {
+	
+	public ParticleEmitter() {
 		initialize();
 	}
-
-	public ParticleEmitter (BufferedReader reader) throws IOException {
+	
+	public ParticleEmitter(BufferedReader reader) throws IOException {
 		initialize();
 		load(reader);
 	}
-
-	public ParticleEmitter (ParticleEmitter emitter) {
+	
+	public ParticleEmitter(ParticleEmitter emitter) {
 		sprites = new Array<Sprite>(emitter.sprites);
 		name = emitter.name;
 		imagePaths = new Array<String>(emitter.imagePaths);
@@ -138,8 +120,8 @@ public class ParticleEmitter {
 		spriteMode = emitter.spriteMode;
 		setPosition(emitter.getX(), emitter.getY());
 	}
-
-	private void initialize () {
+	
+	private void initialize() {
 		sprites = new Array<Sprite>();
 		imagePaths = new Array<String>();
 		durationValue.setAlwaysActive(true);
@@ -151,17 +133,18 @@ public class ParticleEmitter {
 		spawnWidthValue.setAlwaysActive(true);
 		spawnHeightValue.setAlwaysActive(true);
 	}
-
-	public void setMaxParticleCount (int maxParticleCount) {
+	
+	public void setMaxParticleCount(int maxParticleCount) {
 		this.maxParticleCount = maxParticleCount;
 		active = new boolean[maxParticleCount];
 		activeCount = 0;
 		particles = new Particle[maxParticleCount];
 	}
-
-	public void addParticle () {
+	
+	public void addParticle() {
 		int activeCount = this.activeCount;
-		if (activeCount == maxParticleCount) return;
+		if (activeCount == maxParticleCount)
+			return;
 		boolean[] active = this.active;
 		for (int i = 0, n = active.length; i < n; i++) {
 			if (!active[i]) {
@@ -172,10 +155,11 @@ public class ParticleEmitter {
 			}
 		}
 	}
-
-	public void addParticles (int count) {
+	
+	public void addParticles(int count) {
 		count = Math.min(count, maxParticleCount - activeCount);
-		if (count == 0) return;
+		if (count == 0)
+			return;
 		boolean[] active = this.active;
 		int index = 0, n = active.length;
 		outer:
@@ -191,13 +175,14 @@ public class ParticleEmitter {
 		}
 		this.activeCount += count;
 	}
-
-	public void update (float delta) {
+	
+	public void update(float delta) {
 		accumulator += delta * 1000;
-		if (accumulator < 1) return;
-		int deltaMillis = (int)accumulator;
+		if (accumulator < 1)
+			return;
+		int deltaMillis = (int) accumulator;
 		accumulator -= deltaMillis;
-
+		
 		if (delayTimer < delay) {
 			delayTimer += deltaMillis;
 		} else {
@@ -206,7 +191,7 @@ public class ParticleEmitter {
 				firstUpdate = false;
 				addParticle();
 			}
-
+			
 			if (durationTimer < duration)
 				durationTimer += deltaMillis;
 			else {
@@ -215,24 +200,25 @@ public class ParticleEmitter {
 				else
 					restart();
 			}
-
+			
 			if (!done) {
 				emissionDelta += deltaMillis;
-				float emissionTime = emission + emissionDiff * emissionValue.getScale(durationTimer / (float)duration);
+				float emissionTime = emission + emissionDiff * emissionValue.getScale(durationTimer / (float) duration);
 				if (emissionTime > 0) {
 					emissionTime = 1000 / emissionTime;
 					if (emissionDelta >= emissionTime) {
-						int emitCount = (int)(emissionDelta / emissionTime);
+						int emitCount = (int) (emissionDelta / emissionTime);
 						emitCount = Math.min(emitCount, maxParticleCount - activeCount);
 						emissionDelta -= emitCount * emissionTime;
 						emissionDelta %= emissionTime;
 						addParticles(emitCount);
 					}
 				}
-				if (activeCount < minParticleCount) addParticles(minParticleCount - activeCount);
+				if (activeCount < minParticleCount)
+					addParticles(minParticleCount - activeCount);
 			}
 		}
-
+		
 		boolean[] active = this.active;
 		int activeCount = this.activeCount;
 		Particle[] particles = this.particles;
@@ -244,8 +230,8 @@ public class ParticleEmitter {
 		}
 		this.activeCount = activeCount;
 	}
-
-	public void draw (Batch batch) {
+	
+	public void draw(Batch batch) {
 		if (premultipliedAlpha) {
 			batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		} else if (additive) {
@@ -255,26 +241,29 @@ public class ParticleEmitter {
 		}
 		Particle[] particles = this.particles;
 		boolean[] active = this.active;
-
+		
 		for (int i = 0, n = active.length; i < n; i++) {
-			if (active[i]) particles[i].draw(batch);
+			if (active[i])
+				particles[i].draw(batch);
 		}
-
+		
 		if (cleansUpBlendFunction && (additive || premultipliedAlpha))
 			batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 	}
-
-	/** Updates and draws the particles. This is slightly more efficient than calling {@link #update(float)} and
-	 * {@link #draw(Batch)} separately. */
-	public void draw (Batch batch, float delta) {
+	
+	/**
+	 * Updates and draws the particles. This is slightly more efficient than calling {@link #update(float)} and
+	 * {@link #draw(Batch)} separately.
+	 */
+	public void draw(Batch batch, float delta) {
 		accumulator += delta * 1000;
 		if (accumulator < 1) {
 			draw(batch);
 			return;
 		}
-		int deltaMillis = (int)accumulator;
+		int deltaMillis = (int) accumulator;
 		accumulator -= deltaMillis;
-
+		
 		if (premultipliedAlpha) {
 			batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		} else if (additive) {
@@ -282,7 +271,7 @@ public class ParticleEmitter {
 		} else {
 			batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		}
-
+		
 		Particle[] particles = this.particles;
 		boolean[] active = this.active;
 		int activeCount = this.activeCount;
@@ -298,117 +287,134 @@ public class ParticleEmitter {
 			}
 		}
 		this.activeCount = activeCount;
-
+		
 		if (cleansUpBlendFunction && (additive || premultipliedAlpha))
 			batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
+		
 		if (delayTimer < delay) {
 			delayTimer += deltaMillis;
 			return;
 		}
-
+		
 		if (firstUpdate) {
 			firstUpdate = false;
 			addParticle();
 		}
-
+		
 		if (durationTimer < duration)
 			durationTimer += deltaMillis;
 		else {
-			if (!continuous || allowCompletion) return;
+			if (!continuous || allowCompletion)
+				return;
 			restart();
 		}
-
+		
 		emissionDelta += deltaMillis;
-		float emissionTime = emission + emissionDiff * emissionValue.getScale(durationTimer / (float)duration);
+		float emissionTime = emission + emissionDiff * emissionValue.getScale(durationTimer / (float) duration);
 		if (emissionTime > 0) {
 			emissionTime = 1000 / emissionTime;
 			if (emissionDelta >= emissionTime) {
-				int emitCount = (int)(emissionDelta / emissionTime);
+				int emitCount = (int) (emissionDelta / emissionTime);
 				emitCount = Math.min(emitCount, maxParticleCount - activeCount);
 				emissionDelta -= emitCount * emissionTime;
 				emissionDelta %= emissionTime;
 				addParticles(emitCount);
 			}
 		}
-		if (activeCount < minParticleCount) addParticles(minParticleCount - activeCount);
+		if (activeCount < minParticleCount)
+			addParticles(minParticleCount - activeCount);
 	}
-
-	public void start () {
+	
+	public void start() {
 		firstUpdate = true;
 		allowCompletion = false;
 		restart();
 	}
-
-	public void reset () {
+	
+	public void reset() {
 		reset(true);
 	}
-
-	public void reset (boolean start) {
+	
+	public void reset(boolean start) {
 		emissionDelta = 0;
 		durationTimer = duration;
 		boolean[] active = this.active;
 		for (int i = 0, n = active.length; i < n; i++)
 			active[i] = false;
 		activeCount = 0;
-		if (start) start();
+		if (start)
+			start();
 	}
-
-	private void restart () {
+	
+	private void restart() {
 		delay = delayValue.active ? delayValue.newLowValue() : 0;
 		delayTimer = 0;
-
+		
 		durationTimer -= duration;
 		duration = durationValue.newLowValue();
-
-		emission = (int)emissionValue.newLowValue();
-		emissionDiff = (int)emissionValue.newHighValue();
-		if (!emissionValue.relative) emissionDiff -= emission;
-
-		if (!lifeValue.independent) generateLifeValues();
-
-		if (!lifeOffsetValue.independent) generateLifeOffsetValues();
-
+		
+		emission = (int) emissionValue.newLowValue();
+		emissionDiff = (int) emissionValue.newHighValue();
+		if (!emissionValue.relative)
+			emissionDiff -= emission;
+		
+		if (!lifeValue.independent)
+			generateLifeValues();
+		
+		if (!lifeOffsetValue.independent)
+			generateLifeOffsetValues();
+		
 		spawnWidth = spawnWidthValue.newLowValue();
 		spawnWidthDiff = spawnWidthValue.newHighValue();
-		if (!spawnWidthValue.relative) spawnWidthDiff -= spawnWidth;
-
+		if (!spawnWidthValue.relative)
+			spawnWidthDiff -= spawnWidth;
+		
 		spawnHeight = spawnHeightValue.newLowValue();
 		spawnHeightDiff = spawnHeightValue.newHighValue();
-		if (!spawnHeightValue.relative) spawnHeightDiff -= spawnHeight;
-
+		if (!spawnHeightValue.relative)
+			spawnHeightDiff -= spawnHeight;
+		
 		updateFlags = 0;
-		if (angleValue.active && angleValue.timeline.length > 1) updateFlags |= UPDATE_ANGLE;
-		if (velocityValue.active) updateFlags |= UPDATE_VELOCITY;
-		if (xScaleValue.timeline.length > 1) updateFlags |= UPDATE_SCALE;
-		if (yScaleValue.active && yScaleValue.timeline.length > 1) updateFlags |= UPDATE_SCALE;
-		if (rotationValue.active && rotationValue.timeline.length > 1) updateFlags |= UPDATE_ROTATION;
-		if (windValue.active) updateFlags |= UPDATE_WIND;
-		if (gravityValue.active) updateFlags |= UPDATE_GRAVITY;
-		if (tintValue.timeline.length > 1) updateFlags |= UPDATE_TINT;
-		if (spriteMode == SpriteMode.animated) updateFlags |= UPDATE_SPRITE;
+		if (angleValue.active && angleValue.timeline.length > 1)
+			updateFlags |= UPDATE_ANGLE;
+		if (velocityValue.active)
+			updateFlags |= UPDATE_VELOCITY;
+		if (xScaleValue.timeline.length > 1)
+			updateFlags |= UPDATE_SCALE;
+		if (yScaleValue.active && yScaleValue.timeline.length > 1)
+			updateFlags |= UPDATE_SCALE;
+		if (rotationValue.active && rotationValue.timeline.length > 1)
+			updateFlags |= UPDATE_ROTATION;
+		if (windValue.active)
+			updateFlags |= UPDATE_WIND;
+		if (gravityValue.active)
+			updateFlags |= UPDATE_GRAVITY;
+		if (tintValue.timeline.length > 1)
+			updateFlags |= UPDATE_TINT;
+		if (spriteMode == SpriteMode.animated)
+			updateFlags |= UPDATE_SPRITE;
 	}
-
-	protected Particle newParticle (Sprite sprite) {
+	
+	protected Particle newParticle(Sprite sprite) {
 		return new Particle(sprite);
 	}
-
-	protected Particle[] getParticles () {
+	
+	protected Particle[] getParticles() {
 		return particles;
 	}
-
-	private void activateParticle (int index) {
+	
+	private void activateParticle(int index) {
 		Sprite sprite = null;
 		switch (spriteMode) {
-		case single:
-		case animated:
-			sprite = sprites.first();
-			break;
-		case random:
-			sprite = sprites.random();
-			break;
+			case single:
+			case animated:
+				sprite = sprites.first();
+				break;
+			case random:
+				sprite = sprites.random();
+				break;
 		}
-
+		
 		Particle particle = particles[index];
 		if (particle == null) {
 			particles[index] = particle = newParticle(sprite);
@@ -416,25 +422,29 @@ public class ParticleEmitter {
 		} else {
 			particle.set(sprite);
 		}
-
-		float percent = durationTimer / (float)duration;
+		
+		float percent = durationTimer / (float) duration;
 		int updateFlags = this.updateFlags;
-
-		if (lifeValue.independent) generateLifeValues();
-
-		if (lifeOffsetValue.independent) generateLifeOffsetValues();
-
-		particle.currentLife = particle.life = life + (int)(lifeDiff * lifeValue.getScale(percent));
-
+		
+		if (lifeValue.independent)
+			generateLifeValues();
+		
+		if (lifeOffsetValue.independent)
+			generateLifeOffsetValues();
+		
+		particle.currentLife = particle.life = life + (int) (lifeDiff * lifeValue.getScale(percent));
+		
 		if (velocityValue.active) {
 			particle.velocity = velocityValue.newLowValue();
 			particle.velocityDiff = velocityValue.newHighValue();
-			if (!velocityValue.relative) particle.velocityDiff -= particle.velocity;
+			if (!velocityValue.relative)
+				particle.velocityDiff -= particle.velocity;
 		}
-
+		
 		particle.angle = angleValue.newLowValue();
 		particle.angleDiff = angleValue.newHighValue();
-		if (!angleValue.relative) particle.angleDiff -= particle.angle;
+		if (!angleValue.relative)
+			particle.angleDiff -= particle.angle;
 		float angle = 0;
 		if ((updateFlags & UPDATE_ANGLE) == 0) {
 			angle = particle.angle + particle.angleDiff * angleValue.getScale(0);
@@ -442,153 +452,165 @@ public class ParticleEmitter {
 			particle.angleCos = MathUtils.cosDeg(angle);
 			particle.angleSin = MathUtils.sinDeg(angle);
 		}
-
+		
 		float spriteWidth = sprite.getWidth();
 		float spriteHeight = sprite.getHeight();
-
+		
 		particle.xScale = xScaleValue.newLowValue() / spriteWidth;
 		particle.xScaleDiff = xScaleValue.newHighValue() / spriteWidth;
-		if (!xScaleValue.relative) particle.xScaleDiff -= particle.xScale;
-
+		if (!xScaleValue.relative)
+			particle.xScaleDiff -= particle.xScale;
+		
 		if (yScaleValue.active) {
 			particle.yScale = yScaleValue.newLowValue() / spriteHeight;
 			particle.yScaleDiff = yScaleValue.newHighValue() / spriteHeight;
-			if (!yScaleValue.relative) particle.yScaleDiff -= particle.yScale;
+			if (!yScaleValue.relative)
+				particle.yScaleDiff -= particle.yScale;
 			particle.setScale(particle.xScale + particle.xScaleDiff * xScaleValue.getScale(0),
-				particle.yScale + particle.yScaleDiff * yScaleValue.getScale(0));
+					particle.yScale + particle.yScaleDiff * yScaleValue.getScale(0));
 		} else {
 			particle.setScale(particle.xScale + particle.xScaleDiff * xScaleValue.getScale(0));
 		}
-
+		
 		if (rotationValue.active) {
 			particle.rotation = rotationValue.newLowValue();
 			particle.rotationDiff = rotationValue.newHighValue();
-			if (!rotationValue.relative) particle.rotationDiff -= particle.rotation;
+			if (!rotationValue.relative)
+				particle.rotationDiff -= particle.rotation;
 			float rotation = particle.rotation + particle.rotationDiff * rotationValue.getScale(0);
-			if (aligned) rotation += angle;
+			if (aligned)
+				rotation += angle;
 			particle.setRotation(rotation);
 		}
-
+		
 		if (windValue.active) {
 			particle.wind = windValue.newLowValue();
 			particle.windDiff = windValue.newHighValue();
-			if (!windValue.relative) particle.windDiff -= particle.wind;
+			if (!windValue.relative)
+				particle.windDiff -= particle.wind;
 		}
-
+		
 		if (gravityValue.active) {
 			particle.gravity = gravityValue.newLowValue();
 			particle.gravityDiff = gravityValue.newHighValue();
-			if (!gravityValue.relative) particle.gravityDiff -= particle.gravity;
+			if (!gravityValue.relative)
+				particle.gravityDiff -= particle.gravity;
 		}
-
+		
 		float[] color = particle.tint;
-		if (color == null) particle.tint = color = new float[3];
+		if (color == null)
+			particle.tint = color = new float[3];
 		float[] temp = tintValue.getColor(0);
 		color[0] = temp[0];
 		color[1] = temp[1];
 		color[2] = temp[2];
-
+		
 		particle.transparency = transparencyValue.newLowValue();
 		particle.transparencyDiff = transparencyValue.newHighValue() - particle.transparency;
-
+		
 		// Spawn.
 		float x = this.x;
-		if (xOffsetValue.active) x += xOffsetValue.newLowValue();
+		if (xOffsetValue.active)
+			x += xOffsetValue.newLowValue();
 		float y = this.y;
-		if (yOffsetValue.active) y += yOffsetValue.newLowValue();
+		if (yOffsetValue.active)
+			y += yOffsetValue.newLowValue();
 		switch (spawnShapeValue.shape) {
-		case square: {
-			float width = spawnWidth + (spawnWidthDiff * spawnWidthValue.getScale(percent));
-			float height = spawnHeight + (spawnHeightDiff * spawnHeightValue.getScale(percent));
-			x += MathUtils.random(width) - width * 0.5f;
-			y += MathUtils.random(height) - height * 0.5f;
-			break;
-		}
-		case ellipse: {
-			float width = spawnWidth + (spawnWidthDiff * spawnWidthValue.getScale(percent));
-			float height = spawnHeight + (spawnHeightDiff * spawnHeightValue.getScale(percent));
-			float radiusX = width * 0.5f;
-			float radiusY = height * 0.5f;
-			if (radiusX == 0 || radiusY == 0) break;
-			float scaleY = radiusX / (float)radiusY;
-			if (spawnShapeValue.edges) {
-				float spawnAngle;
-				switch (spawnShapeValue.side) {
-				case top:
-					spawnAngle = -MathUtils.random(179f);
+			case square: {
+				float width = spawnWidth + (spawnWidthDiff * spawnWidthValue.getScale(percent));
+				float height = spawnHeight + (spawnHeightDiff * spawnHeightValue.getScale(percent));
+				x += MathUtils.random(width) - width * 0.5f;
+				y += MathUtils.random(height) - height * 0.5f;
+				break;
+			}
+			case ellipse: {
+				float width = spawnWidth + (spawnWidthDiff * spawnWidthValue.getScale(percent));
+				float height = spawnHeight + (spawnHeightDiff * spawnHeightValue.getScale(percent));
+				float radiusX = width * 0.5f;
+				float radiusY = height * 0.5f;
+				if (radiusX == 0 || radiusY == 0)
 					break;
-				case bottom:
-					spawnAngle = MathUtils.random(179f);
-					break;
-				default:
-					spawnAngle = MathUtils.random(360f);
-					break;
-				}
-				float cosDeg = MathUtils.cosDeg(spawnAngle);
-				float sinDeg = MathUtils.sinDeg(spawnAngle);
-				x += cosDeg * radiusX;
-				y += sinDeg * radiusX / scaleY;
-				if ((updateFlags & UPDATE_ANGLE) == 0) {
-					particle.angle = spawnAngle;
-					particle.angleCos = cosDeg;
-					particle.angleSin = sinDeg;
-				}
-			} else {
-				float radius2 = radiusX * radiusX;
-				while (true) {
-					float px = MathUtils.random(width) - radiusX;
-					float py = MathUtils.random(width) - radiusX;
-					if (px * px + py * py <= radius2) {
-						x += px;
-						y += py / scaleY;
-						break;
+				float scaleY = radiusX / (float) radiusY;
+				if (spawnShapeValue.edges) {
+					float spawnAngle;
+					switch (spawnShapeValue.side) {
+						case top:
+							spawnAngle = -MathUtils.random(179f);
+							break;
+						case bottom:
+							spawnAngle = MathUtils.random(179f);
+							break;
+						default:
+							spawnAngle = MathUtils.random(360f);
+							break;
+					}
+					float cosDeg = MathUtils.cosDeg(spawnAngle);
+					float sinDeg = MathUtils.sinDeg(spawnAngle);
+					x += cosDeg * radiusX;
+					y += sinDeg * radiusX / scaleY;
+					if ((updateFlags & UPDATE_ANGLE) == 0) {
+						particle.angle = spawnAngle;
+						particle.angleCos = cosDeg;
+						particle.angleSin = sinDeg;
+					}
+				} else {
+					float radius2 = radiusX * radiusX;
+					while (true) {
+						float px = MathUtils.random(width) - radiusX;
+						float py = MathUtils.random(width) - radiusX;
+						if (px * px + py * py <= radius2) {
+							x += px;
+							y += py / scaleY;
+							break;
+						}
 					}
 				}
+				break;
 			}
-			break;
+			case line: {
+				float width = spawnWidth + (spawnWidthDiff * spawnWidthValue.getScale(percent));
+				float height = spawnHeight + (spawnHeightDiff * spawnHeightValue.getScale(percent));
+				if (width != 0) {
+					float lineX = width * MathUtils.random();
+					x += lineX;
+					y += lineX * (height / (float) width);
+				} else
+					y += height * MathUtils.random();
+				break;
+			}
 		}
-		case line: {
-			float width = spawnWidth + (spawnWidthDiff * spawnWidthValue.getScale(percent));
-			float height = spawnHeight + (spawnHeightDiff * spawnHeightValue.getScale(percent));
-			if (width != 0) {
-				float lineX = width * MathUtils.random();
-				x += lineX;
-				y += lineX * (height / (float)width);
-			} else
-				y += height * MathUtils.random();
-			break;
-		}
-		}
-
+		
 		particle.setBounds(x - spriteWidth * 0.5f, y - spriteHeight * 0.5f, spriteWidth, spriteHeight);
-
-		int offsetTime = (int)(lifeOffset + lifeOffsetDiff * lifeOffsetValue.getScale(percent));
+		
+		int offsetTime = (int) (lifeOffset + lifeOffsetDiff * lifeOffsetValue.getScale(percent));
 		if (offsetTime > 0) {
-			if (offsetTime >= particle.currentLife) offsetTime = particle.currentLife - 1;
+			if (offsetTime >= particle.currentLife)
+				offsetTime = particle.currentLife - 1;
 			updateParticle(particle, offsetTime / 1000f, offsetTime);
 		}
 	}
-
-	private boolean updateParticle (Particle particle, float delta, int deltaMillis) {
+	
+	private boolean updateParticle(Particle particle, float delta, int deltaMillis) {
 		int life = particle.currentLife - deltaMillis;
-		if (life <= 0) return false;
+		if (life <= 0)
+			return false;
 		particle.currentLife = life;
-
-		float percent = 1 - particle.currentLife / (float)particle.life;
+		
+		float percent = 1 - particle.currentLife / (float) particle.life;
 		int updateFlags = this.updateFlags;
-
+		
 		if ((updateFlags & UPDATE_SCALE) != 0) {
 			if (yScaleValue.active) {
 				particle.setScale(particle.xScale + particle.xScaleDiff * xScaleValue.getScale(percent),
-					particle.yScale + particle.yScaleDiff * yScaleValue.getScale(percent));
+						particle.yScale + particle.yScaleDiff * yScaleValue.getScale(percent));
 			} else {
 				particle.setScale(particle.xScale + particle.xScaleDiff * xScaleValue.getScale(percent));
 			}
 		}
-
+		
 		if ((updateFlags & UPDATE_VELOCITY) != 0) {
 			float velocity = (particle.velocity + particle.velocityDiff * velocityValue.getScale(percent)) * delta;
-
+			
 			float velocityX, velocityY;
 			if ((updateFlags & UPDATE_ANGLE) != 0) {
 				float angle = particle.angle + particle.angleDiff * angleValue.getScale(percent);
@@ -596,7 +618,8 @@ public class ParticleEmitter {
 				velocityY = velocity * MathUtils.sinDeg(angle);
 				if ((updateFlags & UPDATE_ROTATION) != 0) {
 					float rotation = particle.rotation + particle.rotationDiff * rotationValue.getScale(percent);
-					if (aligned) rotation += angle;
+					if (aligned)
+						rotation += angle;
 					particle.setRotation(rotation);
 				}
 			} else {
@@ -604,40 +627,41 @@ public class ParticleEmitter {
 				velocityY = velocity * particle.angleSin;
 				if (aligned || (updateFlags & UPDATE_ROTATION) != 0) {
 					float rotation = particle.rotation + particle.rotationDiff * rotationValue.getScale(percent);
-					if (aligned) rotation += particle.angle;
+					if (aligned)
+						rotation += particle.angle;
 					particle.setRotation(rotation);
 				}
 			}
-
+			
 			if ((updateFlags & UPDATE_WIND) != 0)
 				velocityX += (particle.wind + particle.windDiff * windValue.getScale(percent)) * delta;
-
+			
 			if ((updateFlags & UPDATE_GRAVITY) != 0)
 				velocityY += (particle.gravity + particle.gravityDiff * gravityValue.getScale(percent)) * delta;
-
+			
 			particle.translate(velocityX, velocityY);
 		} else {
 			if ((updateFlags & UPDATE_ROTATION) != 0)
 				particle.setRotation(particle.rotation + particle.rotationDiff * rotationValue.getScale(percent));
 		}
-
+		
 		float[] color;
 		if ((updateFlags & UPDATE_TINT) != 0)
 			color = tintValue.getColor(percent);
 		else
 			color = particle.tint;
-
+		
 		if (premultipliedAlpha) {
 			float alphaMultiplier = additive ? 0 : 1;
 			float a = particle.transparency + particle.transparencyDiff * transparencyValue.getScale(percent);
 			particle.setColor(color[0] * a, color[1] * a, color[2] * a, a * alphaMultiplier);
 		} else {
 			particle.setColor(color[0], color[1], color[2],
-				particle.transparency + particle.transparencyDiff * transparencyValue.getScale(percent));
+					particle.transparency + particle.transparencyDiff * transparencyValue.getScale(percent));
 		}
-
+		
 		if ((updateFlags & UPDATE_SPRITE) != 0) {
-			int frame = Math.min((int)(percent * sprites.size), sprites.size - 1);
+			int frame = Math.min((int) (percent * sprites.size), sprites.size - 1);
 			if (particle.frame != frame) {
 				Sprite sprite = sprites.get(frame);
 				float prevSpriteWidth = particle.getWidth();
@@ -649,66 +673,73 @@ public class ParticleEmitter {
 				particle.frame = frame;
 			}
 		}
-
+		
 		return true;
 	}
-
-	private void generateLifeValues () {
-		life = (int)lifeValue.newLowValue();
-		lifeDiff = (int)lifeValue.newHighValue();
-		if (!lifeValue.relative) lifeDiff -= life;
+	
+	private void generateLifeValues() {
+		life = (int) lifeValue.newLowValue();
+		lifeDiff = (int) lifeValue.newHighValue();
+		if (!lifeValue.relative)
+			lifeDiff -= life;
 	}
-
-	private void generateLifeOffsetValues () {
-		lifeOffset = lifeOffsetValue.active ? (int)lifeOffsetValue.newLowValue() : 0;
-		lifeOffsetDiff = (int)lifeOffsetValue.newHighValue();
-		if (!lifeOffsetValue.relative) lifeOffsetDiff -= lifeOffset;
+	
+	private void generateLifeOffsetValues() {
+		lifeOffset = lifeOffsetValue.active ? (int) lifeOffsetValue.newLowValue() : 0;
+		lifeOffsetDiff = (int) lifeOffsetValue.newHighValue();
+		if (!lifeOffsetValue.relative)
+			lifeOffsetDiff -= lifeOffset;
 	}
-
-	public void setPosition (float x, float y) {
+	
+	public void setPosition(float x, float y) {
 		if (attached) {
 			float xAmount = x - this.x;
 			float yAmount = y - this.y;
 			boolean[] active = this.active;
 			for (int i = 0, n = active.length; i < n; i++)
-				if (active[i]) particles[i].translate(xAmount, yAmount);
+				if (active[i])
+					particles[i].translate(xAmount, yAmount);
 		}
 		this.x = x;
 		this.y = y;
 	}
-
-	public void setSprites (Array<Sprite> sprites) {
+	
+	public void setSprites(Array<Sprite> sprites) {
 		this.sprites = sprites;
-		if (sprites.size == 0) return;
+		if (sprites.size == 0)
+			return;
 		for (int i = 0, n = particles.length; i < n; i++) {
 			Particle particle = particles[i];
-			if (particle == null) break;
+			if (particle == null)
+				break;
 			Sprite sprite = null;
 			switch (spriteMode) {
-			case single:
-				sprite = sprites.first();
-				break;
-			case random:
-				sprite = sprites.random();
-				break;
-			case animated:
-				float percent = 1 - particle.currentLife / (float)particle.life;
-				particle.frame = Math.min((int)(percent * sprites.size), sprites.size - 1);
-				sprite = sprites.get(particle.frame);
-				break;
+				case single:
+					sprite = sprites.first();
+					break;
+				case random:
+					sprite = sprites.random();
+					break;
+				case animated:
+					float percent = 1 - particle.currentLife / (float) particle.life;
+					particle.frame = Math.min((int) (percent * sprites.size), sprites.size - 1);
+					sprite = sprites.get(particle.frame);
+					break;
 			}
 			particle.setRegion(sprite);
 			particle.setOrigin(sprite.getOriginX(), sprite.getOriginY());
 		}
 	}
-
-	public void setSpriteMode (SpriteMode spriteMode) {
+	
+	public void setSpriteMode(SpriteMode spriteMode) {
 		this.spriteMode = spriteMode;
 	}
-
-	/** Allocates max particles emitter can hold. Usually called early on to avoid allocation on updates.
-	 * {@link #setSprites(Array)} must have been set before calling this method */
-	public void preAllocateParticles () {
+	
+	/**
+	 * Allocates max particles emitter can hold. Usually called early on to avoid allocation on updates.
+	 * {@link #setSprites(Array)} must have been set before calling this method
+	 */
+	public void preAllocateParticles() {
 		if (sprites.isEmpty())
 			throw new IllegalStateException("ParticleEmitter.setSprites() must have been called before preAllocateParticles()");
 		for (int index = 0; index < particles.length; index++) {
@@ -719,265 +750,258 @@ public class ParticleEmitter {
 			}
 		}
 	}
-
-	/** Ignores the {@link #setContinuous(boolean) continuous} setting until the emitter is started again. This allows the emitter
-	 * to stop smoothly. */
-	public void allowCompletion () {
+	
+	/**
+	 * Ignores the {@link #setContinuous(boolean) continuous} setting until the emitter is started again. This allows the emitter
+	 * to stop smoothly.
+	 */
+	public void allowCompletion() {
 		allowCompletion = true;
 		durationTimer = duration;
 	}
-
-	public boolean getAllowCompletion () {
+	
+	public boolean getAllowCompletion() {
 		return allowCompletion;
 	}
-
-	public Array<Sprite> getSprites () {
+	
+	public Array<Sprite> getSprites() {
 		return sprites;
 	}
-
-	public SpriteMode getSpriteMode () {
+	
+	public SpriteMode getSpriteMode() {
 		return spriteMode;
 	}
-
-	public String getName () {
+	
+	public String getName() {
 		return name;
 	}
-
-	public void setName (String name) {
+	
+	public void setName(String name) {
 		this.name = name;
 	}
-
-	public ScaledNumericValue getLife () {
+	
+	public ScaledNumericValue getLife() {
 		return lifeValue;
 	}
-
-	public ScaledNumericValue getXScale () {
+	
+	public ScaledNumericValue getXScale() {
 		return xScaleValue;
 	}
-
-	public ScaledNumericValue getYScale () {
+	
+	public ScaledNumericValue getYScale() {
 		return yScaleValue;
 	}
-
-	public ScaledNumericValue getRotation () {
+	
+	public ScaledNumericValue getRotation() {
 		return rotationValue;
 	}
-
-	public GradientColorValue getTint () {
+	
+	public GradientColorValue getTint() {
 		return tintValue;
 	}
-
-	public ScaledNumericValue getVelocity () {
+	
+	public ScaledNumericValue getVelocity() {
 		return velocityValue;
 	}
-
-	public ScaledNumericValue getWind () {
+	
+	public ScaledNumericValue getWind() {
 		return windValue;
 	}
-
-	public ScaledNumericValue getGravity () {
+	
+	public ScaledNumericValue getGravity() {
 		return gravityValue;
 	}
-
-	public ScaledNumericValue getAngle () {
+	
+	public ScaledNumericValue getAngle() {
 		return angleValue;
 	}
-
-	public ScaledNumericValue getEmission () {
+	
+	public ScaledNumericValue getEmission() {
 		return emissionValue;
 	}
-
-	public ScaledNumericValue getTransparency () {
+	
+	public ScaledNumericValue getTransparency() {
 		return transparencyValue;
 	}
-
-	public RangedNumericValue getDuration () {
+	
+	public RangedNumericValue getDuration() {
 		return durationValue;
 	}
-
-	public RangedNumericValue getDelay () {
+	
+	public RangedNumericValue getDelay() {
 		return delayValue;
 	}
-
-	public ScaledNumericValue getLifeOffset () {
+	
+	public ScaledNumericValue getLifeOffset() {
 		return lifeOffsetValue;
 	}
-
-	public RangedNumericValue getXOffsetValue () {
+	
+	public RangedNumericValue getXOffsetValue() {
 		return xOffsetValue;
 	}
-
-	public RangedNumericValue getYOffsetValue () {
+	
+	public RangedNumericValue getYOffsetValue() {
 		return yOffsetValue;
 	}
-
-	public ScaledNumericValue getSpawnWidth () {
+	
+	public ScaledNumericValue getSpawnWidth() {
 		return spawnWidthValue;
 	}
-
-	public ScaledNumericValue getSpawnHeight () {
+	
+	public ScaledNumericValue getSpawnHeight() {
 		return spawnHeightValue;
 	}
-
-	public SpawnShapeValue getSpawnShape () {
+	
+	public SpawnShapeValue getSpawnShape() {
 		return spawnShapeValue;
 	}
-
-	public boolean isAttached () {
+	
+	public boolean isAttached() {
 		return attached;
 	}
-
-	public void setAttached (boolean attached) {
+	
+	public void setAttached(boolean attached) {
 		this.attached = attached;
 	}
-
-	public boolean isContinuous () {
+	
+	public boolean isContinuous() {
 		return continuous;
 	}
-
-	public void setContinuous (boolean continuous) {
+	
+	public void setContinuous(boolean continuous) {
 		this.continuous = continuous;
 	}
-
-	public boolean isAligned () {
+	
+	public boolean isAligned() {
 		return aligned;
 	}
-
-	public void setAligned (boolean aligned) {
+	
+	public void setAligned(boolean aligned) {
 		this.aligned = aligned;
 	}
-
-	public boolean isAdditive () {
+	
+	public boolean isAdditive() {
 		return additive;
 	}
-
-	public void setAdditive (boolean additive) {
+	
+	public void setAdditive(boolean additive) {
 		this.additive = additive;
 	}
-
-	/** @return Whether this ParticleEmitter automatically returns the {@link com.badlogic.gdx.graphics.g2d.Batch Batch}'s blend
-	 *         function to the alpha-blending default (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) when done drawing. */
-	public boolean cleansUpBlendFunction () {
+	
+	/**
+	 * @return Whether this ParticleEmitter automatically returns the {@link com.badlogic.gdx.graphics.g2d.Batch Batch}'s blend
+	 * function to the alpha-blending default (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) when done drawing.
+	 */
+	public boolean cleansUpBlendFunction() {
 		return cleansUpBlendFunction;
 	}
-
-	/** Set whether to automatically return the {@link com.badlogic.gdx.graphics.g2d.Batch Batch}'s blend function to the
+	
+	/**
+	 * Set whether to automatically return the {@link com.badlogic.gdx.graphics.g2d.Batch Batch}'s blend function to the
 	 * alpha-blending default (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) when done drawing. Is true by default. If set to false, the
 	 * Batch's blend function is left as it was for drawing this ParticleEmitter, which prevents the Batch from being flushed
 	 * repeatedly if consecutive ParticleEmitters with the same additive or pre-multiplied alpha state are drawn in a row.
 	 * <p>
 	 * IMPORTANT: If set to false and if the next object to use this Batch expects alpha blending, you are responsible for setting
 	 * the Batch's blend function to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
-	 * @param cleansUpBlendFunction */
-	public void setCleansUpBlendFunction (boolean cleansUpBlendFunction) {
+	 *
+	 * @param cleansUpBlendFunction
+	 */
+	public void setCleansUpBlendFunction(boolean cleansUpBlendFunction) {
 		this.cleansUpBlendFunction = cleansUpBlendFunction;
 	}
-
-	public boolean isBehind () {
+	
+	public boolean isBehind() {
 		return behind;
 	}
-
-	public void setBehind (boolean behind) {
+	
+	public void setBehind(boolean behind) {
 		this.behind = behind;
 	}
-
-	public boolean isPremultipliedAlpha () {
+	
+	public boolean isPremultipliedAlpha() {
 		return premultipliedAlpha;
 	}
-
-	public void setPremultipliedAlpha (boolean premultipliedAlpha) {
+	
+	public void setPremultipliedAlpha(boolean premultipliedAlpha) {
 		this.premultipliedAlpha = premultipliedAlpha;
 	}
-
-	public int getMinParticleCount () {
+	
+	public int getMinParticleCount() {
 		return minParticleCount;
 	}
-
-	public void setMinParticleCount (int minParticleCount) {
+	
+	public void setMinParticleCount(int minParticleCount) {
 		this.minParticleCount = minParticleCount;
 	}
-
-	public int getMaxParticleCount () {
+	
+	public int getMaxParticleCount() {
 		return maxParticleCount;
 	}
-
-	public boolean isComplete () {
-		if (continuous && !allowCompletion) return false;
-		if (delayTimer < delay) return false;
+	
+	public boolean isComplete() {
+		if (continuous && !allowCompletion)
+			return false;
+		if (delayTimer < delay)
+			return false;
 		return durationTimer >= duration && activeCount == 0;
 	}
-
-	public float getPercentComplete () {
-		if (delayTimer < delay) return 0;
-		return Math.min(1, durationTimer / (float)duration);
+	
+	public float getPercentComplete() {
+		if (delayTimer < delay)
+			return 0;
+		return Math.min(1, durationTimer / (float) duration);
 	}
-
-	public float getX () {
+	
+	public float getX() {
 		return x;
 	}
-
-	public float getY () {
+	
+	public float getY() {
 		return y;
 	}
-
-	public int getActiveCount () {
+	
+	public int getActiveCount() {
 		return activeCount;
 	}
-
-	public Array<String> getImagePaths () {
+	
+	public Array<String> getImagePaths() {
 		return imagePaths;
 	}
-
-	public void setImagePaths (Array<String> imagePaths) {
+	
+	public void setImagePaths(Array<String> imagePaths) {
 		this.imagePaths = imagePaths;
 	}
-
-	public void setFlip (boolean flipX, boolean flipY) {
+	
+	public void setFlip(boolean flipX, boolean flipY) {
 		this.flipX = flipX;
 		this.flipY = flipY;
-		if (particles == null) return;
+		if (particles == null)
+			return;
 		for (int i = 0, n = particles.length; i < n; i++) {
 			Particle particle = particles[i];
-			if (particle != null) particle.flip(flipX, flipY);
+			if (particle != null)
+				particle.flip(flipX, flipY);
 		}
 	}
-
-	public void flipY () {
+	
+	public void flipY() {
 		angleValue.setHigh(-angleValue.getHighMin(), -angleValue.getHighMax());
 		angleValue.setLow(-angleValue.getLowMin(), -angleValue.getLowMax());
-
+		
 		gravityValue.setHigh(-gravityValue.getHighMin(), -gravityValue.getHighMax());
 		gravityValue.setLow(-gravityValue.getLowMin(), -gravityValue.getLowMax());
-
+		
 		windValue.setHigh(-windValue.getHighMin(), -windValue.getHighMax());
 		windValue.setLow(-windValue.getLowMin(), -windValue.getLowMax());
-
+		
 		rotationValue.setHigh(-rotationValue.getHighMin(), -rotationValue.getHighMax());
 		rotationValue.setLow(-rotationValue.getLowMin(), -rotationValue.getLowMax());
-
+		
 		yOffsetValue.setLow(-yOffsetValue.getLowMin(), -yOffsetValue.getLowMax());
 	}
-
-	/** Returns the bounding box for all active particles. z axis will always be zero. */
-	public BoundingBox getBoundingBox () {
-		if (bounds == null) bounds = new BoundingBox();
-
-		Particle[] particles = this.particles;
-		boolean[] active = this.active;
-		BoundingBox bounds = this.bounds;
-
-		bounds.inf();
-		for (int i = 0, n = active.length; i < n; i++)
-			if (active[i]) {
-				Rectangle r = particles[i].getBoundingRectangle();
-				bounds.ext(r.x, r.y, 0);
-				bounds.ext(r.x + r.width, r.y + r.height, 0);
-			}
-
-		return bounds;
-	}
-
-	protected RangedNumericValue[] getXSizeValues () {
+	
+	protected RangedNumericValue[] getXSizeValues() {
 		if (xSizeValues == null) {
 			xSizeValues = new RangedNumericValue[3];
 			xSizeValues[0] = xScaleValue;
@@ -986,8 +1010,8 @@ public class ParticleEmitter {
 		}
 		return xSizeValues;
 	}
-
-	protected RangedNumericValue[] getYSizeValues () {
+	
+	protected RangedNumericValue[] getYSizeValues() {
 		if (ySizeValues == null) {
 			ySizeValues = new RangedNumericValue[3];
 			ySizeValues[0] = yScaleValue;
@@ -996,8 +1020,8 @@ public class ParticleEmitter {
 		}
 		return ySizeValues;
 	}
-
-	protected RangedNumericValue[] getMotionValues () {
+	
+	protected RangedNumericValue[] getMotionValues() {
 		if (motionValues == null) {
 			motionValues = new RangedNumericValue[3];
 			motionValues[0] = velocityValue;
@@ -1006,63 +1030,80 @@ public class ParticleEmitter {
 		}
 		return motionValues;
 	}
-
-	/** Permanently scales the size of the emitter by scaling all its ranged values related to size. */
-	public void scaleSize (float scale) {
-		if (scale == 1f) return;
+	
+	/**
+	 * Permanently scales the size of the emitter by scaling all its ranged values related to size.
+	 */
+	public void scaleSize(float scale) {
+		if (scale == 1f)
+			return;
 		scaleSize(scale, scale);
 	}
-
-	/** Permanently scales the size of the emitter by scaling all its ranged values related to size. */
-	public void scaleSize (float scaleX, float scaleY) {
-		if (scaleX == 1f && scaleY == 1f) return;
+	
+	/**
+	 * Permanently scales the size of the emitter by scaling all its ranged values related to size.
+	 */
+	public void scaleSize(float scaleX, float scaleY) {
+		if (scaleX == 1f && scaleY == 1f)
+			return;
 		for (RangedNumericValue value : getXSizeValues())
 			value.scale(scaleX);
 		for (RangedNumericValue value : getYSizeValues())
 			value.scale(scaleY);
 	}
-
-	/** Permanently scales the speed of the emitter by scaling all its ranged values related to motion. */
-	public void scaleMotion (float scale) {
-		if (scale == 1f) return;
+	
+	/**
+	 * Permanently scales the speed of the emitter by scaling all its ranged values related to motion.
+	 */
+	public void scaleMotion(float scale) {
+		if (scale == 1f)
+			return;
 		for (RangedNumericValue value : getMotionValues())
 			value.scale(scale);
 	}
-
-	/** Sets all size-related ranged values to match those of the template emitter. */
-	public void matchSize (ParticleEmitter template) {
+	
+	/**
+	 * Sets all size-related ranged values to match those of the template emitter.
+	 */
+	public void matchSize(ParticleEmitter template) {
 		matchXSize(template);
 		matchYSize(template);
 	}
-
-	/** Sets all horizontal size-related ranged values to match those of the template emitter. */
-	public void matchXSize (ParticleEmitter template) {
+	
+	/**
+	 * Sets all horizontal size-related ranged values to match those of the template emitter.
+	 */
+	public void matchXSize(ParticleEmitter template) {
 		RangedNumericValue[] values = getXSizeValues();
 		RangedNumericValue[] templateValues = template.getXSizeValues();
 		for (int i = 0; i < values.length; i++) {
 			values[i].set(templateValues[i]);
 		}
 	}
-
-	/** Sets all vertical size-related ranged values to match those of the template emitter. */
-	public void matchYSize (ParticleEmitter template) {
+	
+	/**
+	 * Sets all vertical size-related ranged values to match those of the template emitter.
+	 */
+	public void matchYSize(ParticleEmitter template) {
 		RangedNumericValue[] values = getYSizeValues();
 		RangedNumericValue[] templateValues = template.getYSizeValues();
 		for (int i = 0; i < values.length; i++) {
 			values[i].set(templateValues[i]);
 		}
 	}
-
-	/** Sets all motion-related ranged values to match those of the template emitter. */
-	public void matchMotion (ParticleEmitter template) {
+	
+	/**
+	 * Sets all motion-related ranged values to match those of the template emitter.
+	 */
+	public void matchMotion(ParticleEmitter template) {
 		RangedNumericValue[] values = getMotionValues();
 		RangedNumericValue[] templateValues = template.getMotionValues();
 		for (int i = 0; i < values.length; i++) {
 			values[i].set(templateValues[i]);
 		}
 	}
-
-	public void save (Writer output) throws IOException {
+	
+	public void save(Writer output) throws IOException {
 		output.write(name + "\n");
 		output.write("- Delay -\n");
 		delayValue.save(output);
@@ -1119,8 +1160,8 @@ public class ParticleEmitter {
 		}
 		output.write("\n");
 	}
-
-	public void load (BufferedReader reader) throws IOException {
+	
+	public void load(BufferedReader reader) throws IOException {
 		try {
 			name = readString(reader, "name");
 			reader.readLine();
@@ -1175,7 +1216,7 @@ public class ParticleEmitter {
 			aligned = readBoolean(reader, "aligned");
 			additive = readBoolean(reader, "additive");
 			behind = readBoolean(reader, "behind");
-
+			
 			// Backwards compatibility
 			line = reader.readLine();
 			if (line.startsWith("premultipliedAlpha")) {
@@ -1186,45 +1227,48 @@ public class ParticleEmitter {
 				spriteMode = SpriteMode.valueOf(readString(line));
 				line = reader.readLine();
 			}
-
+			
 			Array<String> imagePaths = new Array<String>();
 			while ((line = reader.readLine()) != null && !line.isEmpty()) {
 				imagePaths.add(line);
 			}
 			setImagePaths(imagePaths);
 		} catch (RuntimeException ex) {
-			if (name == null) throw ex;
+			if (name == null)
+				throw ex;
 			throw new RuntimeException("Error parsing emitter: " + name, ex);
 		}
 	}
-
-	static String readString (String line) throws IOException {
+	
+	static String readString(String line) throws IOException {
 		return line.substring(line.indexOf(":") + 1).trim();
 	}
-
-	static String readString (BufferedReader reader, String name) throws IOException {
+	
+	static String readString(BufferedReader reader, String name) throws IOException {
 		String line = reader.readLine();
-		if (line == null) throw new IOException("Missing value: " + name);
+		if (line == null)
+			throw new IOException("Missing value: " + name);
 		return readString(line);
 	}
-
-	static boolean readBoolean (String line) throws IOException {
+	
+	static boolean readBoolean(String line) throws IOException {
 		return Boolean.parseBoolean(readString(line));
 	}
-
-	static boolean readBoolean (BufferedReader reader, String name) throws IOException {
+	
+	static boolean readBoolean(BufferedReader reader, String name) throws IOException {
 		return Boolean.parseBoolean(readString(reader, name));
 	}
-
-	static int readInt (BufferedReader reader, String name) throws IOException {
+	
+	static int readInt(BufferedReader reader, String name) throws IOException {
 		return Integer.parseInt(readString(reader, name));
 	}
-
-	static float readFloat (BufferedReader reader, String name) throws IOException {
+	
+	static float readFloat(BufferedReader reader, String name) throws IOException {
 		return Float.parseFloat(readString(reader, name));
 	}
-
+	
 	public static class Particle extends Sprite {
+		
 		protected int life, currentLife;
 		protected float xScale, xScaleDiff;
 		protected float yScale, yScaleDiff;
@@ -1237,196 +1281,210 @@ public class ParticleEmitter {
 		protected float gravity, gravityDiff;
 		protected float[] tint;
 		protected int frame;
-
-		public Particle (Sprite sprite) {
+		
+		public Particle(Sprite sprite) {
 			super(sprite);
 		}
+		
 	}
-
-	static public class ParticleValue {
+	
+	public static class ParticleValue {
+		
 		boolean active;
 		boolean alwaysActive;
-
-		public void setAlwaysActive (boolean alwaysActive) {
+		
+		public void setAlwaysActive(boolean alwaysActive) {
 			this.alwaysActive = alwaysActive;
 		}
-
-		public boolean isAlwaysActive () {
+		
+		public boolean isAlwaysActive() {
 			return alwaysActive;
 		}
-
-		public boolean isActive () {
+		
+		public boolean isActive() {
 			return alwaysActive || active;
 		}
-
-		public void setActive (boolean active) {
+		
+		public void setActive(boolean active) {
 			this.active = active;
 		}
-
-		public void save (Writer output) throws IOException {
+		
+		public void save(Writer output) throws IOException {
 			if (!alwaysActive)
 				output.write("active: " + active + "\n");
 			else
 				active = true;
 		}
-
-		public void load (BufferedReader reader) throws IOException {
+		
+		public void load(BufferedReader reader) throws IOException {
 			if (!alwaysActive)
 				active = readBoolean(reader, "active");
 			else
 				active = true;
 		}
-
-		public void load (ParticleValue value) {
+		
+		public void load(ParticleValue value) {
 			active = value.active;
 			alwaysActive = value.alwaysActive;
 		}
+		
 	}
-
-	static public class NumericValue extends ParticleValue {
+	
+	public static class NumericValue extends ParticleValue {
+		
 		private float value;
-
-		public float getValue () {
+		
+		public float getValue() {
 			return value;
 		}
-
-		public void setValue (float value) {
+		
+		public void setValue(float value) {
 			this.value = value;
 		}
-
-		public void save (Writer output) throws IOException {
+		
+		public void save(Writer output) throws IOException {
 			super.save(output);
-			if (!active) return;
+			if (!active)
+				return;
 			output.write("value: " + value + "\n");
 		}
-
-		public void load (BufferedReader reader) throws IOException {
+		
+		public void load(BufferedReader reader) throws IOException {
 			super.load(reader);
-			if (!active) return;
+			if (!active)
+				return;
 			value = readFloat(reader, "value");
 		}
-
-		public void load (NumericValue value) {
+		
+		public void load(NumericValue value) {
 			super.load(value);
 			this.value = value.value;
 		}
+		
 	}
-
-	static public class RangedNumericValue extends ParticleValue {
+	
+	public static class RangedNumericValue extends ParticleValue {
+		
 		private float lowMin, lowMax;
-
-		public float newLowValue () {
+		
+		public float newLowValue() {
 			return lowMin + (lowMax - lowMin) * MathUtils.random();
 		}
-
-		public void setLow (float value) {
+		
+		public void setLow(float value) {
 			lowMin = value;
 			lowMax = value;
 		}
-
-		public void setLow (float min, float max) {
+		
+		public void setLow(float min, float max) {
 			lowMin = min;
 			lowMax = max;
 		}
-
-		public float getLowMin () {
+		
+		public float getLowMin() {
 			return lowMin;
 		}
-
-		public void setLowMin (float lowMin) {
+		
+		public void setLowMin(float lowMin) {
 			this.lowMin = lowMin;
 		}
-
-		public float getLowMax () {
+		
+		public float getLowMax() {
 			return lowMax;
 		}
-
-		public void setLowMax (float lowMax) {
+		
+		public void setLowMax(float lowMax) {
 			this.lowMax = lowMax;
 		}
-
-		/** permanently scales the range by a scalar. */
-		public void scale (float scale) {
+		
+		/**
+		 * permanently scales the range by a scalar.
+		 */
+		public void scale(float scale) {
 			lowMin *= scale;
 			lowMax *= scale;
 		}
-
-		public void set (RangedNumericValue value) {
+		
+		public void set(RangedNumericValue value) {
 			this.lowMin = value.lowMin;
 			this.lowMax = value.lowMax;
 		}
-
-		public void save (Writer output) throws IOException {
+		
+		public void save(Writer output) throws IOException {
 			super.save(output);
-			if (!active) return;
+			if (!active)
+				return;
 			output.write("lowMin: " + lowMin + "\n");
 			output.write("lowMax: " + lowMax + "\n");
 		}
-
-		public void load (BufferedReader reader) throws IOException {
+		
+		public void load(BufferedReader reader) throws IOException {
 			super.load(reader);
-			if (!active) return;
+			if (!active)
+				return;
 			lowMin = readFloat(reader, "lowMin");
 			lowMax = readFloat(reader, "lowMax");
 		}
-
-		public void load (RangedNumericValue value) {
+		
+		public void load(RangedNumericValue value) {
 			super.load(value);
 			lowMax = value.lowMax;
 			lowMin = value.lowMin;
 		}
+		
 	}
-
-	static public class ScaledNumericValue extends RangedNumericValue {
+	
+	public static class ScaledNumericValue extends RangedNumericValue {
+		
 		private float[] scaling = {1};
 		float[] timeline = {0};
 		private float highMin, highMax;
 		boolean relative;
-
-		public float newHighValue () {
+		
+		public float newHighValue() {
 			return highMin + (highMax - highMin) * MathUtils.random();
 		}
-
-		public void setHigh (float value) {
+		
+		public void setHigh(float value) {
 			highMin = value;
 			highMax = value;
 		}
-
-		public void setHigh (float min, float max) {
+		
+		public void setHigh(float min, float max) {
 			highMin = min;
 			highMax = max;
 		}
-
-		public float getHighMin () {
+		
+		public float getHighMin() {
 			return highMin;
 		}
-
-		public void setHighMin (float highMin) {
+		
+		public void setHighMin(float highMin) {
 			this.highMin = highMin;
 		}
-
-		public float getHighMax () {
+		
+		public float getHighMax() {
 			return highMax;
 		}
-
-		public void setHighMax (float highMax) {
+		
+		public void setHighMax(float highMax) {
 			this.highMax = highMax;
 		}
-
-		public void scale (float scale) {
+		
+		public void scale(float scale) {
 			super.scale(scale);
 			highMin *= scale;
 			highMax *= scale;
 		}
-
-		public void set (RangedNumericValue value) {
+		
+		public void set(RangedNumericValue value) {
 			if (value instanceof ScaledNumericValue)
-				set((ScaledNumericValue)value);
+				set((ScaledNumericValue) value);
 			else
 				super.set(value);
 		}
-
-		public void set (ScaledNumericValue value) {
+		
+		public void set(ScaledNumericValue value) {
 			super.set(value);
 			this.highMin = value.highMin;
 			this.highMax = value.highMax;
@@ -1440,32 +1498,32 @@ public class ParticleEmitter {
 				System.arraycopy(value.timeline, 0, timeline, 0, timeline.length);
 			this.relative = value.relative;
 		}
-
-		public float[] getScaling () {
+		
+		public float[] getScaling() {
 			return scaling;
 		}
-
-		public void setScaling (float[] values) {
+		
+		public void setScaling(float[] values) {
 			this.scaling = values;
 		}
-
-		public float[] getTimeline () {
+		
+		public float[] getTimeline() {
 			return timeline;
 		}
-
-		public void setTimeline (float[] timeline) {
+		
+		public void setTimeline(float[] timeline) {
 			this.timeline = timeline;
 		}
-
-		public boolean isRelative () {
+		
+		public boolean isRelative() {
 			return relative;
 		}
-
-		public void setRelative (boolean relative) {
+		
+		public void setRelative(boolean relative) {
 			this.relative = relative;
 		}
-
-		public float getScale (float percent) {
+		
+		public float getScale(float percent) {
 			int endIndex = -1;
 			float[] timeline = this.timeline;
 			int n = timeline.length;
@@ -1476,17 +1534,19 @@ public class ParticleEmitter {
 					break;
 				}
 			}
-			if (endIndex == -1) return scaling[n - 1];
+			if (endIndex == -1)
+				return scaling[n - 1];
 			float[] scaling = this.scaling;
 			int startIndex = endIndex - 1;
 			float startValue = scaling[startIndex];
 			float startTime = timeline[startIndex];
 			return startValue + (scaling[endIndex] - startValue) * ((percent - startTime) / (timeline[endIndex] - startTime));
 		}
-
-		public void save (Writer output) throws IOException {
+		
+		public void save(Writer output) throws IOException {
 			super.save(output);
-			if (!active) return;
+			if (!active)
+				return;
 			output.write("highMin: " + highMin + "\n");
 			output.write("highMax: " + highMax + "\n");
 			output.write("relative: " + relative + "\n");
@@ -1497,10 +1557,11 @@ public class ParticleEmitter {
 			for (int i = 0; i < timeline.length; i++)
 				output.write("timeline" + i + ": " + timeline[i] + "\n");
 		}
-
-		public void load (BufferedReader reader) throws IOException {
+		
+		public void load(BufferedReader reader) throws IOException {
 			super.load(reader);
-			if (!active) return;
+			if (!active)
+				return;
 			highMin = readFloat(reader, "highMin");
 			highMax = readFloat(reader, "highMax");
 			relative = readBoolean(reader, "relative");
@@ -1511,8 +1572,8 @@ public class ParticleEmitter {
 			for (int i = 0; i < timeline.length; i++)
 				timeline[i] = readFloat(reader, "timeline" + i);
 		}
-
-		public void load (ScaledNumericValue value) {
+		
+		public void load(ScaledNumericValue value) {
 			super.load(value);
 			highMax = value.highMax;
 			highMin = value.highMin;
@@ -1522,49 +1583,53 @@ public class ParticleEmitter {
 			System.arraycopy(value.timeline, 0, timeline, 0, timeline.length);
 			relative = value.relative;
 		}
+		
 	}
-
-	static public class IndependentScaledNumericValue extends ScaledNumericValue {
+	
+	public static class IndependentScaledNumericValue extends ScaledNumericValue {
+		
 		boolean independent;
-
-		public boolean isIndependent () {
+		
+		public boolean isIndependent() {
 			return independent;
 		}
-
-		public void setIndependent (boolean independent) {
+		
+		public void setIndependent(boolean independent) {
 			this.independent = independent;
 		}
-
-		public void set (RangedNumericValue value) {
+		
+		public void set(RangedNumericValue value) {
 			if (value instanceof IndependentScaledNumericValue)
-				set((IndependentScaledNumericValue)value);
+				set((IndependentScaledNumericValue) value);
 			else
 				super.set(value);
 		}
-
-		public void set (ScaledNumericValue value) {
+		
+		public void set(ScaledNumericValue value) {
 			if (value instanceof IndependentScaledNumericValue)
-				set((IndependentScaledNumericValue)value);
+				set((IndependentScaledNumericValue) value);
 			else
 				super.set(value);
 		}
-
-		public void set (IndependentScaledNumericValue value) {
+		
+		public void set(IndependentScaledNumericValue value) {
 			super.set(value);
 			independent = value.independent;
 		}
-
-		public void save (Writer output) throws IOException {
+		
+		public void save(Writer output) throws IOException {
 			super.save(output);
 			output.write("independent: " + independent + "\n");
 		}
-
-		public void load (BufferedReader reader) throws IOException {
+		
+		public void load(BufferedReader reader) throws IOException {
 			super.load(reader);
 			// For backwards compatibility, independent property may not be defined
-			if (reader.markSupported()) reader.mark(100);
+			if (reader.markSupported())
+				reader.mark(100);
 			String line = reader.readLine();
-			if (line == null) throw new IOException("Missing value: independent");
+			if (line == null)
+				throw new IOException("Missing value: independent");
 			if (line.contains("independent"))
 				independent = Boolean.parseBoolean(readString(line));
 			else if (reader.markSupported())
@@ -1573,48 +1638,54 @@ public class ParticleEmitter {
 				// @see java.io.BufferedReader#markSupported may return false in some platforms (such as GWT),
 				// in that case backwards commpatibility is not possible
 				String errorMessage = "The loaded particle effect descriptor file uses an old invalid format. "
-					+ "Please download the latest version of the Particle Editor tool and recreate the file by"
-					+ " loading and saving it again.";
-				Gdx.app.error("ParticleEmitter", errorMessage);
+						+ "Please download the latest version of the Particle Editor tool and recreate the file by"
+						+ " loading and saving it again.";
+				Micro.app.error("ParticleEmitter", errorMessage);
 				throw new IOException(errorMessage);
 			}
 		}
-
-		public void load (IndependentScaledNumericValue value) {
+		
+		public void load(IndependentScaledNumericValue value) {
 			super.load(value);
 			independent = value.independent;
 		}
+		
 	}
-
-	static public class GradientColorValue extends ParticleValue {
-		static private float[] temp = new float[4];
-
+	
+	public static class GradientColorValue extends ParticleValue {
+		
+		private static float[] temp = new float[4];
+		
 		private float[] colors = {1, 1, 1};
 		float[] timeline = {0};
-
-		public GradientColorValue () {
+		
+		public GradientColorValue() {
 			alwaysActive = true;
 		}
-
-		public float[] getTimeline () {
+		
+		public float[] getTimeline() {
 			return timeline;
 		}
-
-		public void setTimeline (float[] timeline) {
+		
+		public void setTimeline(float[] timeline) {
 			this.timeline = timeline;
 		}
-
-		/** @return the r, g and b values for every timeline position */
-		public float[] getColors () {
+		
+		/**
+		 * @return the r, g and b values for every timeline position
+		 */
+		public float[] getColors() {
 			return colors;
 		}
-
-		/** @param colors the r, g and b values for every timeline position */
-		public void setColors (float[] colors) {
+		
+		/**
+		 * @param colors the r, g and b values for every timeline position
+		 */
+		public void setColors(float[] colors) {
 			this.colors = colors;
 		}
-
-		public float[] getColor (float percent) {
+		
+		public float[] getColor(float percent) {
 			int startIndex = 0, endIndex = -1;
 			float[] timeline = this.timeline;
 			int n = timeline.length;
@@ -1644,10 +1715,11 @@ public class ParticleEmitter {
 			temp[2] = b1 + (colors[endIndex + 2] - b1) * factor;
 			return temp;
 		}
-
-		public void save (Writer output) throws IOException {
+		
+		public void save(Writer output) throws IOException {
 			super.save(output);
-			if (!active) return;
+			if (!active)
+				return;
 			output.write("colorsCount: " + colors.length + "\n");
 			for (int i = 0; i < colors.length; i++)
 				output.write("colors" + i + ": " + colors[i] + "\n");
@@ -1655,10 +1727,11 @@ public class ParticleEmitter {
 			for (int i = 0; i < timeline.length; i++)
 				output.write("timeline" + i + ": " + timeline[i] + "\n");
 		}
-
-		public void load (BufferedReader reader) throws IOException {
+		
+		public void load(BufferedReader reader) throws IOException {
 			super.load(reader);
-			if (!active) return;
+			if (!active)
+				return;
 			colors = new float[readInt(reader, "colorsCount")];
 			for (int i = 0; i < colors.length; i++)
 				colors[i] = readFloat(reader, "colors" + i);
@@ -1666,82 +1739,88 @@ public class ParticleEmitter {
 			for (int i = 0; i < timeline.length; i++)
 				timeline[i] = readFloat(reader, "timeline" + i);
 		}
-
-		public void load (GradientColorValue value) {
+		
+		public void load(GradientColorValue value) {
 			super.load(value);
 			colors = new float[value.colors.length];
 			System.arraycopy(value.colors, 0, colors, 0, colors.length);
 			timeline = new float[value.timeline.length];
 			System.arraycopy(value.timeline, 0, timeline, 0, timeline.length);
 		}
+		
 	}
-
-	static public class SpawnShapeValue extends ParticleValue {
+	
+	public static class SpawnShapeValue extends ParticleValue {
+		
 		SpawnShape shape = SpawnShape.point;
 		boolean edges;
 		SpawnEllipseSide side = SpawnEllipseSide.both;
-
-		public SpawnShape getShape () {
+		
+		public SpawnShape getShape() {
 			return shape;
 		}
-
-		public void setShape (SpawnShape shape) {
+		
+		public void setShape(SpawnShape shape) {
 			this.shape = shape;
 		}
-
-		public boolean isEdges () {
+		
+		public boolean isEdges() {
 			return edges;
 		}
-
-		public void setEdges (boolean edges) {
+		
+		public void setEdges(boolean edges) {
 			this.edges = edges;
 		}
-
-		public SpawnEllipseSide getSide () {
+		
+		public SpawnEllipseSide getSide() {
 			return side;
 		}
-
-		public void setSide (SpawnEllipseSide side) {
+		
+		public void setSide(SpawnEllipseSide side) {
 			this.side = side;
 		}
-
-		public void save (Writer output) throws IOException {
+		
+		public void save(Writer output) throws IOException {
 			super.save(output);
-			if (!active) return;
+			if (!active)
+				return;
 			output.write("shape: " + shape + "\n");
 			if (shape == SpawnShape.ellipse) {
 				output.write("edges: " + edges + "\n");
 				output.write("side: " + side + "\n");
 			}
 		}
-
-		public void load (BufferedReader reader) throws IOException {
+		
+		public void load(BufferedReader reader) throws IOException {
 			super.load(reader);
-			if (!active) return;
+			if (!active)
+				return;
 			shape = SpawnShape.valueOf(readString(reader, "shape"));
 			if (shape == SpawnShape.ellipse) {
 				edges = readBoolean(reader, "edges");
 				side = SpawnEllipseSide.valueOf(readString(reader, "side"));
 			}
 		}
-
-		public void load (SpawnShapeValue value) {
+		
+		public void load(SpawnShapeValue value) {
 			super.load(value);
 			shape = value.shape;
 			edges = value.edges;
 			side = value.side;
 		}
+		
 	}
-
-	static public enum SpawnShape {
+	
+	public static enum SpawnShape {
 		point, line, square, ellipse
 	}
-
-	static public enum SpawnEllipseSide {
+	
+	public static enum SpawnEllipseSide {
 		both, top, bottom
 	}
-
-	static public enum SpriteMode {
+	
+	public static enum SpriteMode {
 		single, random, animated
 	}
+	
 }

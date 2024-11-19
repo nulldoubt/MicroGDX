@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -160,12 +160,12 @@ public class NinePatchTest extends GdxTest {
 
 	@Override
 	public void render () {
-		final int screenWidth = Gdx.graphics.getWidth();
-		final int screenHeight = Gdx.graphics.getHeight();
+		final int screenWidth = Micro.graphics.getWidth();
+		final int screenHeight = Micro.graphics.getHeight();
 
 		ScreenUtils.clear(0, 0, 0, 0);
 
-		timePassed += Gdx.graphics.getDeltaTime();
+		timePassed += Micro.graphics.getDeltaTime();
 
 		b.begin();
 		final int sz = ninePatches.size;
@@ -210,7 +210,7 @@ public class NinePatchTest extends GdxTest {
 
 	@Override
 	public void resize (int width, int height) {
-		float ratio = ((float)Gdx.graphics.getWidth() / (float)Gdx.graphics.getHeight());
+		float ratio = ((float) Micro.graphics.getWidth() / (float) Micro.graphics.getHeight());
 		int h = 10;
 		int w = (int)(h * ratio);
 		camera = new OrthographicCamera(w, h);

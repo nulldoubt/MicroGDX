@@ -131,7 +131,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 		this.renderUnderCutout = config.renderUnderCutout;
 
 		// Add a specialized audio lifecycle listener
-		addLifecycleListener(new LifecycleListener() {
+		register(new LifecycleListener() {
 
 			@Override
 			public void resume () {
@@ -149,11 +149,11 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 			}
 		});
 
-		Gdx.app = this;
-		Gdx.input = this.getInput();
-		Gdx.audio = this.getAudio();
-		Gdx.files = this.getFiles();
-		Gdx.graphics = this.getGraphics();
+		Micro.app = this;
+		Micro.input = this.getInput();
+		Micro.audio = this.getAudio();
+		Micro.files = this.getFiles();
+		Micro.graphics = this.getGraphics();
 
 		if (!isForView) {
 			try {
@@ -264,11 +264,11 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 
 	@Override
 	protected void onResume () {
-		Gdx.app = this;
-		Gdx.input = this.getInput();
-		Gdx.audio = this.getAudio();
-		Gdx.files = this.getFiles();
-		Gdx.graphics = this.getGraphics();
+		Micro.app = this;
+		Micro.input = this.getInput();
+		Micro.audio = this.getAudio();
+		Micro.files = this.getFiles();
+		Micro.graphics = this.getGraphics();
 
 		input.onResume();
 
@@ -287,7 +287,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 			this.isWaitingForAudio = false;
 		}
 		super.onResume();
-		keyboardHeightProvider.setKeyboardHeightObserver((DefaultAndroidInput)Gdx.input);
+		keyboardHeightProvider.setKeyboardHeightObserver((DefaultAndroidInput) Micro.input);
 		((AndroidGraphics)getGraphics()).getView().post(new Runnable() {
 			@Override
 			public void run () {
@@ -358,10 +358,10 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 	}
 
 	@Override
-	public void postRunnable (Runnable runnable) {
+	public void post(Runnable runnable) {
 		synchronized (runnables) {
 			runnables.add(runnable);
-			Gdx.graphics.requestRendering();
+			Micro.graphics.requestRendering();
 		}
 	}
 
@@ -434,14 +434,14 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 	}
 
 	@Override
-	public void addLifecycleListener (LifecycleListener listener) {
+	public void register(LifecycleListener listener) {
 		synchronized (lifecycleListeners) {
 			lifecycleListeners.add(listener);
 		}
 	}
 
 	@Override
-	public void removeLifecycleListener (LifecycleListener listener) {
+	public void unregister(LifecycleListener listener) {
 		synchronized (lifecycleListeners) {
 			lifecycleListeners.removeValue(listener, true);
 		}

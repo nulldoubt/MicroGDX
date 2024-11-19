@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -61,15 +61,15 @@ public class NoncontinuousRenderingTest extends GdxTest {
 		texture = new Texture("data/badlogic.jpg");
 		region = new TextureRegion(texture);
 		stage = new Stage(new ScreenViewport(), batch);
-		Gdx.input.setInputProcessor(stage);
+		Micro.input.setInputProcessor(stage);
 
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		skin.add("default", font = new BitmapFont(Gdx.files.internal("data/lsans-32.fnt"), false));
+		skin = new Skin(Micro.files.internal("data/uiskin.json"));
+		skin.add("default", font = new BitmapFont(Micro.files.internal("data/lsans-32.fnt"), false));
 
 		populateTable();
 
-		Gdx.graphics.setContinuousRendering(false);
-		Gdx.graphics.requestRendering();
+		Micro.graphics.setContinuousRendering(false);
+		Micro.graphics.requestRendering();
 	}
 
 	void nextColor () {
@@ -80,7 +80,7 @@ public class NoncontinuousRenderingTest extends GdxTest {
 
 	@Override
 	public void render () {
-		float delta = Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f);
+		float delta = Math.min(Micro.graphics.getDeltaTime(), 1 / 30f);
 		elapsed += delta;
 		float value = elapsed % 1f;
 		value = value < 0.5f ? Interpolation.fade.apply(2 * value) : 1 - Interpolation.fade.apply(2 * value - 1);
@@ -89,18 +89,18 @@ public class NoncontinuousRenderingTest extends GdxTest {
 		synchronized (this) {
 			switch (colorCycle) {
 			case 0:
-				Gdx.gl.glClearColor(value, 0, 0, 1);
+				Micro.gl.glClearColor(value, 0, 0, 1);
 				break;
 			case 1:
-				Gdx.gl.glClearColor(0, value, 0, 1);
+				Micro.gl.glClearColor(0, value, 0, 1);
 				break;
 			case 2:
-				Gdx.gl.glClearColor(0, 0, value, 1);
+				Micro.gl.glClearColor(0, 0, value, 1);
 				break;
 			}
 		}
 
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		Camera cam = stage.getCamera();
 		batch.setProjectionMatrix(cam.combined);
@@ -124,8 +124,8 @@ public class NoncontinuousRenderingTest extends GdxTest {
 		Button button0 = new TextButton("Toggle continuous rendering", skin, "toggle");
 		button0.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				boolean continuous = Gdx.graphics.isContinuousRendering();
-				Gdx.graphics.setContinuousRendering(!continuous);
+				boolean continuous = Micro.graphics.isContinuousRendering();
+				Micro.graphics.setContinuousRendering(!continuous);
 			}
 		});
 		root.add(button0).row();
@@ -141,9 +141,9 @@ public class NoncontinuousRenderingTest extends GdxTest {
 						} catch (InterruptedException ignored) {
 						}
 						nextColor();
-						Gdx.app.postRunnable(new Runnable() {
+						Micro.app.post(new Runnable() {
 							public void run () {
-								Gdx.app.log(str1, "Posted runnable to Gdx.app");
+								Micro.app.log(str1, "Posted runnable to Gdx.app");
 							}
 						});
 					}
@@ -157,7 +157,7 @@ public class NoncontinuousRenderingTest extends GdxTest {
 		Button button2 = new TextButton(str2, skin);
 		button2.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				final Graphics graphics = Gdx.graphics; // caching necessary to ensure call on this window
+				final Graphics graphics = Micro.graphics; // caching necessary to ensure call on this window
 				new Thread(new Runnable() {
 					public void run () {
 						try {
@@ -166,7 +166,7 @@ public class NoncontinuousRenderingTest extends GdxTest {
 						}
 						nextColor();
 						graphics.requestRendering();
-						Gdx.app.log(str2, "Called Gdx.graphics.requestRendering()");
+						Micro.app.log(str2, "Called Gdx.graphics.requestRendering()");
 					}
 				}).start();
 
@@ -181,9 +181,9 @@ public class NoncontinuousRenderingTest extends GdxTest {
 				Timer.schedule(new Task() {
 					public void run () {
 						nextColor();
-						Gdx.app.postRunnable(new Runnable() {
+						Micro.app.post(new Runnable() {
 							public void run () {
-								Gdx.app.log(str3, "Posted runnable to Gdx.app");
+								Micro.app.log(str3, "Posted runnable to Gdx.app");
 							}
 						});
 					}
@@ -199,7 +199,7 @@ public class NoncontinuousRenderingTest extends GdxTest {
 				stage.addAction(Actions.sequence(Actions.delay(2), Actions.run(new Runnable() {
 					public void run () {
 						nextColor();
-						Gdx.app.log(str4, "RunnableAction executed");
+						Micro.app.log(str4, "RunnableAction executed");
 					}
 				})));
 			}
@@ -210,7 +210,7 @@ public class NoncontinuousRenderingTest extends GdxTest {
 		Button button5 = new TextButton(str5, skin);
 		button5.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				final Graphics graphics = Gdx.graphics; // caching necessary to ensure call on this window
+				final Graphics graphics = Micro.graphics; // caching necessary to ensure call on this window
 				new Thread(new Runnable() {
 					public void run () {
 						for (int i = 0; i < 2; i++) {
@@ -221,7 +221,7 @@ public class NoncontinuousRenderingTest extends GdxTest {
 							nextColor();
 							boolean continuous = graphics.isContinuousRendering();
 							graphics.setContinuousRendering(!continuous);
-							Gdx.app.log(str5, "Toggled continuous");
+							Micro.app.log(str5, "Toggled continuous");
 						}
 					}
 				}).start();

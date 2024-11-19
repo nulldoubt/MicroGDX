@@ -35,10 +35,10 @@ import static org.lwjgl.openal.AL10.*;
  */
 public abstract class OpenALMusic implements Music {
 	
-	static private final int bufferSize = 4096 * 10;
-	static private final int bufferCount = 3;
-	static private final byte[] tempBytes = new byte[bufferSize];
-	static private final ByteBuffer tempBuffer = BufferUtils.createByteBuffer(bufferSize);
+	private static final int bufferSize = 4096 * 10;
+	private static final int bufferCount = 3;
+	private static final byte[] tempBytes = new byte[bufferSize];
+	private static final ByteBuffer tempBuffer = BufferUtils.createByteBuffer(bufferSize);
 	protected final FileHandle file;
 	private final OpenALLwjgl3Audio audio;
 	private final FloatArray renderedSecondsQueue = new FloatArray(bufferCount);
@@ -150,14 +150,14 @@ public abstract class OpenALMusic implements Music {
 	 * Fills as much of the buffer as possible and returns the number of bytes filled. Returns <= 0 to indicate the end of the
 	 * stream.
 	 */
-	abstract public int read(byte[] buffer);	public void setLooping(boolean isLooping) {
+	public abstract int read(byte[] buffer);	public void setLooping(boolean isLooping) {
 		this.isLooping = isLooping;
 	}
 	
 	/**
 	 * Resets the stream to the beginning.
 	 */
-	abstract public void reset();	public boolean isLooping() {
+	public abstract void reset();	public boolean isLooping() {
 		return isLooping;
 	}
 	

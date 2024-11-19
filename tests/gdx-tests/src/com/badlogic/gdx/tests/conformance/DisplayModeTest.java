@@ -18,7 +18,7 @@ package com.badlogic.gdx.tests.conformance;
 
 import java.util.Arrays;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.tests.utils.GdxTest;
 
@@ -26,17 +26,17 @@ public class DisplayModeTest extends GdxTest {
 
 	@Override
 	public void create () {
-		DisplayMode displayMode = Gdx.graphics.getDisplayMode();
-		DisplayMode displayModeForMonitor = Gdx.graphics.getDisplayMode(Gdx.graphics.getMonitor());
-		DisplayMode[] displayModes = Gdx.graphics.getDisplayModes();
-		DisplayMode[] displayModesForMonitor = Gdx.graphics.getDisplayModes(Gdx.graphics.getMonitor());
+		DisplayMode displayMode = Micro.graphics.getDisplayMode();
+		DisplayMode displayModeForMonitor = Micro.graphics.getDisplayMode(Micro.graphics.getMonitor());
+		DisplayMode[] displayModes = Micro.graphics.getDisplayModes();
+		DisplayMode[] displayModesForMonitor = Micro.graphics.getDisplayModes(Micro.graphics.getMonitor());
 
-		Gdx.app.log("DisplayModeTest", "Display mode (using Gdx.graphics.getDisplayMode() ) : " + displayMode);
-		Gdx.app.log("DisplayModeTest",
+		Micro.app.log("DisplayModeTest", "Display mode (using Gdx.graphics.getDisplayMode() ) : " + displayMode);
+		Micro.app.log("DisplayModeTest",
 			"Display mode (using Gdx.graphics.getDisplayMode(Gdx.graphics.getMonitor()) ) : " + Arrays.toString(displayModes));
-		Gdx.app.log("DisplayModeTest",
+		Micro.app.log("DisplayModeTest",
 			"Display mode (using Gdx.graphics.getDisplayModes() ) : " + Arrays.toString(displayModesForMonitor));
-		Gdx.app.log("DisplayModeTest",
+		Micro.app.log("DisplayModeTest",
 			"Display mode (using Gdx.graphics.getDisplayModes(Gdx.graphics.getMonitor()) ): " + displayModeForMonitor);
 		assertDisplayModeEquals(displayMode, displayModeForMonitor);
 		assertDisplayModesEquals(displayModes, displayModesForMonitor);

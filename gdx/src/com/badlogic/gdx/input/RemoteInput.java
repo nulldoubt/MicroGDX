@@ -22,7 +22,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -299,28 +299,28 @@ public class RemoteInput implements Runnable, Input {
 						break;
 					case RemoteSender.TOUCH_DOWN:
 						touchEvent = new TouchEvent();
-						touchEvent.x = (int)((in.readInt() / remoteWidth) * Gdx.graphics.getWidth());
-						touchEvent.y = (int)((in.readInt() / remoteHeight) * Gdx.graphics.getHeight());
+						touchEvent.x = (int)((in.readInt() / remoteWidth) * Micro.graphics.getWidth());
+						touchEvent.y = (int)((in.readInt() / remoteHeight) * Micro.graphics.getHeight());
 						touchEvent.pointer = in.readInt();
 						touchEvent.type = TouchEvent.TOUCH_DOWN;
 						break;
 					case RemoteSender.TOUCH_UP:
 						touchEvent = new TouchEvent();
-						touchEvent.x = (int)((in.readInt() / remoteWidth) * Gdx.graphics.getWidth());
-						touchEvent.y = (int)((in.readInt() / remoteHeight) * Gdx.graphics.getHeight());
+						touchEvent.x = (int)((in.readInt() / remoteWidth) * Micro.graphics.getWidth());
+						touchEvent.y = (int)((in.readInt() / remoteHeight) * Micro.graphics.getHeight());
 						touchEvent.pointer = in.readInt();
 						touchEvent.type = TouchEvent.TOUCH_UP;
 						break;
 					case RemoteSender.TOUCH_DRAGGED:
 						touchEvent = new TouchEvent();
-						touchEvent.x = (int)((in.readInt() / remoteWidth) * Gdx.graphics.getWidth());
-						touchEvent.y = (int)((in.readInt() / remoteHeight) * Gdx.graphics.getHeight());
+						touchEvent.x = (int)((in.readInt() / remoteWidth) * Micro.graphics.getWidth());
+						touchEvent.y = (int)((in.readInt() / remoteHeight) * Micro.graphics.getHeight());
 						touchEvent.pointer = in.readInt();
 						touchEvent.type = TouchEvent.TOUCH_DRAGGED;
 						break;
 					}
 
-					Gdx.app.postRunnable(new EventTrigger(touchEvent, keyEvent));
+					Micro.app.post(new EventTrigger(touchEvent, keyEvent));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -449,12 +449,12 @@ public class RemoteInput implements Runnable, Input {
 
 	@Override
 	public void getTextInput (TextInputListener listener, String title, String text, String hint) {
-		Gdx.app.getInput().getTextInput(listener, title, text, hint);
+		Micro.app.getInput().getTextInput(listener, title, text, hint);
 	}
 
 	@Override
 	public void getTextInput (TextInputListener listener, String title, String text, String hint, OnscreenKeyboardType type) {
-		Gdx.app.getInput().getTextInput(listener, title, text, hint, type);
+		Micro.app.getInput().getTextInput(listener, title, text, hint, type);
 	}
 
 	@Override

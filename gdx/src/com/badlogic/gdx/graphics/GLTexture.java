@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
@@ -54,7 +54,7 @@ public abstract class GLTexture implements Disposable {
 
 	/** Generates a new OpenGL texture with the specified target. */
 	public GLTexture (int glTarget) {
-		this(glTarget, Gdx.gl.glGenTexture());
+		this(glTarget, Micro.gl.glGenTexture());
 	}
 
 	public GLTexture (int glTarget, int glHandle) {
@@ -70,14 +70,14 @@ public abstract class GLTexture implements Disposable {
 	/** Binds this texture. The texture will be bound to the currently active texture unit specified via
 	 * {@link GL20#glActiveTexture(int)}. */
 	public void bind () {
-		Gdx.gl.glBindTexture(glTarget, glHandle);
+		Micro.gl.glBindTexture(glTarget, glHandle);
 	}
 
 	/** Binds the texture to the given texture unit. Sets the currently active texture unit via {@link GL20#glActiveTexture(int)}.
 	 * @param unit the unit (0 to MAX_TEXTURE_UNITS). */
 	public void bind (int unit) {
-		Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0 + unit);
-		Gdx.gl.glBindTexture(glTarget, glHandle);
+		Micro.gl.glActiveTexture(GL20.GL_TEXTURE0 + unit);
+		Micro.gl.glBindTexture(glTarget, glHandle);
 	}
 
 	/** @return The {@link Texture.TextureFilter} used for minification. */
@@ -118,11 +118,11 @@ public abstract class GLTexture implements Disposable {
 	 * @param force True to always set the values, even if they are the same as the current values. */
 	public void unsafeSetWrap (TextureWrap u, TextureWrap v, boolean force) {
 		if (u != null && (force || uWrap != u)) {
-			Gdx.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_WRAP_S, u.getGLEnum());
+			Micro.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_WRAP_S, u.getGLEnum());
 			uWrap = u;
 		}
 		if (v != null && (force || vWrap != v)) {
-			Gdx.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_WRAP_T, v.getGLEnum());
+			Micro.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_WRAP_T, v.getGLEnum());
 			vWrap = v;
 		}
 	}
@@ -134,8 +134,8 @@ public abstract class GLTexture implements Disposable {
 		this.uWrap = u;
 		this.vWrap = v;
 		bind();
-		Gdx.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_WRAP_S, u.getGLEnum());
-		Gdx.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_WRAP_T, v.getGLEnum());
+		Micro.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_WRAP_S, u.getGLEnum());
+		Micro.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_WRAP_T, v.getGLEnum());
 	}
 
 	/** Sets the {@link TextureFilter} for this texture for minification and magnification. Assumes the texture is bound and
@@ -153,11 +153,11 @@ public abstract class GLTexture implements Disposable {
 	 * @param force True to always set the values, even if they are the same as the current values. */
 	public void unsafeSetFilter (TextureFilter minFilter, TextureFilter magFilter, boolean force) {
 		if (minFilter != null && (force || this.minFilter != minFilter)) {
-			Gdx.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_MIN_FILTER, minFilter.getGLEnum());
+			Micro.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_MIN_FILTER, minFilter.getGLEnum());
 			this.minFilter = minFilter;
 		}
 		if (magFilter != null && (force || this.magFilter != magFilter)) {
-			Gdx.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_MAG_FILTER, magFilter.getGLEnum());
+			Micro.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_MAG_FILTER, magFilter.getGLEnum());
 			this.magFilter = magFilter;
 		}
 	}
@@ -169,8 +169,8 @@ public abstract class GLTexture implements Disposable {
 		this.minFilter = minFilter;
 		this.magFilter = magFilter;
 		bind();
-		Gdx.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_MIN_FILTER, minFilter.getGLEnum());
-		Gdx.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_MAG_FILTER, magFilter.getGLEnum());
+		Micro.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_MIN_FILTER, minFilter.getGLEnum());
+		Micro.gl.glTexParameteri(glTarget, GL20.GL_TEXTURE_MAG_FILTER, magFilter.getGLEnum());
 	}
 
 	/** Sets the anisotropic filter level for the texture. Assumes the texture is bound and active!
@@ -191,7 +191,7 @@ public abstract class GLTexture implements Disposable {
 		if (max == 1f) return 1f;
 		level = Math.min(level, max);
 		if (!force && MathUtils.isEqual(level, anisotropicFilterLevel, 0.1f)) return anisotropicFilterLevel;
-		Gdx.gl20.glTexParameterf(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAX_ANISOTROPY_EXT, level);
+		Micro.gl20.glTexParameterf(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAX_ANISOTROPY_EXT, level);
 		return anisotropicFilterLevel = level;
 	}
 
@@ -205,7 +205,7 @@ public abstract class GLTexture implements Disposable {
 		level = Math.min(level, max);
 		if (MathUtils.isEqual(level, anisotropicFilterLevel, 0.1f)) return level;
 		bind();
-		Gdx.gl20.glTexParameterf(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAX_ANISOTROPY_EXT, level);
+		Micro.gl20.glTexParameterf(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAX_ANISOTROPY_EXT, level);
 		return anisotropicFilterLevel = level;
 	}
 
@@ -217,11 +217,11 @@ public abstract class GLTexture implements Disposable {
 	/** @return The maximum supported anisotropic filtering level supported by the device. */
 	public static float getMaxAnisotropicFilterLevel () {
 		if (maxAnisotropicFilterLevel > 0) return maxAnisotropicFilterLevel;
-		if (Gdx.graphics.supportsExtension("GL_EXT_texture_filter_anisotropic")) {
+		if (Micro.graphics.supportsExtension("GL_EXT_texture_filter_anisotropic")) {
 			FloatBuffer buffer = BufferUtils.newFloatBuffer(16);
 			((Buffer)buffer).position(0);
 			((Buffer)buffer).limit(buffer.capacity());
-			Gdx.gl20.glGetFloatv(GL20.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer);
+			Micro.gl20.glGetFloatv(GL20.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer);
 			return maxAnisotropicFilterLevel = buffer.get(0);
 		}
 		return maxAnisotropicFilterLevel = 1f;
@@ -230,7 +230,7 @@ public abstract class GLTexture implements Disposable {
 	/** Destroys the OpenGL Texture as specified by the glHandle. */
 	protected void delete () {
 		if (glHandle != 0) {
-			Gdx.gl.glDeleteTexture(glHandle);
+			Micro.gl.glDeleteTexture(glHandle);
 			glHandle = 0;
 		}
 	}
@@ -271,11 +271,11 @@ public abstract class GLTexture implements Disposable {
 			disposePixmap = true;
 		}
 
-		Gdx.gl.glPixelStorei(GL20.GL_UNPACK_ALIGNMENT, 1);
+		Micro.gl.glPixelStorei(GL20.GL_UNPACK_ALIGNMENT, 1);
 		if (data.useMipMaps()) {
 			MipMapGenerator.generateMipMap(target, pixmap, pixmap.getWidth(), pixmap.getHeight());
 		} else {
-			Gdx.gl.glTexImage2D(target, miplevel, pixmap.getGLInternalFormat(), pixmap.getWidth(), pixmap.getHeight(), 0,
+			Micro.gl.glTexImage2D(target, miplevel, pixmap.getGLInternalFormat(), pixmap.getWidth(), pixmap.getHeight(), 0,
 				pixmap.getGLFormat(), pixmap.getGLType(), pixmap.getPixels());
 		}
 		if (disposePixmap) pixmap.dispose();

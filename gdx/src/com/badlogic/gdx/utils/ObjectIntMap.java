@@ -278,7 +278,7 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>> {
 
 	/** Returns the key for the specified value, or null if it is not in the map. Note this traverses the entire map and compares
 	 * every value, which may be an expensive operation. */
-	public @Null K findKey (int value) {
+	public K findKey (int value) {
 		K[] keyTable = this.keyTable;
 		int[] valueTable = this.valueTable;
 		for (int i = valueTable.length - 1; i >= 0; i--) {
@@ -449,7 +449,7 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>> {
 		return keys2;
 	}
 
-	static public class Entry<K> {
+	public static class Entry<K> {
 		public K key;
 		public int value;
 
@@ -458,7 +458,7 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>> {
 		}
 	}
 
-	static private class MapIterator<K> {
+	private static class MapIterator<K> {
 		public boolean hasNext;
 
 		final ObjectIntMap<K> map;
@@ -510,7 +510,7 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>> {
 		}
 	}
 
-	static public class Entries<K> extends MapIterator<K> implements Iterable<Entry<K>>, Iterator<Entry<K>> {
+	public static class Entries<K> extends MapIterator<K> implements Iterable<Entry<K>>, Iterator<Entry<K>> {
 		Entry<K> entry = new Entry<K>();
 
 		public Entries (ObjectIntMap<K> map) {
@@ -539,7 +539,7 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>> {
 		}
 	}
 
-	static public class Values extends MapIterator<Object> {
+	public static class Values extends MapIterator<Object> {
 		public Values (ObjectIntMap<?> map) {
 			super((ObjectIntMap<Object>)map);
 		}
@@ -578,7 +578,7 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>> {
 		}
 	}
 
-	static public class Keys<K> extends MapIterator<K> implements Iterable<K>, Iterator<K> {
+	public static class Keys<K> extends MapIterator<K> implements Iterable<K>, Iterator<K> {
 		public Keys (ObjectIntMap<K> map) {
 			super(map);
 		}

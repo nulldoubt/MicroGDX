@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.backends.lwjgl3;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.utils.Clipboard;
 import org.lwjgl.glfw.GLFW;
 
@@ -35,12 +35,12 @@ public class Lwjgl3Clipboard implements Clipboard {
 	
 	@Override
 	public String getContents() {
-		return GLFW.glfwGetClipboardString(((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle());
+		return GLFW.glfwGetClipboardString(((Lwjgl3Graphics) Micro.graphics).getWindow().getWindowHandle());
 	}
 	
 	@Override
 	public void setContents(String content) {
-		GLFW.glfwSetClipboardString(((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle(), content);
+		GLFW.glfwSetClipboardString(((Lwjgl3Graphics) Micro.graphics).getWindow().getWindowHandle(), content);
 	}
 	
 }

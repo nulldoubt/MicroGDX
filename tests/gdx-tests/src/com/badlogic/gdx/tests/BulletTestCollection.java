@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -67,7 +67,7 @@ public class BulletTestCollection extends GdxTest implements InputProcessor, Ges
 	@Override
 	public void create () {
 		if (app == null) {
-			app = Gdx.app;
+			app = Micro.app;
 			tests[testIndex].create();
 		}
 
@@ -76,9 +76,9 @@ public class BulletTestCollection extends GdxTest implements InputProcessor, Ges
 		cameraController.autoUpdate = false;
 		cameraController.forwardTarget = false;
 		cameraController.translateTarget = false;
-		Gdx.input.setInputProcessor(new InputMultiplexer(cameraController, this, new GestureDetector(this)));
+		Micro.input.setInputProcessor(new InputMultiplexer(cameraController, this, new GestureDetector(this)));
 
-		font = new BitmapFont(Gdx.files.internal("data/lsans-15.fnt"), false);
+		font = new BitmapFont(Micro.files.internal("data/lsans-15.fnt"), false);
 		hud = new Stage();
 		hud.addActor(fpsLabel = new Label(" ", new Label.LabelStyle(font, Color.WHITE)));
 		fpsLabel.setPosition(0, 0);

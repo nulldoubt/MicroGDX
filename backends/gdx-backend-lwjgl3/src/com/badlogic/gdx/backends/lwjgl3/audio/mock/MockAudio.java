@@ -30,17 +30,17 @@ import com.badlogic.gdx.files.FileHandle;
 public class MockAudio implements Lwjgl3Audio {
 	
 	@Override
-	public AudioDevice newAudioDevice(int samplingRate, boolean isMono) {
+	public AudioDevice newAudioDevice(int samplingRate, boolean mono) {
 		return new MockAudioDevice();
 	}
 	
 	@Override
-	public AudioRecorder newAudioRecorder(int samplingRate, boolean isMono) {
+	public AudioRecorder newAudioRecorder(int samplingRate, boolean mono) {
 		return new MockAudioRecorder();
 	}
 	
 	@Override
-	public Sound newSound(FileHandle fileHandle) {
+	public Sound newSound(FileHandle file) {
 		return new MockSound();
 	}
 	
@@ -50,7 +50,7 @@ public class MockAudio implements Lwjgl3Audio {
 	}
 	
 	@Override
-	public boolean switchOutputDevice(String deviceIdentifier) {
+	public boolean switchOutputDevice(String device) {
 		return true;
 	}
 	

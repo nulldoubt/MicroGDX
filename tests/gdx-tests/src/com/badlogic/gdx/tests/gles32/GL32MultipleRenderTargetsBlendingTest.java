@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tests.gles32;
 
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
@@ -119,7 +119,7 @@ public class GL32MultipleRenderTargetsBlendingTest extends GdxTest {
 		fbo = builder.build();
 
 		String prefix;
-		if (Gdx.app.getType() == ApplicationType.Desktop) {
+		if (Micro.app.getType() == ApplicationType.Desktop) {
 			prefix = "#version 150\n";
 		} else {
 			prefix = "#version 300 es\n";
@@ -139,8 +139,8 @@ public class GL32MultipleRenderTargetsBlendingTest extends GdxTest {
 		batch = new SpriteBatch();
 
 		for (int i = 0; i < fbo.getTextureAttachments().size; i++) {
-			boolean enabled = Gdx.gl32.glIsEnabledi(GL20.GL_BLEND, i);
-			Gdx.app.log("Gdx", "#" + i + " blending: " + enabled);
+			boolean enabled = Micro.gl32.glIsEnabledi(GL20.GL_BLEND, i);
+			Micro.app.log("Gdx", "#" + i + " blending: " + enabled);
 		}
 	}
 
@@ -157,32 +157,32 @@ public class GL32MultipleRenderTargetsBlendingTest extends GdxTest {
 	public void render () {
 
 		// Configure blending for individual render target
-		Gdx.gl32.glEnablei(GL20.GL_BLEND, 0);
-		Gdx.gl32.glBlendFuncSeparatei(0, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE, GL20.GL_ONE);
+		Micro.gl32.glEnablei(GL20.GL_BLEND, 0);
+		Micro.gl32.glBlendFuncSeparatei(0, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE, GL20.GL_ONE);
 
-		Gdx.gl32.glEnablei(GL20.GL_BLEND, 1);
-		Gdx.gl32.glBlendFunci(1, GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+		Micro.gl32.glEnablei(GL20.GL_BLEND, 1);
+		Micro.gl32.glBlendFunci(1, GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 
-		Gdx.gl32.glDisablei(GL20.GL_BLEND, 2);
+		Micro.gl32.glDisablei(GL20.GL_BLEND, 2);
 
-		Gdx.gl32.glEnablei(GL20.GL_BLEND, 3);
-		Gdx.gl32.glBlendFunci(3, GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-		Gdx.gl32.glBlendEquationi(3, GL20.GL_FUNC_SUBTRACT);
+		Micro.gl32.glEnablei(GL20.GL_BLEND, 3);
+		Micro.gl32.glBlendFunci(3, GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+		Micro.gl32.glBlendEquationi(3, GL20.GL_FUNC_SUBTRACT);
 
-		Gdx.gl32.glDisablei(GL20.GL_BLEND, 4);
-		Gdx.gl32.glColorMaski(4, true, false, false, false);
+		Micro.gl32.glDisablei(GL20.GL_BLEND, 4);
+		Micro.gl32.glColorMaski(4, true, false, false, false);
 
-		Gdx.gl32.glEnablei(GL20.GL_BLEND, 5);
-		Gdx.gl32.glBlendFunci(5, GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-		Gdx.gl32.glBlendEquationSeparatei(5, GL20.GL_FUNC_SUBTRACT, GL20.GL_FUNC_ADD);
+		Micro.gl32.glEnablei(GL20.GL_BLEND, 5);
+		Micro.gl32.glBlendFunci(5, GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+		Micro.gl32.glBlendEquationSeparatei(5, GL20.GL_FUNC_SUBTRACT, GL20.GL_FUNC_ADD);
 
-		Gdx.gl32.glEnablei(GL20.GL_BLEND, 6);
-		Gdx.gl32.glBlendFunci(6, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		Gdx.gl32.glBlendEquationSeparatei(6, GL32.GL_FUNC_REVERSE_SUBTRACT, GL20.GL_FUNC_ADD);
+		Micro.gl32.glEnablei(GL20.GL_BLEND, 6);
+		Micro.gl32.glBlendFunci(6, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Micro.gl32.glBlendEquationSeparatei(6, GL32.GL_FUNC_REVERSE_SUBTRACT, GL20.GL_FUNC_ADD);
 
-		Gdx.gl32.glEnablei(GL20.GL_BLEND, 7);
-		Gdx.gl32.glBlendFunci(7, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		Gdx.gl32.glBlendEquationSeparatei(7, GL32.GL_MAX, GL20.GL_FUNC_ADD);
+		Micro.gl32.glEnablei(GL20.GL_BLEND, 7);
+		Micro.gl32.glBlendFunci(7, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Micro.gl32.glBlendEquationSeparatei(7, GL32.GL_MAX, GL20.GL_FUNC_ADD);
 
 		// render into MRT fbo
 		fbo.begin();
@@ -198,10 +198,10 @@ public class GL32MultipleRenderTargetsBlendingTest extends GdxTest {
 
 		// reset GL state
 		for (int i = 0; i < 8; i++) {
-			Gdx.gl32.glDisablei(GL20.GL_BLEND, i);
-			Gdx.gl32.glBlendEquationi(i, GL20.GL_FUNC_ADD);
-			Gdx.gl32.glBlendFunci(i, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-			Gdx.gl32.glColorMaski(i, true, true, true, true);
+			Micro.gl32.glDisablei(GL20.GL_BLEND, i);
+			Micro.gl32.glBlendEquationi(i, GL20.GL_FUNC_ADD);
+			Micro.gl32.glBlendFunci(i, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+			Micro.gl32.glColorMaski(i, true, true, true, true);
 		}
 
 		// Display render targets

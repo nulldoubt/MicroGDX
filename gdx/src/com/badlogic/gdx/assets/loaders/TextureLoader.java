@@ -33,7 +33,7 @@ import com.badlogic.gdx.utils.Array;
  * various Texture constructors, e.g. filtering, whether to generate mipmaps and so on.
  * @author mzechner */
 public class TextureLoader extends AsynchronousAssetLoader<Texture, TextureLoader.TextureParameter> {
-	static public class TextureLoaderInfo {
+	public static class TextureLoaderInfo {
 		String filename;
 		TextureData data;
 		Texture texture;
@@ -84,11 +84,11 @@ public class TextureLoader extends AsynchronousAssetLoader<Texture, TextureLoade
 	}
 
 	@Override
-	public Array<AssetDescriptor> getDependencies (String fileName, FileHandle file, TextureParameter parameter) {
+	public Array<AssetDescriptor<?>> getDependencies (String fileName, FileHandle file, TextureParameter parameter) {
 		return null;
 	}
 
-	static public class TextureParameter extends AssetLoaderParameters<Texture> {
+	public static class TextureParameter extends AssetLoaderParameters<Texture> {
 		/** the format of the final Texture. Uses the source images format if null **/
 		public Format format = null;
 		/** whether to generate mipmaps **/

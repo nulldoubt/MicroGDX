@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,12 +35,12 @@ public class FullscreenTest extends GdxTest {
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-		tex = new Texture(Gdx.files.internal("data/badlogic.jpg"));
-		DisplayMode[] modes = Gdx.graphics.getDisplayModes();
+		tex = new Texture(Micro.files.internal("data/badlogic.jpg"));
+		DisplayMode[] modes = Micro.graphics.getDisplayModes();
 		for (DisplayMode mode : modes) {
 			System.out.println(mode);
 		}
-		Gdx.app.log("FullscreenTest", Gdx.graphics.getBufferFormat().toString());
+		Micro.app.log("FullscreenTest", Micro.graphics.getBufferFormat().toString());
 	}
 
 	@Override
@@ -53,22 +53,22 @@ public class FullscreenTest extends GdxTest {
 		ScreenUtils.clear(0, 0, 0, 1);
 
 		batch.begin();
-		batch.setColor(Gdx.input.getX() < Gdx.graphics.getSafeInsetLeft()
-			|| Gdx.input.getX() + tex.getWidth() > Gdx.graphics.getWidth() - Gdx.graphics.getSafeInsetRight() ? Color.RED
+		batch.setColor(Micro.input.getX() < Micro.graphics.getSafeInsetLeft()
+			|| Micro.input.getX() + tex.getWidth() > Micro.graphics.getWidth() - Micro.graphics.getSafeInsetRight() ? Color.RED
 				: Color.WHITE);
-		batch.draw(tex, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-		font.draw(batch, "" + Gdx.graphics.getWidth() + ", " + Gdx.graphics.getHeight(), 0, 20);
+		batch.draw(tex, Micro.input.getX(), Micro.graphics.getHeight() - Micro.input.getY());
+		font.draw(batch, "" + Micro.graphics.getWidth() + ", " + Micro.graphics.getHeight(), 0, 20);
 		batch.end();
 
-		if (Gdx.input.justTouched()) {
+		if (Micro.input.justTouched()) {
 			if (fullscreen) {
-				Gdx.graphics.setWindowedMode(480, 320);
-				batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-				Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+				Micro.graphics.setWindowedMode(480, 320);
+				batch.getProjectionMatrix().setToOrtho2D(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
+				Micro.gl.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
 				fullscreen = false;
 			} else {
 				DisplayMode m = null;
-				for (DisplayMode mode : Gdx.graphics.getDisplayModes()) {
+				for (DisplayMode mode : Micro.graphics.getDisplayModes()) {
 					if (m == null) {
 						m = mode;
 					} else {
@@ -78,9 +78,9 @@ public class FullscreenTest extends GdxTest {
 					}
 				}
 
-				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-				batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-				Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+				Micro.graphics.setFullscreenMode(Micro.graphics.getDisplayMode());
+				batch.getProjectionMatrix().setToOrtho2D(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
+				Micro.gl.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
 				fullscreen = true;
 			}
 		}
@@ -88,18 +88,18 @@ public class FullscreenTest extends GdxTest {
 
 	@Override
 	public void resize (int width, int height) {
-		Gdx.app.log("FullscreenTest", "resized: " + width + ", " + height);
-		Gdx.app.log("FullscreenTest", "safe insets: " + Gdx.graphics.getSafeInsetLeft() + "/" + Gdx.graphics.getSafeInsetRight());
+		Micro.app.log("FullscreenTest", "resized: " + width + ", " + height);
+		Micro.app.log("FullscreenTest", "safe insets: " + Micro.graphics.getSafeInsetLeft() + "/" + Micro.graphics.getSafeInsetRight());
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
 	}
 
 	@Override
 	public void pause () {
-		Gdx.app.log("FullscreenTest", "paused");
+		Micro.app.log("FullscreenTest", "paused");
 	}
 
 	@Override
 	public void dispose () {
-		Gdx.app.log("FullscreenTest", "disposed");
+		Micro.app.log("FullscreenTest", "disposed");
 	}
 }

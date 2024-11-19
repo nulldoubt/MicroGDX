@@ -189,7 +189,7 @@ public class Lwjgl3Window implements Disposable {
 		
 		Pixmap[] pixmaps = new Pixmap[imagePaths.length];
 		for (int i = 0; i < imagePaths.length; i++) {
-			pixmaps[i] = new Pixmap(Gdx.files.getFileHandle(imagePaths[i], imageFileType));
+			pixmaps[i] = new Pixmap(Micro.files.getFileHandle(imagePaths[i], imageFileType));
 		}
 		
 		setIcon(windowHandle, pixmaps);
@@ -280,8 +280,8 @@ public class Lwjgl3Window implements Disposable {
 	}
 	
 	/**
-	 * Post a {@link Runnable} to this window's event queue. Use this if you access statics like {@link Gdx#graphics} in your
-	 * runnable instead of {@link Application#postRunnable(Runnable)}.
+	 * Post a {@link Runnable} to this window's event queue. Use this if you access statics like {@link Micro#graphics} in your
+	 * runnable instead of {@link Application#post(Runnable)}.
 	 */
 	public void postRunnable(Runnable runnable) {
 		synchronized (runnables) {
@@ -489,13 +489,13 @@ public class Lwjgl3Window implements Disposable {
 	}
 	
 	void makeCurrent() {
-		Gdx.graphics = graphics;
-		Gdx.gl32 = graphics.getGL32();
-		Gdx.gl31 = Gdx.gl32 != null ? Gdx.gl32 : graphics.getGL31();
-		Gdx.gl30 = Gdx.gl31 != null ? Gdx.gl31 : graphics.getGL30();
-		Gdx.gl20 = Gdx.gl30 != null ? Gdx.gl30 : graphics.getGL20();
-		Gdx.gl = Gdx.gl20;
-		Gdx.input = input;
+		Micro.graphics = graphics;
+		Micro.gl32 = graphics.getGL32();
+		Micro.gl31 = Micro.gl32 != null ? Micro.gl32 : graphics.getGL31();
+		Micro.gl30 = Micro.gl31 != null ? Micro.gl31 : graphics.getGL30();
+		Micro.gl20 = Micro.gl30 != null ? Micro.gl30 : graphics.getGL20();
+		Micro.gl = Micro.gl20;
+		Micro.input = input;
 		
 		GLFW.glfwMakeContextCurrent(windowHandle);
 	}

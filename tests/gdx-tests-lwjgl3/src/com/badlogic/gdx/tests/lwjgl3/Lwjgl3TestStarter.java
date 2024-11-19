@@ -18,7 +18,7 @@ package com.badlogic.gdx.tests.lwjgl3;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
@@ -98,14 +98,14 @@ public class Lwjgl3TestStarter {
 		TextButton lastClickedTestButton;
 
 		public void create () {
-			System.out.println("OpenGL renderer: " + Gdx.graphics.getGLVersion().getRendererString());
-			System.out.println("OpenGL vendor: " + Gdx.graphics.getGLVersion().getVendorString());
+			System.out.println("OpenGL renderer: " + Micro.graphics.getGLVersion().getRendererString());
+			System.out.println("OpenGL vendor: " + Micro.graphics.getGLVersion().getVendorString());
 
-			final Preferences prefs = Gdx.app.getPreferences("lwjgl3-tests");
+			final Preferences prefs = Micro.app.getPreferences("lwjgl3-tests");
 
 			stage = new Stage(new ScreenViewport());
-			Gdx.input.setInputProcessor(stage);
-			skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+			Micro.input.setInputProcessor(stage);
+			skin = new Skin(Micro.files.internal("data/uiskin.json"));
 
 			Table container = new Table();
 			stage.addActor(container);
@@ -133,10 +133,10 @@ public class Lwjgl3TestStarter {
 						Lwjgl3WindowConfiguration winConfig = new Lwjgl3WindowConfiguration();
 						winConfig.setTitle(testName);
 						winConfig.setWindowedMode(640, 480);
-						winConfig.setWindowPosition(((Lwjgl3Graphics)Gdx.graphics).getWindow().getPositionX() + 40,
-							((Lwjgl3Graphics)Gdx.graphics).getWindow().getPositionY() + 40);
+						winConfig.setWindowPosition(((Lwjgl3Graphics) Micro.graphics).getWindow().getPositionX() + 40,
+							((Lwjgl3Graphics) Micro.graphics).getWindow().getPositionY() + 40);
 						winConfig.useVsync(false);
-						((Lwjgl3Application)Gdx.app).newWindow(new GdxTestWrapper(test, options.logGLErrors), winConfig);
+						((Lwjgl3Application) Micro.app).newWindow(new GdxTestWrapper(test, options.logGLErrors), winConfig);
 						System.out.println("Started test: " + testName);
 						prefs.putString("LastTest", testName);
 						prefs.flush();

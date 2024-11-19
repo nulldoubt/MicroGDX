@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.bullet;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -190,7 +190,7 @@ public class FrustumCullingTest extends BaseBulletTest {
 
 	@Override
 	public void render () {
-		final float dt = Gdx.graphics.getDeltaTime();
+		final float dt = Micro.graphics.getDeltaTime();
 		frustumEntity.transform.idt();
 		frustumEntity.transform.rotate(Vector3.X, angleX = (angleX + dt * SPEED_X) % 360);
 		frustumEntity.transform.rotate(Vector3.Y, angleY = (angleY + dt * SPEED_Y) % 360);

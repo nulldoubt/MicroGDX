@@ -25,7 +25,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class Affine2Test extends GdxTest {
 
-	static public final float TOLERANCE = 0.005f;
+	public static final float TOLERANCE = 0.005f;
 
 	@Override
 	public void create () {

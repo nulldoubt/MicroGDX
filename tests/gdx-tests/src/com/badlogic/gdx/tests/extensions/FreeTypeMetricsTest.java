@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.extensions;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -44,7 +44,7 @@ public class FreeTypeMetricsTest extends GdxTest {
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = 60;
 
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/lsans.ttf"));
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Micro.files.internal("data/lsans.ttf"));
 		font = generator.generateFont(parameter);
 		generator.dispose();
 
@@ -56,7 +56,7 @@ public class FreeTypeMetricsTest extends GdxTest {
 	public void render () {
 		// red.a = (red.a + Gdx.graphics.getDeltaTime() * 0.1f) % 1;
 
-		int viewHeight = Gdx.graphics.getHeight();
+		int viewHeight = Micro.graphics.getHeight();
 
 		ScreenUtils.clear(1, 1, 1, 1);
 		spriteBatch.begin();

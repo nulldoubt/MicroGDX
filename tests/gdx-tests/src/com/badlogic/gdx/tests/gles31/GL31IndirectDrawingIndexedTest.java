@@ -18,7 +18,7 @@ package com.badlogic.gdx.tests.gles31;
 
 import java.nio.IntBuffer;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
@@ -68,7 +68,7 @@ public class GL31IndirectDrawingIndexedTest extends GdxTest {
 
 	@Override
 	public void create () {
-		drawCommands = Gdx.gl.glGenBuffer();
+		drawCommands = Micro.gl.glGenBuffer();
 		IntBuffer buffer = BufferUtils.newIntBuffer(commandInts * nbCommands);
 		buffer.put(new int[] { //
 			3, // count
@@ -87,9 +87,9 @@ public class GL31IndirectDrawingIndexedTest extends GdxTest {
 		});
 		buffer.flip();
 
-		Gdx.gl.glBindBuffer(GL31.GL_DRAW_INDIRECT_BUFFER, drawCommands);
-		Gdx.gl.glBufferData(GL31.GL_DRAW_INDIRECT_BUFFER, nbCommands * commandStride, buffer, GL30.GL_DYNAMIC_DRAW);
-		Gdx.gl.glBindBuffer(GL31.GL_DRAW_INDIRECT_BUFFER, 0);
+		Micro.gl.glBindBuffer(GL31.GL_DRAW_INDIRECT_BUFFER, drawCommands);
+		Micro.gl.glBufferData(GL31.GL_DRAW_INDIRECT_BUFFER, nbCommands * commandStride, buffer, GL30.GL_DYNAMIC_DRAW);
+		Micro.gl.glBindBuffer(GL31.GL_DRAW_INDIRECT_BUFFER, 0);
 
 		mesh = new Mesh(true, 4, 6, VertexAttribute.Position(), VertexAttribute.ColorUnpacked());
 		mesh.setVertices(new float[] { //
@@ -111,12 +111,12 @@ public class GL31IndirectDrawingIndexedTest extends GdxTest {
 	public void dispose () {
 		shader.dispose();
 		mesh.dispose();
-		Gdx.gl.glDeleteBuffer(drawCommands);
+		Micro.gl.glDeleteBuffer(drawCommands);
 	}
 
 	@Override
 	public void render () {
-		time += Gdx.graphics.getDeltaTime();
+		time += Micro.graphics.getDeltaTime();
 		int commandIndex = (int)time % nbCommands;
 
 		ScreenUtils.clear(Color.CLEAR, true);
@@ -127,8 +127,8 @@ public class GL31IndirectDrawingIndexedTest extends GdxTest {
 
 		mesh.bind(shader);
 
-		Gdx.gl.glBindBuffer(GL31.GL_DRAW_INDIRECT_BUFFER, drawCommands);
-		Gdx.gl31.glDrawElementsIndirect(GL20.GL_TRIANGLES, GL20.GL_UNSIGNED_SHORT, commandStride * commandIndex);
+		Micro.gl.glBindBuffer(GL31.GL_DRAW_INDIRECT_BUFFER, drawCommands);
+		Micro.gl31.glDrawElementsIndirect(GL20.GL_TRIANGLES, GL20.GL_UNSIGNED_SHORT, commandStride * commandIndex);
 		mesh.unbind(shader);
 	}
 }

@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
@@ -257,7 +257,7 @@ public class PixmapPacker implements Disposable {
 
 		if (packToTexture && !duplicateBorder && page.texture != null && !page.dirty) {
 			page.texture.bind();
-			Gdx.gl.glTexSubImage2D(page.texture.glTarget, 0, rectX, rectY, rectWidth, rectHeight, image.getGLFormat(),
+			Micro.gl.glTexSubImage2D(page.texture.glTarget, 0, rectX, rectY, rectWidth, rectHeight, image.getGLFormat(),
 				image.getGLType(), image.getPixels());
 		} else
 			page.dirty = true;
@@ -465,7 +465,7 @@ public class PixmapPacker implements Disposable {
 	/** @author mzechner
 	 * @author Nathan Sweet
 	 * @author Rob Rendell */
-	static public class Page {
+	public static class Page {
 		OrderedMap<String, PixmapPackerRectangle> rects = new OrderedMap();
 		Pixmap image;
 		Texture texture;
@@ -518,7 +518,7 @@ public class PixmapPacker implements Disposable {
 
 	/** Choose the page and location for each rectangle.
 	 * @author Nathan Sweet */
-	static public interface PackStrategy {
+	public static interface PackStrategy {
 		public void sort (Array<Pixmap> images);
 
 		/** Returns the page the rectangle should be placed in and modifies the specified rectangle position. */
@@ -530,7 +530,7 @@ public class PixmapPacker implements Disposable {
 	 * @author mzechner
 	 * @author Nathan Sweet
 	 * @author Rob Rendell */
-	static public class GuillotineStrategy implements PackStrategy {
+	public static class GuillotineStrategy implements PackStrategy {
 		Comparator<Pixmap> comparator;
 
 		public void sort (Array<Pixmap> pixmaps) {
@@ -634,7 +634,7 @@ public class PixmapPacker implements Disposable {
 
 	/** Does bin packing by inserting in rows. This is good at packing images that have similar heights.
 	 * @author Nathan Sweet */
-	static public class SkylineStrategy implements PackStrategy {
+	public static class SkylineStrategy implements PackStrategy {
 		Comparator<Pixmap> comparator;
 
 		public void sort (Array<Pixmap> images) {

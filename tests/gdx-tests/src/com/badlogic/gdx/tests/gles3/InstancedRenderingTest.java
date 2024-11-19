@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.gles3;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -42,7 +42,7 @@ public class InstancedRenderingTest extends GdxTest {
 
 	@Override
 	public void create () {
-		if (Gdx.gl30 == null) {
+		if (Micro.gl30 == null) {
 			throw new GdxRuntimeException("GLES 3.0 profile required for this test");
 		}
 
@@ -50,8 +50,8 @@ public class InstancedRenderingTest extends GdxTest {
 		String ofs = ShaderProgram.prependFragmentCode;
 		ShaderProgram.prependVertexCode = "#version 300 es\n";
 		ShaderProgram.prependFragmentCode = "#version 300 es\n";
-		shader = new ShaderProgram(Gdx.files.internal("data/shaders/instanced-rendering.vert"),
-			Gdx.files.internal("data/shaders/instanced-rendering.frag"));
+		shader = new ShaderProgram(Micro.files.internal("data/shaders/instanced-rendering.vert"),
+			Micro.files.internal("data/shaders/instanced-rendering.frag"));
 		if (!shader.isCompiled()) {
 			throw new GdxRuntimeException("Shader compile error: " + shader.getLog());
 		}

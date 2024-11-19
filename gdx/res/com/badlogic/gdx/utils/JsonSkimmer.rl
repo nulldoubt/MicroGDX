@@ -325,7 +325,7 @@ public class JsonSkimmer {
 
 	/** Called when an object or array is encountered in the JSON.
 	 * @param object True when an object was encountered, else it was an array. */
-	protected void push (@Null String name, boolean object) {
+	protected void push (String name, boolean object) {
 	}
 
 	/** Called when the end of an object or array is encountered in the JSON. */
@@ -333,6 +333,6 @@ public class JsonSkimmer {
 	}
 
 	/** Called when a value is encountered in the JSON. */
-	protected void value (@Null String name, String value, boolean unquoted) {
+	protected void value (String name, String value, boolean unquoted) {
 	}
 }

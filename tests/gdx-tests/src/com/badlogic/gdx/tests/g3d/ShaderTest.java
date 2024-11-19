@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.g3d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -120,16 +120,16 @@ public class ShaderTest extends GdxTest {
 			super();
 			withColor = renderable.material.has(ColorAttribute.Diffuse);
 			if (withColor)
-				Gdx.app.log("ShaderTest", "Compiling test shader with u_color uniform");
+				Micro.app.log("ShaderTest", "Compiling test shader with u_color uniform");
 			else
-				Gdx.app.log("ShaderTest", "Compiling test shader without u_color uniform");
+				Micro.app.log("ShaderTest", "Compiling test shader without u_color uniform");
 
 			String prefix = withColor ? "#define HasDiffuseColor\n" : "";
 			program = new ShaderProgram(vertexShader, prefix + fragmentShader);
 
 			if (!program.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader " + program.getLog());
 			String log = program.getLog();
-			if (log.length() > 0) Gdx.app.error("ShaderTest", "Shader compilation log: " + log);
+			if (log.length() > 0) Micro.app.error("ShaderTest", "Shader compilation log: " + log);
 		}
 
 		@Override
@@ -194,7 +194,7 @@ public class ShaderTest extends GdxTest {
 			}
 		});
 
-		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam = new PerspectiveCamera(67, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		cam.position.set(0f, 0f, 20f);
 		cam.lookAt(0, 0, 0);
 		cam.near = 1f;
@@ -202,7 +202,7 @@ public class ShaderTest extends GdxTest {
 		cam.update();
 
 		camController = new CameraInputController(cam);
-		Gdx.input.setInputProcessor(camController);
+		Micro.input.setInputProcessor(camController);
 
 		Material testMaterial1 = new Material("TestMaterial1", new TestAttribute(1f));
 		Material redMaterial = new Material("RedMaterial", ColorAttribute.createDiffuse(Color.RED));
@@ -239,14 +239,14 @@ public class ShaderTest extends GdxTest {
 
 	@Override
 	public void render () {
-		counter = (counter + Gdx.graphics.getDeltaTime()) % 2.f;
+		counter = (counter + Micro.graphics.getDeltaTime()) % 2.f;
 		testAttribute1.value = Math.abs(1f - counter);
 		testAttribute2.value = 1f - testAttribute1.value;
 
 		camController.update();
 
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Micro.gl.glViewport(0, 0, Micro.graphics.getBackBufferWidth(), Micro.graphics.getBackBufferHeight());
+		Micro.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		modelBatch.begin(cam);
 		modelBatch.render(instances);

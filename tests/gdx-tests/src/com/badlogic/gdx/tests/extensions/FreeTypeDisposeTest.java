@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tests.extensions;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -32,12 +32,12 @@ public class FreeTypeDisposeTest extends GdxTest {
 	}
 
 	public void render () {
-		if (Gdx.input.justTouched()) {
+		if (Micro.input.justTouched()) {
 			for (int i = 0; i < 10; i++) {
 				if (font != null) {
 					font.dispose();
 				}
-				FileHandle fontFile = Gdx.files.internal("data/lsans.ttf");
+				FileHandle fontFile = Micro.files.internal("data/lsans.ttf");
 				FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
 
 				FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -48,8 +48,8 @@ public class FreeTypeDisposeTest extends GdxTest {
 			}
 			for (int i = 0; i < 10; i++)
 				System.gc();
-			Gdx.app.log("FreeTypeDisposeTest", "generated 10 fonts");
-			Gdx.app.log("FreeTypeDisposeTest", Gdx.app.getJavaHeap() + ", " + Gdx.app.getNativeHeap());
+			Micro.app.log("FreeTypeDisposeTest", "generated 10 fonts");
+			Micro.app.log("FreeTypeDisposeTest", Micro.app.getJavaHeap() + ", " + Micro.app.getNativeHeap());
 		}
 	}
 }
