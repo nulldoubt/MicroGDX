@@ -2,16 +2,6 @@ package me.nulldoubt.micro.math;
 
 import java.io.Serializable;
 
-/**
- * Encapsulates a <a href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">column major</a> 4 by 4 matrix. Like
- * the {@link Vector3} class it allows the chaining of methods by returning a reference to itself. For example:
- *
- * <pre>
- * Matrix4 mat = new Matrix4().trn(position).mul(camera.combined);
- * </pre>
- *
- * @author badlogicgames@gmail.com
- */
 public class Matrix4 implements Serializable {
 	
 	/**

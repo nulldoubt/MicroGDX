@@ -1,76 +1,23 @@
 package me.nulldoubt.micro.utils.collections.operations;
 
-/**
- * This is a near duplicate of {@link TimSort}, modified for use with arrays of objects that implement {@link Comparable},
- * instead of using explicit comparators.
- *
- * <p>
- * If you are using an optimizing VM, you may find that ComparableTimSort offers no performance benefit over TimSort in
- * conjunction with a comparator that simply returns {@code ((Comparable)first).compareTo(Second)}. If this is the case, you are
- * better off deleting ComparableTimSort to eliminate the code duplication. (See Arrays.java for details.)
- */
 class ComparableTimSort {
 	
-	/**
-	 * This is the minimum sized sequence that will be merged. Shorter sequences will be lengthened by calling binarySort. If the
-	 * entire array is less than this length, no merges will be performed.
-	 * <p>
-	 * This constant should be a power of two. It was 64 in Tim Peter's C implementation, but 32 was empirically determined to work
-	 * better in this implementation. In the unlikely event that you set this constant to be a number that's not a power of two,
-	 * you'll need to change the {@link #minRunLength} computation.
-	 * <p>
-	 * If you decrease this constant, you must change the stackLen computation in the TimSort constructor, or you risk an
-	 * ArrayOutOfBounds exception. See listsort.txt for a discussion of the minimum stack length required as a function of the
-	 * length of the array being sorted and the minimum merge sequence length.
-	 */
 	private static final int MIN_MERGE = 32;
 	
-	/**
-	 * The array being sorted.
-	 */
 	private Object[] a;
 	
-	/**
-	 * When we get into galloping mode, we stay there until both runs win less often than MIN_GALLOP consecutive times.
-	 */
 	private static final int MIN_GALLOP = 7;
-	
-	/**
-	 * This controls when we get *into* galloping mode. It is initialized to MIN_GALLOP. The mergeLo and mergeHi methods nudge it
-	 * higher for random data, and lower for highly structured data.
-	 */
 	private int minGallop = MIN_GALLOP;
 	
-	/**
-	 * Maximum initial size of tmp array, which is used for merging. The array can grow to accommodate demand.
-	 * <p>
-	 * Unlike Tim's original C version, we do not allocate this much storage when sorting smaller arrays. This change was required
-	 * for performance.
-	 */
 	private static final int INITIAL_TMP_STORAGE_LENGTH = 256;
 	
-	/**
-	 * Temp storage for merges.
-	 */
 	private Object[] tmp;
 	private int tmpCount;
 	
-	/**
-	 * A stack of pending runs yet to be merged. Run i starts at address base[i] and extends for len[i] elements. It's always true
-	 * (so long as the indices are in bounds) that:
-	 * <p>
-	 * runBase[i] + runLen[i] == runBase[i + 1]
-	 * <p>
-	 * so we could cut the storage for this, but it's a minor amount, and keeping all the info explicit simplifies the code.
-	 */
 	private int stackSize = 0; // Number of pending runs on stack
 	private final int[] runBase;
 	private final int[] runLen;
 	
-	/**
-	 * Asserts have been placed in if-statements for performace. To enable them, set this field to true and enable them in VM with
-	 * a command line flag. If you modify this class, please do test the asserts!
-	 */
 	private static final boolean DEBUG = false;
 	
 	ComparableTimSort() {

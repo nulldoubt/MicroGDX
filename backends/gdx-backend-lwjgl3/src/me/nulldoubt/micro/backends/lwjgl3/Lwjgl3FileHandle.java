@@ -1,31 +1,11 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.backends.lwjgl3;
 
 import me.nulldoubt.micro.Files.FileType;
-import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.files.FileHandle;
 
 import java.io.File;
 
-/**
- * @author mzechner
- * @author Nathan Sweet
- */
 public final class Lwjgl3FileHandle extends FileHandle {
 	
 	public Lwjgl3FileHandle(String fileName, FileType type) {
@@ -45,13 +25,13 @@ public final class Lwjgl3FileHandle extends FileHandle {
 	}
 	
 	public FileHandle child(String name) {
-		if (file.getPath().length() == 0)
+		if (file.getPath().isEmpty())
 			return new Lwjgl3FileHandle(new File(name), type);
 		return new Lwjgl3FileHandle(new File(file, name), type);
 	}
 	
 	public FileHandle sibling(String name) {
-		if (file.getPath().length() == 0)
+		if (file.getPath().isEmpty())
 			throw new MicroRuntimeException("Cannot get the sibling of the root.");
 		return new Lwjgl3FileHandle(new File(file.getParent(), name), type);
 	}

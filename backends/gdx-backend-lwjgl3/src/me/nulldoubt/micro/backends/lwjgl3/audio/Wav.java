@@ -1,23 +1,7 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
-import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.utils.StreamUtils;
 
 import java.io.EOFException;
@@ -155,7 +139,7 @@ public class Wav {
 				long skipped = in.skip(count);
 				if (skipped <= 0)
 					throw new EOFException("Unable to skip.");
-				count -= skipped;
+				count -= (int) skipped;
 			}
 		}
 		
@@ -176,38 +160,20 @@ public class Wav {
 			return offset;
 		}
 		
-		/**
-		 * List is a combination of Audacity's export formats and Windows ACM. For a more thorough list, see
-		 * https://wiki.multimedia.cx/index.php/TwoCC
-		 *
-		 * @param type 16-bit value from the fmt chunk.
-		 * @return A human-readable name for the codec.
-		 */
 		private String getCodecName(int type) {
-			switch (type) { // @off
-				case 0x0002:
-					return "Microsoft ADPCM";
-				case 0x0006:
-					return "ITU-T G.711 A-law";
-				case 0x0007:
-					return "ITU-T G.711 u-law";
-				case 0x0011:
-					return "IMA ADPCM";
-				case 0x0022:
-					return "DSP Group TrueSpeech";
-				case 0x0031:
-					return "Microsoft GSM 6.10";
-				case 0x0040:
-					return "Antex G.721 ADPCM";
-				case 0x0070:
-					return "Lernout & Hauspie CELP 4.8kbps";
-				case 0x0072:
-					return "Lernout & Hauspie CBS 12kbps";
-				case 0xfffe:
-					return "Extensible";
-				default:
-					return "Unknown"; // @on
-			}
+			return switch (type) { // @off
+				case 0x0002 -> "Microsoft ADPCM";
+				case 0x0006 -> "ITU-T G.711 A-law";
+				case 0x0007 -> "ITU-T G.711 u-law";
+				case 0x0011 -> "IMA ADPCM";
+				case 0x0022 -> "DSP Group TrueSpeech";
+				case 0x0031 -> "Microsoft GSM 6.10";
+				case 0x0040 -> "Antex G.721 ADPCM";
+				case 0x0070 -> "Lernout & Hauspie CELP 4.8kbps";
+				case 0x0072 -> "Lernout & Hauspie CBS 12kbps";
+				case 0xfffe -> "Extensible";
+				default -> "Unknown"; // @on
+			};
 		}
 		
 	}

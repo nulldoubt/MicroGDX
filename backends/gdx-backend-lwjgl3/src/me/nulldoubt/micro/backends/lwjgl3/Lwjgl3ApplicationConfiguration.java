@@ -17,6 +17,7 @@
 package me.nulldoubt.micro.backends.lwjgl3;
 
 import com.nulldoubt.micro.*;
+import com.nulldoubt.micro.graphics.glutils.HdpiMode;
 import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.Files.FileType;
 import me.nulldoubt.micro.Graphics.DisplayMode;
@@ -24,7 +25,6 @@ import me.nulldoubt.micro.Graphics.Monitor;
 import me.nulldoubt.micro.audio.Music;
 import me.nulldoubt.micro.backends.lwjgl3.Lwjgl3Graphics.Lwjgl3Monitor;
 import me.nulldoubt.micro.graphics.GL20;
-import com.nulldoubt.micro.graphics.glutils.HdpiMode;
 import me.nulldoubt.micro.graphics.glutils.HdpiUtils;
 import me.nulldoubt.micro.math.GridPoint2;
 import org.lwjgl.BufferUtils;
@@ -63,10 +63,10 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 	boolean pauseWhenLostFocus = false;
 	String preferencesDirectory = ".prefs/";
 	Files.FileType preferencesFileType = FileType.External;
-	HdpiMode hdpiMode = HdpiMode.Logical;
+	HdpiUtils.HdpiMode hdpiMode = HdpiUtils.HdpiMode.Logical;
 	boolean debug = false;
 	PrintStream debugStream = System.err;
-
+	
 	static Lwjgl3ApplicationConfiguration copy(Lwjgl3ApplicationConfiguration config) {
 		Lwjgl3ApplicationConfiguration copy = new Lwjgl3ApplicationConfiguration();
 		copy.set(config);

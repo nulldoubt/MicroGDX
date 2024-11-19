@@ -1,31 +1,14 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.backends.lwjgl3;
 
 import me.nulldoubt.micro.AbstractGraphics;
 import me.nulldoubt.micro.Application;
-import com.nulldoubt.micro.graphics.*;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.*;
 import me.nulldoubt.micro.graphics.Cursor.SystemCursor;
 import me.nulldoubt.micro.graphics.glutils.GLVersion;
-import com.nulldoubt.micro.graphics.glutils.HdpiMode;
+import me.nulldoubt.micro.graphics.glutils.HdpiUtils;
 import me.nulldoubt.micro.math.GridPoint2;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFW;
@@ -122,18 +105,11 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 		return glVersion.isVersionEqualToOrHigher(3, 2) || supportsExtension("GL_ARB_seamless_cube_map");
 	}
 	
-	/**
-	 * Enable or disable cubemap seamless feature. Default is true if supported. Should only be called if this feature is
-	 * supported. (see {@link #supportsCubeMapSeamless()})
-	 *
-	 * @param enable
-	 */
 	public void enableCubeMapSeamless(boolean enable) {
-		if (enable) {
+		if (enable)
 			gl20.glEnable(org.lwjgl.opengl.GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS);
-		} else {
+		else
 			gl20.glDisable(org.lwjgl.opengl.GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS);
-		}
 	}
 	
 	public Lwjgl3Window getWindow() {
@@ -214,7 +190,7 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 	
 	@Override
 	public int getWidth() {
-		if (window.getConfig().hdpiMode == HdpiMode.Pixels) {
+		if (window.getConfig().hdpiMode == HdpiUtils.HdpiMode.Pixels) {
 			return backBufferWidth;
 		} else {
 			return logicalWidth;
@@ -223,7 +199,7 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 	
 	@Override
 	public int getHeight() {
-		if (window.getConfig().hdpiMode == HdpiMode.Pixels) {
+		if (window.getConfig().hdpiMode == HdpiUtils.HdpiMode.Pixels) {
 			return backBufferHeight;
 		} else {
 			return logicalHeight;
@@ -356,9 +332,8 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 	public Monitor[] getMonitors() {
 		PointerBuffer glfwMonitors = GLFW.glfwGetMonitors();
 		Monitor[] monitors = new Monitor[glfwMonitors.limit()];
-		for (int i = 0; i < glfwMonitors.limit(); i++) {
+		for (int i = 0; i < glfwMonitors.limit(); i++)
 			monitors[i] = Lwjgl3ApplicationConfiguration.toLwjgl3Monitor(glfwMonitors.get(i));
-		}
 		return monitors;
 	}
 	
@@ -529,7 +504,9 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 	@Override
 	public void dispose() {
 		this.resizeCallback.free();
-	}	@Override
+	}
+	
+	@Override
 	public void setContinuousRendering(boolean continuous) {
 		this.isContinuous = continuous;
 	}
@@ -547,7 +524,9 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 			return monitorHandle;
 		}
 		
-	}	@Override
+	}
+	
+	@Override
 	public boolean isContinuousRendering() {
 		return isContinuous;
 	}
@@ -565,7 +544,9 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 			return monitorHandle;
 		}
 		
-	}	@Override
+	}
+	
+	@Override
 	public void requestRendering() {
 		window.requestRendering();
 	}
@@ -589,11 +570,5 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 	public void setSystemCursor(SystemCursor systemCursor) {
 		Lwjgl3Cursor.setSystemCursor(getWindow().getWindowHandle(), systemCursor);
 	}
-	
-
-	
-
-	
-
 	
 }

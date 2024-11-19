@@ -1,26 +1,10 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.audio.Music;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.math.MathUtils;
 import me.nulldoubt.micro.utils.collections.FloatArray;
-import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
 
@@ -30,9 +14,6 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.openal.AL10.*;
 
-/**
- * @author Nathan Sweet
- */
 public abstract class OpenALMusic implements Music {
 	
 	private static final int bufferSize = 4096 * 10;
@@ -57,13 +38,6 @@ public abstract class OpenALMusic implements Music {
 		this.onCompletionListener = null;
 	}
 	
-	/**
-	 * Prepare our music for playback!
-	 *
-	 * @param channels   The number of channels for the music. Most commonly 1 (for mono) or 2 (for stereo).
-	 * @param bitDepth   The number of bits in each sample. Normally 16. Can also be 8, 32, 64.
-	 * @param sampleRate The number of samples to be played each second. Commonly 44100; can be anything within reason.
-	 */
 	protected void setup(int channels, int bitDepth, int sampleRate) {
 		this.format = OpenALUtils.determineFormat(channels, bitDepth);
 		this.sampleRate = sampleRate;
@@ -150,14 +124,18 @@ public abstract class OpenALMusic implements Music {
 	 * Fills as much of the buffer as possible and returns the number of bytes filled. Returns <= 0 to indicate the end of the
 	 * stream.
 	 */
-	public abstract int read(byte[] buffer);	public void setLooping(boolean isLooping) {
+	public abstract int read(byte[] buffer);
+	
+	public void setLooping(boolean isLooping) {
 		this.isLooping = isLooping;
 	}
 	
 	/**
 	 * Resets the stream to the beginning.
 	 */
-	public abstract void reset();	public boolean isLooping() {
+	public abstract void reset();
+	
+	public boolean isLooping() {
 		return isLooping;
 	}
 	
@@ -166,7 +144,9 @@ public abstract class OpenALMusic implements Music {
 	 */
 	protected void loop() {
 		reset();
-	}	/**
+	}
+	
+	/**
 	 * @param volume Must be > 0.
 	 */
 	public void setVolume(float volume) {
@@ -181,13 +161,17 @@ public abstract class OpenALMusic implements Music {
 	
 	public int getChannels() {
 		return format == AL_FORMAT_STEREO16 ? 2 : 1;
-	}	public float getVolume() {
+	}
+	
+	public float getVolume() {
 		return this.volume;
 	}
 	
 	public int getRate() {
 		return sampleRate;
-	}	public void setPan(float pan, float volume) {
+	}
+	
+	public void setPan(float pan, float volume) {
 		this.volume = volume;
 		this.pan = pan;
 		if (audio.noDevice)
@@ -229,7 +213,9 @@ public abstract class OpenALMusic implements Music {
 		// A buffer underflow will cause the source to stop.
 		if (isPlaying && alGetSourcei(sourceID, AL_SOURCE_STATE) != AL_PLAYING)
 			alSourcePlay(sourceID);
-	}	public void setPosition(float position) {
+	}
+	
+	public void setPosition(float position) {
 		if (audio.noDevice)
 			return;
 		if (sourceID == -1)
@@ -296,7 +282,9 @@ public abstract class OpenALMusic implements Music {
 		((Buffer) tempBuffer.put(tempBytes, 0, length)).flip();
 		alBufferData(bufferID, format, tempBuffer, sampleRate);
 		return true;
-	}	public float getPosition() {
+	}
+	
+	public float getPosition() {
 		if (audio.noDevice)
 			return 0;
 		if (sourceID == -1)
@@ -307,18 +295,6 @@ public abstract class OpenALMusic implements Music {
 	public int getSourceId() {
 		return sourceID;
 	}
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
 	
 	public void dispose() {
 		stop();
@@ -334,7 +310,5 @@ public abstract class OpenALMusic implements Music {
 	public void setOnCompletionListener(OnCompletionListener listener) {
 		onCompletionListener = listener;
 	}
-	
-
 	
 }

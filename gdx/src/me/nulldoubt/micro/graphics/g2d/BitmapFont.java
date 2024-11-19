@@ -8,7 +8,8 @@ import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.Texture.TextureFilter;
 import me.nulldoubt.micro.graphics.g2d.GlyphLayout.GlyphRun;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.AtlasRegion;
-import me.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.Disposable;
+import me.nulldoubt.micro.utils.StreamUtils;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.FloatArray;
 
@@ -30,15 +31,6 @@ public class BitmapFont implements Disposable {
 	private boolean flipped;
 	boolean integer;
 	private boolean ownsTexture;
-	
-	public BitmapFont() {
-		this(Micro.files.classpath("com/badlogic/gdx/utils/lsans-15.fnt"), Micro.files.classpath("com/badlogic/gdx/utils/lsans-15.png"), false, true);
-	}
-	
-	public BitmapFont(boolean flip) {
-		this(Micro.files.classpath("com/badlogic/gdx/utils/lsans-15.fnt"), Micro.files.classpath("com/badlogic/gdx/utils/lsans-15.png"),
-				flip, true);
-	}
 	
 	public BitmapFont(FileHandle fontFile, TextureRegion region) {
 		this(fontFile, region, false);

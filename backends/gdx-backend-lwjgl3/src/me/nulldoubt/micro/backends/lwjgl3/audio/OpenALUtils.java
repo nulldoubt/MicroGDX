@@ -11,49 +11,26 @@ import static org.lwjgl.openal.EXTMCFormats.*;
 
 public class OpenALUtils {
 	
-	/**
-	 * @param channels The number of channels for the sound. Most commonly 1 (for mono) or 2 (for stereo).
-	 * @param bitDepth The number of bits in each sample. Normally 16. Can also be 8, 32, 64.
-	 * @return An OpenAL enum for use with {@link OpenALSound} and {@link OpenALMusic}
-	 */
 	static int determineFormat(int channels, int bitDepth) { // @off
 		int format;
 		switch (channels) {
 			case 1:
-				switch (bitDepth) {
-					case 8:
-						format = AL_FORMAT_MONO8;
-						break;
-					case 16:
-						format = AL_FORMAT_MONO16;
-						break;
-					case 32:
-						format = AL_FORMAT_MONO_FLOAT32;
-						break;
-					case 64:
-						format = AL_FORMAT_MONO_DOUBLE_EXT;
-						break;
-					default:
-						throw new MicroRuntimeException("Audio: Bit depth must be 8, 16, 32 or 64.");
-				}
+				format = switch (bitDepth) {
+					case 8 -> AL_FORMAT_MONO8;
+					case 16 -> AL_FORMAT_MONO16;
+					case 32 -> AL_FORMAT_MONO_FLOAT32;
+					case 64 -> AL_FORMAT_MONO_DOUBLE_EXT;
+					default -> throw new MicroRuntimeException("Audio: Bit depth must be 8, 16, 32 or 64.");
+				};
 				break;
 			case 2: // Doesn't work on mono devices (#6631)
-				switch (bitDepth) {
-					case 8:
-						format = AL_FORMAT_STEREO8;
-						break;
-					case 16:
-						format = AL_FORMAT_STEREO16;
-						break;
-					case 32:
-						format = AL_FORMAT_STEREO_FLOAT32;
-						break;
-					case 64:
-						format = AL_FORMAT_STEREO_DOUBLE_EXT;
-						break;
-					default:
-						throw new MicroRuntimeException("Audio: Bit depth must be 8, 16, 32 or 64.");
-				}
+				format = switch (bitDepth) {
+					case 8 -> AL_FORMAT_STEREO8;
+					case 16 -> AL_FORMAT_STEREO16;
+					case 32 -> AL_FORMAT_STEREO_FLOAT32;
+					case 64 -> AL_FORMAT_STEREO_DOUBLE_EXT;
+					default -> throw new MicroRuntimeException("Audio: Bit depth must be 8, 16, 32 or 64.");
+				};
 				break;
 			case 4:
 				format = AL_FORMAT_QUAD16;

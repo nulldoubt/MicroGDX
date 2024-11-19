@@ -83,7 +83,6 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 		
 		checkValidBuilder();
 		
-		// iOS uses a different framebuffer handle! (not necessarily 0)
 		if (!defaultFramebufferHandleInitialized) {
 			defaultFramebufferHandleInitialized = true;
 			defaultFramebufferHandle = 0;

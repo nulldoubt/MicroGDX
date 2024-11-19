@@ -1,24 +1,8 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.audio.AudioDevice;
-import me.nulldoubt.micro.math.MathUtils;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.math.MathUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
 
@@ -28,9 +12,6 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.openal.AL10.*;
 
-/**
- * @author Nathan Sweet
- */
 public class OpenALAudioDevice implements AudioDevice {
 	
 	private static final int bytesPerSample = 2;

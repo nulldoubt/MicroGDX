@@ -9,28 +9,12 @@ public final class Affine2 implements Serializable {
 	public float m00 = 1, m01 = 0, m02 = 0;
 	public float m10 = 0, m11 = 1, m12 = 0;
 	
-	// constant: m21 = 0, m21 = 1, m22 = 1
+	public Affine2() {}
 	
-	/**
-	 * Constructs an identity matrix.
-	 */
-	public Affine2() {
-	}
-	
-	/**
-	 * Constructs a matrix from the given affine matrix.
-	 *
-	 * @param other The affine matrix to copy. This matrix will not be modified.
-	 */
 	public Affine2(Affine2 other) {
 		set(other);
 	}
 	
-	/**
-	 * Sets this matrix to the identity matrix
-	 *
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Affine2 idt() {
 		m00 = 1;
 		m01 = 0;
@@ -41,12 +25,6 @@ public final class Affine2 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Copies the values from the provided affine matrix to this matrix.
-	 *
-	 * @param other The affine matrix to copy.
-	 * @return This matrix for the purposes of chaining.
-	 */
 	public Affine2 set(Affine2 other) {
 		m00 = other.m00;
 		m01 = other.m01;
@@ -57,15 +35,8 @@ public final class Affine2 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Copies the values from the provided matrix to this matrix.
-	 *
-	 * @param matrix The matrix to copy, assumed to be an affine transformation.
-	 * @return This matrix for the purposes of chaining.
-	 */
 	public Affine2 set(Matrix3 matrix) {
-		float[] other = matrix.val;
-		
+		final float[] other = matrix.val;
 		m00 = other[Matrix3.M00];
 		m01 = other[Matrix3.M01];
 		m02 = other[Matrix3.M02];
@@ -75,21 +46,8 @@ public final class Affine2 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Copies the 2D transformation components from the provided 4x4 matrix. The values are mapped as follows:
-	 *
-	 * <pre>
-	 *      [  M00  M01  M03  ]
-	 *      [  M10  M11  M13  ]
-	 *      [   0    0    1   ]
-	 * </pre>
-	 *
-	 * @param matrix The source matrix, assumed to be an affine transformation within XY plane. This matrix will not be modified.
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Affine2 set(Matrix4 matrix) {
-		float[] other = matrix.val;
-		
+		final float[] other = matrix.val;
 		m00 = other[Matrix4.M00];
 		m01 = other[Matrix4.M01];
 		m02 = other[Matrix4.M03];
@@ -99,13 +57,6 @@ public final class Affine2 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Sets this matrix to a translation matrix.
-	 *
-	 * @param x The translation in x
-	 * @param y The translation in y
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Affine2 setToTranslation(float x, float y) {
 		m00 = 1;
 		m01 = 0;

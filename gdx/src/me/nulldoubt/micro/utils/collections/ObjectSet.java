@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.utils.collections;
 
-import me.nulldoubt.micro.math.MathUtils;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.math.MathUtils;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -17,14 +17,8 @@ public class ObjectSet<T> implements Iterable<T> {
 	int threshold;
 	
 	protected int shift;
-	
 	protected int mask;
 	
-	private transient ObjectSetIterator iterator1, iterator2;
-	
-	/**
-	 * Creates a new set with an initial capacity of 51 and a load factor of 0.8.
-	 */
 	public ObjectSet() {
 		this(51, 0.8f);
 	}

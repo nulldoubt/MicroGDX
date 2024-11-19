@@ -1,64 +1,44 @@
 apply plugin: "java"
 
 if (JavaVersion.current().isJava9Compatible()) {
-	compileJava {
-		options.release = versions.java
-	}
+    compileJava {
+        options.release = versions.java
+    }
 }
 sourceCompatibility = versions.java
 targetCompatibility = versions.java
 
 sourceSets.main.java.srcDirs = ["src"]
 sourceSets.main.resources.srcDirs = ["res"]
-sourceSets.test.java.srcDirs = ["test"]
 
 compileJava {
-	options.fork = true
-	options.incremental = true
+    options.fork = true
+    options.incremental = true
 }
 
 jar {
-	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 dependencies {
-	testImplementation libraries.junit
-	api "com.badlogicgames.gdx:gdx-jnigen-loader:2.5.2"
-}
-
-test {
-	dependsOn("validateIOSHeader")
-	testLogging {
-		events "passed", "skipped", "failed", "standardOut", "standardError"
-	}
+    api "com.badlogicgames.gdx:gdx-jnigen-loader:2.5.2"
 }
 
 processResources.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
 apply plugin: "com.badlogicgames.gdx.gdx-jnigen"
 jnigen {
-	sharedLibName = "gdx"
-	temporaryDir = "../target/native"
-	all {
-		cppExcludes = ["iosgl/**"]
-	}
-	add(Windows, x32)
-	add(Windows, x64)
-	add(Linux, x64)
-	add(Linux, x32, ARM)
-	add(Linux, x64, ARM)
-	add(Linux, x64, RISCV)
-	add(Android) {
-		linkerFlags += " -llog"
-	}
-	add(MacOsX, x64)
-	add(MacOsX, x64, ARM)
-	add(IOS) {
-		headerDirs = ["iosgl"]
-		cppExcludes = []
-		linkerFlags += " -undefined dynamic_lookup "
-	}
-	robovm {
-		extraXCFramework("libs/ObjectAL.xcframework")
-	}
+    sharedLibName = "gdx"
+    temporaryDir = "../target/native"
+    add(Windows, x32)
+    add(Windows, x64)
+    add(Linux, x64)
+    add(Linux, x32, ARM)
+    add(Linux, x64, ARM)
+    add(Linux, x64, RISCV)
+    add(Android) {
+        linkerFlags += " -llog"
+    }
+    add(MacOsX, x64)
+    add(MacOsX, x64, ARM)
 }

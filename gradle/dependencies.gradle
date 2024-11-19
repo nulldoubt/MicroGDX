@@ -1,37 +1,14 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 ext {
     versions = [:]
     libraries = [:]
-    testnatives = [:]
     gdxnatives = [:]
 }
 
-versions.java = project.hasProperty("javaVersion") ? Integer.parseInt(project.getProperty("javaVersion")) : 22
-versions.javaLwjgl3 = project.hasProperty("javaVersion") ? Integer.parseInt(project.getProperty("javaVersion")) : 22
-versions.gwtPlugin = "1.1.29"
-versions.jsinteropAnnotations = "2.0.2"
-versions.gretty = "3.1.0"
+versions.java = 22
 versions.jglwf = "1.1"
-versions.lwjgl = "2.9.3"
 versions.lwjgl3 = "3.3.4"
 versions.jlayer = "1.0.1-gdx"
 versions.jorbis = "0.0.17"
-versions.junit = "4.13.2"
 versions.androidPlugin = "8.1.2"
 versions.multiDex = "2.0.1"
 versions.androidCompileSdk = 33
@@ -42,12 +19,6 @@ versions.androidFragment = "1.5.7"
 versions.javaparser = "2.3.0"
 
 libraries.compileOnly = [:]
-
-libraries.lwjgl = [
-        "org.lwjgl.lwjgl:lwjgl:${versions.lwjgl}",
-        "com.badlogicgames.jlayer:jlayer:${versions.jlayer}",
-        "org.jcraft:jorbis:${versions.jorbis}"
-]
 
 libraries.lwjgl3 = [
         "org.lwjgl:lwjgl:${versions.lwjgl3}",
@@ -121,34 +92,8 @@ libraries.lwjgl3GLES = [
         "org.lwjgl:lwjgl-egl:${versions.lwjgl3}",
 ]
 
-libraries.robovm = [
-        "com.mobidevelop.robovm:robovm-rt:${versions.robovm}",
-        "com.mobidevelop.robovm:robovm-objc:${versions.robovm}",
-        "com.mobidevelop.robovm:robovm-cocoatouch:${versions.robovm}"
-]
-
 libraries.compileOnly.android = [
         "androidx.fragment:fragment:${versions.androidFragment}"
-]
-
-libraries.gwt = [
-        "org.gwtproject:gwt-user:${versions.gwt}",
-        "com.google.jsinterop:jsinterop-annotations:${versions.jsinteropAnnotations}:sources"
-]
-
-libraries.compileOnly.gwt = [
-        "org.gwtproject:gwt-dev:${versions.gwt}"
-]
-
-libraries.junit = [
-        "junit:junit:${versions.junit}"
-]
-
-testnatives.desktop = [
-        files("gdx/libs/gdx-natives.jar"),
-        files("extensions/gdx-box2d/gdx-box2d/libs/gdx-box2d-natives.jar"),
-        files("extensions/gdx-bullet/libs/gdx-bullet-natives.jar"),
-        files("extensions/gdx-freetype/libs/gdx-freetype-natives.jar")
 ]
 
 gdxnatives.desktop = [

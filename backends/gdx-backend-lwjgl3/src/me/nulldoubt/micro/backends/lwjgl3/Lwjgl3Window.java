@@ -1,28 +1,11 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.backends.lwjgl3;
 
-import com.nulldoubt.micro.*;
+import com.badlogic.gdx.utils.Os;
+import com.badlogic.gdx.utils.SharedLibraryLoader;
 import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.graphics.Pixmap;
-import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import com.nulldoubt.micro.utils.Os;
-import com.nulldoubt.micro.utils.SharedLibraryLoader;
+import me.nulldoubt.micro.utils.collections.Array;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 
@@ -188,10 +171,9 @@ public class Lwjgl3Window implements Disposable {
 		if (SharedLibraryLoader.os == Os.MacOsX)
 			return;
 		
-		Pixmap[] pixmaps = new Pixmap[imagePaths.length];
-		for (int i = 0; i < imagePaths.length; i++) {
+		final Pixmap[] pixmaps = new Pixmap[imagePaths.length];
+		for (int i = 0; i < imagePaths.length; i++)
 			pixmaps[i] = new Pixmap(Micro.files.getFileHandle(imagePaths[i], imageFileType));
-		}
 		
 		setIcon(windowHandle, pixmaps);
 		
@@ -365,9 +347,6 @@ public class Lwjgl3Window implements Disposable {
 		GLFW.glfwMaximizeWindow(windowHandle);
 	}
 	
-	/**
-	 * Brings the window to front and sets input focus. The window should already be visible and not iconified.
-	 */
 	public void focusWindow() {
 		GLFW.glfwFocusWindow(windowHandle);
 	}
@@ -376,14 +355,6 @@ public class Lwjgl3Window implements Disposable {
 		return focused;
 	}
 	
-	/**
-	 * Sets the icon that will be used in the window's title bar. Has no effect in macOS, which doesn't use window icons.
-	 *
-	 * @param image One or more images. The one closest to the system's desired size will be scaled. Good sizes include 16x16,
-	 *              32x32 and 48x48. Pixmap format {@link Pixmap.Format#RGBA8888 RGBA8888} is preferred so
-	 *              the images will not have to be copied and converted. The chosen image is copied, and the provided Pixmaps are not
-	 *              disposed.
-	 */
 	public void setIcon(Pixmap... image) {
 		setIcon(windowHandle, image);
 	}
@@ -392,10 +363,6 @@ public class Lwjgl3Window implements Disposable {
 		GLFW.glfwSetWindowTitle(windowHandle, title);
 	}
 	
-	/**
-	 * Sets minimum and maximum size limits for the window. If the window is full screen or not resizable, these limits are
-	 * ignored. Use -1 to indicate an unrestricted dimension.
-	 */
 	public void setSizeLimits(int minWidth, int minHeight, int maxWidth, int maxHeight) {
 		setSizeLimits(windowHandle, minWidth, minHeight, maxWidth, maxHeight);
 	}
@@ -526,7 +493,7 @@ public class Lwjgl3Window implements Disposable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (windowHandle ^ (windowHandle >>> 32));
+		result = prime * result + Long.hashCode(windowHandle);
 		return result;
 	}
 	

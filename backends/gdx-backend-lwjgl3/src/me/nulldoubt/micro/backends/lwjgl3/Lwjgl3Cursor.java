@@ -1,26 +1,10 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.backends.lwjgl3;
 
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.Cursor;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Blending;
 import me.nulldoubt.micro.utils.collections.Array;
-import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
 
@@ -29,8 +13,8 @@ import java.util.Map;
 
 public class Lwjgl3Cursor implements Cursor {
 	
-	static final Array<Lwjgl3Cursor> cursors = new Array<Lwjgl3Cursor>();
-	static final Map<SystemCursor, Long> systemCursors = new HashMap<SystemCursor, Long>();
+	static final Array<Lwjgl3Cursor> cursors = new Array<>();
+	static final Map<SystemCursor, Long> systemCursors = new HashMap<>();
 	
 	private static int inputModeBeforeNoneCursor = -1;
 	
@@ -41,29 +25,20 @@ public class Lwjgl3Cursor implements Cursor {
 	
 	Lwjgl3Cursor(Lwjgl3Window window, Pixmap pixmap, int xHotspot, int yHotspot) {
 		this.window = window;
-		if (pixmap.getFormat() != Pixmap.Format.RGBA8888) {
+		if (pixmap.getFormat() != Pixmap.Format.RGBA8888)
 			throw new MicroRuntimeException("Cursor image pixmap is not in RGBA8888 format.");
-		}
 		
-		if ((pixmap.getWidth() & (pixmap.getWidth() - 1)) != 0) {
-			throw new MicroRuntimeException(
-					"Cursor image pixmap width of " + pixmap.getWidth() + " is not a power-of-two greater than zero.");
-		}
+		if ((pixmap.getWidth() & (pixmap.getWidth() - 1)) != 0)
+			throw new MicroRuntimeException("Cursor image pixmap width of " + pixmap.getWidth() + " is not a power-of-two greater than zero.");
 		
-		if ((pixmap.getHeight() & (pixmap.getHeight() - 1)) != 0) {
-			throw new MicroRuntimeException(
-					"Cursor image pixmap height of " + pixmap.getHeight() + " is not a power-of-two greater than zero.");
-		}
+		if ((pixmap.getHeight() & (pixmap.getHeight() - 1)) != 0)
+			throw new MicroRuntimeException("Cursor image pixmap height of " + pixmap.getHeight() + " is not a power-of-two greater than zero.");
 		
-		if (xHotspot < 0 || xHotspot >= pixmap.getWidth()) {
-			throw new MicroRuntimeException(
-					"xHotspot coordinate of " + xHotspot + " is not within image width bounds: [0, " + pixmap.getWidth() + ").");
-		}
+		if (xHotspot < 0 || xHotspot >= pixmap.getWidth())
+			throw new MicroRuntimeException("xHotspot coordinate of " + xHotspot + " is not within image width bounds: [0, " + pixmap.getWidth() + ").");
 		
-		if (yHotspot < 0 || yHotspot >= pixmap.getHeight()) {
-			throw new MicroRuntimeException(
-					"yHotspot coordinate of " + yHotspot + " is not within image height bounds: [0, " + pixmap.getHeight() + ").");
-		}
+		if (yHotspot < 0 || yHotspot >= pixmap.getHeight())
+			throw new MicroRuntimeException("yHotspot coordinate of " + yHotspot + " is not within image height bounds: [0, " + pixmap.getHeight() + ").");
 		
 		this.pixmapCopy = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888);
 		this.pixmapCopy.setBlending(Blending.None);
@@ -80,16 +55,14 @@ public class Lwjgl3Cursor implements Cursor {
 	static void dispose(Lwjgl3Window window) {
 		for (int i = cursors.size - 1; i >= 0; i--) {
 			Lwjgl3Cursor cursor = cursors.get(i);
-			if (cursor.window.equals(window)) {
+			if (cursor.window.equals(window))
 				cursors.removeIndex(i).dispose();
-			}
 		}
 	}
 	
 	static void disposeSystemCursors() {
-		for (long systemCursor : systemCursors.values()) {
+		for (long systemCursor : systemCursors.values())
 			GLFW.glfwDestroyCursor(systemCursor);
-		}
 		systemCursors.clear();
 	}
 	

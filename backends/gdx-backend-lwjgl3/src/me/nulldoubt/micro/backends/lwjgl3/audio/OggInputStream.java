@@ -1,30 +1,5 @@
-/**
- * Copyright (c) 2007, Slick 2D
- * <p>
- * All rights reserved.
- * <p>
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
- * conditions are met:
- * <p>
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the distribution. Neither the name of the Slick 2D nor the names of
- * its contributors may be used to endorse or promote products derived from this software without specific prior written
- * permission.
- * <p>
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
- * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
-import me.nulldoubt.micro.Micro;
-import me.nulldoubt.micro.exceptions.MicroRuntimeException;
-import me.nulldoubt.micro.utils.StreamUtils;
 import com.jcraft.jogg.Packet;
 import com.jcraft.jogg.Page;
 import com.jcraft.jogg.StreamState;
@@ -33,6 +8,9 @@ import com.jcraft.jorbis.Block;
 import com.jcraft.jorbis.Comment;
 import com.jcraft.jorbis.DspState;
 import com.jcraft.jorbis.Info;
+import me.nulldoubt.micro.Micro;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.StreamUtils;
 import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
@@ -41,65 +19,34 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/** An input stream to read Ogg Vorbis.
- * @author kevin */
 public class OggInputStream extends InputStream {
 	
 	private final static int BUFFER_SIZE = 512;
-	/** Temporary scratch buffer */
 	byte[] buffer;
-	/** The number of bytes read */
 	int bytes = 0;
-	/** The true if we should be reading big endian */
 	boolean bigEndian = ByteOrder.nativeOrder().equals(ByteOrder.BIG_ENDIAN);
-	/** True if we're reached the end of the current bit stream */
 	boolean endOfBitStream = true;
-	/** True if we're initialise the OGG info block */
 	boolean inited = false;
-	/** The conversion buffer size */
 	private int convsize = BUFFER_SIZE * 4;
-	/** The buffer used to read OGG file */
 	private final byte[] convbuffer;
-	/** The stream we're reading the OGG file from */
 	private final InputStream input;
-	/** The audio information from the OGG header */
 	private final Info oggInfo = new Info(); // struct that stores all the static vorbis bitstream settings
-	/** True if we're at the end of the available data */
 	private boolean endOfStream;
-	/** The Vorbis SyncState used to decode the OGG */
 	private final SyncState syncState = new SyncState(); // sync and verify incoming physical bitstream
-	/** The Vorbis Stream State used to decode the OGG */
 	private final StreamState streamState = new StreamState(); // take physical pages, weld into a logical stream of packets
-	/** The current OGG page */
 	private final Page page = new Page(); // one Ogg bitstream page. Vorbis packets are inside
-	/** The current packet page */
 	private final Packet packet = new Packet(); // one raw packet of data for decode
-	/** The comment read from the OGG file */
 	private final Comment comment = new Comment(); // struct that stores all the bitstream user comments
-	/** The Vorbis DSP stat eused to decode the OGG */
 	private final DspState dspState = new DspState(); // central working state for the packet->PCM decoder
-	/** The OGG block we're currently working with to convert PCM */
 	private final Block vorbisBlock = new Block(dspState); // local working space for packet->PCM decode
-	/** The index into the byte array we currently read from */
 	private int readIndex;
-	/** The byte array store used to hold the data read from the ogg */
 	private final ByteBuffer pcmBuffer;
-	/** The total number of bytes */
 	private final int total;
 	
-	/** Create a new stream to decode OGG data
-	 *
-	 * @param input The input stream from which to read the OGG file */
 	public OggInputStream(InputStream input) {
 		this(input, null);
 	}
 	
-	/** Create a new stream to decode OGG data, reusing buffers from another stream.
-	 *
-	 * It's not a good idea to use the old stream instance afterwards.
-	 *
-	 * @param input The input stream from which to read the OGG file
-	 * @param previousStream The stream instance to reuse buffers from, may be null */
 	public OggInputStream(InputStream input, OggInputStream previousStream) {
 		if (previousStream == null) {
 			convbuffer = new byte[convsize];
@@ -119,9 +66,11 @@ public class OggInputStream extends InputStream {
 		init();
 	}
 	
-	/** Get the number of bytes on the stream
+	/**
+	 * Get the number of bytes on the stream
 	 *
-	 * @return The number of the bytes on the stream */
+	 * @return The number of the bytes on the stream
+	 */
 	public int getLength() {
 		return total;
 	}
@@ -134,20 +83,26 @@ public class OggInputStream extends InputStream {
 		return oggInfo.rate;
 	}
 	
-	/** Initialise the streams and thread involved in the streaming of OGG data */
+	/**
+	 * Initialise the streams and thread involved in the streaming of OGG data
+	 */
 	private void init() {
 		initVorbis();
 		readPCM();
 	}
 	
-	/** Initialise the vorbis decoding */
+	/**
+	 * Initialise the vorbis decoding
+	 */
 	private void initVorbis() {
 		syncState.init();
 	}
 	
-	/** Get a page and packet from that page
+	/**
+	 * Get a page and packet from that page
 	 *
-	 * @return True if there was a page available */
+	 * @return True if there was a page available
+	 */
 	private boolean getPageAndPacket() {
 		// grab some data at the head of the stream. We want the first page
 		// (which is guaranteed to be small and only contain the Vorbis
@@ -275,7 +230,9 @@ public class OggInputStream extends InputStream {
 		return true;
 	}
 	
-	/** Decode the OGG file as shown in the jogg/jorbis examples */
+	/**
+	 * Decode the OGG file as shown in the jogg/jorbis examples
+	 */
 	private void readPCM() {
 		boolean wrote = false;
 		
@@ -455,7 +412,9 @@ public class OggInputStream extends InputStream {
 		return len;
 	}
 	
-	/** @see java.io.InputStream#available() */
+	/**
+	 * @see java.io.InputStream#available()
+	 */
 	public int available() {
 		return endOfStream ? 0 : 1;
 	}
