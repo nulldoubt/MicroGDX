@@ -18,7 +18,7 @@ package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.utils.BufferUtils;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.utils.StreamUtils;
 import org.lwjgl.stb.STBVorbis;
 import org.lwjgl.system.MemoryStack;

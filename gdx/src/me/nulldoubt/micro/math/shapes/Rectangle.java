@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.math.shapes;
 
 import me.nulldoubt.micro.math.Vector2;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.utils.NumberUtils;
 
 import java.io.Serializable;

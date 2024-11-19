@@ -37,9 +37,9 @@ import me.nulldoubt.micro.backends.android.keyboardheight.KeyboardHeightProvider
 import me.nulldoubt.micro.backends.android.keyboardheight.StandardKeyboardHeightProvider;
 import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import com.nulldoubt.micro.utils.*;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
-import me.nulldoubt.micro.utils.SnapshotArray;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 
 /** An implementation of the {@link Application} interface for Android. Create an {@link Activity} that derives from this class.
  * In the {@link Activity#onCreate(Bundle)} method call the {@link #initialize(ApplicationListener)} method specifying the

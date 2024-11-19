@@ -2,7 +2,7 @@ package me.nulldoubt.micro.graphics.g2d;
 
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -28,8 +28,8 @@ import me.nulldoubt.micro.maps.ImageResolver;
 import me.nulldoubt.micro.maps.ImageResolver.AssetManagerImageResolver;
 import me.nulldoubt.micro.maps.ImageResolver.DirectImageResolver;
 import me.nulldoubt.micro.maps.MapProperties;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.ObjectMap;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
 import me.nulldoubt.micro.utils.XmlReader.Element;
 
 /** @brief synchronous loader for TMX maps created with the Tiled tool */

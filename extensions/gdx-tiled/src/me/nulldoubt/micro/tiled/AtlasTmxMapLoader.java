@@ -28,8 +28,8 @@ import me.nulldoubt.micro.graphics.g2d.TextureAtlas.AtlasRegion;
 import me.nulldoubt.micro.graphics.g2d.TextureRegion;
 import me.nulldoubt.micro.maps.ImageResolver;
 import me.nulldoubt.micro.maps.MapProperties;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.utils.XmlReader.Element;
 
 /** A TiledMap Loader which loads tiles from a TextureAtlas instead of separate images.

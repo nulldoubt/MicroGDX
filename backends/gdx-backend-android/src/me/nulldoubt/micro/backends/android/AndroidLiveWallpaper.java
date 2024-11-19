@@ -30,10 +30,10 @@ import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import me.nulldoubt.micro.graphics.Color;
 import com.nulldoubt.micro.utils.*;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.MicroNativesLoader;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
-import me.nulldoubt.micro.utils.SnapshotArray;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 
 /** An implementation of the {@link Application} interface to be used with an AndroidLiveWallpaperService. Not directly
  * constructable, instead the {@link AndroidLiveWallpaperService} will create this class internally.

@@ -16,7 +16,11 @@
 
 package me.nulldoubt.micro.utils;
 
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
+import me.nulldoubt.micro.utils.strings.StringBuilder;
+import me.nulldoubt.micro.utils.strings.TextFormatter;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -410,7 +414,7 @@ public class I18NBundle {
 	 * @throws NullPointerException if <code>baseFileHandle</code> or <code>locale</code> is <code>null</code>
 	 */
 	private static FileHandle toFileHandle(FileHandle baseFileHandle, Locale locale) {
-		StringBuilder sb = new StringBuilder(baseFileHandle.name());
+		me.nulldoubt.micro.utils.strings.StringBuilder sb = new StringBuilder(baseFileHandle.name());
 		if (!locale.equals(ROOT_LOCALE)) {
 			String language = locale.getLanguage();
 			String country = locale.getCountry();

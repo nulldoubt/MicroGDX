@@ -19,8 +19,8 @@ package me.nulldoubt.micro.backends.lwjgl3;
 import me.nulldoubt.micro.graphics.Cursor;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Blending;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
 

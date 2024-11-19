@@ -6,6 +6,8 @@ import me.nulldoubt.micro.assets.AssetLoaderParameters;
 import me.nulldoubt.micro.assets.loaders.AsynchronousAssetLoader;
 import me.nulldoubt.micro.assets.loaders.FileHandleResolver;
 import me.nulldoubt.micro.assets.loaders.TextureLoader;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.SerializationException;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.Texture.TextureFilter;
@@ -26,6 +28,9 @@ import me.nulldoubt.micro.math.shapes.Polyline;
 import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.XmlReader.Element;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.IntArray;
+import me.nulldoubt.micro.utils.collections.IntMap;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;

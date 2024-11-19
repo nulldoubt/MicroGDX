@@ -41,7 +41,7 @@ import java.nio.channels.FileChannel.MapMode;
 import me.nulldoubt.micro.Files;
 import me.nulldoubt.micro.Files.FileType;
 import me.nulldoubt.micro.Micro;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.utils.StreamUtils;
 
 /** Represents a file or directory on the filesystem, classpath, Android app storage, or Android assets directory. FileHandles are

@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.utils.async;
 
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;

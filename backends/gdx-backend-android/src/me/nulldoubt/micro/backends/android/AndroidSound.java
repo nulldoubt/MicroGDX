@@ -20,7 +20,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 
 import me.nulldoubt.micro.audio.Sound;
-import me.nulldoubt.micro.utils.IntArray;
+import me.nulldoubt.micro.utils.collections.IntArray;
 
 final class AndroidSound implements Sound {
 	final SoundPool soundPool;

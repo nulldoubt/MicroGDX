@@ -16,7 +16,7 @@
 
 package me.nulldoubt.micro.backends.lwjgl3;
 
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import org.lwjgl.opengl.*;
 
 import java.nio.*;

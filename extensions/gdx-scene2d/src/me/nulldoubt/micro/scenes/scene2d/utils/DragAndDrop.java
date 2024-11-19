@@ -22,10 +22,10 @@ import me.nulldoubt.micro.scenes.scene2d.Actor;
 import me.nulldoubt.micro.scenes.scene2d.InputEvent;
 import me.nulldoubt.micro.scenes.scene2d.Stage;
 import me.nulldoubt.micro.scenes.scene2d.ui.ScrollPane;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import com.nulldoubt.micro.utils.Null;
-import me.nulldoubt.micro.utils.ObjectMap;
-import me.nulldoubt.micro.utils.ObjectMap.Entry;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
+import me.nulldoubt.micro.utils.collections.ObjectMap.Entry;
 
 /** Manages drag and drop operations through registered drag sources and drop targets.
  * @author Nathan Sweet */

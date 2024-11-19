@@ -29,6 +29,8 @@
 
 package me.nulldoubt.micro.utils;
 
+import me.nulldoubt.micro.utils.strings.StringBuilder;
+
 import java.io.UnsupportedEncodingException;
 
 public class Base64Coder {
@@ -119,7 +121,7 @@ public class Base64Coder {
 		}
 		int lines = (iLen + blockLen - 1) / blockLen;
 		int bufLen = ((iLen + 2) / 3) * 4 + lines * lineSeparator.length();
-		StringBuilder buf = new StringBuilder(bufLen);
+		me.nulldoubt.micro.utils.strings.StringBuilder buf = new StringBuilder(bufLen);
 		int ip = 0;
 		while (ip < iLen) {
 			int l = Math.min(iLen - ip, blockLen);

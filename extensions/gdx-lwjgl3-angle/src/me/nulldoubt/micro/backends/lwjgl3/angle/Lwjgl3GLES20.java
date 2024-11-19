@@ -18,7 +18,7 @@ package me.nulldoubt.micro.backends.lwjgl3.angle;
 
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.utils.BufferUtils;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import org.lwjgl.opengles.GLES20;
 
 import java.nio.*;

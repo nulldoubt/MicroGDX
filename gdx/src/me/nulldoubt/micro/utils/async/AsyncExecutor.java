@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.utils.async;
 
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

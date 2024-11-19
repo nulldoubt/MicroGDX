@@ -9,7 +9,7 @@ import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.TextureAtlasData;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 public class TextureAtlasLoader extends SynchronousAssetLoader<TextureAtlas, TextureAtlasLoader.TextureAtlasParameter> {
 	

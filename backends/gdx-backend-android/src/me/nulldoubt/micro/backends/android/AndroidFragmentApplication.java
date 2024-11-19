@@ -18,10 +18,10 @@ import com.nulldoubt.micro.*;
 import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import com.nulldoubt.micro.utils.*;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.MicroNativesLoader;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
-import me.nulldoubt.micro.utils.SnapshotArray;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 
 /** Implementation of the {@link AndroidApplicationBase} that is based on the {@link Fragment} class. This class is similar in use
  * to the {@link AndroidApplication} class, which is based on an {@link Activity}.

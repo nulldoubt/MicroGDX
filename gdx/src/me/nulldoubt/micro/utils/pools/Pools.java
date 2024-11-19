@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.utils.pools;
 
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.ObjectMap;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
 
 import java.util.function.Supplier;
 

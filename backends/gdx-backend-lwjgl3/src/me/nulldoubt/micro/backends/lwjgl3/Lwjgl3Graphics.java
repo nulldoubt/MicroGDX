@@ -25,7 +25,7 @@ import me.nulldoubt.micro.graphics.glutils.GLVersion;
 import com.nulldoubt.micro.graphics.glutils.HdpiMode;
 import me.nulldoubt.micro.math.GridPoint2;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFW;

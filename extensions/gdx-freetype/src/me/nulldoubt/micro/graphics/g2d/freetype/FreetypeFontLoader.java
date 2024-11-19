@@ -9,7 +9,7 @@ import me.nulldoubt.micro.assets.loaders.FileHandleResolver;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.g2d.BitmapFont;
 import me.nulldoubt.micro.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 /** Creates {@link BitmapFont} instances from FreeType font files. Requires a {@link FreeTypeFontLoaderParameter} to be passed to
  * {@link AssetManager#load(String, Class, AssetLoaderParameters)} which specifies the name of the TTF file as well the parameters

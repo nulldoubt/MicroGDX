@@ -4,7 +4,7 @@ import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.Texture.TextureFilter;
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 public class NinePatch {
 	

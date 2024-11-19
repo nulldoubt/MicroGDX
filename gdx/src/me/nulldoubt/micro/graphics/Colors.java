@@ -16,7 +16,7 @@
 
 package me.nulldoubt.micro.graphics;
 
-import me.nulldoubt.micro.utils.ObjectMap;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
 
 /** A general purpose class containing named colors that can be changed at will. For example, the markup language defined by the
  * {@code BitmapFontCache} class uses this class to retrieve colors and the user can define his own colors.

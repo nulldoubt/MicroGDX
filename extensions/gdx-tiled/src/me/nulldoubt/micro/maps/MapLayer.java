@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.maps;
 
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 public class MapLayer {
 	private String name = "";

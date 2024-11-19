@@ -1,6 +1,8 @@
 package me.nulldoubt.micro.utils;
 
-import me.nulldoubt.micro.utils.ObjectMap.Entry;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
+import me.nulldoubt.micro.utils.collections.ObjectMap.Entry;
+import me.nulldoubt.micro.utils.strings.StringBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -193,7 +195,7 @@ public final class PropertiesUtils {
 		writer.write(new Date().toString());
 		writer.write(LINE_SEPARATOR);
 		
-		StringBuilder sb = new StringBuilder(200);
+		me.nulldoubt.micro.utils.strings.StringBuilder sb = new me.nulldoubt.micro.utils.strings.StringBuilder(200);
 		for (Entry<String, String> entry : properties.entries()) {
 			dumpString(sb, entry.key, true, escapeUnicode);
 			sb.append('=');

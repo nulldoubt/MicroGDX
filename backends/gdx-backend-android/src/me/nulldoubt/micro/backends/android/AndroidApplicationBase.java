@@ -25,8 +25,8 @@ import android.view.WindowManager;
 
 import me.nulldoubt.micro.Application;
 import me.nulldoubt.micro.LifecycleListener;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.SnapshotArray;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 
 /** Interface that abstracts the Android application class usages, so that libGDX can be used with a fragment (or with any other
  * client code)

@@ -24,7 +24,7 @@ import me.nulldoubt.micro.graphics.g2d.GlyphLayout;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
 import me.nulldoubt.micro.utils.Align;
 import com.nulldoubt.micro.utils.Null;
-import me.nulldoubt.micro.utils.StringBuilder;
+import me.nulldoubt.micro.utils.strings.StringBuilder;
 
 /** A text label, with optional word wrapping.
  * <p>

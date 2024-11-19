@@ -3,7 +3,7 @@ package me.nulldoubt.micro.graphics.g2d;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 import java.io.BufferedReader;
 import java.io.IOException;

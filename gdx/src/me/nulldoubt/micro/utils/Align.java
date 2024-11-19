@@ -1,5 +1,7 @@
 package me.nulldoubt.micro.utils;
 
+import me.nulldoubt.micro.utils.strings.StringBuilder;
+
 public class Align {
 	
 	public static final int center = 1;
@@ -38,7 +40,7 @@ public class Align {
 	}
 	
 	public static String toString(int align) {
-		StringBuilder buffer = new StringBuilder(13);
+		me.nulldoubt.micro.utils.strings.StringBuilder buffer = new StringBuilder(13);
 		if ((align & top) != 0)
 			buffer.append("top,");
 		else if ((align & bottom) != 0)

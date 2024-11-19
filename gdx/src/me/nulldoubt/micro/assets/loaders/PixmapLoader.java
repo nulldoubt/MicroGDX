@@ -5,7 +5,7 @@ import me.nulldoubt.micro.assets.AssetLoaderParameters;
 import me.nulldoubt.micro.assets.AssetManager;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.Pixmap;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 public class PixmapLoader extends AsynchronousAssetLoader<Pixmap, PixmapLoader.PixmapParameter> {
 	

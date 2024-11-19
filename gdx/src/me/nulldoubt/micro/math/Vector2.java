@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.math;
 
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.utils.NumberUtils;
 
 import java.io.Serializable;

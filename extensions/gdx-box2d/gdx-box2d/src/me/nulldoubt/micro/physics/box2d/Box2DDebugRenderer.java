@@ -27,7 +27,7 @@ import me.nulldoubt.micro.physics.box2d.BodyDef.BodyType;
 import me.nulldoubt.micro.physics.box2d.JointDef.JointType;
 import me.nulldoubt.micro.physics.box2d.Shape.Type;
 import me.nulldoubt.micro.physics.box2d.joints.PulleyJoint;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Disposable;
 
 public class Box2DDebugRenderer implements Disposable {

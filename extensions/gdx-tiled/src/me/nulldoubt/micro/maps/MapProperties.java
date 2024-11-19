@@ -18,7 +18,7 @@ package me.nulldoubt.micro.maps;
 
 import java.util.Iterator;
 
-import me.nulldoubt.micro.utils.ObjectMap;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
 
 /** @brief Set of string indexed values representing map elements' properties, allowing to retrieve, modify and add properties to
  *        the set. */

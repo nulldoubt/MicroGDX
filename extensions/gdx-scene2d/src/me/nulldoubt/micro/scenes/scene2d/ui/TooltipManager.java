@@ -23,7 +23,7 @@ import me.nulldoubt.micro.Files;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.math.Interpolation;
 import me.nulldoubt.micro.scenes.scene2d.Stage;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Timer;
 import me.nulldoubt.micro.utils.Timer.Task;
 

@@ -18,10 +18,11 @@ package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.audio.AudioDevice;
 import me.nulldoubt.micro.audio.AudioRecorder;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.math.MathUtils;
 import com.nulldoubt.micro.utils.*;
-import me.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.collections.*;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.*;
 

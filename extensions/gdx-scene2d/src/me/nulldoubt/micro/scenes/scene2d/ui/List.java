@@ -31,9 +31,9 @@ import me.nulldoubt.micro.scenes.scene2d.utils.Cullable;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
 import me.nulldoubt.micro.scenes.scene2d.utils.UIUtils;
 import me.nulldoubt.micro.utils.Align;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import com.nulldoubt.micro.utils.Null;
-import me.nulldoubt.micro.utils.ObjectSet;
+import me.nulldoubt.micro.utils.collections.ObjectSet;
 import me.nulldoubt.micro.utils.pools.Pool;
 import me.nulldoubt.micro.utils.pools.Pools;
 

@@ -19,8 +19,13 @@
 
 package me.nulldoubt.micro.utils;
 
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.SerializationException;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.ObjectMap.Entry;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
+import me.nulldoubt.micro.utils.collections.ObjectMap.Entry;
+import me.nulldoubt.micro.utils.strings.StringBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +42,7 @@ import java.io.Reader;
 public class XmlReader {
 	private final Array<Element> elements = new Array(8);
 	private Element root, current;
-	private final StringBuilder textBuffer = new StringBuilder(64);
+	private final me.nulldoubt.micro.utils.strings.StringBuilder textBuffer = new me.nulldoubt.micro.utils.strings.StringBuilder(64);
 	private String entitiesText;
 
 	public Element parse (String xml) {
@@ -558,7 +563,7 @@ public class XmlReader {
 		}
 
 		public String toString (String indent) {
-			StringBuilder buffer = new StringBuilder(128);
+			me.nulldoubt.micro.utils.strings.StringBuilder buffer = new StringBuilder(128);
 			buffer.append(indent);
 			buffer.append('<');
 			buffer.append(name);

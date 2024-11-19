@@ -19,8 +19,8 @@ package me.nulldoubt.micro.backends.lwjgl3.audio;
 import me.nulldoubt.micro.audio.Music;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.FloatArray;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.FloatArray;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
 

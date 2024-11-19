@@ -6,9 +6,9 @@ import me.nulldoubt.micro.graphics.VertexAttributes.Usage;
 import me.nulldoubt.micro.graphics.glutils.*;
 import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.math.Vector3;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.nio.Buffer;
 import java.nio.FloatBuffer;

@@ -22,8 +22,8 @@ import me.nulldoubt.micro.scenes.scene2d.Actor;
 import me.nulldoubt.micro.scenes.scene2d.Touchable;
 import me.nulldoubt.micro.scenes.scene2d.utils.Layout;
 import me.nulldoubt.micro.utils.Align;
-import me.nulldoubt.micro.utils.FloatArray;
-import me.nulldoubt.micro.utils.SnapshotArray;
+import me.nulldoubt.micro.utils.collections.FloatArray;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 
 /** A group that lays out its children side by side horizontally, with optional wrapping. This can be easier than using
  * {@link Table} when actors need to be inserted into or removed from the middle of the group. {@link #getChildren()} can be

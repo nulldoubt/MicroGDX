@@ -16,7 +16,7 @@
 
 package me.nulldoubt.micro.backends.lwjgl3.angle;
 
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.io.*;
 import java.lang.reflect.Method;

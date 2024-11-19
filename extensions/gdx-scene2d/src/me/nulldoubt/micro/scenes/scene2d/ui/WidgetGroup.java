@@ -21,7 +21,7 @@ import me.nulldoubt.micro.scenes.scene2d.Actor;
 import me.nulldoubt.micro.scenes.scene2d.Group;
 import me.nulldoubt.micro.scenes.scene2d.Stage;
 import me.nulldoubt.micro.scenes.scene2d.utils.Layout;
-import me.nulldoubt.micro.utils.SnapshotArray;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 
 /** A {@link Group} that participates in layout and provides a minimum, preferred, and maximum size.
  * <p>

@@ -25,7 +25,7 @@ import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.Texture.TextureFilter;
 import me.nulldoubt.micro.graphics.Texture.TextureWrap;
 import me.nulldoubt.micro.graphics.TextureData;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 /** {@link AssetLoader} for {@link Texture} instances. The pixel data is loaded asynchronously. The texture is then created on the
  * rendering thread, synchronously. Passing a {@link TextureParameter} to

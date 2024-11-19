@@ -24,9 +24,9 @@ import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.g2d.BitmapFont;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas;
 import me.nulldoubt.micro.scenes.scene2d.ui.Skin;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.ObjectMap;
-import me.nulldoubt.micro.utils.ObjectMap.Entry;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
+import me.nulldoubt.micro.utils.collections.ObjectMap.Entry;
 
 /**
  * {@link AssetLoader} for {@link Skin} instances. All {@link Texture} and {@link BitmapFont} instances will be loaded as

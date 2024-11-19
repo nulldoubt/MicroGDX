@@ -7,6 +7,7 @@ import me.nulldoubt.micro.graphics.glutils.HdpiUtils;
 import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.math.shapes.Rectangle;
 import me.nulldoubt.micro.math.Vector3;
+import me.nulldoubt.micro.utils.collections.Array;
 
 public class ScissorStack {
 	

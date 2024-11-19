@@ -6,7 +6,7 @@ import me.nulldoubt.micro.assets.AssetLoaderParameters;
 import me.nulldoubt.micro.assets.AssetManager;
 import me.nulldoubt.micro.audio.Sound;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 public class SoundLoader extends AsynchronousAssetLoader<Sound, SoundLoader.SoundParameter> {
 	

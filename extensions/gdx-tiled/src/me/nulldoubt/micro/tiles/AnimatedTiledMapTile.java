@@ -20,9 +20,9 @@ import me.nulldoubt.micro.graphics.g2d.TextureRegion;
 import me.nulldoubt.micro.maps.MapObjects;
 import me.nulldoubt.micro.maps.MapProperties;
 import me.nulldoubt.micro.tiled.TiledMapTile;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
-import me.nulldoubt.micro.utils.IntArray;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.IntArray;
 
 /** @brief Represents a changing {@link TiledMapTile}. */
 public class AnimatedTiledMapTile implements TiledMapTile {

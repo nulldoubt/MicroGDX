@@ -32,9 +32,9 @@ import me.nulldoubt.micro.maps.MapProperties;
 import me.nulldoubt.micro.tiled.TiledMapTileLayer.Cell;
 import me.nulldoubt.micro.tiles.AnimatedTiledMapTile;
 import me.nulldoubt.micro.tiles.StaticTiledMapTile;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
-import me.nulldoubt.micro.utils.ObjectMap;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
 import me.nulldoubt.micro.utils.XmlReader;
 import me.nulldoubt.micro.utils.XmlReader.Element;
 

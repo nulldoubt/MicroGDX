@@ -1,7 +1,7 @@
 package me.nulldoubt.micro;
 
 import me.nulldoubt.micro.input.NativeInputConfiguration;
-import me.nulldoubt.micro.utils.ObjectIntMap;
+import me.nulldoubt.micro.utils.collections.ObjectIntMap;
 
 public interface Input {
 	

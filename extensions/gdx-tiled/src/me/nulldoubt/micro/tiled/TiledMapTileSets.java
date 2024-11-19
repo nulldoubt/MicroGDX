@@ -18,7 +18,7 @@ package me.nulldoubt.micro.tiled;
 
 import java.util.Iterator;
 
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 /** @brief Collection of {@link TiledMapTileSet} */
 public class TiledMapTileSets implements Iterable<TiledMapTileSet> {

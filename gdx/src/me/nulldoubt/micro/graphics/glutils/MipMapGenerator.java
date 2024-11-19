@@ -5,7 +5,7 @@ import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Blending;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 public class MipMapGenerator {
 	

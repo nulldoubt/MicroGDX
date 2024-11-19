@@ -3,9 +3,8 @@ package me.nulldoubt.micro.scenes.scene2d.utils;
 
 import me.nulldoubt.micro.scenes.scene2d.Actor;
 import me.nulldoubt.micro.scenes.scene2d.utils.ChangeListener.ChangeEvent;
-import me.nulldoubt.micro.utils.Array;
-import com.nulldoubt.micro.utils.Null;
-import me.nulldoubt.micro.utils.OrderedSet;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.OrderedSet;
 import me.nulldoubt.micro.utils.pools.Pools;
 
 import java.util.Iterator;

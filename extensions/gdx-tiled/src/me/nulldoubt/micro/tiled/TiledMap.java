@@ -18,7 +18,7 @@ package me.nulldoubt.micro.tiled;
 
 import me.nulldoubt.micro.assets.AssetManager;
 import me.nulldoubt.micro.maps.Map;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Disposable;
 
 /** @brief Represents a tiled map, adds the concept of tiles and tilesets.

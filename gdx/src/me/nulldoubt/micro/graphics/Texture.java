@@ -24,8 +24,8 @@ import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.graphics.glutils.FileTextureData;
 import me.nulldoubt.micro.graphics.glutils.PixmapTextureData;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.util.HashMap;
 import java.util.Map;

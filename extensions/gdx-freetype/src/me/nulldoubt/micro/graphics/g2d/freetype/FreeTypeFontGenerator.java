@@ -44,9 +44,9 @@ import me.nulldoubt.micro.graphics.g2d.freetype.FreeType.Library;
 import me.nulldoubt.micro.graphics.g2d.freetype.FreeType.SizeMetrics;
 import me.nulldoubt.micro.graphics.g2d.freetype.FreeType.Stroker;
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import com.nulldoubt.micro.utils.Null;
 
 /** Generates {@link BitmapFont} and {@link BitmapFontData} instances from TrueType, OTF, and other FreeType supported fonts.

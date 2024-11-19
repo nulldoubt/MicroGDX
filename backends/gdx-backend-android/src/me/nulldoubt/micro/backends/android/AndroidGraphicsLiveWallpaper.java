@@ -23,7 +23,7 @@ import android.view.SurfaceHolder;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.backends.android.surfaceview.GLSurfaceView20;
 import me.nulldoubt.micro.backends.android.surfaceview.ResolutionStrategy;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 /** A subclass of {@link AndroidGraphics} specialized for live wallpaper applications.
  * 

@@ -18,7 +18,7 @@ package me.nulldoubt.micro.scenes.scene2d.actions;
 
 import me.nulldoubt.micro.scenes.scene2d.Action;
 import me.nulldoubt.micro.scenes.scene2d.Actor;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.pools.Pool;
 
 /** Executes a number of actions at the same time.

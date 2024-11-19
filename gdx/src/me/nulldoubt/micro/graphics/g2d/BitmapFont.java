@@ -1,6 +1,7 @@
 package me.nulldoubt.micro.graphics.g2d;
 
 import me.nulldoubt.micro.Micro;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.Texture;
@@ -8,6 +9,8 @@ import me.nulldoubt.micro.graphics.Texture.TextureFilter;
 import me.nulldoubt.micro.graphics.g2d.GlyphLayout.GlyphRun;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.AtlasRegion;
 import me.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.FloatArray;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

@@ -1,6 +1,6 @@
 package me.nulldoubt.micro;
 
-import me.nulldoubt.micro.utils.IntArray;
+import me.nulldoubt.micro.utils.collections.IntArray;
 import me.nulldoubt.micro.utils.NumberUtils;
 
 public class InputEventQueue {

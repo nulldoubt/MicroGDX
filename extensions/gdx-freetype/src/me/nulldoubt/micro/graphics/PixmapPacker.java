@@ -7,10 +7,10 @@ import me.nulldoubt.micro.graphics.Texture.TextureFilter;
 import com.nulldoubt.micro.graphics.g2d.PixmapPacker.SkylineStrategy.SkylinePage.Row;
 import me.nulldoubt.micro.graphics.glutils.PixmapTextureData;
 import me.nulldoubt.micro.math.shapes.Rectangle;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
-import me.nulldoubt.micro.utils.OrderedMap;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.OrderedMap;
 
 import java.util.Arrays;
 import java.util.Comparator;

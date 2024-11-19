@@ -22,7 +22,7 @@ import me.nulldoubt.micro.graphics.GL30;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.TextureArrayData;
 import me.nulldoubt.micro.graphics.TextureData;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 /**
  * @author Tomski

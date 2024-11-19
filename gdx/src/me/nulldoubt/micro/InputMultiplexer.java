@@ -1,7 +1,7 @@
 package me.nulldoubt.micro;
 
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.SnapshotArray;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 
 public class InputMultiplexer implements InputProcessor {
 	

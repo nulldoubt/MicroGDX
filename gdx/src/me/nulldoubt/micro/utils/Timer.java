@@ -4,6 +4,8 @@ import me.nulldoubt.micro.Application;
 import me.nulldoubt.micro.Files;
 import me.nulldoubt.micro.LifecycleListener;
 import me.nulldoubt.micro.Micro;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.Array;
 
 public class Timer {
 	

@@ -32,7 +32,7 @@ import android.content.res.AssetManager;
 import me.nulldoubt.micro.Files.FileType;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.utils.StreamUtils;
 
 /** @author mzechner

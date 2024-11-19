@@ -1,9 +1,12 @@
 package me.nulldoubt.micro.graphics.g2d;
 
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.Texture;
 import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
 
 import java.io.*;
 

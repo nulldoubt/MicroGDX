@@ -17,10 +17,10 @@ import me.nulldoubt.micro.graphics.VertexAttributes.Usage;
 import me.nulldoubt.micro.graphics.glutils.Shader;
 import me.nulldoubt.micro.math.MathUtils;
 import me.nulldoubt.micro.math.Matrix4;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
-import me.nulldoubt.micro.utils.IntArray;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.IntArray;
 
 /** Draws 2D images, optimized for geometry that does not change. Sprites and/or textures are cached and given an ID, which can
  * later be used for drawing. The size, color, and texture region for each cached image cannot be modified. This information is

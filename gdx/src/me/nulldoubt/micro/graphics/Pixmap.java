@@ -5,7 +5,7 @@ import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.g2d.Gdx2DPixmap;
 import me.nulldoubt.micro.utils.BufferUtils;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

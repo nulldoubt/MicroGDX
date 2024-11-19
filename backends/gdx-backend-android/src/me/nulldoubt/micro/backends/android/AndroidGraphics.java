@@ -44,8 +44,8 @@ import me.nulldoubt.micro.graphics.glutils.FrameBuffer;
 import me.nulldoubt.micro.graphics.glutils.GLVersion;
 import me.nulldoubt.micro.graphics.glutils.Shader;
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
-import me.nulldoubt.micro.utils.SnapshotArray;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;

@@ -19,7 +19,7 @@ package me.nulldoubt.micro.scenes.scene2d.actions;
 import me.nulldoubt.micro.scenes.scene2d.Action;
 import me.nulldoubt.micro.scenes.scene2d.Actor;
 import me.nulldoubt.micro.scenes.scene2d.utils.Layout;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 /** Sets an actor's {@link Layout#setLayoutEnabled(boolean) layout} to enabled or disabled. The actor must implements
  * {@link Layout}.

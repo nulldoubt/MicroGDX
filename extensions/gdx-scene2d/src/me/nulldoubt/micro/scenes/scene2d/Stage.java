@@ -20,6 +20,8 @@ import me.nulldoubt.micro.scenes.scene2d.utils.FocusListener;
 import me.nulldoubt.micro.scenes.scene2d.utils.FocusListener.FocusEvent;
 import me.nulldoubt.micro.utils.*;
 import com.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 import me.nulldoubt.micro.utils.pools.Pool.Poolable;
 import me.nulldoubt.micro.utils.pools.Pools;
 import me.nulldoubt.micro.utils.viewport.ScalingViewport;

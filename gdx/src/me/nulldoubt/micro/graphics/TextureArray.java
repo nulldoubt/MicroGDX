@@ -19,8 +19,8 @@ package me.nulldoubt.micro.graphics;
 import me.nulldoubt.micro.Application;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.util.HashMap;
 import java.util.Map;

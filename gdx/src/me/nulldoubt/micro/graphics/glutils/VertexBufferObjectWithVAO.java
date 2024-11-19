@@ -12,7 +12,7 @@ import me.nulldoubt.micro.graphics.GL30;
 import me.nulldoubt.micro.graphics.VertexAttribute;
 import me.nulldoubt.micro.graphics.VertexAttributes;
 import me.nulldoubt.micro.utils.BufferUtils;
-import me.nulldoubt.micro.utils.IntArray;
+import me.nulldoubt.micro.utils.collections.IntArray;
 
 /**
  * <p>

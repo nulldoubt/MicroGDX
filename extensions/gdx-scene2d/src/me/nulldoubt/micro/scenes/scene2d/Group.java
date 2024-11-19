@@ -23,9 +23,9 @@ import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.math.shapes.Rectangle;
 import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.scenes.scene2d.utils.Cullable;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import com.nulldoubt.micro.utils.Null;
-import me.nulldoubt.micro.utils.SnapshotArray;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 import me.nulldoubt.micro.utils.pools.Pool;
 
 /** 2D scene graph node that may contain other actors.

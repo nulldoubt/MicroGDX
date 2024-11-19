@@ -17,6 +17,7 @@
 package me.nulldoubt.micro.graphics.g2d;
 
 import me.nulldoubt.micro.Micro;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.graphics.Texture;
@@ -25,6 +26,9 @@ import me.nulldoubt.micro.graphics.Texture.TextureWrap;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
 import me.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
+import me.nulldoubt.micro.utils.collections.ObjectSet;
 
 import java.io.BufferedReader;
 import java.util.Comparator;

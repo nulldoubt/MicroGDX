@@ -27,7 +27,7 @@ import me.nulldoubt.micro.scenes.scene2d.Stage;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
 import me.nulldoubt.micro.scenes.scene2d.utils.Layout;
 import me.nulldoubt.micro.utils.ScissorStack;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import com.nulldoubt.micro.utils.Null;
 
 /** A container that contains two widgets and is divided either horizontally or vertically. The user may resize the widgets. The

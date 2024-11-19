@@ -19,7 +19,7 @@ package me.nulldoubt.micro.graphics.glutils;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.graphics.TextureData;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 public class PixmapTextureData implements TextureData {
 	

@@ -18,7 +18,7 @@ package me.nulldoubt.micro.physics.box2d;
 
 import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.physics.box2d.BodyDef.BodyType;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 /** A rigid body. These are created via World.CreateBody.
  * @author mzechner */

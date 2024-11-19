@@ -11,7 +11,6 @@ include ":extensions:gdx-box2d-parent:gdx-box2d"
 include ":extensions:gdx-tiled"
 include ":extensions:gdx-scene2d"
 include ":extensions:gdx-compression"
-include ":extensions:gdx-collections"
 include ':extensions:gdx-particles'
 include ":extensions:gdx-freetype"
 include ":extensions:gdx-lwjgl3-angle"

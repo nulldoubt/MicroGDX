@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.graphics.g2d;
 
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 public class Animation<T> {
 	

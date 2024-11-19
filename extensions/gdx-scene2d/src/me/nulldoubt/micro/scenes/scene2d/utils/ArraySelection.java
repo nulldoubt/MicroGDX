@@ -3,7 +3,7 @@ package me.nulldoubt.micro.scenes.scene2d.utils;
 
 import java.util.Iterator;
 
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 /** A selection that supports range selection by knowing about the array of items being selected.
  * @author Nathan Sweet */

@@ -1,7 +1,7 @@
 
 package me.nulldoubt.micro;
 
-import me.nulldoubt.micro.utils.IntSet;
+import me.nulldoubt.micro.utils.collections.IntSet;
 
 public abstract class AbstractInput implements Input {
 	

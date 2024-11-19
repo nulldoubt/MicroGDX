@@ -17,7 +17,7 @@
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.audio.AudioRecorder;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFormat.Encoding;

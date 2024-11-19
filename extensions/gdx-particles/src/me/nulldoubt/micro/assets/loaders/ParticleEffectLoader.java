@@ -6,7 +6,7 @@ import me.nulldoubt.micro.assets.AssetManager;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.g2d.ParticleEffect;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 public class ParticleEffectLoader extends SynchronousAssetLoader<ParticleEffect, ParticleEffectLoader.ParticleEffectParameter> {
 	

@@ -19,7 +19,7 @@ package me.nulldoubt.micro.backends.android;
 import android.opengl.GLES30;
 
 import me.nulldoubt.micro.graphics.GL30;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 public class AndroidGL30 extends AndroidGL20 implements GL30 {
 	@Override

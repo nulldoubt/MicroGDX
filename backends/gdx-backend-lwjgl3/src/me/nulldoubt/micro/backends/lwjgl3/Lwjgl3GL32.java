@@ -17,7 +17,7 @@
 package me.nulldoubt.micro.backends.lwjgl3;
 
 import me.nulldoubt.micro.graphics.GL32;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryUtil;

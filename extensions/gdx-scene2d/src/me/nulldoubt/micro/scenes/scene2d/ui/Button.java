@@ -26,7 +26,7 @@ import me.nulldoubt.micro.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import me.nulldoubt.micro.scenes.scene2d.utils.ClickListener;
 import me.nulldoubt.micro.scenes.scene2d.utils.Disableable;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import com.nulldoubt.micro.utils.Null;
 import me.nulldoubt.micro.utils.pools.Pools;
 

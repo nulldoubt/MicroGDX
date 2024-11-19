@@ -20,7 +20,7 @@ import me.nulldoubt.micro.assets.AssetManager;
 import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas;
 import me.nulldoubt.micro.graphics.g2d.TextureRegion;
-import me.nulldoubt.micro.utils.ObjectMap;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
 
 /** Resolves an image by a string, wrapper around a Map or AssetManager to load maps either directly or via AssetManager.
  * @author mzechner */

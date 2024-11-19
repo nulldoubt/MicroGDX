@@ -42,10 +42,10 @@ import me.nulldoubt.micro.physics.box2d.joints.WeldJoint;
 import me.nulldoubt.micro.physics.box2d.joints.WeldJointDef;
 import me.nulldoubt.micro.physics.box2d.joints.WheelJoint;
 import me.nulldoubt.micro.physics.box2d.joints.WheelJointDef;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
-import me.nulldoubt.micro.utils.LongMap;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.LongMap;
 import me.nulldoubt.micro.utils.pools.Pool;
 import com.nulldoubt.micro.utils.SharedLibraryLoader;
 

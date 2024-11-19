@@ -9,8 +9,11 @@ import me.nulldoubt.micro.math.Matrix3;
 import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.math.Vector3;
-import me.nulldoubt.micro.utils.StringBuilder;
+import me.nulldoubt.micro.utils.strings.StringBuilder;
 import me.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.ObjectIntMap;
+import me.nulldoubt.micro.utils.collections.ObjectMap;
 
 import java.nio.*;
 

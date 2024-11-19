@@ -19,7 +19,7 @@ package me.nulldoubt.micro.backends.lwjgl3;
 import com.nulldoubt.micro.*;
 import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.graphics.Pixmap;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Disposable;
 import com.nulldoubt.micro.utils.Os;
 import com.nulldoubt.micro.utils.SharedLibraryLoader;

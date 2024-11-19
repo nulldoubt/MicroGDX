@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.EXTDouble.AL_FORMAT_MONO_DOUBLE_EXT;

@@ -18,7 +18,7 @@ package me.nulldoubt.micro.scenes.scene2d.actions;
 
 import me.nulldoubt.micro.scenes.scene2d.Action;
 import me.nulldoubt.micro.scenes.scene2d.Actor;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 /** Executes an action only after all other actions on the actor at the time this action's target was set have finished.
  * @author Nathan Sweet */

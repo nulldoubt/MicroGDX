@@ -6,7 +6,7 @@ import android.view.PointerIcon;
 import android.view.View;
 
 import me.nulldoubt.micro.graphics.Cursor;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 public class AndroidCursor implements Cursor {
 

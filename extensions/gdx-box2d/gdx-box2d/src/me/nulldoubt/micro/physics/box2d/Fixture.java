@@ -18,7 +18,7 @@ package me.nulldoubt.micro.physics.box2d;
 
 import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.physics.box2d.Shape.Type;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 public class Fixture {
 	// @off

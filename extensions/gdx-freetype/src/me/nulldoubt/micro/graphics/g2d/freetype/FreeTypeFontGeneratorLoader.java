@@ -22,7 +22,7 @@ import me.nulldoubt.micro.assets.AssetManager;
 import me.nulldoubt.micro.assets.loaders.FileHandleResolver;
 import me.nulldoubt.micro.assets.loaders.SynchronousAssetLoader;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 /** Makes {@link FreeTypeFontGenerator} managable via {@link AssetManager}.
  * <p>

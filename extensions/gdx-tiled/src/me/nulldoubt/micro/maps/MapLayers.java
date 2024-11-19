@@ -18,7 +18,7 @@ package me.nulldoubt.micro.maps;
 
 import java.util.Iterator;
 
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import com.nulldoubt.micro.utils.reflect.ClassReflection;
 
 /** Ordered list of {@link MapLayer} instances owned by a {@link Map} */

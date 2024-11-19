@@ -28,8 +28,8 @@ import me.nulldoubt.micro.graphics.Pixmap.Blending;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.utils.BufferUtils;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
-import me.nulldoubt.micro.utils.LongMap;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.LongMap;
 import com.nulldoubt.micro.utils.SharedLibraryLoader;
 import me.nulldoubt.micro.utils.StreamUtils;
 

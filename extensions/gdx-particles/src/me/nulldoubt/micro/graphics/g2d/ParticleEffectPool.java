@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.graphics.g2d;
 
 import me.nulldoubt.micro.graphics.g2d.ParticleEffectPool.PooledEffect;
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.pools.Pool;
 
 public class ParticleEffectPool extends Pool<PooledEffect> {

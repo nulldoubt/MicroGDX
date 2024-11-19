@@ -58,7 +58,7 @@ import me.nulldoubt.micro.backends.android.keyboardheight.StandardKeyboardHeight
 import me.nulldoubt.micro.backends.android.surfaceview.GLSurfaceView20;
 import me.nulldoubt.micro.input.NativeInputConfiguration;
 import me.nulldoubt.micro.input.TextInputWrapper;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.utils.pools.Pool;
 
 import java.util.ArrayList;

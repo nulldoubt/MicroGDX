@@ -2,8 +2,11 @@ package me.nulldoubt.micro.graphics.glutils;
 
 import me.nulldoubt.micro.Application;
 import me.nulldoubt.micro.Micro;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.*;
 import me.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.IntArray;
 
 import java.lang.StringBuilder;
 import java.nio.Buffer;

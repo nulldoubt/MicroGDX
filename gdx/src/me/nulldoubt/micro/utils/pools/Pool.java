@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.utils.pools;
 
-import me.nulldoubt.micro.utils.Array;
+import me.nulldoubt.micro.utils.collections.Array;
 
 public abstract class Pool<T> {
 	

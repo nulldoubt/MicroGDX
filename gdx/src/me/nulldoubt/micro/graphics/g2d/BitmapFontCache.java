@@ -4,8 +4,8 @@ import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.g2d.BitmapFont.Glyph;
 import me.nulldoubt.micro.graphics.g2d.GlyphLayout.GlyphRun;
 import me.nulldoubt.micro.utils.Align;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.IntArray;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.IntArray;
 import me.nulldoubt.micro.utils.NumberUtils;
 import me.nulldoubt.micro.utils.pools.Pools;
 

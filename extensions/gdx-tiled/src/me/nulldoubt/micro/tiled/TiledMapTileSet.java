@@ -18,7 +18,7 @@ package me.nulldoubt.micro.tiled;
 
 import java.util.Iterator;
 import me.nulldoubt.micro.maps.MapProperties;
-import me.nulldoubt.micro.utils.IntMap;
+import me.nulldoubt.micro.utils.collections.IntMap;
 
 /** @brief Set of {@link TiledMapTile} instances used to compose a TiledMapLayer */
 public class TiledMapTileSet implements Iterable<TiledMapTile> {

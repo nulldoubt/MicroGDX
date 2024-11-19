@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.graphics.profiling;
 
 import me.nulldoubt.micro.Micro;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import static me.nulldoubt.micro.graphics.profiling.GLInterceptor.resolveErrorNumber;
 

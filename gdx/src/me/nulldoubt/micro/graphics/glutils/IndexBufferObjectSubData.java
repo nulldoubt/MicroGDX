@@ -19,7 +19,7 @@ package me.nulldoubt.micro.graphics.glutils;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.utils.BufferUtils;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;

@@ -21,7 +21,7 @@ import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.VertexAttribute;
 import me.nulldoubt.micro.graphics.VertexAttributes;
 import me.nulldoubt.micro.utils.BufferUtils;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;

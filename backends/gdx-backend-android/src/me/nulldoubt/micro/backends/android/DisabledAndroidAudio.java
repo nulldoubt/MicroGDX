@@ -6,7 +6,7 @@ import me.nulldoubt.micro.audio.AudioRecorder;
 import me.nulldoubt.micro.audio.Music;
 import me.nulldoubt.micro.audio.Sound;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 public class DisabledAndroidAudio implements AndroidAudio {
 

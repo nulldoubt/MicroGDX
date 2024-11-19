@@ -27,8 +27,8 @@ import me.nulldoubt.micro.graphics.g2d.BitmapFont.BitmapFontData;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.AtlasRegion;
 import me.nulldoubt.micro.graphics.g2d.TextureRegion;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, BitmapFontLoader.BitmapFontParameter> {
 	

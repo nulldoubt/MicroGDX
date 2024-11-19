@@ -22,7 +22,7 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 
 import me.nulldoubt.micro.audio.AudioRecorder;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 /** {@link AudioRecorder} implementation for the android system based on AudioRecord
  * @author badlogicgames@gmail.com */

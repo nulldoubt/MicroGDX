@@ -1,7 +1,6 @@
 package me.nulldoubt.micro.graphics;
 
-import me.nulldoubt.micro.utils.Collections;
-import me.nulldoubt.micro.utils.MicroRuntimeException;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -234,33 +233,11 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
 		
 	}
 	
-	private static class ReadonlyIterable<T> implements Iterable<T> {
-		
-		private final T[] array;
-		private ReadonlyIterator iterator1, iterator2;
-		
-		public ReadonlyIterable(T[] array) {
-			this.array = array;
-		}
+	private record ReadonlyIterable<T>(T[] array) implements Iterable<T> {
 		
 		@Override
 		public Iterator<T> iterator() {
-			if (Collections.allocateIterators)
-				return new ReadonlyIterator(array);
-			if (iterator1 == null) {
-				iterator1 = new ReadonlyIterator(array);
-				iterator2 = new ReadonlyIterator(array);
-			}
-			if (!iterator1.valid) {
-				iterator1.index = 0;
-				iterator1.valid = true;
-				iterator2.valid = false;
-				return iterator1;
-			}
-			iterator2.index = 0;
-			iterator2.valid = true;
-			iterator1.valid = false;
-			return iterator2;
+			return new ReadonlyIterator(array);
 		}
 		
 	}

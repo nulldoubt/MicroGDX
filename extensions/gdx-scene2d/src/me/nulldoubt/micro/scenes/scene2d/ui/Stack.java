@@ -30,8 +30,8 @@ package me.nulldoubt.micro.scenes.scene2d.ui;
 import me.nulldoubt.micro.scenes.scene2d.Actor;
 import me.nulldoubt.micro.scenes.scene2d.Touchable;
 import me.nulldoubt.micro.scenes.scene2d.utils.Layout;
-import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.SnapshotArray;
+import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.collections.SnapshotArray;
 
 /** A stack is a container that sizes its children to its size and positions them at 0,0 on top of each other.
  * <p>
