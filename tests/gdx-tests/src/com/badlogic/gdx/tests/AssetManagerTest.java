@@ -32,7 +32,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.tests.utils.GdxTest;
@@ -79,7 +79,7 @@ public class AssetManagerTest extends GdxTest implements AssetErrorListener {
 	private BitmapFont multiPageFont;
 	private TextureAtlas tex2;
 	private Texture tex1;
-	private ShaderProgram shader;
+	private Shader shader;
 
 	private void load () {
 // Gdx.app.setLogLevel(Logger.DEBUG);
@@ -91,7 +91,7 @@ public class AssetManagerTest extends GdxTest implements AssetErrorListener {
 // map = TiledLoader.createMap(Gdx.files.internal("data/tiledmap/tilemap csv.tmx"));
 // atlas = new TileAtlas(map, Gdx.files.internal("data/tiledmap/"));
 // renderer = new TileMapRenderer(map, atlas, 8, 8);
-		shader = new ShaderProgram(Micro.files.internal("data/g2d/batchCommon.vert").readString(),
+		shader = new Shader(Micro.files.internal("data/g2d/batchCommon.vert").readString(),
 			Micro.files.internal("data/g2d/monochrome.frag").readString());
 		System.out.println("plain took: " + (System.nanoTime() - start) / 1000000000.0f);
 		
@@ -110,7 +110,7 @@ public class AssetManagerTest extends GdxTest implements AssetErrorListener {
 // TileMapRendererLoader.TileMapParameter("data/tiledmap/", 8, 8));
 		manager.load("data/i18n/message2", I18NBundle.class,
 			new I18NBundleLoader.I18NBundleParameter(reloads % 2 == 0 ? Locale.ITALIAN : Locale.ENGLISH));
-		manager.load("data/g2d/monochrome.frag", ShaderProgram.class, new ShaderProgramLoader.ShaderProgramParameter() {
+		manager.load("data/g2d/monochrome.frag", Shader.class, new ShaderProgramLoader.ShaderProgramParameter() {
 			{
 				vertexFile = "data/g2d/batchCommon.vert";
 			}
@@ -170,7 +170,7 @@ public class AssetManagerTest extends GdxTest implements AssetErrorListener {
 		frame++;
 
 		if (manager.isLoaded("data/g2d/monochrome.frag"))
-			batch.setShader(manager.get("data/g2d/monochrome.frag", ShaderProgram.class));
+			batch.setShader(manager.get("data/g2d/monochrome.frag", Shader.class));
 		else
 			batch.setShader(null);
 

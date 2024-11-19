@@ -39,7 +39,7 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.utils.GdxTest;
 
 /** Draws a triangle and a trapezoid. The trapezoid is intersection between two triangles, one stencil and the triangle shown on
@@ -50,7 +50,7 @@ public class FrameBufferTest extends GdxTest {
 	Mesh mesh;
 
 	Mesh stencilMesh;
-	ShaderProgram meshShader;
+	Shader meshShader;
 	Texture texture;
 	SpriteBatch spriteBatch;
 
@@ -142,7 +142,7 @@ public class FrameBufferTest extends GdxTest {
 			"void main()                                  \n" + "{                                            \n"
 			+ "  gl_FragColor = v_Color * texture2D(u_texture, v_texCoords);\n" + "}";
 
-		meshShader = new ShaderProgram(vertexShader, fragmentShader);
+		meshShader = new Shader(vertexShader, fragmentShader);
 		if (meshShader.isCompiled() == false) throw new IllegalStateException(meshShader.getLog());
 	}
 

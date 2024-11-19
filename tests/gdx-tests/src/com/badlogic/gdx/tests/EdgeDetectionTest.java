@@ -30,7 +30,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.tests.utils.GdxTest;
 
@@ -47,20 +47,20 @@ public class EdgeDetectionTest extends GdxTest {
 	float angle = 0;
 	TextureRegion fboRegion;
 	SpriteBatch batch;
-	ShaderProgram batchShader;
+	Shader batchShader;
 
 	float[] filter = {0, 0.25f, 0, 0.25f, -1f, 0.6f, 0, 0.25f, 0,};
 
 	float[] offsets = new float[18];
 
 	public void create () {
-		ShaderProgram.pedantic = false;
+		Shader.pedantic = false;
 		/*
 		 * shader = new ShaderProgram(Gdx.files.internal("data/shaders/default.vert").readString(), Gdx.files.internal(
 		 * "data/shaders/depthtocolor.frag").readString()); if (!shader.isCompiled()) { Gdx.app.log("EdgeDetectionTest",
 		 * "couldn't compile scene shader: " + shader.getLog()); }
 		 */
-		batchShader = new ShaderProgram(Micro.files.internal("data/shaders/batch.vert").readString(),
+		batchShader = new Shader(Micro.files.internal("data/shaders/batch.vert").readString(),
 			Micro.files.internal("data/shaders/convolution.frag").readString());
 		if (!batchShader.isCompiled()) {
 			Micro.app.log("EdgeDetectionTest", "couldn't compile post-processing shader: " + batchShader.getLog());

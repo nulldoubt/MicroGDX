@@ -17,7 +17,7 @@
 package com.badlogic.gdx.objects;
 
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.shapes.Ellipse;
 
 /** @brief Represents {@link Ellipse} map objects. */
 public class EllipseMapObject extends MapObject {

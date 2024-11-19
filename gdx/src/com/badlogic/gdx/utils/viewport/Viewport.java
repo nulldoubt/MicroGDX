@@ -4,10 +4,9 @@ import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.math.shapes.Rectangle;
 import com.badlogic.gdx.utils.ScissorStack;
 
 public abstract class Viewport {
@@ -18,18 +17,10 @@ public abstract class Viewport {
 	
 	private final Vector3 tmp = new Vector3();
 	
-	/**
-	 * Calls {@link #apply(boolean)} with false.
-	 */
 	public void apply() {
 		apply(false);
 	}
 	
-	/**
-	 * Applies the viewport to the camera and sets the glViewport.
-	 *
-	 * @param centerCamera If true, the camera position is set to the center of the world.
-	 */
 	public void apply(boolean centerCamera) {
 		HdpiUtils.glViewport(screenX, screenY, screenWidth, screenHeight);
 		camera.viewportWidth = worldWidth;
@@ -94,13 +85,6 @@ public abstract class Viewport {
 	public Vector3 project(Vector3 worldCoords) {
 		camera.project(worldCoords, screenX, screenY, screenWidth, screenHeight);
 		return worldCoords;
-	}
-	
-	/**
-	 * @see Camera#getPickRay(float, float, float, float, float, float)
-	 */
-	public Ray getPickRay(float touchX, float touchY) {
-		return camera.getPickRay(touchX, touchY, this.screenX, this.screenY, screenWidth, screenHeight);
 	}
 	
 	public void calculateScissors(Matrix4 batchTransform, Rectangle area, Rectangle scissor) {

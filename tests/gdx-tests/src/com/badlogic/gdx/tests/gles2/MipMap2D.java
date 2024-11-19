@@ -25,11 +25,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.utils.GdxTest;
 
 public class MipMap2D extends GdxTest {
-	ShaderProgram shader;
+	Shader shader;
 	Texture texture;
 	Mesh mesh;
 
@@ -43,7 +43,7 @@ public class MipMap2D extends GdxTest {
 			+ "varying vec2 v_texCoord;                            \n" + "uniform sampler2D s_texture;                        \n"
 			+ "void main()                                         \n" + "{                                                   \n"
 			+ "  gl_FragColor = texture2D( s_texture, v_texCoord );\n" + "}                                                   \n";
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new Shader(vertexShader, fragmentShader);
 		mesh = new Mesh(true, 4, 6, new VertexAttribute(Usage.Position, 4, "a_position"),
 			new VertexAttribute(Usage.TextureCoordinates, 2, "a_texCoord"));
 		float[] vertices = {-0.5f, 0.5f, 0.0f, 1.5f, // Position 0

@@ -25,7 +25,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.GLFrameBuffer.FrameBufferBuilder;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.tests.utils.GdxTest;
@@ -39,7 +39,7 @@ public class GL31FrameBufferMultisampleMRTTest extends GdxTest {
 	private FrameBuffer fboMS;
 	private SpriteBatch batch;
 	private ShapeRenderer shapes;
-	private ShaderProgram shader;
+	private Shader shader;
 
 	@Override
 	public void create () {
@@ -59,14 +59,14 @@ public class GL31FrameBufferMultisampleMRTTest extends GdxTest {
 
 		batch = new SpriteBatch();
 
-		ShaderProgram.prependVertexCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
+		Shader.prependVertexCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
 			? "#version 140\n #extension GL_ARB_explicit_attrib_location : enable\n"
 			: "#version 300 es\n";
-		ShaderProgram.prependFragmentCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
+		Shader.prependFragmentCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
 			? "#version 140\n #extension GL_ARB_explicit_attrib_location : enable\n"
 			: "#version 300 es\n";
 
-		shader = new ShaderProgram(Micro.files.internal("data/shaders/shape-renderer-mrt-vert.glsl").readString(),
+		shader = new Shader(Micro.files.internal("data/shaders/shape-renderer-mrt-vert.glsl").readString(),
 			Micro.files.internal("data/shaders/shape-renderer-mrt-frag.glsl").readString());
 
 		shapes = new ShapeRenderer(3, shader);

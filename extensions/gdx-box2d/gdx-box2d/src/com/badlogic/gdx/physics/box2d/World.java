@@ -46,7 +46,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.LongMap;
-import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.pools.Pool;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 
 /** The world class manages all physics entities, dynamic simulation, and asynchronous queries. The world also contains efficient

@@ -23,7 +23,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.tests.utils.GdxTestConfig;
@@ -35,7 +35,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GL32OffsetElementsTest extends GdxTest {
 	private ShortBuffer indices;
 	private Mesh mesh;
-	private ShaderProgram shader;
+	private Shader shader;
 	private Matrix4 transform = new Matrix4();
 	private float time;
 
@@ -75,7 +75,7 @@ public class GL32OffsetElementsTest extends GdxTest {
 			// @on
 		});
 
-		shader = new ShaderProgram(vsCode, fsCode);
+		shader = new Shader(vsCode, fsCode);
 		if (!shader.isCompiled()) throw new GdxRuntimeException(shader.getLog());
 	}
 

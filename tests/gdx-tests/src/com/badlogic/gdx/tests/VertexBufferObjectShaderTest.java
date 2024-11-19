@@ -23,7 +23,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.glutils.IndexBufferObject;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.graphics.glutils.VertexBufferObject;
 import com.badlogic.gdx.graphics.glutils.VertexBufferObjectWithVAO;
 import com.badlogic.gdx.graphics.glutils.VertexData;
@@ -31,7 +31,7 @@ import com.badlogic.gdx.tests.utils.GdxTest;
 
 public class VertexBufferObjectShaderTest extends GdxTest {
 	Texture texture;
-	ShaderProgram shader;
+	Shader shader;
 	VertexData vbo;
 	IndexBufferObject indices;
 
@@ -87,7 +87,7 @@ public class VertexBufferObjectShaderTest extends GdxTest {
 			+ "}";
 		//@on
 
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new Shader(vertexShader, fragmentShader);
 		if (Micro.gl30 != null) {
 			vbo = new VertexBufferObjectWithVAO(true, 3, new VertexAttribute(VertexAttributes.Usage.Position, 2, "a_position"),
 				new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, "a_texCoords"),

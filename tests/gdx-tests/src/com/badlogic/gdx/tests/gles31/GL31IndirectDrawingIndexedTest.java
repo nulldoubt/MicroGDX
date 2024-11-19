@@ -25,7 +25,7 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.GL31;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.tests.utils.GdxTestConfig;
@@ -58,7 +58,7 @@ public class GL31IndirectDrawingIndexedTest extends GdxTest {
 	private int drawCommands;
 	private Mesh mesh;
 
-	private ShaderProgram shader;
+	private Shader shader;
 	private Matrix4 transform = new Matrix4();
 	private float time;
 
@@ -103,7 +103,7 @@ public class GL31IndirectDrawingIndexedTest extends GdxTest {
 			2, 1, 3, //
 		});
 
-		shader = new ShaderProgram(vsCode, fsCode);
+		shader = new Shader(vsCode, fsCode);
 		if (!shader.isCompiled()) throw new GdxRuntimeException(shader.getLog());
 	}
 

@@ -21,12 +21,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MeshWithCustomAttributesTest extends GdxTest {
-	ShaderProgram shader;
+	Shader shader;
 	Mesh mesh;
 
 	@Override
@@ -74,7 +74,7 @@ public class MeshWithCustomAttributesTest extends GdxTest {
 			 0,  1, Color.toFloatBits(0, 254, 0, 0), 
 			 1, -1, Color.toFloatBits(0, 0, 254, 0)};
 		//@on
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new Shader(vertexShader, fragmentShader);
 		mesh.setVertices(vertices);
 	}
 

@@ -1,5 +1,8 @@
-package com.badlogic.gdx.math;
+package com.badlogic.gdx.math.shapes;
 
+import com.badlogic.gdx.math.Vector2;
+
+// FIXME: Add the getPosition method here.
 public interface Shape2D {
 	
 	default boolean contains(final Vector2 point) {

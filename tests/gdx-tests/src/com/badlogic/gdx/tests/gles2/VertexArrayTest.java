@@ -26,7 +26,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Mesh.VertexDataType;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.tests.utils.GdxTestConfig;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -35,7 +35,7 @@ import com.badlogic.gdx.utils.BufferUtils;
  * buffer/short, byte buffer/byte). */
 @GdxTestConfig(OnlyGL20 = true)
 public class VertexArrayTest extends GdxTest {
-	ShaderProgram shader;
+	Shader shader;
 	Mesh mesh;
 	int[][] testCases = {{0, 0, 6}, {0, 0, 3}, {0, 3, 3}, {1, 0, 6}, {1, 0, 3}, {1, 3, 3}, {2, 0, 6}, {2, 0, 3}, {2, 3, 3}};
 	int testCase = 0;
@@ -50,7 +50,7 @@ public class VertexArrayTest extends GdxTest {
 			+ "void main()                                  \n" + "{                                            \n"
 			+ "  gl_FragColor = vec4 ( 1.0, 1.0, 1.0, 1.0 );\n" + "}";
 
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new Shader(vertexShader, fragmentShader);
 		mesh = new Mesh(VertexDataType.VertexArray, true, 4, 6, new VertexAttribute(Usage.Position, 3, "vPosition"));
 		float[] vertices = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, -0.5f, 0.5f, 0.0f, 0.5f, 0.5f, 0.0f};
 		mesh.setVertices(vertices);

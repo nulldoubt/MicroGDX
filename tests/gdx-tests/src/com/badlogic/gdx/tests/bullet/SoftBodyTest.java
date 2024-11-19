@@ -32,7 +32,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.IntAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.model.MeshPart;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btAxisSweep3;
@@ -96,9 +96,9 @@ public class SoftBodyTest extends BaseBulletTest {
 
 		final int vertCount = softBody.getNodeCount();
 		final int faceCount = softBody.getFaceCount();
-		mesh = new Mesh(false, vertCount, faceCount * 3, new VertexAttribute(Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
-			new VertexAttribute(Usage.Normal, 3, ShaderProgram.NORMAL_ATTRIBUTE),
-			new VertexAttribute(Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+		mesh = new Mesh(false, vertCount, faceCount * 3, new VertexAttribute(Usage.Position, 3, Shader.POSITION_ATTRIBUTE),
+			new VertexAttribute(Usage.Normal, 3, Shader.NORMAL_ATTRIBUTE),
+			new VertexAttribute(Usage.TextureCoordinates, 2, Shader.TEXCOORD_ATTRIBUTE + "0"));
 		final int vertSize = mesh.getVertexSize() / 4;
 		FloatBuffer verticesBuffer = mesh.getVerticesBuffer(true);
 		((Buffer)verticesBuffer).position(0);

@@ -21,7 +21,7 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.tests.utils.GdxTestConfig;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -34,7 +34,7 @@ import java.nio.FloatBuffer;
 @GdxTestConfig(requireGL30 = true)
 public class InstancedRenderingTest extends GdxTest {
 
-	ShaderProgram shader;
+	Shader shader;
 	Mesh mesh;
 
 	private final static int INSTANCE_COUNT_SQRT = 100;
@@ -46,18 +46,18 @@ public class InstancedRenderingTest extends GdxTest {
 			throw new GdxRuntimeException("GLES 3.0 profile required for this test");
 		}
 
-		String ovs = ShaderProgram.prependVertexCode;
-		String ofs = ShaderProgram.prependFragmentCode;
-		ShaderProgram.prependVertexCode = "#version 300 es\n";
-		ShaderProgram.prependFragmentCode = "#version 300 es\n";
-		shader = new ShaderProgram(Micro.files.internal("data/shaders/instanced-rendering.vert"),
+		String ovs = Shader.prependVertexCode;
+		String ofs = Shader.prependFragmentCode;
+		Shader.prependVertexCode = "#version 300 es\n";
+		Shader.prependFragmentCode = "#version 300 es\n";
+		shader = new Shader(Micro.files.internal("data/shaders/instanced-rendering.vert"),
 			Micro.files.internal("data/shaders/instanced-rendering.frag"));
 		if (!shader.isCompiled()) {
 			throw new GdxRuntimeException("Shader compile error: " + shader.getLog());
 		}
 
-		ShaderProgram.prependVertexCode = ovs;
-		ShaderProgram.prependFragmentCode = ofs;
+		Shader.prependVertexCode = ovs;
+		Shader.prependFragmentCode = ofs;
 
 		mesh = new Mesh(true, 6, 0, new VertexAttribute(Usage.Position, 2, "a_position"));
 

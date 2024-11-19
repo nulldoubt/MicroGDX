@@ -6,11 +6,9 @@ import com.badlogic.gdx.graphics.glutils.FileTextureData;
 
 public interface TextureData {
 	
-	enum TextureDataType {
-		Pixmap, Custom
+	default boolean isCustom() {
+		return false;
 	}
-	
-	TextureDataType getType();
 	
 	boolean isPrepared();
 	

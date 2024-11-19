@@ -17,7 +17,7 @@
 package com.badlogic.gdx.backends.lwjgl3;
 
 import com.badlogic.gdx.Micro;
-import com.badlogic.gdx.utils.Clipboard;
+import com.badlogic.gdx.Clipboard;
 import org.lwjgl.glfw.GLFW;
 
 /**

@@ -30,7 +30,7 @@ import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.environment.SpotLight;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 
 /** This shader accumulates shadow with blending
  * @author realitix */
@@ -182,11 +182,11 @@ public class Pass2Shader extends DefaultShader {
 
 	public Pass2Shader (final Renderable renderable, final Config config, final String prefix, final String vertexShader,
 		final String fragmentShader) {
-		this(renderable, config, new ShaderProgram(prefix + vertexShader, prefix + fragmentShader));
+		this(renderable, config, new Shader(prefix + vertexShader, prefix + fragmentShader));
 	}
 
-	public Pass2Shader (final Renderable renderable, final Config config, final ShaderProgram shaderProgram) {
-		super(renderable, config, shaderProgram);
+	public Pass2Shader (final Renderable renderable, final Config config, final Shader shader) {
+		super(renderable, config, shader);
 		shadowSystem = config.shadowSystem;
 		register(Inputs.shadowMapProjViewTrans, Setters.shadowMapProjViewTrans);
 		register(Inputs.shadowTexture, Setters.shadowTexture);

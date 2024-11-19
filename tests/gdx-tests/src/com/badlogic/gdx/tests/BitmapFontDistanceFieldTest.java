@@ -25,7 +25,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -36,7 +36,7 @@ public class BitmapFontDistanceFieldTest extends GdxTest {
 	private static final Color COLOR = Color.BLACK;
 	private static final float[] SCALES = {0.25f, 0.5f, 1, 2, 4};
 
-	private static class DistanceFieldShader extends ShaderProgram {
+	private static class DistanceFieldShader extends Shader {
 		public DistanceFieldShader () {
 			super(Micro.files.internal("data/shaders/distancefield.vert"), Micro.files.internal("data/shaders/distancefield.frag"));
 			if (!isCompiled()) {
@@ -81,7 +81,7 @@ public class BitmapFontDistanceFieldTest extends GdxTest {
 		distanceFieldFont.setColor(COLOR);
 
 		distanceFieldShader = new DistanceFieldShader();
-		ShaderProgram.pedantic = false; // Useful when debugging this test
+		Shader.pedantic = false; // Useful when debugging this test
 	}
 
 	@Override

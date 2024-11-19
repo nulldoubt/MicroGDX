@@ -1,14 +1,15 @@
 package com.badlogic.gdx.assets;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.assets.loaders.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
 import com.badlogic.gdx.utils.async.AsyncExecutor;
@@ -16,6 +17,8 @@ import com.badlogic.gdx.utils.async.AsyncExecutor;
 import java.lang.StringBuilder;
 
 public class AssetManager implements Disposable {
+	
+	public static final String TAG = "AssetManager";
 	
 	public static final FileHandleResolver RESOLVER_ABSOLUTE = ((fileName) -> Micro.files.absolute(fileName));
 	public static final FileHandleResolver RESOLVER_CLASSPATH = ((fileName) -> Micro.files.classpath(fileName));
@@ -40,8 +43,6 @@ public class AssetManager implements Disposable {
 	
 	final FileHandleResolver resolver;
 	
-	Logger log = new Logger("AssetManager", Application.LOG_NONE);
-	
 	public AssetManager() {
 		this(RESOLVER_INTERNAL);
 	}
@@ -60,9 +61,8 @@ public class AssetManager implements Disposable {
 			setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
 			setLoader(Texture.class, new TextureLoader(resolver));
 			setLoader(ParticleEffect.class, new ParticleEffectLoader(resolver));
-			setLoader(PolygonRegion.class, new PolygonRegionLoader(resolver));
 			setLoader(I18NBundle.class, new I18NBundleLoader(resolver));
-			setLoader(ShaderProgram.class, new ShaderProgramLoader(resolver));
+			setLoader(Shader.class, new ShaderProgramLoader(resolver));
 		}
 		executor = new AsyncExecutor(1, "AssetManager");
 	}
@@ -151,7 +151,7 @@ public class AssetManager implements Disposable {
 		if (tasks.size > 0) {
 			AssetLoadingTask currentTask = tasks.first();
 			if (currentTask.assetDesc.fileName.equals(fileName)) {
-				log.info("Unload (from tasks): " + fileName);
+				Micro.app.log(TAG, "Unload (from tasks): " + fileName);
 				currentTask.cancel = true;
 				currentTask.unload();
 				return;
@@ -171,7 +171,7 @@ public class AssetManager implements Disposable {
 		if (foundIndex != -1) {
 			toLoad--;
 			AssetDescriptor<?> desc = loadQueue.removeIndex(foundIndex);
-			log.info("Unload (from queue): " + fileName);
+			Micro.app.log(TAG, "Unload (from queue): " + fileName);
 			
 			// if the queued asset was already loaded, let the callback know it is available.
 			if (type != null && desc.params != null && desc.params.loadedCallback != null)
@@ -187,7 +187,7 @@ public class AssetManager implements Disposable {
 		// if it is reference counted, decrement ref count and check if we can really get rid of it.
 		assetRef.refCount--;
 		if (assetRef.refCount <= 0) {
-			log.info("Unload (dispose): " + fileName);
+			Micro.app.log(TAG, "Unload (dispose): " + fileName);
 			
 			// if it is disposable dispose it
 			if (assetRef.object instanceof Disposable)
@@ -197,7 +197,7 @@ public class AssetManager implements Disposable {
 			assetTypes.remove(fileName);
 			assets.get(type).remove(fileName);
 		} else
-			log.info("Unload (decrement): " + fileName);
+			Micro.app.log(TAG, "Unload (decrement): " + fileName);
 		
 		// remove any dependencies (or just decrement their ref count).
 		Array<String> dependencies = assetDependencies.get(fileName);
@@ -305,7 +305,7 @@ public class AssetManager implements Disposable {
 		toLoad++;
 		final AssetDescriptor<?> assetDesc = new AssetDescriptor(fileName, type, parameter);
 		loadQueue.add(assetDesc);
-		log.debug("Queued: " + assetDesc);
+		Micro.app.debug(TAG, "Queued: " + assetDesc);
 	}
 	
 	public synchronized void load(AssetDescriptor<?> desc) {
@@ -342,10 +342,10 @@ public class AssetManager implements Disposable {
 	}
 	
 	public void finishLoading() {
-		log.debug("Waiting for loading to complete...");
+		Micro.app.debug(TAG, "Waiting for loading to complete...");
 		while (!update())
 			Thread.yield();
-		log.debug("Loading complete.");
+		Micro.app.debug(TAG, "Loading complete.");
 	}
 	
 	public <T> T finishLoadingAsset(AssetDescriptor assetDesc) {
@@ -353,7 +353,7 @@ public class AssetManager implements Disposable {
 	}
 	
 	public <T> T finishLoadingAsset(String fileName) {
-		log.debug("Waiting for asset to be loaded: " + fileName);
+		Micro.app.debug(TAG, "Waiting for asset to be loaded: " + fileName);
 		while (true) {
 			synchronized (this) {
 				Class<T> type = (Class<T>) assetTypes.get(fileName);
@@ -362,7 +362,7 @@ public class AssetManager implements Disposable {
 					if (assetsByType != null) {
 						RefCountedContainer assetContainer = assetsByType.get(fileName);
 						if (assetContainer != null) {
-							log.debug("Asset loaded: " + fileName);
+							Micro.app.debug(TAG, "Asset loaded: " + fileName);
 							return (T) assetContainer.object;
 						}
 					}
@@ -393,14 +393,14 @@ public class AssetManager implements Disposable {
 		dependencies.add(dependendAssetDesc.fileName);
 		
 		if (isLoaded(dependendAssetDesc.fileName)) {
-			log.debug("Dependency already loaded: " + dependendAssetDesc);
+			Micro.app.debug(TAG, "Dependency already loaded: " + dependendAssetDesc);
 			Class<?> type = assetTypes.get(dependendAssetDesc.fileName);
 			RefCountedContainer assetRef = assets.get(type).get(dependendAssetDesc.fileName);
 			assetRef.refCount++;
 			incrementRefCountedDependencies(dependendAssetDesc.fileName);
 		} else {
 			// else add a new task for the asset.
-			log.info("Loading dependency: " + dependendAssetDesc);
+			Micro.app.log(TAG, "Loading dependency: " + dependendAssetDesc);
 			addTask(dependendAssetDesc);
 		}
 	}
@@ -410,7 +410,7 @@ public class AssetManager implements Disposable {
 		
 		// if the asset not meant to be reloaded and is already loaded, increase its reference count
 		if (isLoaded(assetDesc.fileName)) {
-			log.debug("Already loaded: " + assetDesc);
+			Micro.app.debug(TAG, "Already loaded: " + assetDesc);
 			Class<?> type = assetTypes.get(assetDesc.fileName);
 			RefCountedContainer assetRef = assets.get(type).get(assetDesc.fileName);
 			assetRef.refCount++;
@@ -420,7 +420,7 @@ public class AssetManager implements Disposable {
 			loaded++;
 		} else {
 			// else add a new task for the asset.
-			log.info("Loading: " + assetDesc);
+			Micro.app.log(TAG, "Loading: " + assetDesc);
 			addTask(assetDesc);
 		}
 	}
@@ -476,7 +476,7 @@ public class AssetManager implements Disposable {
 				task.assetDesc.params.loadedCallback.finishedLoading(this, task.assetDesc.fileName, task.assetDesc.type);
 			
 			long endTime = System.nanoTime();
-			log.debug("Loaded: " + (endTime - task.startTime) / 1000000f + "ms " + task.assetDesc);
+			Micro.app.debug(TAG, "Loaded: " + (endTime - task.startTime) / 1000000f + "ms " + task.assetDesc);
 			
 			return true;
 		}
@@ -501,7 +501,7 @@ public class AssetManager implements Disposable {
 	}
 	
 	private void handleTaskError(Throwable t) {
-		log.error("Error loading asset.", t);
+		Micro.app.error(TAG, "Error loading asset.", t);
 		
 		if (tasks.isEmpty())
 			throw new GdxRuntimeException(t);
@@ -535,7 +535,7 @@ public class AssetManager implements Disposable {
 			throw new IllegalArgumentException("type cannot be null.");
 		if (loader == null)
 			throw new IllegalArgumentException("loader cannot be null.");
-		log.debug("Loader set: " + type.getSimpleName() + " -> " + loader.getClass().getSimpleName());
+		Micro.app.debug(TAG, "Loader set: " + type.getSimpleName() + " -> " + loader.getClass().getSimpleName());
 		ObjectMap<String, AssetLoader<?, ?>> loaders = this.loaders.get(type);
 		if (loaders == null)
 			this.loaders.put(type, loaders = new ObjectMap<String, AssetLoader<?, ?>>());
@@ -566,7 +566,7 @@ public class AssetManager implements Disposable {
 	
 	@Override
 	public void dispose() {
-		log.debug("Disposing.");
+		Micro.app.debug(TAG, "Disposing.");
 		clear();
 		executor.dispose();
 	}
@@ -607,14 +607,6 @@ public class AssetManager implements Disposable {
 			this.loadQueue.clear();
 			this.tasks.clear();
 		}
-	}
-	
-	public Logger getLogger() {
-		return log;
-	}
-	
-	public void setLogger(Logger logger) {
-		log = logger;
 	}
 	
 	public synchronized int getReferenceCount(String fileName) {

@@ -5,14 +5,11 @@ import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class MipMapGenerator {
 	
-	private MipMapGenerator() {
-		// disallow, static methods only
-	}
+	private MipMapGenerator() {}
 	
 	private static boolean useHWMipMap = true;
 	
@@ -20,20 +17,10 @@ public class MipMapGenerator {
 		MipMapGenerator.useHWMipMap = useHWMipMap;
 	}
 	
-	/**
-	 * Sets the image data of the {@link Texture} based on the {@link Pixmap}. The texture must be bound for this to work. If
-	 * <code>disposePixmap</code> is true, the pixmap will be disposed at the end of the method.
-	 *
-	 * @param pixmap the Pixmap
-	 */
 	public static void generateMipMap(Pixmap pixmap, int textureWidth, int textureHeight) {
 		generateMipMap(GL20.GL_TEXTURE_2D, pixmap, textureWidth, textureHeight);
 	}
 	
-	/**
-	 * Sets the image data of the {@link Texture} based on the {@link Pixmap}. The texture must be bound for this to work. If
-	 * <code>disposePixmap</code> is true, the pixmap will be disposed at the end of the method.
-	 */
 	public static void generateMipMap(int target, Pixmap pixmap, int textureWidth, int textureHeight) {
 		if (!useHWMipMap) {
 			generateMipMapCPU(target, pixmap, textureWidth, textureHeight);

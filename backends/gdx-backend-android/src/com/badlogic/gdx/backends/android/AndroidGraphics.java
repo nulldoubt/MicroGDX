@@ -38,7 +38,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.GLVersion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.SnapshotArray;
@@ -330,7 +330,7 @@ public class AndroidGraphics extends AbstractGraphics implements Renderer {
 		Texture.invalidateAllTextures(app);
 		Cubemap.invalidateAllCubemaps(app);
 		TextureArray.invalidateAllTextureArrays(app);
-		ShaderProgram.invalidateAllShaderPrograms(app);
+		Shader.invalidateAllShaderPrograms(app);
 		FrameBuffer.invalidateAllFrameBuffers(app);
 
 		logManagedCachesStatus();
@@ -567,7 +567,7 @@ public class AndroidGraphics extends AbstractGraphics implements Renderer {
 		Texture.clearAllTextures(app);
 		Cubemap.clearAllCubemaps(app);
 		TextureArray.clearAllTextureArrays(app);
-		ShaderProgram.clearAllShaderPrograms(app);
+		Shader.clearAllShaderPrograms(app);
 		FrameBuffer.clearAllFrameBuffers(app);
 
 		logManagedCachesStatus();
@@ -577,7 +577,7 @@ public class AndroidGraphics extends AbstractGraphics implements Renderer {
 		Micro.app.log(LOG_TAG, Mesh.getManagedStatus());
 		Micro.app.log(LOG_TAG, Texture.getManagedStatus());
 		Micro.app.log(LOG_TAG, Cubemap.getManagedStatus());
-		Micro.app.log(LOG_TAG, ShaderProgram.getManagedStatus());
+		Micro.app.log(LOG_TAG, Shader.getManagedStatus());
 		Micro.app.log(LOG_TAG, FrameBuffer.getManagedStatus());
 	}
 

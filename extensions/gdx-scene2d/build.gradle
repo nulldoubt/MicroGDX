@@ -1,0 +1,8 @@
+dependencies {
+	api project(":gdx")
+}
+
+sourceSets.main.java.srcDirs = ["src"]
+sourceSets.main.resources.srcDirs = ["res"]
+
+tasks.withType(Jar) { duplicatesStrategy = DuplicatesStrategy.INCLUDE }

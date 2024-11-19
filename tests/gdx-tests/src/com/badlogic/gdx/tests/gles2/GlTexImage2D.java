@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
 import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.BufferUtils;
 
@@ -30,7 +30,7 @@ import com.badlogic.gdx.utils.BufferUtils;
  * @author Ret-Mode */
 public class GlTexImage2D extends GdxTest {
 
-	ShaderProgram shader;
+	Shader shader;
 
 	int texture = 0;
 	int pixmapTexture = 0;
@@ -143,7 +143,7 @@ public class GlTexImage2D extends GdxTest {
 			GL20.GL_UNSIGNED_BYTE, pixmapCheck.getPixels());
 
 		/* set shader */
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new Shader(vertexShader, fragmentShader);
 		shader.bind();
 
 		/* set vertices */

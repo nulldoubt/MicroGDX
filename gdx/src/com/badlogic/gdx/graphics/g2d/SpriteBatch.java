@@ -24,7 +24,7 @@ import com.badlogic.gdx.graphics.Mesh.VertexDataType;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
@@ -66,8 +66,8 @@ public class SpriteBatch implements Batch {
 	private int blendSrcFuncAlpha = GL20.GL_SRC_ALPHA;
 	private int blendDstFuncAlpha = GL20.GL_ONE_MINUS_SRC_ALPHA;
 
-	private final ShaderProgram shader;
-	private ShaderProgram customShader = null;
+	private final Shader shader;
+	private Shader customShader = null;
 	private boolean ownsShader;
 
 	private final Color color = new Color(1, 1, 1, 1);
@@ -83,13 +83,13 @@ public class SpriteBatch implements Batch {
 	public int maxSpritesInBatch = 0;
 
 	/** Constructs a new SpriteBatch with a size of 1000, one buffer, and the default shader.
-	 * @see SpriteBatch#SpriteBatch(int, ShaderProgram) */
+	 * @see SpriteBatch#SpriteBatch(int, Shader) */
 	public SpriteBatch () {
 		this(1000, null);
 	}
 
 	/** Constructs a SpriteBatch with one buffer and the default shader.
-	 * @see SpriteBatch#SpriteBatch(int, ShaderProgram) */
+	 * @see SpriteBatch#SpriteBatch(int, Shader) */
 	public SpriteBatch (int size) {
 		this(size, null);
 	}
@@ -99,10 +99,10 @@ public class SpriteBatch implements Batch {
 	 * respect to the current screen resolution.
 	 * <p>
 	 * The defaultShader specifies the shader to use. Note that the names for uniforms for this default shader are different than
-	 * the ones expect for shaders set with {@link #setShader(ShaderProgram)}. See {@link #createDefaultShader()}.
+	 * the ones expect for shaders set with {@link #setShader(Shader)}. See {@link #createDefaultShader()}.
 	 * @param size The max number of sprites in a single batch. Max of 8191.
 	 * @param defaultShader The default shader to use. This is not owned by the SpriteBatch and must be disposed separately. */
-	public SpriteBatch (int size, ShaderProgram defaultShader) {
+	public SpriteBatch (int size, Shader defaultShader) {
 		// 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
 		if (size > 8191) throw new IllegalArgumentException("Can't have more than 8191 sprites per batch: " + size);
 
@@ -115,9 +115,9 @@ public class SpriteBatch implements Batch {
 		currentDataType = vertexDataType;
 
 		mesh = new Mesh(currentDataType, false, size * 4, size * 6,
-			new VertexAttribute(Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE),
-			new VertexAttribute(Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
-			new VertexAttribute(Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+			new VertexAttribute(Usage.Position, 2, Shader.POSITION_ATTRIBUTE),
+			new VertexAttribute(Usage.ColorPacked, 4, Shader.COLOR_ATTRIBUTE),
+			new VertexAttribute(Usage.TextureCoordinates, 2, Shader.TEXCOORD_ATTRIBUTE + "0"));
 
 		projectionMatrix.setToOrtho2D(0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight());
 
@@ -150,20 +150,20 @@ public class SpriteBatch implements Batch {
 	}
 
 	/** Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified. */
-	public static ShaderProgram createDefaultShader () {
-		String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-			+ "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-			+ "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
+	public static Shader createDefaultShader () {
+		String vertexShader = "attribute vec4 " + Shader.POSITION_ATTRIBUTE + ";\n" //
+			+ "attribute vec4 " + Shader.COLOR_ATTRIBUTE + ";\n" //
+			+ "attribute vec2 " + Shader.TEXCOORD_ATTRIBUTE + "0;\n" //
 			+ "uniform mat4 u_projTrans;\n" //
 			+ "varying vec4 v_color;\n" //
 			+ "varying vec2 v_texCoords;\n" //
 			+ "\n" //
 			+ "void main()\n" //
 			+ "{\n" //
-			+ "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
+			+ "   v_color = " + Shader.COLOR_ATTRIBUTE + ";\n" //
 			+ "   v_color.a = v_color.a * (255.0/254.0);\n" //
-			+ "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-			+ "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+			+ "   v_texCoords = " + Shader.TEXCOORD_ATTRIBUTE + "0;\n" //
+			+ "   gl_Position =  u_projTrans * " + Shader.POSITION_ATTRIBUTE + ";\n" //
 			+ "}\n";
 		String fragmentShader = "#ifdef GL_ES\n" //
 			+ "#define LOWP lowp\n" //
@@ -179,7 +179,7 @@ public class SpriteBatch implements Batch {
 			+ "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
 			+ "}";
 
-		ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
+		Shader shader = new Shader(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
 		return shader;
 	}
@@ -1094,7 +1094,7 @@ public class SpriteBatch implements Batch {
 	}
 
 	@Override
-	public void setShader (ShaderProgram shader) {
+	public void setShader (Shader shader) {
 		if (shader == customShader) // avoid unnecessary flushing in case we are drawing
 			return;
 		if (drawing) {
@@ -1111,7 +1111,7 @@ public class SpriteBatch implements Batch {
 	}
 
 	@Override
-	public ShaderProgram getShader () {
+	public Shader getShader () {
 		if (customShader == null) {
 			return shader;
 		}

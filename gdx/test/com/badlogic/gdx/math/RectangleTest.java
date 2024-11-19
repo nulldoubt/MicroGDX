@@ -3,6 +3,7 @@ package com.badlogic.gdx.math;
 
 import static org.junit.Assert.*;
 
+import com.badlogic.gdx.math.shapes.Rectangle;
 import org.junit.Test;
 
 public class RectangleTest {

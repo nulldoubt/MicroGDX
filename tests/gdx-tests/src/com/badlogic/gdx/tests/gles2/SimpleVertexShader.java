@@ -20,13 +20,13 @@ import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.tests.utils.GdxTest;
 
 public class SimpleVertexShader extends GdxTest {
-	ShaderProgram shader;
+	Shader shader;
 	Mesh mesh;
 	Matrix4 projection = new Matrix4();
 	Matrix4 view = new Matrix4();
@@ -55,7 +55,7 @@ public class SimpleVertexShader extends GdxTest {
 			+ "}";
 		// @on
 
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new Shader(vertexShader, fragmentShader);
 		mesh = Shapes.genCube();
 		mesh.getVertexAttribute(Usage.Position).alias = "a_position";
 	}

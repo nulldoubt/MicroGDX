@@ -22,7 +22,7 @@ import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL31;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.tests.utils.GdxTestConfig;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -34,7 +34,7 @@ import com.badlogic.gdx.utils.BufferUtils;
 public class GL31ProgramIntrospectionTest extends GdxTest {
 	@Override
 	public void create () {
-		ShaderProgram shader = SpriteBatch.createDefaultShader();
+		Shader shader = SpriteBatch.createDefaultShader();
 		int program = shader.getHandle();
 
 		IntBuffer int1 = BufferUtils.newIntBuffer(1);

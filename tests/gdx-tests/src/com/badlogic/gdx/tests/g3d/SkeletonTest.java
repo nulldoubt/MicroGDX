@@ -34,7 +34,7 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.pools.Pool;
 import com.badlogic.gdx.utils.StringBuilder;
 
 public class SkeletonTest extends BaseG3dHudTest {

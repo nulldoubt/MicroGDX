@@ -27,7 +27,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.MipMapGenerator;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -46,7 +46,7 @@ public class MipMapTest extends GdxTest {
 	Texture textureHW;
 	Texture textureSW;
 	Texture currTexture;
-	ShaderProgram shader;
+	Shader shader;
 	Stage ui;
 	Skin skin;
 	InputMultiplexer multiplexer;
@@ -62,12 +62,12 @@ public class MipMapTest extends GdxTest {
 		camera.update();
 		controller = new PerspectiveCamController(camera);
 
-		mesh = new Mesh(true, 4, 4, new VertexAttribute(Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
-			new VertexAttribute(Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE));
+		mesh = new Mesh(true, 4, 4, new VertexAttribute(Usage.Position, 3, Shader.POSITION_ATTRIBUTE),
+			new VertexAttribute(Usage.TextureCoordinates, 2, Shader.TEXCOORD_ATTRIBUTE));
 		mesh.setVertices(new float[] {-1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, -1, 1, 0, -1, 0, -1, 0, 0,});
 		mesh.setIndices(new short[] {0, 1, 2, 3});
 
-		shader = new ShaderProgram(Micro.files.internal("data/shaders/flattex-vert.glsl").readString(),
+		shader = new Shader(Micro.files.internal("data/shaders/flattex-vert.glsl").readString(),
 			Micro.files.internal("data/shaders/flattex-frag.glsl").readString());
 		if (!shader.isCompiled()) throw new GdxRuntimeException("shader error: " + shader.getLog());
 

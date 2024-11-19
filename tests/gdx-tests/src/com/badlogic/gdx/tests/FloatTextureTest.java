@@ -26,7 +26,7 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.FloatFrameBuffer;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.tests.utils.GdxTestConfig;
@@ -35,7 +35,7 @@ import com.badlogic.gdx.tests.utils.GdxTestConfig;
 public class FloatTextureTest extends GdxTest {
 	FrameBuffer fb;
 	FloatFrameBuffer ffb;
-	ShaderProgram fbshader, shader;
+	Shader fbshader, shader;
 	Texture texture;
 	Mesh quad, screenQuad;
 	OrthographicCamera screenCamera;
@@ -65,7 +65,7 @@ public class FloatTextureTest extends GdxTest {
 			+ "    gl_FragColor = vec4(u_color, res); "
 		   + "}";
 
-		fbshader = new ShaderProgram(vertexShader, fragmentShader);
+		fbshader = new Shader(vertexShader, fragmentShader);
 
 		vertexShader = 
 			  "attribute vec4 a_position; "
@@ -102,7 +102,7 @@ public class FloatTextureTest extends GdxTest {
 			+ "}";
 		// @on
 
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new Shader(vertexShader, fragmentShader);
 		createQuad();
 
 		screenCamera = new OrthographicCamera(Micro.graphics.getWidth(), Micro.graphics.getHeight());

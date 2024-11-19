@@ -3,6 +3,8 @@ package com.badlogic.gdx.math;
 
 import com.badlogic.gdx.math.Intersector.SplitTriangle;
 
+import com.badlogic.gdx.math.shapes.Circle;
+import com.badlogic.gdx.math.shapes.Polygon;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

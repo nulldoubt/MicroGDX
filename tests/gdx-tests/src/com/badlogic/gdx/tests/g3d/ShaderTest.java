@@ -36,7 +36,6 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.Array;
@@ -113,7 +112,7 @@ public class ShaderTest extends GdxTest {
 		protected final int u_test = register(new Uniform("u_test"));
 		protected final int u_color = register(new Uniform("u_color"));
 
-		protected final ShaderProgram program;
+		protected final com.badlogic.gdx.graphics.glutils.Shader program;
 		private boolean withColor;
 
 		public TestShader (Renderable renderable) {
@@ -125,7 +124,7 @@ public class ShaderTest extends GdxTest {
 				Micro.app.log("ShaderTest", "Compiling test shader without u_color uniform");
 
 			String prefix = withColor ? "#define HasDiffuseColor\n" : "";
-			program = new ShaderProgram(vertexShader, prefix + fragmentShader);
+			program = new com.badlogic.gdx.graphics.glutils.Shader(vertexShader, prefix + fragmentShader);
 
 			if (!program.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader " + program.getLog());
 			String log = program.getLog();

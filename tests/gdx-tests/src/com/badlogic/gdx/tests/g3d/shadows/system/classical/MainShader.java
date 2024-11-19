@@ -21,7 +21,7 @@ import com.badlogic.gdx.graphics.g3d.Attributes;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 
 /** This shader is used by the classical shadow system. This shader supports normal mapping and specular mapping
  * @author realitix */
@@ -92,11 +92,11 @@ public class MainShader extends DefaultShader {
 
 	public MainShader (final Renderable renderable, final Config config, final String prefix, final String vertexShader,
 		final String fragmentShader) {
-		this(renderable, config, new ShaderProgram(prefix + vertexShader, prefix + fragmentShader));
+		this(renderable, config, new Shader(prefix + vertexShader, prefix + fragmentShader));
 	}
 
-	public MainShader (final Renderable renderable, final Config config, final ShaderProgram shaderProgram) {
-		super(renderable, config, shaderProgram);
+	public MainShader (final Renderable renderable, final Config config, final Shader shader) {
+		super(renderable, config, shader);
 
 		shadowSystem = config.shadowSystem;
 		register(Inputs.shadowTexture, Setters.shadowTexture);

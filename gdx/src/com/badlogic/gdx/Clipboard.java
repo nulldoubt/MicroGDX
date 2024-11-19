@@ -1,4 +1,4 @@
-package com.badlogic.gdx.utils;
+package com.badlogic.gdx;
 
 public interface Clipboard {
 	

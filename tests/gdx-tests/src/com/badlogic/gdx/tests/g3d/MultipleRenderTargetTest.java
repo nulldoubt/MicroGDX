@@ -47,13 +47,13 @@ import com.badlogic.gdx.graphics.g3d.utils.RenderableSorter;
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.GLFrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.tests.utils.GdxTestConfig;
 import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.pools.Pool;
 
 /** MRT test compliant with GLES 3.0, with per pixel lighting and normal and specular mapping. Thanks to
  * http://www.blendswap.com/blends/view/73922 for the cannon model, licensed under CC-BY-SA
@@ -68,7 +68,7 @@ public class MultipleRenderTargetTest extends GdxTest {
 	PerspectiveCamera camera;
 	FirstPersonCameraController cameraController;
 
-	ShaderProgram mrtSceneShader;
+	com.badlogic.gdx.graphics.glutils.Shader mrtSceneShader;
 
 	SpriteBatch batch;
 	Mesh quad;
@@ -95,14 +95,14 @@ public class MultipleRenderTargetTest extends GdxTest {
 		// use default prepend shader code for batch, some gpu drivers are less forgiving
 		batch = new SpriteBatch();
 
-		ShaderProgram.pedantic = false;// depth texture not currently sampled
+		com.badlogic.gdx.graphics.glutils.Shader.pedantic = false;// depth texture not currently sampled
 
 		modelCache = new ModelCache();
 
-		ShaderProgram.prependVertexCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
+		com.badlogic.gdx.graphics.glutils.Shader.prependVertexCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
 			? "#version 140\n #extension GL_ARB_explicit_attrib_location : enable\n"
 			: "#version 300 es\n";
-		ShaderProgram.prependFragmentCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
+		com.badlogic.gdx.graphics.glutils.Shader.prependFragmentCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
 			? "#version 140\n #extension GL_ARB_explicit_attrib_location : enable\n"
 			: "#version 300 es\n";
 
@@ -121,7 +121,7 @@ public class MultipleRenderTargetTest extends GdxTest {
 
 		};
 
-		mrtSceneShader = new ShaderProgram(Micro.files.internal("data/g3d/shaders/mrtscene.vert"),
+		mrtSceneShader = new com.badlogic.gdx.graphics.glutils.Shader(Micro.files.internal("data/g3d/shaders/mrtscene.vert"),
 			Micro.files.internal("data/g3d/shaders/mrtscene.frag"));
 		if (!mrtSceneShader.isCompiled()) {
 			System.out.println(mrtSceneShader.getLog());
@@ -322,8 +322,8 @@ public class MultipleRenderTargetTest extends GdxTest {
 		verts[i++] = 0f;
 		verts[i++] = 1f;
 
-		Mesh mesh = new Mesh(true, 4, 0, new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
-			new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+		Mesh mesh = new Mesh(true, 4, 0, new VertexAttribute(VertexAttributes.Usage.Position, 3, com.badlogic.gdx.graphics.glutils.Shader.POSITION_ATTRIBUTE),
+			new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, com.badlogic.gdx.graphics.glutils.Shader.TEXCOORD_ATTRIBUTE + "0"));
 
 		mesh.setVertices(verts);
 		return mesh;
@@ -372,7 +372,7 @@ public class MultipleRenderTargetTest extends GdxTest {
 
 	static class MRTShader implements Shader {
 
-		ShaderProgram shaderProgram;
+		com.badlogic.gdx.graphics.glutils.Shader shader;
 		long attributes;
 
 		RenderContext context;
@@ -387,9 +387,9 @@ public class MultipleRenderTargetTest extends GdxTest {
 
 			String vert = Micro.files.internal("data/g3d/shaders/mrt.vert").readString();
 			String frag = Micro.files.internal("data/g3d/shaders/mrt.frag").readString();
-			shaderProgram = new ShaderProgram(prefix + vert, prefix + frag);
-			if (!shaderProgram.isCompiled()) {
-				throw new GdxRuntimeException(shaderProgram.getLog());
+			shader = new com.badlogic.gdx.graphics.glutils.Shader(prefix + vert, prefix + frag);
+			if (!shader.isCompiled()) {
+				throw new GdxRuntimeException(shader.getLog());
 			}
 			attributes = renderable.material.getMask();
 		}
@@ -415,8 +415,8 @@ public class MultipleRenderTargetTest extends GdxTest {
 		@Override
 		public void begin (Camera camera, RenderContext context) {
 			this.context = context;
-			shaderProgram.bind();
-			shaderProgram.setUniformMatrix("u_projViewTrans", camera.combined);
+			shader.bind();
+			shader.setUniformMatrix("u_projViewTrans", camera.combined);
 			context.setDepthTest(GL20.GL_LEQUAL);
 			context.setCullFace(GL20.GL_BACK);
 		}
@@ -430,19 +430,19 @@ public class MultipleRenderTargetTest extends GdxTest {
 			TextureAttribute specTexture = (TextureAttribute)material.get(TextureAttribute.Specular);
 
 			if (diffuseTexture != null) {
-				shaderProgram.setUniformi("u_diffuseTexture", context.textureBinder.bind(diffuseTexture.textureDescription.texture));
+				shader.setUniformi("u_diffuseTexture", context.textureBinder.bind(diffuseTexture.textureDescription.texture));
 			}
 			if (normalTexture != null) {
-				shaderProgram.setUniformi("u_normalTexture", context.textureBinder.bind(normalTexture.textureDescription.texture));
+				shader.setUniformi("u_normalTexture", context.textureBinder.bind(normalTexture.textureDescription.texture));
 			}
 			if (specTexture != null) {
-				shaderProgram.setUniformi("u_specularTexture", context.textureBinder.bind(specTexture.textureDescription.texture));
+				shader.setUniformi("u_specularTexture", context.textureBinder.bind(specTexture.textureDescription.texture));
 			}
 
-			shaderProgram.setUniformMatrix("u_worldTrans", renderable.worldTransform);
-			shaderProgram.setUniformMatrix("u_normalMatrix", matrix3.set(renderable.worldTransform).inv().transpose());
+			shader.setUniformMatrix("u_worldTrans", renderable.worldTransform);
+			shader.setUniformMatrix("u_normalMatrix", matrix3.set(renderable.worldTransform).inv().transpose());
 
-			renderable.meshPart.render(shaderProgram);
+			renderable.meshPart.render(shader);
 		}
 
 		@Override
@@ -452,7 +452,7 @@ public class MultipleRenderTargetTest extends GdxTest {
 
 		@Override
 		public void dispose () {
-			shaderProgram.dispose();
+			shader.dispose();
 		}
 	}
 

@@ -20,19 +20,19 @@ import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.utils.GdxTest;
 
 public class CustomShaderSpriteBatchTest extends GdxTest {
 	SpriteBatch batch;
-	ShaderProgram shader;
+	Shader shader;
 	Texture texture;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch(10);
-		ShaderProgram.pedantic = false;
-		shader = new ShaderProgram(Micro.files.internal("data/shaders/batch.vert").readString(),
+		Shader.pedantic = false;
+		shader = new Shader(Micro.files.internal("data/shaders/batch.vert").readString(),
 			Micro.files.internal("data/shaders/batch.frag").readString());
 		batch.setShader(shader);
 		texture = new Texture("data/badlogic.jpg");

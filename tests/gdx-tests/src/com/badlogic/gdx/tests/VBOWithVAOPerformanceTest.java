@@ -26,7 +26,7 @@ import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.IndexBufferObjectSubData;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.graphics.glutils.VertexBufferObjectWithVAO;
 import com.badlogic.gdx.graphics.glutils.VertexData;
 import com.badlogic.gdx.math.MathUtils;
@@ -46,7 +46,7 @@ import java.nio.IntBuffer;
 @GdxTestConfig(requireGL30 = true)
 public class VBOWithVAOPerformanceTest extends GdxTest {
 
-	ShaderProgram shader;
+	Shader shader;
 	Texture texture;
 	Matrix4 matrix = new Matrix4();
 
@@ -78,7 +78,7 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 			+ "{                                            \n" + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
 			+ "}";
 
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new Shader(vertexShader, fragmentShader);
 		if (shader.isCompiled() == false) {
 			Micro.app.log("ShaderTest", shader.getLog());
 			Micro.app.exit();
@@ -387,12 +387,12 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 		}
 
 		@Override
-		public void bind (ShaderProgram shader) {
+		public void bind (Shader shader) {
 			bind(shader, null);
 		}
 
 		@Override
-		public void bind (ShaderProgram shader, int[] locations) {
+		public void bind (Shader shader, int[] locations) {
 			GL30 gl = Micro.gl30;
 			if (vaoDirty || !gl.glIsVertexArray(vaoHandle)) {
 				// initialize the VAO with our vertex attributes and buffer:
@@ -415,7 +415,7 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 			isBound = true;
 		}
 
-		private void bindAttributes (ShaderProgram shader, int[] locations) {
+		private void bindAttributes (Shader shader, int[] locations) {
 			final GL20 gl = Micro.gl20;
 			gl.glBindBuffer(GL20.GL_ARRAY_BUFFER, bufferHandle);
 			final int numAttributes = attributes.size();
@@ -453,12 +453,12 @@ public class VBOWithVAOPerformanceTest extends GdxTest {
 		}
 
 		@Override
-		public void unbind (final ShaderProgram shader) {
+		public void unbind (final Shader shader) {
 			unbind(shader, null);
 		}
 
 		@Override
-		public void unbind (final ShaderProgram shader, final int[] locations) {
+		public void unbind (final Shader shader, final int[] locations) {
 			GL30 gl = Micro.gl30;
 			gl.glBindVertexArray(0);
 			isBound = false;

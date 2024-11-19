@@ -25,7 +25,7 @@ import com.badlogic.gdx.graphics.GL32;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.GLFrameBuffer.FrameBufferBuilder;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.tests.utils.GdxTest;
@@ -69,19 +69,19 @@ public class GL32MultipleRenderTargetsBlendingTest extends GdxTest {
 		"    out_FragColor7 = v_color;\n" + //
 		"}";
 
-	static final String spriteBatchVS = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-		+ "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-		+ "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
+	static final String spriteBatchVS = "attribute vec4 " + Shader.POSITION_ATTRIBUTE + ";\n" //
+		+ "attribute vec4 " + Shader.COLOR_ATTRIBUTE + ";\n" //
+		+ "attribute vec2 " + Shader.TEXCOORD_ATTRIBUTE + "0;\n" //
 		+ "uniform mat4 u_projTrans;\n" //
 		+ "varying vec4 v_color;\n" //
 		+ "varying vec2 v_texCoords;\n" //
 		+ "\n" //
 		+ "void main()\n" //
 		+ "{\n" //
-		+ "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
+		+ "   v_color = " + Shader.COLOR_ATTRIBUTE + ";\n" //
 		+ "   v_color.a = v_color.a * (255.0/254.0);\n" //
-		+ "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-		+ "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+		+ "   v_texCoords = " + Shader.TEXCOORD_ATTRIBUTE + "0;\n" //
+		+ "   gl_Position =  u_projTrans * " + Shader.POSITION_ATTRIBUTE + ";\n" //
 		+ "}\n";
 
 	static final String spriteBatchFS = "#ifdef GL_ES\n" //
@@ -102,8 +102,8 @@ public class GL32MultipleRenderTargetsBlendingTest extends GdxTest {
 	private FrameBuffer fbo;
 	private ShapeRenderer shapes;
 	private SpriteBatch batch;
-	private ShaderProgram mrtShader;
-	private ShaderProgram alphaShader;
+	private Shader mrtShader;
+	private Shader alphaShader;
 
 	@Override
 	public void create () {
@@ -125,13 +125,13 @@ public class GL32MultipleRenderTargetsBlendingTest extends GdxTest {
 			prefix = "#version 300 es\n";
 		}
 
-		String oldPrepend = ShaderProgram.prependFragmentCode;
-		ShaderProgram.prependFragmentCode = null;
-		mrtShader = new ShaderProgram(shapeRendererVS, prefix + shapeRendererFS);
+		String oldPrepend = Shader.prependFragmentCode;
+		Shader.prependFragmentCode = null;
+		mrtShader = new Shader(shapeRendererVS, prefix + shapeRendererFS);
 		if (!mrtShader.isCompiled()) throw new GdxRuntimeException(mrtShader.getLog());
-		ShaderProgram.prependFragmentCode = oldPrepend;
+		Shader.prependFragmentCode = oldPrepend;
 
-		alphaShader = new ShaderProgram(spriteBatchVS, spriteBatchFS);
+		alphaShader = new Shader(spriteBatchVS, spriteBatchFS);
 		if (!alphaShader.isCompiled()) throw new GdxRuntimeException(alphaShader.getLog());
 
 		shapes = new ShapeRenderer(6, mrtShader);

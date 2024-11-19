@@ -27,7 +27,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.SpotLightsAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.SpotLight;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.g3d.shadows.system.BaseShadowSystem.LightProperties;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -120,11 +120,11 @@ public class MainShader extends DefaultShader {
 
 	public MainShader (final Renderable renderable, final Config config, final String prefix, final String vertexShader,
 		final String fragmentShader) {
-		this(renderable, config, new ShaderProgram(prefix + vertexShader, prefix + fragmentShader));
+		this(renderable, config, new Shader(prefix + vertexShader, prefix + fragmentShader));
 	}
 
-	public MainShader (final Renderable renderable, final Config config, final ShaderProgram shaderProgram) {
-		super(renderable, config, shaderProgram);
+	public MainShader (final Renderable renderable, final Config config, final Shader shader) {
+		super(renderable, config, shader);
 		this.shadowSystem = config.shadowSystem;
 	}
 

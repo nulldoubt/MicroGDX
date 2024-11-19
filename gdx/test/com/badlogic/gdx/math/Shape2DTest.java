@@ -4,6 +4,8 @@ package com.badlogic.gdx.math;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.badlogic.gdx.math.shapes.Circle;
+import com.badlogic.gdx.math.shapes.Rectangle;
 import org.junit.Test;
 
 public class Shape2DTest {

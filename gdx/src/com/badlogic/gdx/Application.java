@@ -1,7 +1,5 @@
 package com.badlogic.gdx;
 
-import com.badlogic.gdx.utils.Clipboard;
-
 public interface Application {
 	
 	enum ApplicationType {

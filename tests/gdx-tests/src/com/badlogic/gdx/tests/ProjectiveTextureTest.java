@@ -28,7 +28,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -55,7 +55,7 @@ public class ProjectiveTextureTest extends GdxTest {
 	Matrix4 planeTrans = new Matrix4();
 	Matrix4 cubeTrans = new Matrix4();
 	Matrix4 modelNormal = new Matrix4();
-	ShaderProgram projTexShader;
+	Shader projTexShader;
 	Stage ui;
 	Skin skin;
 	InputMultiplexer multiplexer = new InputMultiplexer();
@@ -80,8 +80,8 @@ public class ProjectiveTextureTest extends GdxTest {
 	}
 
 	public void setupScene () {
-		plane = new Mesh(true, 4, 6, new VertexAttribute(Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
-			new VertexAttribute(Usage.Normal, 3, ShaderProgram.NORMAL_ATTRIBUTE));
+		plane = new Mesh(true, 4, 6, new VertexAttribute(Usage.Position, 3, Shader.POSITION_ATTRIBUTE),
+			new VertexAttribute(Usage.Normal, 3, Shader.NORMAL_ATTRIBUTE));
 		plane.setVertices(new float[] {-10, -1, 10, 0, 1, 0, 10, -1, 10, 0, 1, 0, 10, -1, -10, 0, 1, 0, -10, -1, -10, 0, 1, 0});
 		plane.setIndices(new short[] {3, 2, 1, 1, 0, 3});
 
@@ -119,7 +119,7 @@ public class ProjectiveTextureTest extends GdxTest {
 
 		reload.addListener(new ClickListener() {
 			public void clicked (InputEvent event, float x, float y) {
-				ShaderProgram prog = new ShaderProgram(Micro.files.internal("data/shaders/projtex-vert.glsl").readString(),
+				Shader prog = new Shader(Micro.files.internal("data/shaders/projtex-vert.glsl").readString(),
 					Micro.files.internal("data/shaders/projtex-frag.glsl").readString());
 				if (prog.isCompiled() == false) {
 					Micro.app.log("GLSL ERROR", "Couldn't reload shaders:\n" + prog.getLog());
@@ -132,8 +132,8 @@ public class ProjectiveTextureTest extends GdxTest {
 	}
 
 	public void setupShaders () {
-		ShaderProgram.pedantic = false;
-		projTexShader = new ShaderProgram(Micro.files.internal("data/shaders/projtex-vert.glsl").readString(),
+		Shader.pedantic = false;
+		projTexShader = new Shader(Micro.files.internal("data/shaders/projtex-vert.glsl").readString(),
 			Micro.files.internal("data/shaders/projtex-frag.glsl").readString());
 		if (!projTexShader.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + projTexShader.getLog());
 	}
@@ -172,7 +172,7 @@ public class ProjectiveTextureTest extends GdxTest {
 
 	Vector3 position = new Vector3();
 
-	private void renderMesh (ShaderProgram shader, Matrix4 cam, Matrix4 projector, Matrix4 model, Mesh mesh, Color color) {
+	private void renderMesh (Shader shader, Matrix4 cam, Matrix4 projector, Matrix4 model, Mesh mesh, Color color) {
 		position.set(this.projector.position);
 		modelNormal.set(model).toNormalMatrix();
 

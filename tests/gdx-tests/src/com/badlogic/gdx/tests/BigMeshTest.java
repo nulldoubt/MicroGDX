@@ -26,7 +26,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.FlushablePool;
-import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.pools.Pool;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class BigMeshTest extends GdxTest {

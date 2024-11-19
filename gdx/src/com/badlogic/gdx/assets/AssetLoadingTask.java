@@ -1,39 +1,18 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package com.badlogic.gdx.assets;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
 import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.async.AsyncExecutor;
 import com.badlogic.gdx.utils.async.AsyncResult;
 import com.badlogic.gdx.utils.async.AsyncTask;
 
-/**
- * Responsible for loading an asset through an {@link AssetLoader} based on an {@link AssetDescriptor}. Please don't forget to
- * update the overriding emu file on GWT backend when changing this file!
- *
- * @author mzechner
- */
-class AssetLoadingTask implements AsyncTask<Void> {
+public class AssetLoadingTask implements AsyncTask<Void> {
 	
 	AssetManager manager;
 	final AssetDescriptor assetDesc;
@@ -55,12 +34,9 @@ class AssetLoadingTask implements AsyncTask<Void> {
 		this.assetDesc = assetDesc;
 		this.loader = loader;
 		this.executor = threadPool;
-		startTime = manager.log.getLevel() == Logger.DEBUG ? System.nanoTime() : 0;
+		startTime = Micro.app.getLogLevel() == Application.LOG_DEBUG ? System.nanoTime() : 0;
 	}
 	
-	/**
-	 * Loads parts of the asset asynchronously if the loader is an {@link AsynchronousAssetLoader}.
-	 */
 	@Override
 	public Void call() throws Exception {
 		if (cancel)
@@ -83,15 +59,6 @@ class AssetLoadingTask implements AsyncTask<Void> {
 		return null;
 	}
 	
-	/**
-	 * Updates the loading of the asset. In case the asset is loaded with an {@link AsynchronousAssetLoader}, the loaders
-	 * {@link AsynchronousAssetLoader#loadAsync(AssetManager, String, FileHandle, AssetLoaderParameters)} method is first called on
-	 * a worker thread. Once this method returns, the rest of the asset is loaded on the rendering thread via
-	 * {@link AsynchronousAssetLoader#loadSync(AssetManager, String, FileHandle, AssetLoaderParameters)}.
-	 *
-	 * @return true in case the asset was fully loaded, false otherwise
-	 * @throws GdxRuntimeException
-	 */
 	public boolean update() {
 		if (loader instanceof SynchronousAssetLoader)
 			handleSyncLoader();

@@ -25,7 +25,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowConfiguration;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -57,8 +57,8 @@ public class Lwjgl3TestStarter {
 		config.setWindowedMode(640, 480);
 
 		if (options.gl30 || options.gl31 || options.gl32) {
-			ShaderProgram.prependVertexCode = "#version 140\n#define varying out\n#define attribute in\n";
-			ShaderProgram.prependFragmentCode = "#version 140\n#define varying in\n#define texture2D texture\n#define gl_FragColor fragColor\nout vec4 fragColor;\n";
+			Shader.prependVertexCode = "#version 140\n#define varying out\n#define attribute in\n";
+			Shader.prependFragmentCode = "#version 140\n#define varying in\n#define texture2D texture\n#define gl_FragColor fragColor\nout vec4 fragColor;\n";
 		}
 
 		if (options.gl32) {

@@ -20,8 +20,8 @@ import com.badlogic.gdx.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.tiles.StaticTiledMapTile;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Polyline;
+import com.badlogic.gdx.math.shapes.Polygon;
+import com.badlogic.gdx.math.shapes.Polyline;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.XmlReader.Element;
 

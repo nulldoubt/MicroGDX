@@ -52,7 +52,7 @@ import com.badlogic.gdx.tiled.TiledMapRenderer;
 import com.badlogic.gdx.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.shapes.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 
 public abstract class BatchTiledMapRenderer implements TiledMapRenderer, Disposable {

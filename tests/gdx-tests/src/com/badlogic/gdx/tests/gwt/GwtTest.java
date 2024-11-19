@@ -34,7 +34,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -43,7 +43,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GwtTest extends GdxTest {
-	ShaderProgram shader;
+	Shader shader;
 	Mesh mesh;
 	Matrix4 matrix = new Matrix4();
 	SpriteBatch batch;
@@ -61,7 +61,7 @@ public class GwtTest extends GdxTest {
 		boolean resultb = pref.getBoolean("test");
 		int resulti = pref.getInteger("test");
 
-		shader = new ShaderProgram(Micro.files.internal("data/shaders/shader-vs.glsl"),
+		shader = new Shader(Micro.files.internal("data/shaders/shader-vs.glsl"),
 			Micro.files.internal("data/shaders/shader-fs.glsl"));
 		if (!shader.isCompiled()) throw new GdxRuntimeException(shader.getLog());
 		mesh = new Mesh(VertexDataType.VertexBufferObject, true, 6, 0, VertexAttribute.Position(), VertexAttribute.TexCoords(0));

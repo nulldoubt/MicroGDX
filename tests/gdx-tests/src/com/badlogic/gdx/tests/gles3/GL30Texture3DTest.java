@@ -29,7 +29,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture3D;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.CustomTexture3DData;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.tests.utils.GdxTestConfig;
 
@@ -38,23 +38,23 @@ public class GL30Texture3DTest extends GdxTest {
 	private Texture3D texture3D;
 	private Texture texture;
 	private float time;
-	private ShaderProgram renderShader;
+	private Shader renderShader;
 	private SpriteBatch batch;
 
-	static ShaderProgram createShader () {
-		String vertexShader = "in vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-			+ "in vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-			+ "in vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
+	static Shader createShader () {
+		String vertexShader = "in vec4 " + Shader.POSITION_ATTRIBUTE + ";\n" //
+			+ "in vec4 " + Shader.COLOR_ATTRIBUTE + ";\n" //
+			+ "in vec2 " + Shader.TEXCOORD_ATTRIBUTE + "0;\n" //
 			+ "uniform mat4 u_projTrans;\n" //
 			+ "out vec4 v_color;\n" //
 			+ "out vec2 v_texCoords;\n" //
 			+ "\n" //
 			+ "void main()\n" //
 			+ "{\n" //
-			+ "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
+			+ "   v_color = " + Shader.COLOR_ATTRIBUTE + ";\n" //
 			+ "   v_color.a = v_color.a * (255.0/254.0);\n" //
-			+ "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-			+ "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+			+ "   v_texCoords = " + Shader.TEXCOORD_ATTRIBUTE + "0;\n" //
+			+ "   gl_Position =  u_projTrans * " + Shader.POSITION_ATTRIBUTE + ";\n" //
 			+ "}\n";
 		String fragmentShader = "#ifdef GL_ES\n" //
 			+ "#define LOWP lowp\n" //
@@ -80,14 +80,14 @@ public class GL30Texture3DTest extends GdxTest {
 			prepend = "#version 300 es\n";
 		}
 
-		String ovs = ShaderProgram.prependVertexCode;
-		String ofs = ShaderProgram.prependFragmentCode;
-		ShaderProgram.prependVertexCode = "";
-		ShaderProgram.prependFragmentCode = "";
-		ShaderProgram shader = new ShaderProgram(prepend + vertexShader, prepend + fragmentShader);
+		String ovs = Shader.prependVertexCode;
+		String ofs = Shader.prependFragmentCode;
+		Shader.prependVertexCode = "";
+		Shader.prependFragmentCode = "";
+		Shader shader = new Shader(prepend + vertexShader, prepend + fragmentShader);
 		if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
-		ShaderProgram.prependVertexCode = ovs;
-		ShaderProgram.prependFragmentCode = ofs;
+		Shader.prependVertexCode = ovs;
+		Shader.prependFragmentCode = ofs;
 		return shader;
 	}
 

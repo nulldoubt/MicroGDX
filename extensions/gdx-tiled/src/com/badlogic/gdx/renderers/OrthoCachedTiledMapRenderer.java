@@ -35,7 +35,7 @@ import com.badlogic.gdx.tiled.TiledMapTile;
 import com.badlogic.gdx.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.shapes.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 
 /** Renders ortho tiles by caching geometry on the GPU. How much is cached is controlled by {@link #setOverCache(float)}. When the

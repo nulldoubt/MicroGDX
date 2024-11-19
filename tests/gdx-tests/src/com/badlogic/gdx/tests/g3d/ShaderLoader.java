@@ -19,7 +19,7 @@ package com.badlogic.gdx.tests.g3d;
 import java.io.BufferedReader;
 import java.io.IOException;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -34,7 +34,7 @@ public class ShaderLoader {
 		this.root = root;
 	}
 
-	public ShaderProgram load (String vertex, String fragment) {
+	public Shader load (String vertex, String fragment) {
 		StringBuilder out = new StringBuilder();
 		load(out, vertex);
 		vertex = out.toString();
@@ -43,7 +43,7 @@ public class ShaderLoader {
 		load(out, fragment);
 		fragment = out.toString();
 		includes.clear();
-		return new ShaderProgram(vertex, fragment);
+		return new Shader(vertex, fragment);
 	}
 
 	public String load (final String name) {

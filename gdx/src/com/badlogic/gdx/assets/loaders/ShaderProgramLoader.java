@@ -1,13 +1,14 @@
 package com.badlogic.gdx.assets.loaders;
 
+import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.utils.Array;
 
-public class ShaderProgramLoader extends AsynchronousAssetLoader<ShaderProgram, ShaderProgramLoader.ShaderProgramParameter> {
+public class ShaderProgramLoader extends AsynchronousAssetLoader<Shader, ShaderProgramLoader.ShaderProgramParameter> {
 	
 	private String vertexFileSuffix = ".vert";
 	private String fragmentFileSuffix = ".frag";
@@ -31,7 +32,7 @@ public class ShaderProgramLoader extends AsynchronousAssetLoader<ShaderProgram, 
 	public void loadAsync(AssetManager manager, String fileName, FileHandle file, ShaderProgramParameter parameter) {}
 	
 	@Override
-	public ShaderProgram loadSync(AssetManager manager, String fileName, FileHandle file, ShaderProgramParameter parameter) {
+	public Shader loadSync(AssetManager manager, String fileName, FileHandle file, ShaderProgramParameter parameter) {
 		String vertFileName = null, fragFileName = null;
 		if (parameter != null) {
 			if (parameter.vertexFile != null)
@@ -56,15 +57,14 @@ public class ShaderProgramLoader extends AsynchronousAssetLoader<ShaderProgram, 
 				fragmentCode = parameter.prependFragmentCode + fragmentCode;
 		}
 		
-		ShaderProgram shaderProgram = new ShaderProgram(vertexCode, fragmentCode);
-		if ((parameter == null || parameter.logOnCompileFailure) && !shaderProgram.isCompiled()) {
-			manager.getLogger().error("ShaderProgram " + fileName + " failed to compile:\n" + shaderProgram.getLog());
-		}
+		final Shader shader = new Shader(vertexCode, fragmentCode);
+		if ((parameter == null || parameter.logOnCompileFailure) && !shader.isCompiled())
+			Micro.app.error(AssetManager.TAG, "ShaderProgram " + fileName + " failed to compile:\n" + shader.getLog());
 		
-		return shaderProgram;
+		return shader;
 	}
 	
-	public static class ShaderProgramParameter extends AssetLoaderParameters<ShaderProgram> {
+	public static class ShaderProgramParameter extends AssetLoaderParameters<Shader> {
 		
 		/**
 		 * File name to be used for the vertex program instead of the default determined by the file name used to submit this asset
@@ -82,12 +82,12 @@ public class ShaderProgramLoader extends AsynchronousAssetLoader<ShaderProgram, 
 		public boolean logOnCompileFailure = true;
 		/**
 		 * Code that is always added to the vertex shader code. This is added as-is, and you should include a newline (`\n`) if
-		 * needed. {@linkplain ShaderProgram#prependVertexCode} is placed before this code.
+		 * needed. {@linkplain Shader#prependVertexCode} is placed before this code.
 		 */
 		public String prependVertexCode;
 		/**
 		 * Code that is always added to the fragment shader code. This is added as-is, and you should include a newline (`\n`) if
-		 * needed. {@linkplain ShaderProgram#prependFragmentCode} is placed before this code.
+		 * needed. {@linkplain Shader#prependFragmentCode} is placed before this code.
 		 */
 		public String prependFragmentCode;
 		

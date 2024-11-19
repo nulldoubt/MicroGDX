@@ -24,11 +24,11 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.tests.utils.GdxTest;
 
 public class ShaderMultitextureTest extends GdxTest {
-	ShaderProgram shader;
+	Shader shader;
 	Texture texture;
 	Texture texture2;
 	Mesh mesh;
@@ -45,7 +45,7 @@ public class ShaderMultitextureTest extends GdxTest {
 			+ "{                                                   \n"
 			+ "  gl_FragColor = texture2D( s_texture, v_texCoord ) * texture2D( s_texture2, v_texCoord);\n"
 			+ "}                                                   \n";
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new Shader(vertexShader, fragmentShader);
 		mesh = new Mesh(true, 4, 6, new VertexAttribute(Usage.Position, 2, "a_position"),
 			new VertexAttribute(Usage.TextureCoordinates, 2, "a_texCoord"));
 		float[] vertices = {-0.5f, 0.5f, // Position 0

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.math;
 
-import com.badlogic.gdx.utils.Pool.Poolable;
+import com.badlogic.gdx.utils.pools.Pool.Poolable;
 
 /** Track properties of a stream of float values. The properties (total value, minimum, etc) are updated as values are
  * {@link #put(float)} into the stream.

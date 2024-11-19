@@ -23,14 +23,14 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.NumberUtils;
 
 public class MeshShaderTest extends GdxTest {
-	ShaderProgram shader;
+	Shader shader;
 	Mesh mesh, meshCustomVA;
 	Texture texture;
 	Matrix4 matrix = new Matrix4();
@@ -47,7 +47,7 @@ public class MeshShaderTest extends GdxTest {
 			+ "{                                            \n" + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
 			+ "}";
 
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new Shader(vertexShader, fragmentShader);
 		if (shader.isCompiled() == false) {
 			Micro.app.log("ShaderTest", shader.getLog());
 			Micro.app.exit();
@@ -60,7 +60,7 @@ public class MeshShaderTest extends GdxTest {
 
 		// Mesh with texCoords wearing a pair of shorts. :)
 		meshCustomVA = new Mesh(true, 4, 6, VertexAttribute.Position(), VertexAttribute.ColorPacked(), new VertexAttribute(
-			Usage.TextureCoordinates, 2, GL20.GL_UNSIGNED_SHORT, true, ShaderProgram.TEXCOORD_ATTRIBUTE + "0", 0));
+			Usage.TextureCoordinates, 2, GL20.GL_UNSIGNED_SHORT, true, Shader.TEXCOORD_ATTRIBUTE + "0", 0));
 		meshCustomVA.setVertices(new float[] {-0.5f, -0.5f, 0, Color.WHITE_FLOAT_BITS, toSingleFloat(0, 1), 0.5f, -0.5f, 0,
 			Color.WHITE_FLOAT_BITS, toSingleFloat(1, 1), 0.5f, 0.5f, 0, Color.WHITE_FLOAT_BITS, toSingleFloat(1, 0), -0.5f, 0.5f, 0,
 			Color.WHITE_FLOAT_BITS, toSingleFloat(0, 0)});

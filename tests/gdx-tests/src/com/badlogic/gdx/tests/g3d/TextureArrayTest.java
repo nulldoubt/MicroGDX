@@ -30,7 +30,7 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.tests.utils.GdxTest;
@@ -43,7 +43,7 @@ public class TextureArrayTest extends GdxTest {
 	TextureArray textureArray;
 	Mesh terrain;
 
-	ShaderProgram shaderProgram;
+	Shader shader;
 
 	PerspectiveCamera camera;
 	FirstPersonCameraController cameraController;
@@ -57,10 +57,10 @@ public class TextureArrayTest extends GdxTest {
 		glProfiler = new GLProfiler(Micro.graphics);
 		glProfiler.enable();
 
-		ShaderProgram.prependVertexCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
+		Shader.prependVertexCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
 			? "#version 140\n #extension GL_EXT_texture_array : enable\n"
 			: "#version 300 es\n";
-		ShaderProgram.prependFragmentCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
+		Shader.prependFragmentCode = Micro.app.getType().equals(Application.ApplicationType.Desktop)
 			? "#version 140\n #extension GL_EXT_texture_array : enable\n"
 			: "#version 300 es\n";
 
@@ -83,14 +83,14 @@ public class TextureArrayTest extends GdxTest {
 		textureArray = new TextureArray(true, texFiles);
 		textureArray.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 		textureArray.setFilter(TextureFilter.MipMapLinearLinear, TextureFilter.Linear);
-		shaderProgram = new ShaderProgram(Micro.files.internal("data/shaders/texturearray.vert"),
+		shader = new Shader(Micro.files.internal("data/shaders/texturearray.vert"),
 			Micro.files.internal("data/shaders/texturearray.frag"));
-		System.out.println(shaderProgram.getLog());
+		System.out.println(shader.getLog());
 
 		int vertexStride = 6;
 		int vertexCount = 100 * 100;
 		terrain = new Mesh(false, vertexCount * 6, 0, new VertexAttributes(VertexAttribute.Position(),
-			new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 3, ShaderProgram.TEXCOORD_ATTRIBUTE + 0)));
+			new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 3, Shader.TEXCOORD_ATTRIBUTE + 0)));
 
 		Pixmap data = new Pixmap(Micro.files.internal("data/g3d/heightmap.png"));
 		float[] vertices = new float[vertexCount * vertexStride * 6];
@@ -138,16 +138,16 @@ public class TextureArrayTest extends GdxTest {
 
 		textureArray.bind();
 
-		shaderProgram.bind();
-		shaderProgram.setUniformi("u_textureArray", 0);
-		shaderProgram.setUniformMatrix("u_projViewTrans", camera.combined);
-		shaderProgram.setUniformMatrix("u_modelView", modelView);
-		terrain.render(shaderProgram, GL20.GL_TRIANGLES);
+		shader.bind();
+		shader.setUniformi("u_textureArray", 0);
+		shader.setUniformMatrix("u_projViewTrans", camera.combined);
+		shader.setUniformMatrix("u_modelView", modelView);
+		terrain.render(shader, GL20.GL_TRIANGLES);
 	}
 
 	@Override
 	public void dispose () {
 		terrain.dispose();
-		shaderProgram.dispose();
+		shader.dispose();
 	}
 }

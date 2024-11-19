@@ -39,7 +39,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.KTXTextureData;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -61,7 +61,7 @@ public class KTXTest extends GdxTest {
 	private OrthographicCamera orthoCamera;
 	private Texture image;
 	private SpriteBatch batch;
-	private ShaderProgram etc1aShader;
+	private Shader etc1aShader;
 
 	// animation
 	private float time;
@@ -147,7 +147,7 @@ public class KTXTest extends GdxTest {
 			+ "   float alpha = texture2D(u_texture, v_texCoord.st + vec2(0.0, 0.5)).r;\n"//
 			+ "   gl_FragColor = vec4(col, alpha) * v_color;\n"//
 			+ "}\n";//
-		etc1aShader = new ShaderProgram(etc1aVS, etc1aFS);
+		etc1aShader = new Shader(etc1aVS, etc1aFS);
 		orthoCamera = new OrthographicCamera(Micro.graphics.getWidth(), Micro.graphics.getHeight());
 		image = new Texture("data/egg.zktx");
 		batch = new SpriteBatch(100, etc1aShader);

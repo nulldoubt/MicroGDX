@@ -19,7 +19,7 @@ package com.badlogic.gdx.tests.g3d.shadows.system.classical;
 import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 
 /** This shader pack the depth data into the texture
  * @author realitix */
@@ -55,10 +55,10 @@ public class Pass1Shader extends DefaultShader {
 
 	public Pass1Shader (final Renderable renderable, final Config config, final String prefix, final String vertexShader,
 		final String fragmentShader) {
-		this(renderable, config, new ShaderProgram(prefix + vertexShader, prefix + fragmentShader));
+		this(renderable, config, new Shader(prefix + vertexShader, prefix + fragmentShader));
 	}
 
-	public Pass1Shader (final Renderable renderable, final Config config, final ShaderProgram shaderProgram) {
-		super(renderable, config, shaderProgram);
+	public Pass1Shader (final Renderable renderable, final Config config, final Shader shader) {
+		super(renderable, config, shader);
 	}
 }

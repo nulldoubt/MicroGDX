@@ -27,7 +27,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.tests.utils.GdxTestConfig;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -85,9 +84,9 @@ public class ModelInstancedRenderingTest extends GdxTest {
 
 			@Override
 			public void init () {
-				ShaderProgram.prependVertexCode = "#version 300 es\n";
-				ShaderProgram.prependFragmentCode = "#version 300 es\n";
-				program = new ShaderProgram(Micro.files.internal("data/shaders/instanced-rendering.vert"),
+				com.badlogic.gdx.graphics.glutils.Shader.prependVertexCode = "#version 300 es\n";
+				com.badlogic.gdx.graphics.glutils.Shader.prependFragmentCode = "#version 300 es\n";
+				program = new com.badlogic.gdx.graphics.glutils.Shader(Micro.files.internal("data/shaders/instanced-rendering.vert"),
 					Micro.files.internal("data/shaders/instanced-rendering.frag"));
 				if (!program.isCompiled()) {
 					throw new GdxRuntimeException("Shader compile error: " + program.getLog());

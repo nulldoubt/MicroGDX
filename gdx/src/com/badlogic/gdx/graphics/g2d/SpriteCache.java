@@ -30,7 +30,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
@@ -76,7 +76,7 @@ public class SpriteCache implements Disposable {
 	private Array<Cache> caches = new Array();
 
 	private final Matrix4 combinedMatrix = new Matrix4();
-	private final ShaderProgram shader;
+	private final Shader shader;
 
 	private Cache currentCache;
 	private final Array<Texture> textures = new Array(8);
@@ -85,7 +85,7 @@ public class SpriteCache implements Disposable {
 	private final Color color = new Color(1, 1, 1, 1);
 	private float colorPacked = Color.WHITE_FLOAT_BITS;
 
-	private ShaderProgram customShader = null;
+	private Shader customShader = null;
 
 	/** Number of render calls since the last {@link #begin()}. **/
 	public int renderCalls = 0;
@@ -110,15 +110,15 @@ public class SpriteCache implements Disposable {
 	 * @param size The maximum number of images this cache can hold. The memory required to hold the images is allocated up front.
 	 *           Max of 8191 if indices are used.
 	 * @param useIndices If true, indexed geometry will be used. */
-	public SpriteCache (int size, ShaderProgram shader, boolean useIndices) {
+	public SpriteCache (int size, Shader shader, boolean useIndices) {
 		this.shader = shader;
 
 		if (useIndices && size > 8191) throw new IllegalArgumentException("Can't have more than 8191 sprites per batch: " + size);
 
 		mesh = new Mesh(true, size * (useIndices ? 4 : 6), useIndices ? size * 6 : 0,
-			new VertexAttribute(Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE),
-			new VertexAttribute(Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
-			new VertexAttribute(Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+			new VertexAttribute(Usage.Position, 2, Shader.POSITION_ATTRIBUTE),
+			new VertexAttribute(Usage.ColorPacked, 4, Shader.COLOR_ATTRIBUTE),
+			new VertexAttribute(Usage.TextureCoordinates, 2, Shader.TEXCOORD_ATTRIBUTE + "0"));
 		mesh.setAutoBind(false);
 
 		if (useIndices) {
@@ -978,20 +978,20 @@ public class SpriteCache implements Disposable {
 		}
 	}
 
-	static ShaderProgram createDefaultShader () {
-		String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-			+ "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-			+ "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
+	static Shader createDefaultShader () {
+		String vertexShader = "attribute vec4 " + Shader.POSITION_ATTRIBUTE + ";\n" //
+			+ "attribute vec4 " + Shader.COLOR_ATTRIBUTE + ";\n" //
+			+ "attribute vec2 " + Shader.TEXCOORD_ATTRIBUTE + "0;\n" //
 			+ "uniform mat4 u_projectionViewMatrix;\n" //
 			+ "varying vec4 v_color;\n" //
 			+ "varying vec2 v_texCoords;\n" //
 			+ "\n" //
 			+ "void main()\n" //
 			+ "{\n" //
-			+ "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
+			+ "   v_color = " + Shader.COLOR_ATTRIBUTE + ";\n" //
 			+ "   v_color.a = v_color.a * (255.0/254.0);\n" //
-			+ "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-			+ "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+			+ "   v_texCoords = " + Shader.TEXCOORD_ATTRIBUTE + "0;\n" //
+			+ "   gl_Position =  u_projectionViewMatrix * " + Shader.POSITION_ATTRIBUTE + ";\n" //
 			+ "}\n";
 		String fragmentShader = "#ifdef GL_ES\n" //
 			+ "precision mediump float;\n" //
@@ -1003,7 +1003,7 @@ public class SpriteCache implements Disposable {
 			+ "{\n" //
 			+ "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
 			+ "}";
-		ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
+		Shader shader = new Shader(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
 		return shader;
 	}
@@ -1016,13 +1016,13 @@ public class SpriteCache implements Disposable {
 	 *
 	 * Call this method with a null argument to use the default shader.
 	 *
-	 * @param shader the {@link ShaderProgram} or null to use the default shader. */
-	public void setShader (ShaderProgram shader) {
+	 * @param shader the {@link Shader} or null to use the default shader. */
+	public void setShader (Shader shader) {
 		customShader = shader;
 	}
 
 	/** Returns the custom shader, or null if the default shader is being used. */
-	public ShaderProgram getCustomShader () {
+	public Shader getCustomShader () {
 		return customShader;
 	}
 

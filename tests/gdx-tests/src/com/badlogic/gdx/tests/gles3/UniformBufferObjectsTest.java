@@ -20,7 +20,7 @@ import com.badlogic.gdx.Micro;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.Shader;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -49,7 +49,7 @@ public class UniformBufferObjectsTest extends GdxTest {
 	RandomXS128 random;
 	SpriteBatch batch;
 	Texture texture;
-	ShaderProgram shaderProgram;
+	Shader shader;
 	FloatBuffer uniformBuffer = BufferUtils.newFloatBuffer(16);
 
 	float lerpToR = 1.0f;
@@ -64,21 +64,21 @@ public class UniformBufferObjectsTest extends GdxTest {
 		texture = new Texture(Micro.files.internal("data/badlogic.jpg"));
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-		shaderProgram = new ShaderProgram(Micro.files.internal("data/shaders/ubo.vert"), Micro.files.internal("data/shaders/ubo.frag"));
+		shader = new Shader(Micro.files.internal("data/shaders/ubo.vert"), Micro.files.internal("data/shaders/ubo.frag"));
 
-		Micro.app.log("UniformBufferObjectsTest", shaderProgram.getLog());
-		if (shaderProgram.isCompiled()) {
+		Micro.app.log("UniformBufferObjectsTest", shader.getLog());
+		if (shader.isCompiled()) {
 			Micro.app.log("UniformBufferObjectsTest", "Shader compiled");
-			batch.setShader(shaderProgram);
+			batch.setShader(shader);
 		}
 
 		IntBuffer tmpBuffer = BufferUtils.newIntBuffer(16);
 
 		// Get the block index for the uniform block
-		int blockIndex = Micro.gl30.glGetUniformBlockIndex(shaderProgram.getHandle(), "u_bufferBlock");
+		int blockIndex = Micro.gl30.glGetUniformBlockIndex(shader.getHandle(), "u_bufferBlock");
 
 		// Use the index to get the active block uniform count
-		Micro.gl30.glGetActiveUniformBlockiv(shaderProgram.getHandle(), blockIndex, GL30.GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, tmpBuffer);
+		Micro.gl30.glGetActiveUniformBlockiv(shader.getHandle(), blockIndex, GL30.GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, tmpBuffer);
 		int activeUniforms = tmpBuffer.get(0);
 
 		tmpBuffer.clear();
@@ -90,7 +90,7 @@ public class UniformBufferObjectsTest extends GdxTest {
 
 		int bindingPoint = 0;
 		// Use the index to bind to a binding point, then bind the buffer
-		Micro.gl30.glUniformBlockBinding(shaderProgram.getHandle(), blockIndex, bindingPoint);
+		Micro.gl30.glUniformBlockBinding(shader.getHandle(), blockIndex, bindingPoint);
 		Micro.gl30.glBindBufferBase(GL30.GL_UNIFORM_BUFFER, bindingPoint, bufferHandle);
 
 		// UI
@@ -148,6 +148,6 @@ public class UniformBufferObjectsTest extends GdxTest {
 	public void dispose () {
 		texture.dispose();
 		batch.dispose();
-		shaderProgram.dispose();
+		shader.dispose();
 	}
 }

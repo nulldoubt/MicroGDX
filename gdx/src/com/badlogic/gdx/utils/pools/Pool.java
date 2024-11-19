@@ -1,4 +1,6 @@
-package com.badlogic.gdx.utils;
+package com.badlogic.gdx.utils.pools;
+
+import com.badlogic.gdx.utils.Array;
 
 public abstract class Pool<T> {
 	
