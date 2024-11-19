@@ -19,7 +19,7 @@ package me.nulldoubt.micro.backends.android;
 import android.opengl.GLES30;
 
 import me.nulldoubt.micro.graphics.GL30;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class AndroidGL30 extends AndroidGL20 implements GL30 {
 	@Override
@@ -40,7 +40,7 @@ public class AndroidGL30 extends AndroidGL20 implements GL30 {
 	@Override
 	public void glTexImage2D (int target, int level, int internalformat, int width, int height, int border, int format, int type,
 		int offset) {
-		if (offset != 0) throw new GdxRuntimeException("non zero offset is not supported");
+		if (offset != 0) throw new MicroRuntimeException("non zero offset is not supported");
 		GLES30.glTexImage2D(target, level, internalformat, width, height, border, format, type, null);
 	}
 
@@ -62,7 +62,7 @@ public class AndroidGL30 extends AndroidGL20 implements GL30 {
 	@Override
 	public void glTexSubImage2D (int target, int level, int xoffset, int yoffset, int width, int height, int format, int type,
 		int offset) {
-		if (offset != 0) throw new GdxRuntimeException("non zero offset is not supported");
+		if (offset != 0) throw new MicroRuntimeException("non zero offset is not supported");
 		GLES30.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, null);
 	}
 

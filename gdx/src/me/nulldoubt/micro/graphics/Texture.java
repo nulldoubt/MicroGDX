@@ -25,7 +25,7 @@ import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.graphics.glutils.FileTextureData;
 import me.nulldoubt.micro.graphics.glutils.PixmapTextureData;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -171,7 +171,7 @@ public class Texture extends GLTexture {
 	
 	public void load(TextureData data) {
 		if (this.data != null && data.isManaged() != this.data.isManaged())
-			throw new GdxRuntimeException("New data must have the same managed status as the old data");
+			throw new MicroRuntimeException("New data must have the same managed status as the old data");
 		this.data = data;
 		
 		if (!data.isPrepared())
@@ -193,7 +193,7 @@ public class Texture extends GLTexture {
 	@Override
 	protected void reload() {
 		if (!isManaged())
-			throw new GdxRuntimeException("Tried to reload unmanaged Texture");
+			throw new MicroRuntimeException("Tried to reload unmanaged Texture");
 		glHandle = Micro.gl.glGenTexture();
 		load(data);
 	}
@@ -208,7 +208,7 @@ public class Texture extends GLTexture {
 	 */
 	public void draw(Pixmap pixmap, int x, int y) {
 		if (data.isManaged())
-			throw new GdxRuntimeException("can't draw to a managed texture");
+			throw new MicroRuntimeException("can't draw to a managed texture");
 		
 		bind();
 		Micro.gl.glTexSubImage2D(glTarget, 0, x, y, pixmap.getWidth(), pixmap.getHeight(), pixmap.getGLFormat(), pixmap.getGLType(),

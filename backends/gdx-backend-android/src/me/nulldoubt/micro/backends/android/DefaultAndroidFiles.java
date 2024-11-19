@@ -24,7 +24,7 @@ import android.content.res.AssetManager;
 
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.io.File;
 import java.io.IOException;
@@ -137,11 +137,11 @@ public class DefaultAndroidFiles implements AndroidFiles {
 			} else if (Micro.app instanceof Fragment) {
 				context = ((Fragment) Micro.app).getActivity().getBaseContext();
 			} else {
-				throw new GdxRuntimeException("APK expansion not supported for application type");
+				throw new MicroRuntimeException("APK expansion not supported for application type");
 			}
 			expansionFile = APKExpansionSupport.getAPKExpansionZipFile(context, mainVersion, patchVersion);
 		} catch (IOException ex) {
-			throw new GdxRuntimeException(
+			throw new MicroRuntimeException(
 				"APK expansion main version " + mainVersion + " or patch version " + patchVersion + " couldn't be opened!");
 		}
 		return expansionFile != null;

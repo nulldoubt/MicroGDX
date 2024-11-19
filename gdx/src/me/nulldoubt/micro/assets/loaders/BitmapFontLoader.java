@@ -28,7 +28,7 @@ import me.nulldoubt.micro.graphics.g2d.TextureAtlas;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.AtlasRegion;
 import me.nulldoubt.micro.graphics.g2d.TextureRegion;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, BitmapFontLoader.BitmapFontParameter> {
 	
@@ -81,7 +81,7 @@ public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, Bitmap
 			AtlasRegion region = atlas.findRegion(name);
 			
 			if (region == null)
-				throw new GdxRuntimeException("Could not find font region " + name + " in atlas " + parameter.atlasName);
+				throw new MicroRuntimeException("Could not find font region " + name + " in atlas " + parameter.atlasName);
 			return new BitmapFont(file, region);
 		} else {
 			final Array<TextureRegion> regions = new Array<>(data.getImagePaths().length);

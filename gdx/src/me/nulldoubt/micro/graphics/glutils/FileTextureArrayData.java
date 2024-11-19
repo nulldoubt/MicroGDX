@@ -22,7 +22,7 @@ import me.nulldoubt.micro.graphics.GL30;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.TextureArrayData;
 import me.nulldoubt.micro.graphics.TextureData;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 /**
  * @author Tomski
@@ -62,7 +62,7 @@ public class FileTextureArrayData implements TextureArrayData {
 				continue;
 			}
 			if (width != data.getWidth() || height != data.getHeight()) {
-				throw new GdxRuntimeException(
+				throw new MicroRuntimeException(
 						"Error whilst preparing TextureArray: TextureArray Textures must have equal dimensions.");
 			}
 		}

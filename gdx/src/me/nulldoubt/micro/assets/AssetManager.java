@@ -1,7 +1,6 @@
 package me.nulldoubt.micro.assets;
 
 import me.nulldoubt.micro.Micro;
-import com.nulldoubt.micro.assets.loaders.*;
 import me.nulldoubt.micro.assets.loaders.*;
 import me.nulldoubt.micro.audio.Music;
 import me.nulldoubt.micro.audio.Sound;
@@ -10,7 +9,6 @@ import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.g2d.BitmapFont;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas;
 import me.nulldoubt.micro.graphics.glutils.Shader;
-import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.ObjectMap.Entry;
 import me.nulldoubt.micro.utils.async.AsyncExecutor;
@@ -90,7 +88,7 @@ public class AssetManager implements Disposable {
 			}
 		}
 		if (required)
-			throw new GdxRuntimeException("Asset not loaded: " + fileName);
+			throw new MicroRuntimeException("Asset not loaded: " + fileName);
 		return null;
 	}
 	
@@ -102,7 +100,7 @@ public class AssetManager implements Disposable {
 				return (T) assetContainer.object;
 		}
 		if (required)
-			throw new GdxRuntimeException("Asset not loaded: " + fileName);
+			throw new MicroRuntimeException("Asset not loaded: " + fileName);
 		return null;
 	}
 	
@@ -180,7 +178,7 @@ public class AssetManager implements Disposable {
 		}
 		
 		if (type == null)
-			throw new GdxRuntimeException("Asset not loaded: " + fileName);
+			throw new MicroRuntimeException("Asset not loaded: " + fileName);
 		
 		RefCountedContainer assetRef = assets.get(type).get(fileName);
 		
@@ -278,7 +276,7 @@ public class AssetManager implements Disposable {
 	public synchronized void load(String fileName, Class<?> type, AssetLoaderParameters<?> parameter) {
 		final AssetLoader<?, ?> loader = getLoader(type, fileName);
 		if (loader == null)
-			throw new GdxRuntimeException("No loader for type: " + type.getSimpleName());
+			throw new MicroRuntimeException("No loader for type: " + type.getSimpleName());
 		
 		if (loadQueue.size == 0) {
 			loaded = 0;
@@ -289,18 +287,18 @@ public class AssetManager implements Disposable {
 		for (int i = 0; i < loadQueue.size; i++) {
 			final AssetDescriptor<?> desc = loadQueue.get(i);
 			if (desc.fileName.equals(fileName) && !desc.type.equals(type))
-				throw new GdxRuntimeException("Asset with name '" + fileName + "' already in preload queue, but has different type (expected: " + type.getSimpleName() + ", found: " + desc.type.getSimpleName() + ")");
+				throw new MicroRuntimeException("Asset with name '" + fileName + "' already in preload queue, but has different type (expected: " + type.getSimpleName() + ", found: " + desc.type.getSimpleName() + ")");
 		}
 		
 		for (int i = 0; i < tasks.size; i++) {
 			final AssetDescriptor<?> desc = tasks.get(i).assetDesc;
 			if (desc.fileName.equals(fileName) && !desc.type.equals(type))
-				throw new GdxRuntimeException("Asset with name '" + fileName + "' already in task list, but has different type (expected: " + type.getSimpleName() + ", found: " + desc.type.getSimpleName() + ")");
+				throw new MicroRuntimeException("Asset with name '" + fileName + "' already in task list, but has different type (expected: " + type.getSimpleName() + ", found: " + desc.type.getSimpleName() + ")");
 		}
 		
 		final Class<?> otherType = assetTypes.get(fileName);
 		if (otherType != null && !otherType.equals(type))
-			throw new GdxRuntimeException("Asset with name '" + fileName + "' already loaded, but has different type (expected: " + type.getSimpleName() + ", found: " + otherType.getSimpleName() + ")");
+			throw new MicroRuntimeException("Asset with name '" + fileName + "' already loaded, but has different type (expected: " + type.getSimpleName() + ", found: " + otherType.getSimpleName() + ")");
 		
 		toLoad++;
 		final AssetDescriptor<?> assetDesc = new AssetDescriptor(fileName, type, parameter);
@@ -428,7 +426,7 @@ public class AssetManager implements Disposable {
 	private void addTask(AssetDescriptor<?> assetDesc) {
 		AssetLoader<?, ?> loader = getLoader(assetDesc.type, assetDesc.fileName);
 		if (loader == null)
-			throw new GdxRuntimeException("No loader for type: " + assetDesc.type.getSimpleName());
+			throw new MicroRuntimeException("No loader for type: " + assetDesc.type.getSimpleName());
 		tasks.add(new AssetLoadingTask(this, assetDesc, loader, executor));
 		peakTasks++;
 	}
@@ -504,7 +502,7 @@ public class AssetManager implements Disposable {
 		Micro.app.error(TAG, "Error loading asset.", t);
 		
 		if (tasks.isEmpty())
-			throw new GdxRuntimeException(t);
+			throw new MicroRuntimeException(t);
 		
 		// pop the faulty task from the stack
 		AssetLoadingTask task = tasks.pop();
@@ -523,7 +521,7 @@ public class AssetManager implements Disposable {
 		if (listener != null)
 			listener.error(assetDesc, t);
 		else
-			throw new GdxRuntimeException(t);
+			throw new MicroRuntimeException(t);
 	}
 	
 	public synchronized <T, P extends AssetLoaderParameters<T>> void setLoader(Class<T> type, AssetLoader<T, P> loader) {
@@ -612,14 +610,14 @@ public class AssetManager implements Disposable {
 	public synchronized int getReferenceCount(String fileName) {
 		Class<?> type = assetTypes.get(fileName);
 		if (type == null)
-			throw new GdxRuntimeException("Asset not loaded: " + fileName);
+			throw new MicroRuntimeException("Asset not loaded: " + fileName);
 		return assets.get(type).get(fileName).refCount;
 	}
 	
 	public synchronized void setReferenceCount(String fileName, int refCount) {
 		Class<?> type = assetTypes.get(fileName);
 		if (type == null)
-			throw new GdxRuntimeException("Asset not loaded: " + fileName);
+			throw new MicroRuntimeException("Asset not loaded: " + fileName);
 		assets.get(type).get(fileName).refCount = refCount;
 	}
 	

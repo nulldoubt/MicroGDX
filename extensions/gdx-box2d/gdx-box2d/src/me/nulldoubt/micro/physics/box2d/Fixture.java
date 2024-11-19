@@ -18,7 +18,7 @@ package me.nulldoubt.micro.physics.box2d;
 
 import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.physics.box2d.Shape.Type;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class Fixture {
 	// @off
@@ -72,7 +72,7 @@ public class Fixture {
 		case 3:
 			return Type.Chain;
 		default:
-			throw new GdxRuntimeException("Unknown shape type!");
+			throw new MicroRuntimeException("Unknown shape type!");
 		}
 	}
 
@@ -94,7 +94,7 @@ public class Fixture {
 	public Shape getShape () {
 		if (shape == null) {
 			long shapeAddr = jniGetShape(addr);
-			if (shapeAddr == 0) throw new GdxRuntimeException("Null shape address!");
+			if (shapeAddr == 0) throw new MicroRuntimeException("Null shape address!");
 			int type = Shape.jniGetType(shapeAddr);
 
 			switch (type) {
@@ -111,7 +111,7 @@ public class Fixture {
 				shape = new ChainShape(shapeAddr);
 				break;
 			default:
-				throw new GdxRuntimeException("Unknown shape type!");
+				throw new MicroRuntimeException("Unknown shape type!");
 			}
 		}
 

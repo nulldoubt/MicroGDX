@@ -17,7 +17,7 @@
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.StreamUtils;
 
 import java.io.EOFException;
@@ -46,7 +46,7 @@ public class Wav {
 			try {
 				return input.read(buffer);
 			} catch (IOException ex) {
-				throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
+				throw new MicroRuntimeException("Error reading WAV file: " + file, ex);
 			}
 		}
 		
@@ -74,7 +74,7 @@ public class Wav {
 				setup(StreamUtils.copyStreamToByteArray(input, input.dataRemaining), input.channels, input.bitDepth,
 						input.sampleRate);
 			} catch (IOException ex) {
-				throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
+				throw new MicroRuntimeException("Error reading WAV file: " + file, ex);
 			} finally {
 				StreamUtils.closeQuietly(input);
 			}
@@ -93,12 +93,12 @@ public class Wav {
 			super(file.read());
 			try {
 				if (read() != 'R' || read() != 'I' || read() != 'F' || read() != 'F')
-					throw new GdxRuntimeException("RIFF header not found: " + file);
+					throw new MicroRuntimeException("RIFF header not found: " + file);
 				
 				skipFully(4);
 				
 				if (read() != 'W' || read() != 'A' || read() != 'V' || read() != 'E')
-					throw new GdxRuntimeException("Invalid wave file header: " + file);
+					throw new MicroRuntimeException("Invalid wave file header: " + file);
 				
 				int fmtChunkLength = seekToChunk('f', 'm', 't', ' ');
 				
@@ -109,7 +109,7 @@ public class Wav {
 				if (type == 0x0055)
 					return; // Handle MP3 in constructor instead
 				if (type != 0x0001 && type != 0x0003)
-					throw new GdxRuntimeException(
+					throw new MicroRuntimeException(
 							"WAV files must be PCM, unsupported format: " + getCodecName(type) + " (" + type + ")");
 				
 				channels = read() & 0xff | (read() & 0xff) << 8;
@@ -120,10 +120,10 @@ public class Wav {
 				bitDepth = read() & 0xff | (read() & 0xff) << 8;
 				if (type == 0x0001) { // PCM
 					if (bitDepth != 8 && bitDepth != 16)
-						throw new GdxRuntimeException("PCM WAV files must be 8 or 16-bit: " + bitDepth);
+						throw new MicroRuntimeException("PCM WAV files must be 8 or 16-bit: " + bitDepth);
 				} else if (type == 0x0003) { // Float
 					if (bitDepth != 32 && bitDepth != 64)
-						throw new GdxRuntimeException("Floating-point WAV files must be 32 or 64-bit: " + bitDepth);
+						throw new MicroRuntimeException("Floating-point WAV files must be 32 or 64-bit: " + bitDepth);
 				}
 				
 				skipFully(fmtChunkLength - 16);
@@ -131,7 +131,7 @@ public class Wav {
 				dataRemaining = seekToChunk('d', 'a', 't', 'a');
 			} catch (Throwable ex) {
 				StreamUtils.closeQuietly(this);
-				throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
+				throw new MicroRuntimeException("Error reading WAV file: " + file, ex);
 			}
 		}
 		

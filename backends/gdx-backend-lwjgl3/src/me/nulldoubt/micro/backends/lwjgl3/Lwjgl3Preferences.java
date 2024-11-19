@@ -19,7 +19,7 @@ package me.nulldoubt.micro.backends.lwjgl3;
 import me.nulldoubt.micro.Files.FileType;
 import me.nulldoubt.micro.Preferences;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.StreamUtils;
 
 import java.io.*;
@@ -190,7 +190,7 @@ public class Lwjgl3Preferences implements Preferences {
 			out = new BufferedOutputStream(file.write(false));
 			properties.storeToXML(out, null);
 		} catch (Exception ex) {
-			throw new GdxRuntimeException("Error writing preferences: " + file, ex);
+			throw new MicroRuntimeException("Error writing preferences: " + file, ex);
 		} finally {
 			StreamUtils.closeQuietly(out);
 		}

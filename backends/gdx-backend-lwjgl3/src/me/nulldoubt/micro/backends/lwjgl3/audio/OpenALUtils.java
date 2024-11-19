@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.EXTDouble.AL_FORMAT_MONO_DOUBLE_EXT;
@@ -34,7 +34,7 @@ public class OpenALUtils {
 						format = AL_FORMAT_MONO_DOUBLE_EXT;
 						break;
 					default:
-						throw new GdxRuntimeException("Audio: Bit depth must be 8, 16, 32 or 64.");
+						throw new MicroRuntimeException("Audio: Bit depth must be 8, 16, 32 or 64.");
 				}
 				break;
 			case 2: // Doesn't work on mono devices (#6631)
@@ -52,7 +52,7 @@ public class OpenALUtils {
 						format = AL_FORMAT_STEREO_DOUBLE_EXT;
 						break;
 					default:
-						throw new GdxRuntimeException("Audio: Bit depth must be 8, 16, 32 or 64.");
+						throw new MicroRuntimeException("Audio: Bit depth must be 8, 16, 32 or 64.");
 				}
 				break;
 			case 4:
@@ -68,7 +68,7 @@ public class OpenALUtils {
 				format = AL_FORMAT_71CHN16;
 				break;
 			default:
-				throw new GdxRuntimeException("Audio: Invalid number of channels. " +
+				throw new MicroRuntimeException("Audio: Invalid number of channels. " +
 						"Must be mono, stereo, quad, 5.1, 6.1 or 7.1.");
 		}
 		if (channels >= 4) {
@@ -77,7 +77,7 @@ public class OpenALUtils {
 			else if (bitDepth == 32)
 				format++; // Use 32-bit AL_FORMAT instead
 			else if (bitDepth != 16)
-				throw new GdxRuntimeException("Audio: Bit depth must be 8, 16 or 32 when 4+ channels are present.");
+				throw new MicroRuntimeException("Audio: Bit depth must be 8, 16 or 32 when 4+ channels are present.");
 		}
 		return format; // @on
 	}

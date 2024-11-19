@@ -29,7 +29,7 @@ import me.nulldoubt.micro.graphics.g2d.TextureRegion;
 import me.nulldoubt.micro.maps.ImageResolver;
 import me.nulldoubt.micro.maps.MapProperties;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.XmlReader.Element;
 
 /** A TiledMap Loader which loads tiles from a TextureAtlas instead of separate images.
@@ -196,7 +196,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
 					String regionName = imageElement.getAttribute("source");
 					regionName = regionName.substring(0, regionName.lastIndexOf('.'));
 					AtlasRegion region = atlas.findRegion(regionName);
-					if (region == null) throw new GdxRuntimeException("Tileset atlasRegion not found: " + regionName);
+					if (region == null) throw new MicroRuntimeException("Tileset atlasRegion not found: " + regionName);
 					addStaticTiledMapTile(tileSet, region, tileId, offsetX, offsetY);
 				}
 			}
@@ -217,11 +217,11 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
 			}
 		}
 		if (atlasFilePath == null) {
-			throw new GdxRuntimeException("The map is missing the 'atlas' property");
+			throw new MicroRuntimeException("The map is missing the 'atlas' property");
 		} else {
 			final FileHandle fileHandle = getRelativeFileHandle(tmxFile, atlasFilePath);
 			if (!fileHandle.exists()) {
-				throw new GdxRuntimeException("The 'atlas' file could not be found: '" + atlasFilePath + "'");
+				throw new MicroRuntimeException("The 'atlas' file could not be found: '" + atlasFilePath + "'");
 			}
 			return fileHandle;
 		}

@@ -612,7 +612,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 			if (!hasNext)
 				throw new NoSuchElementException();
 			if (!valid)
-				throw new GdxRuntimeException("#iterator() cannot be used nested.");
+				throw new MicroRuntimeException("#iterator() cannot be used nested.");
 			K[] keyTable = map.keyTable;
 			entry.key = keyTable[nextIndex];
 			entry.value = map.valueTable[nextIndex];
@@ -623,7 +623,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 		
 		public boolean hasNext() {
 			if (!valid)
-				throw new GdxRuntimeException("#iterator() cannot be used nested.");
+				throw new MicroRuntimeException("#iterator() cannot be used nested.");
 			return hasNext;
 		}
 		
@@ -641,7 +641,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 		
 		public boolean hasNext() {
 			if (!valid)
-				throw new GdxRuntimeException("#iterator() cannot be used nested.");
+				throw new MicroRuntimeException("#iterator() cannot be used nested.");
 			return hasNext;
 		}
 		
@@ -649,7 +649,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 			if (!hasNext)
 				throw new NoSuchElementException();
 			if (!valid)
-				throw new GdxRuntimeException("#iterator() cannot be used nested.");
+				throw new MicroRuntimeException("#iterator() cannot be used nested.");
 			V value = map.valueTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
@@ -686,7 +686,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 		
 		public boolean hasNext() {
 			if (!valid)
-				throw new GdxRuntimeException("#iterator() cannot be used nested.");
+				throw new MicroRuntimeException("#iterator() cannot be used nested.");
 			return hasNext;
 		}
 		
@@ -694,7 +694,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 			if (!hasNext)
 				throw new NoSuchElementException();
 			if (!valid)
-				throw new GdxRuntimeException("#iterator() cannot be used nested.");
+				throw new MicroRuntimeException("#iterator() cannot be used nested.");
 			K key = map.keyTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();

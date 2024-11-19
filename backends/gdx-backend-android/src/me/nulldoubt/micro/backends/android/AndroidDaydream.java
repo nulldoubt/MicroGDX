@@ -33,7 +33,7 @@ import com.nulldoubt.micro.*;
 import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxNativesLoader;
+import me.nulldoubt.micro.utils.MicroNativesLoader;
 import me.nulldoubt.micro.utils.SnapshotArray;
 
 /** An implementation of the {@link Application} interface for Android. Create an {@link Activity} that derives from this class.
@@ -103,7 +103,7 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
 	}
 
 	private void init (ApplicationListener listener, AndroidApplicationConfiguration config, boolean isForView) {
-		GdxNativesLoader.load();
+		MicroNativesLoader.load();
 		setApplicationLogger(new AndroidApplicationLogger());
 		graphics = new AndroidGraphics(this, config,
 			config.resolutionStrategy == null ? new FillResolutionStrategy() : config.resolutionStrategy);

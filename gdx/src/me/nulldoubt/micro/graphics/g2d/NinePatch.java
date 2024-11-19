@@ -4,7 +4,7 @@ import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.Texture.TextureFilter;
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class NinePatch {
 	
@@ -137,22 +137,22 @@ public class NinePatch {
 		if ((patches[TOP_LEFT] != null && patches[TOP_LEFT].getRegionWidth() != leftWidth)
 				|| (patches[MIDDLE_LEFT] != null && patches[MIDDLE_LEFT].getRegionWidth() != leftWidth)
 				|| (patches[BOTTOM_LEFT] != null && patches[BOTTOM_LEFT].getRegionWidth() != leftWidth)) {
-			throw new GdxRuntimeException("Left side patches must have the same width");
+			throw new MicroRuntimeException("Left side patches must have the same width");
 		}
 		if ((patches[TOP_RIGHT] != null && patches[TOP_RIGHT].getRegionWidth() != rightWidth)
 				|| (patches[MIDDLE_RIGHT] != null && patches[MIDDLE_RIGHT].getRegionWidth() != rightWidth)
 				|| (patches[BOTTOM_RIGHT] != null && patches[BOTTOM_RIGHT].getRegionWidth() != rightWidth)) {
-			throw new GdxRuntimeException("Right side patches must have the same width");
+			throw new MicroRuntimeException("Right side patches must have the same width");
 		}
 		if ((patches[BOTTOM_LEFT] != null && patches[BOTTOM_LEFT].getRegionHeight() != bottomHeight)
 				|| (patches[BOTTOM_CENTER] != null && patches[BOTTOM_CENTER].getRegionHeight() != bottomHeight)
 				|| (patches[BOTTOM_RIGHT] != null && patches[BOTTOM_RIGHT].getRegionHeight() != bottomHeight)) {
-			throw new GdxRuntimeException("Bottom side patches must have the same height");
+			throw new MicroRuntimeException("Bottom side patches must have the same height");
 		}
 		if ((patches[TOP_LEFT] != null && patches[TOP_LEFT].getRegionHeight() != topHeight)
 				|| (patches[TOP_CENTER] != null && patches[TOP_CENTER].getRegionHeight() != topHeight)
 				|| (patches[TOP_RIGHT] != null && patches[TOP_RIGHT].getRegionHeight() != topHeight)) {
-			throw new GdxRuntimeException("Top side patches must have the same height");
+			throw new MicroRuntimeException("Top side patches must have the same height");
 		}
 	}
 	

@@ -16,7 +16,7 @@
 
 package me.nulldoubt.micro.math;
 
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.io.Serializable;
 
@@ -323,12 +323,12 @@ public class Matrix3 implements Serializable {
 	 * Inverts this matrix given that the determinant is != 0.
 	 *
 	 * @return This matrix for the purpose of chaining operations.
-	 * @throws GdxRuntimeException if the matrix is singular (not invertible)
+	 * @throws MicroRuntimeException if the matrix is singular (not invertible)
 	 */
 	public Matrix3 inv() {
 		float det = det();
 		if (det == 0)
-			throw new GdxRuntimeException("Can't invert a singular matrix");
+			throw new MicroRuntimeException("Can't invert a singular matrix");
 		
 		float inv_det = 1.0f / det;
 		float[] val = this.val;

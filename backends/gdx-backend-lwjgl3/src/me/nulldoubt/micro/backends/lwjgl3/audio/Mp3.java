@@ -17,7 +17,7 @@
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import javazoom.jl.decoder.*;
 
 import java.io.ByteArrayOutputStream;
@@ -43,13 +43,13 @@ public class Mp3 {
 			try {
 				Header header = bitstream.readFrame();
 				if (header == null)
-					throw new GdxRuntimeException("Empty MP3");
+					throw new MicroRuntimeException("Empty MP3");
 				int channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
 				outputBuffer = new OutputBuffer(channels, false);
 				decoder.setOutputBuffer(outputBuffer);
 				setup(channels, 16, header.getSampleRate());
 			} catch (BitstreamException e) {
-				throw new GdxRuntimeException("Error while preloading MP3", e);
+				throw new MicroRuntimeException("Error while preloading MP3", e);
 			}
 		}
 		
@@ -88,7 +88,7 @@ public class Mp3 {
 				return totalLength;
 			} catch (Throwable ex) {
 				reset();
-				throw new GdxRuntimeException("Error reading audio data.", ex);
+				throw new MicroRuntimeException("Error reading audio data.", ex);
 			}
 		}
 		
@@ -140,7 +140,7 @@ public class Mp3 {
 				bitstream.close();
 				setup(output.toByteArray(), channels, 16, sampleRate);
 			} catch (Throwable ex) {
-				throw new GdxRuntimeException("Error reading audio data.", ex);
+				throw new MicroRuntimeException("Error reading audio data.", ex);
 			}
 		}
 		

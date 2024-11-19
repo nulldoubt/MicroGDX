@@ -1,6 +1,8 @@
 package me.nulldoubt.micro.utils;
 
-public class GdxNativesLoader {
+import com.badlogic.gdx.utils.SharedLibraryLoader;
+
+public class MicroNativesLoader {
 	
 	public static boolean disableNativesLoading = false;
 	

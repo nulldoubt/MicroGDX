@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.math;
 
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.io.Serializable;
 
@@ -378,12 +378,12 @@ public final class Affine2 implements Serializable {
 	 * Inverts this matrix given that the determinant is != 0.
 	 *
 	 * @return This matrix for the purpose of chaining operations.
-	 * @throws GdxRuntimeException if the matrix is singular (not invertible)
+	 * @throws MicroRuntimeException if the matrix is singular (not invertible)
 	 */
 	public Affine2 inv() {
 		float det = det();
 		if (det == 0)
-			throw new GdxRuntimeException("Can't invert a singular affine matrix");
+			throw new MicroRuntimeException("Can't invert a singular affine matrix");
 		
 		float invDet = 1.0f / det;
 		

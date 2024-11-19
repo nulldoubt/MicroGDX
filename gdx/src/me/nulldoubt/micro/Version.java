@@ -1,6 +1,6 @@
 package me.nulldoubt.micro;
 
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class Version {
 	
@@ -17,7 +17,7 @@ public class Version {
 			MINOR = v.length < 2 ? 0 : Integer.parseInt(v[1]);
 			REVISION = v.length < 3 ? 0 : Integer.parseInt(v[2]);
 		} catch (Throwable t) {
-			throw new GdxRuntimeException("Invalid version " + VERSION, t);
+			throw new MicroRuntimeException("Invalid version " + VERSION, t);
 		}
 	}
 	

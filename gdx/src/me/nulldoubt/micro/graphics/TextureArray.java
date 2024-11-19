@@ -20,7 +20,7 @@ import me.nulldoubt.micro.Application;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +53,7 @@ public class TextureArray extends GLTexture {
 		super(GL30.GL_TEXTURE_2D_ARRAY, Micro.gl.glGenTexture());
 
 		if (Micro.gl30 == null) {
-			throw new GdxRuntimeException("TextureArray requires a device running with GLES 3.0 compatibilty");
+			throw new MicroRuntimeException("TextureArray requires a device running with GLES 3.0 compatibilty");
 		}
 
 		load(data);
@@ -71,7 +71,7 @@ public class TextureArray extends GLTexture {
 
 	private void load (TextureArrayData data) {
 		if (this.data != null && data.isManaged() != this.data.isManaged())
-			throw new GdxRuntimeException("New data must have the same managed status as the old data");
+			throw new MicroRuntimeException("New data must have the same managed status as the old data");
 		this.data = data;
 
 		bind();
@@ -109,7 +109,7 @@ public class TextureArray extends GLTexture {
 
 	@Override
 	protected void reload () {
-		if (!isManaged()) throw new GdxRuntimeException("Tried to reload an unmanaged TextureArray");
+		if (!isManaged()) throw new MicroRuntimeException("Tried to reload an unmanaged TextureArray");
 		glHandle = Micro.gl.glGenTexture();
 		load(data);
 	}

@@ -4,7 +4,6 @@ import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.Colors;
 import me.nulldoubt.micro.graphics.g2d.BitmapFont.BitmapFontData;
 import me.nulldoubt.micro.graphics.g2d.BitmapFont.Glyph;
-import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.Align;
 import me.nulldoubt.micro.utils.Array;
 import me.nulldoubt.micro.utils.FloatArray;
@@ -12,8 +11,6 @@ import me.nulldoubt.micro.utils.IntArray;
 import me.nulldoubt.micro.utils.pools.Pool;
 import me.nulldoubt.micro.utils.pools.Pool.Poolable;
 import me.nulldoubt.micro.utils.pools.Pools;
-
-import java.lang.StringBuilder;
 
 public class GlyphLayout implements Poolable {
 	

@@ -2,7 +2,7 @@ package me.nulldoubt.micro.graphics.g2d;
 
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class Gdx2DPixmap implements Disposable {
 			case GDX2D_FORMAT_LUMINANCE_ALPHA -> GL20.GL_LUMINANCE_ALPHA;
 			case GDX2D_FORMAT_RGB888, GDX2D_FORMAT_RGB565 -> GL20.GL_RGB;
 			case GDX2D_FORMAT_RGBA8888, GDX2D_FORMAT_RGBA4444 -> GL20.GL_RGBA;
-			default -> throw new GdxRuntimeException("Unknown format: " + format);
+			default -> throw new MicroRuntimeException("Unknown format: " + format);
 		};
 	}
 	
@@ -41,7 +41,7 @@ public class Gdx2DPixmap implements Disposable {
 					GL20.GL_UNSIGNED_BYTE;
 			case GDX2D_FORMAT_RGB565 -> GL20.GL_UNSIGNED_SHORT_5_6_5;
 			case GDX2D_FORMAT_RGBA4444 -> GL20.GL_UNSIGNED_SHORT_4_4_4_4;
-			default -> throw new GdxRuntimeException("Unknown format: " + format);
+			default -> throw new MicroRuntimeException("Unknown format: " + format);
 		};
 	}
 	
@@ -109,12 +109,12 @@ public class Gdx2DPixmap implements Disposable {
 	}
 	
 	/**
-	 * @throws GdxRuntimeException if allocation failed.
+	 * @throws MicroRuntimeException if allocation failed.
 	 */
-	public Gdx2DPixmap(int width, int height, int format) throws GdxRuntimeException {
+	public Gdx2DPixmap(int width, int height, int format) throws MicroRuntimeException {
 		pixelPtr = newPixmap(nativeData, width, height, format);
 		if (pixelPtr == null)
-			throw new GdxRuntimeException(
+			throw new MicroRuntimeException(
 					"Unable to allocate memory for pixmap: " + width + "x" + height + ", " + getFormatString(format));
 		
 		this.basePtr = nativeData[0];

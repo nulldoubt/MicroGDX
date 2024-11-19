@@ -17,7 +17,7 @@
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.audio.AudioRecorder;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFormat.Encoding;
@@ -40,7 +40,7 @@ public class JavaSoundAudioRecorder implements AudioRecorder {
 			line.open(format, buffer.length);
 			line.start();
 		} catch (Exception ex) {
-			throw new GdxRuntimeException("Error creating JavaSoundAudioRecorder.", ex);
+			throw new MicroRuntimeException("Error creating JavaSoundAudioRecorder.", ex);
 		}
 	}
 	

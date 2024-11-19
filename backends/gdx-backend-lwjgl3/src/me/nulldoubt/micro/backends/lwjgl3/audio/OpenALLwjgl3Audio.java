@@ -186,7 +186,7 @@ public class OpenALLwjgl3Audio implements Lwjgl3Audio {
 			throw new IllegalArgumentException("file cannot be null.");
 		Class<? extends OpenALSound> soundClass = extensionToSoundClass.get(extension);
 		if (soundClass == null)
-			throw new GdxRuntimeException("Unknown file extension for sound: " + file);
+			throw new MicroRuntimeException("Unknown file extension for sound: " + file);
 		try {
 			OpenALSound sound = soundClass.getConstructor(new Class[] {OpenALLwjgl3Audio.class, FileHandle.class}).newInstance(this,
 					file);
@@ -195,7 +195,7 @@ public class OpenALLwjgl3Audio implements Lwjgl3Audio {
 			}
 			return sound;
 		} catch (Exception ex) {
-			throw new GdxRuntimeException("Error creating sound " + soundClass.getName() + " for file: " + file, ex);
+			throw new MicroRuntimeException("Error creating sound " + soundClass.getName() + " for file: " + file, ex);
 		}
 	}
 	
@@ -443,11 +443,11 @@ public class OpenALLwjgl3Audio implements Lwjgl3Audio {
 			throw new IllegalArgumentException("file cannot be null.");
 		Class<? extends OpenALMusic> musicClass = extensionToMusicClass.get(file.extension().toLowerCase());
 		if (musicClass == null)
-			throw new GdxRuntimeException("Unknown file extension for music: " + file);
+			throw new MicroRuntimeException("Unknown file extension for music: " + file);
 		try {
 			return musicClass.getConstructor(new Class[] {OpenALLwjgl3Audio.class, FileHandle.class}).newInstance(this, file);
 		} catch (Exception ex) {
-			throw new GdxRuntimeException("Error creating music " + musicClass.getName() + " for file: " + file, ex);
+			throw new MicroRuntimeException("Error creating music " + musicClass.getName() + " for file: " + file, ex);
 		}
 	}
 	

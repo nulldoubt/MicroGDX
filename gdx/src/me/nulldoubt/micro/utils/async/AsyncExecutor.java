@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.utils.async;
 
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,7 +25,7 @@ public class AsyncExecutor implements Disposable {
 	
 	public <T> AsyncResult<T> submit(final AsyncTask<T> task) {
 		if (executor.isShutdown())
-			throw new GdxRuntimeException("Cannot run tasks on an executor that has been shutdown (disposed)");
+			throw new MicroRuntimeException("Cannot run tasks on an executor that has been shutdown (disposed)");
 		return new AsyncResult<>(executor.submit(task::call));
 	}
 	
@@ -35,7 +35,7 @@ public class AsyncExecutor implements Disposable {
 		try {
 			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
-			throw new GdxRuntimeException("Couldn't shutdown loading thread", e);
+			throw new MicroRuntimeException("Couldn't shutdown loading thread", e);
 		}
 	}
 	

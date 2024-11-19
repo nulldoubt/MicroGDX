@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.utils.async;
 
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -23,7 +23,7 @@ public class AsyncResult<T> {
 		} catch (InterruptedException ex) {
 			return null;
 		} catch (ExecutionException ex) {
-			throw new GdxRuntimeException(ex.getCause());
+			throw new MicroRuntimeException(ex.getCause());
 		}
 	}
 	

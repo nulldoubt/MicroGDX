@@ -24,7 +24,7 @@ import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.audio.Sound;
 import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import me.nulldoubt.micro.backends.android.surfaceview.ResolutionStrategy;
-import me.nulldoubt.micro.utils.GdxNativesLoader;
+import me.nulldoubt.micro.utils.MicroNativesLoader;
 
 /** Class defining the configuration of an {@link AndroidApplication}. Allows you to disable the use of the accelerometer to save
  * battery among other things.
@@ -107,7 +107,7 @@ public class AndroidApplicationConfiguration {
 	public GdxNativeLoader nativeLoader = new GdxNativeLoader() {
 		@Override
 		public void load () {
-			GdxNativesLoader.load();
+			MicroNativesLoader.load();
 		}
 	};
 }

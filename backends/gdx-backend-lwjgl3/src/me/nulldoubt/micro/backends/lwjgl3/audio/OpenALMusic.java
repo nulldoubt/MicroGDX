@@ -20,7 +20,7 @@ import me.nulldoubt.micro.audio.Music;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.math.MathUtils;
 import me.nulldoubt.micro.utils.FloatArray;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
 
@@ -86,7 +86,7 @@ public abstract class OpenALMusic implements Music {
 				alGenBuffers(buffers);
 				int errorCode = alGetError();
 				if (errorCode != AL_NO_ERROR)
-					throw new GdxRuntimeException("Unable to allocate audio buffers. AL Error: " + errorCode);
+					throw new MicroRuntimeException("Unable to allocate audio buffers. AL Error: " + errorCode);
 			}
 			
 			alSourcei(sourceID, AL_LOOPING, AL_FALSE);

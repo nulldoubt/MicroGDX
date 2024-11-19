@@ -26,7 +26,7 @@ import me.nulldoubt.micro.graphics.glutils.GLVersion;
 import me.nulldoubt.micro.math.GridPoint2;
 import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.ObjectMap;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -100,7 +100,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 			if (t instanceof RuntimeException)
 				throw (RuntimeException) t;
 			else
-				throw new GdxRuntimeException(t);
+				throw new MicroRuntimeException(t);
 		} finally {
 			cleanup();
 		}
@@ -115,7 +115,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 				GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_METAL);
 			GLFW.glfwInitHint(GLFW.GLFW_JOYSTICK_HAT_BUTTONS, GLFW.GLFW_FALSE);
 			if (!GLFW.glfwInit()) {
-				throw new GdxRuntimeException("Unable to initialize GLFW");
+				throw new MicroRuntimeException("Unable to initialize GLFW");
 			}
 		}
 	}
@@ -127,7 +127,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 			load.invoke(angleLoader);
 		} catch (ClassNotFoundException t) {
 		} catch (Throwable t) {
-			throw new GdxRuntimeException("Couldn't load ANGLE.", t);
+			throw new MicroRuntimeException("Couldn't load ANGLE.", t);
 		}
 	}
 	
@@ -138,7 +138,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 			load.invoke(angleLoader);
 		} catch (ClassNotFoundException t) {
 		} catch (Throwable t) {
-			throw new GdxRuntimeException("Couldn't load ANGLE.", t);
+			throw new MicroRuntimeException("Couldn't load ANGLE.", t);
 		}
 	}
 	
@@ -197,7 +197,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 			windowHandle = GLFW.glfwCreateWindow(config.windowWidth, config.windowHeight, config.title, 0, sharedContextWindow);
 		}
 		if (windowHandle == 0) {
-			throw new GdxRuntimeException("Couldn't create window");
+			throw new MicroRuntimeException("Couldn't create window");
 		}
 		Lwjgl3Window.setSizeLimits(windowHandle, config.windowMinWidth, config.windowMinHeight, config.windowMaxWidth,
 				config.windowMaxHeight);
@@ -238,7 +238,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 				Class gles = Class.forName("org.lwjgl.opengles.GLES");
 				gles.getMethod("createCapabilities").invoke(gles);
 			} catch (Throwable e) {
-				throw new GdxRuntimeException("Couldn't initialize GLES", e);
+				throw new MicroRuntimeException("Couldn't initialize GLES", e);
 			}
 		} else {
 			GL.createCapabilities();
@@ -246,11 +246,11 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 		
 		initiateGL(config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20);
 		if (!glVersion.isVersionEqualToOrHigher(2, 0))
-			throw new GdxRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
+			throw new MicroRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
 					+ glVersion.getVersionString() + "\n" + glVersion.getDebugVersionString());
 		
 		if (config.glEmulation != Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20 && !supportsFBO()) {
-			throw new GdxRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
+			throw new MicroRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
 					+ glVersion.getVersionString() + ", FBO extension: false\n" + glVersion.getDebugVersionString());
 		}
 		
@@ -281,7 +281,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 				String rendererString = (String) getString.invoke(gles, GL11.GL_RENDERER);
 				glVersion = new GLVersion(Application.ApplicationType.Desktop, versionString, vendorString, rendererString);
 			} catch (Throwable e) {
-				throw new GdxRuntimeException("Couldn't get GLES version string.", e);
+				throw new MicroRuntimeException("Couldn't get GLES version string.", e);
 			}
 		}
 	}

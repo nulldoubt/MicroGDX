@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.graphics.profiling;
 
 import me.nulldoubt.micro.Micro;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import static me.nulldoubt.micro.graphics.profiling.GLInterceptor.resolveErrorNumber;
 
@@ -32,7 +32,7 @@ public interface GLErrorListener {
 	};
 	
 	GLErrorListener THROWING_LISTENER = (error) -> {
-		throw new GdxRuntimeException("GLProfiler: Got GL error " + resolveErrorNumber(error));
+		throw new MicroRuntimeException("GLProfiler: Got GL error " + resolveErrorNumber(error));
 	};
 	
 }

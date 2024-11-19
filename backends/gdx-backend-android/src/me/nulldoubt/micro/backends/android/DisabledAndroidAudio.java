@@ -6,7 +6,7 @@ import me.nulldoubt.micro.audio.AudioRecorder;
 import me.nulldoubt.micro.audio.Music;
 import me.nulldoubt.micro.audio.Sound;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class DisabledAndroidAudio implements AndroidAudio {
 
@@ -24,22 +24,22 @@ public class DisabledAndroidAudio implements AndroidAudio {
 
 	@Override
 	public AudioDevice newAudioDevice (int samplingRate, boolean mono) {
-		throw new GdxRuntimeException("Android audio is not enabled by the application config");
+		throw new MicroRuntimeException("Android audio is not enabled by the application config");
 	}
 
 	@Override
 	public AudioRecorder newAudioRecorder (int samplingRate, boolean mono) {
-		throw new GdxRuntimeException("Android audio is not enabled by the application config");
+		throw new MicroRuntimeException("Android audio is not enabled by the application config");
 	}
 
 	@Override
 	public Sound newSound (FileHandle file) {
-		throw new GdxRuntimeException("Android audio is not enabled by the application config");
+		throw new MicroRuntimeException("Android audio is not enabled by the application config");
 	}
 
 	@Override
 	public Music newMusic (FileHandle file) {
-		throw new GdxRuntimeException("Android audio is not enabled by the application config");
+		throw new MicroRuntimeException("Android audio is not enabled by the application config");
 	}
 
 	@Override

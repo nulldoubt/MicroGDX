@@ -58,7 +58,7 @@ import me.nulldoubt.micro.backends.android.keyboardheight.StandardKeyboardHeight
 import me.nulldoubt.micro.backends.android.surfaceview.GLSurfaceView20;
 import me.nulldoubt.micro.input.NativeInputConfiguration;
 import me.nulldoubt.micro.input.TextInputWrapper;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.pools.Pool;
 
 import java.util.ArrayList;
@@ -647,7 +647,7 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 
 	@Override
 	public void setOnscreenKeyboardVisible (final boolean visible, final OnscreenKeyboardType type) {
-		if (isNativeInputOpen()) throw new GdxRuntimeException("Can't open keyboard if already open");
+		if (isNativeInputOpen()) throw new MicroRuntimeException("Can't open keyboard if already open");
 		onscreenVisible = visible;
 		handle.post(new Runnable() {
 			public void run () {
@@ -853,10 +853,10 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 					}
 				}
 			} else {
-				throw new GdxRuntimeException("Can't open keyboard if already open with openTextInputField");
+				throw new MicroRuntimeException("Can't open keyboard if already open with openTextInputField");
 			}
 		}
-		if (onscreenVisible) throw new GdxRuntimeException("Can't open keyboard if already open with setOnscreenKeyboardVisible");
+		if (onscreenVisible) throw new MicroRuntimeException("Can't open keyboard if already open with setOnscreenKeyboardVisible");
 
 		textInputWrapper = configuration.getTextInputWrapper();
 		multiline = configuration.isMultiLine();

@@ -18,7 +18,7 @@ package me.nulldoubt.micro.backends.lwjgl3.angle;
 
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.utils.BufferUtils;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import org.lwjgl.opengles.GLES20;
 
 import java.nio.*;
@@ -114,12 +114,12 @@ public class Lwjgl3GLES20 implements GL20 {
 		else if (data instanceof ShortBuffer) //
 			GLES20.glBufferData(target, (ShortBuffer)data, usage);
 		else
-			throw new GdxRuntimeException("Buffer data of type " + data.getClass().getName() + " not supported in GLES20.");
+			throw new MicroRuntimeException("Buffer data of type " + data.getClass().getName() + " not supported in GLES20.");
 	}
 
 	public void glBufferSubData (int target, int offset, int size, Buffer data) {
 		if (data == null)
-			throw new GdxRuntimeException("Using null for the data not possible, ");
+			throw new MicroRuntimeException("Using null for the data not possible, ");
 		else if (data instanceof ByteBuffer)
 			GLES20.glBufferSubData(target, offset, (ByteBuffer)data);
 		else if (data instanceof IntBuffer)
@@ -129,7 +129,7 @@ public class Lwjgl3GLES20 implements GL20 {
 		else if (data instanceof ShortBuffer) //
 			GLES20.glBufferSubData(target, offset, (ShortBuffer)data);
 		else
-			throw new GdxRuntimeException("Buffer data of type " + data.getClass().getName() + " not supported in GLES20.");
+			throw new MicroRuntimeException("Buffer data of type " + data.getClass().getName() + " not supported in GLES20.");
 	}
 
 	public int glCheckFramebufferStatus (int target) {
@@ -165,13 +165,13 @@ public class Lwjgl3GLES20 implements GL20 {
 		if (data instanceof ByteBuffer) {
 			GLES20.glCompressedTexImage2D(target, level, internalformat, width, height, border, (ByteBuffer)data);
 		} else {
-			throw new GdxRuntimeException("Can't use " + data.getClass().getName() + " with this method. Use ByteBuffer instead.");
+			throw new MicroRuntimeException("Can't use " + data.getClass().getName() + " with this method. Use ByteBuffer instead.");
 		}
 	}
 
 	public void glCompressedTexSubImage2D (int target, int level, int xoffset, int yoffset, int width, int height, int format,
 		int imageSize, Buffer data) {
-		throw new GdxRuntimeException("not implemented");
+		throw new MicroRuntimeException("not implemented");
 	}
 
 	public void glCopyTexImage2D (int target, int level, int internalformat, int x, int y, int width, int height, int border) {
@@ -288,7 +288,7 @@ public class Lwjgl3GLES20 implements GL20 {
 			GLES20.glDrawElements(mode, bb);
 			bb.limit(oldLimit);
 		} else
-			throw new GdxRuntimeException("Can't use " + indices.getClass().getName()
+			throw new MicroRuntimeException("Can't use " + indices.getClass().getName()
 				+ " with this method. Use ShortBuffer or ByteBuffer instead. Blame LWJGL");
 	}
 
@@ -534,7 +534,7 @@ public class Lwjgl3GLES20 implements GL20 {
 		else if (pixels instanceof FloatBuffer)
 			GLES20.glReadPixels(x, y, width, height, format, type, (FloatBuffer)pixels);
 		else
-			throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
+			throw new MicroRuntimeException("Can't use " + pixels.getClass().getName()
 				+ " with this method. Use ByteBuffer, ShortBuffer, IntBuffer or FloatBuffer instead.");
 	}
 
@@ -599,7 +599,7 @@ public class Lwjgl3GLES20 implements GL20 {
 		else if (pixels instanceof FloatBuffer)
 			GLES20.glTexImage2D(target, level, internalformat, width, height, border, format, type, (FloatBuffer)pixels);
 		else
-			throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
+			throw new MicroRuntimeException("Can't use " + pixels.getClass().getName()
 				+ " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead.");
 	}
 
@@ -630,7 +630,7 @@ public class Lwjgl3GLES20 implements GL20 {
 		else if (pixels instanceof FloatBuffer)
 			GLES20.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (FloatBuffer)pixels);
 		else
-			throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
+			throw new MicroRuntimeException("Can't use " + pixels.getClass().getName()
 				+ " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead.");
 	}
 
@@ -808,16 +808,16 @@ public class Lwjgl3GLES20 implements GL20 {
 			else if (type == GL_FLOAT)
 				GLES20.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer)buffer).asFloatBuffer());
 			else
-				throw new GdxRuntimeException("Can't use " + buffer.getClass().getName() + " with type " + type
+				throw new MicroRuntimeException("Can't use " + buffer.getClass().getName() + " with type " + type
 					+ " with this method. Use ByteBuffer and one of GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT or GL_FLOAT for type.");
 		} else if (buffer instanceof FloatBuffer) {
 			if (type == GL_FLOAT)
 				GLES20.glVertexAttribPointer(indx, size, type, normalized, stride, (FloatBuffer)buffer);
 			else
-				throw new GdxRuntimeException(
+				throw new MicroRuntimeException(
 					"Can't use " + buffer.getClass().getName() + " with type " + type + " with this method.");
 		} else
-			throw new GdxRuntimeException("Can't use " + buffer.getClass().getName() + " with this method. Use ByteBuffer instead.");
+			throw new MicroRuntimeException("Can't use " + buffer.getClass().getName() + " with this method. Use ByteBuffer instead.");
 	}
 
 	public void glViewport (int x, int y, int width, int height) {

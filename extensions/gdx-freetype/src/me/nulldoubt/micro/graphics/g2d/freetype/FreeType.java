@@ -28,7 +28,7 @@ import me.nulldoubt.micro.graphics.Pixmap.Blending;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.utils.BufferUtils;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.LongMap;
 import com.nulldoubt.micro.utils.SharedLibraryLoader;
 import me.nulldoubt.micro.utils.StreamUtils;
@@ -83,7 +83,7 @@ public class FreeType {
 			ByteBuffer buffer = null;
 			try {
 				buffer = fontFile.map();
-			} catch (GdxRuntimeException ignored) {
+			} catch (MicroRuntimeException ignored) {
 				// OK to ignore, some platforms do not support file mapping.
 			}
 			if (buffer == null) {
@@ -101,7 +101,7 @@ public class FreeType {
 						StreamUtils.copyStream(input, buffer);
 					}
 				} catch (IOException ex) {
-					throw new GdxRuntimeException(ex);
+					throw new MicroRuntimeException(ex);
 				} finally {
 					StreamUtils.closeQuietly(input);
 				}
@@ -120,7 +120,7 @@ public class FreeType {
 			if(face == 0) {
 				if (BufferUtils.isUnsafeByteBuffer(buffer)) 
 					BufferUtils.disposeUnsafeByteBuffer(buffer);
-				throw new GdxRuntimeException("Couldn't load font, FreeType error code: " + getLastErrorCode());
+				throw new MicroRuntimeException("Couldn't load font, FreeType error code: " + getLastErrorCode());
 			}
 			else {
 				fontData.put(face, buffer);
@@ -140,7 +140,7 @@ public class FreeType {
 
 		public Stroker createStroker() {
 			long stroker = strokerNew(address);
-			if(stroker == 0) throw new GdxRuntimeException("Couldn't create FreeType stroker, FreeType error code: " + getLastErrorCode());
+			if(stroker == 0) throw new MicroRuntimeException("Couldn't create FreeType stroker, FreeType error code: " + getLastErrorCode());
 			return new Stroker(stroker);
 		}
 
@@ -515,7 +515,7 @@ public class FreeType {
 
 		public Glyph getGlyph() {
 			long glyph = getGlyph(address);
-			if(glyph == 0) throw new GdxRuntimeException("Couldn't get glyph, FreeType error code: " + getLastErrorCode());
+			if(glyph == 0) throw new MicroRuntimeException("Couldn't get glyph, FreeType error code: " + getLastErrorCode());
 			return new Glyph(glyph);
 		}
 
@@ -558,7 +558,7 @@ public class FreeType {
 
 		public void toBitmap(int renderMode) {
 			long bitmap = toBitmap(address, renderMode);
-			if (bitmap == 0) throw new GdxRuntimeException("Couldn't render glyph, FreeType error code: " + getLastErrorCode());
+			if (bitmap == 0) throw new MicroRuntimeException("Couldn't render glyph, FreeType error code: " + getLastErrorCode());
 			address = bitmap;
 			rendered = true;
 		}
@@ -575,7 +575,7 @@ public class FreeType {
 
 		public Bitmap getBitmap() {
 			if (!rendered) {
-				throw new GdxRuntimeException("Glyph is not yet rendered");
+				throw new MicroRuntimeException("Glyph is not yet rendered");
 			}
 			return new Bitmap(getBitmap(address));
 		}
@@ -587,7 +587,7 @@ public class FreeType {
 
 		public int getLeft() {
 			if (!rendered) {
-				throw new GdxRuntimeException("Glyph is not yet rendered");
+				throw new MicroRuntimeException("Glyph is not yet rendered");
 			}
 			return getLeft(address);
 		}
@@ -599,7 +599,7 @@ public class FreeType {
 
 		public int getTop() {
 			if (!rendered) {
-				throw new GdxRuntimeException("Glyph is not yet rendered");
+				throw new MicroRuntimeException("Glyph is not yet rendered");
 			}
 			return getTop(address);
 		}
@@ -924,7 +924,7 @@ public class FreeType {
    	new SharedLibraryLoader().load("gdx-freetype");
    	long address = initFreeTypeJni();
    	if(address == 0)
-   		throw new GdxRuntimeException("Couldn't initialize FreeType library, FreeType error code: " + getLastErrorCode());
+   		throw new MicroRuntimeException("Couldn't initialize FreeType library, FreeType error code: " + getLastErrorCode());
    	else
    		return new Library(address);
    }

@@ -25,7 +25,7 @@ import me.nulldoubt.micro.graphics.glutils.GLVersion;
 import com.nulldoubt.micro.graphics.glutils.HdpiMode;
 import me.nulldoubt.micro.math.GridPoint2;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFW;
@@ -96,7 +96,7 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 				this.gl20 = window.getConfig().glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL20 ? new Lwjgl3GL20()
 						: (GL20) Class.forName("com.nulldoubt.micro.backends.lwjgl3.angle.Lwjgl3GLES20").newInstance();
 			} catch (Throwable t) {
-				throw new GdxRuntimeException("Couldn't instantiate GLES20.", t);
+				throw new MicroRuntimeException("Couldn't instantiate GLES20.", t);
 			}
 			this.gl30 = null;
 		}

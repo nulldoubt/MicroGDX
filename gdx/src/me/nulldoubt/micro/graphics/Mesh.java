@@ -3,13 +3,12 @@ package me.nulldoubt.micro.graphics;
 import me.nulldoubt.micro.Application;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.graphics.VertexAttributes.Usage;
-import com.nulldoubt.micro.graphics.glutils.*;
 import me.nulldoubt.micro.graphics.glutils.*;
 import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.math.Vector3;
 import me.nulldoubt.micro.utils.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.nio.Buffer;
 import java.nio.FloatBuffer;
@@ -442,7 +441,7 @@ public class Mesh implements Disposable {
 		} else {
 			if (indices.getNumIndices() > 0) {
 				if (count + offset > indices.getNumMaxIndices())
-					throw new GdxRuntimeException("Mesh attempting to access memory outside of the index buffer (count: " + count + ", offset: " + offset + ", max: " + indices.getNumMaxIndices() + ")");
+					throw new MicroRuntimeException("Mesh attempting to access memory outside of the index buffer (count: " + count + ", offset: " + offset + ", max: " + indices.getNumMaxIndices() + ")");
 				Micro.gl20.glDrawElements(primitiveType, count, GL20.GL_UNSIGNED_SHORT, offset * 2);
 			} else
 				Micro.gl20.glDrawArrays(primitiveType, offset, count);

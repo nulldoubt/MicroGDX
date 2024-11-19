@@ -478,7 +478,7 @@ public class Array<T> implements Iterable<T> {
 	
 	/**
 	 * Selects the nth-lowest element from the Array according to Comparator ranking. This might partially sort the Array. The
-	 * array must have a size greater than 0, or a {@link GdxRuntimeException} will be thrown.
+	 * array must have a size greater than 0, or a {@link MicroRuntimeException} will be thrown.
 	 *
 	 * @param comparator used for comparison
 	 * @param kthLowest  rank of desired object according to comparison, n is based on ordinal numbers, not array indices. for min
@@ -488,7 +488,7 @@ public class Array<T> implements Iterable<T> {
 	 */
 	public T selectRanked(Comparator<T> comparator, int kthLowest) {
 		if (kthLowest < 1) {
-			throw new GdxRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
+			throw new MicroRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
 		}
 		return Select.instance().select(items, comparator, kthLowest, size);
 	}
@@ -502,7 +502,7 @@ public class Array<T> implements Iterable<T> {
 	 */
 	public int selectRankedIndex(Comparator<T> comparator, int kthLowest) {
 		if (kthLowest < 1) {
-			throw new GdxRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
+			throw new MicroRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
 		}
 		return Select.instance().selectIndex(items, comparator, kthLowest, size);
 	}
@@ -717,7 +717,7 @@ public class Array<T> implements Iterable<T> {
 		public boolean hasNext() {
 			if (!valid) {
 				// System.out.println(iterable.lastAcquire);
-				throw new GdxRuntimeException("#iterator() cannot be used nested.");
+				throw new MicroRuntimeException("#iterator() cannot be used nested.");
 			}
 			return index < array.size;
 		}
@@ -727,14 +727,14 @@ public class Array<T> implements Iterable<T> {
 				throw new NoSuchElementException(String.valueOf(index));
 			if (!valid) {
 				// System.out.println(iterable.lastAcquire);
-				throw new GdxRuntimeException("#iterator() cannot be used nested.");
+				throw new MicroRuntimeException("#iterator() cannot be used nested.");
 			}
 			return array.items[index++];
 		}
 		
 		public void remove() {
 			if (!allowRemove)
-				throw new GdxRuntimeException("Remove not allowed.");
+				throw new MicroRuntimeException("Remove not allowed.");
 			index--;
 			array.removeIndex(index);
 		}

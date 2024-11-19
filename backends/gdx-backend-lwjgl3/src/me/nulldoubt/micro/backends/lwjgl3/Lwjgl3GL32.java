@@ -17,7 +17,7 @@
 package me.nulldoubt.micro.backends.lwjgl3;
 
 import me.nulldoubt.micro.graphics.GL32;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryUtil;
@@ -161,7 +161,7 @@ public class Lwjgl3GL32 extends Lwjgl3GL31 implements GL32 {
 			org.lwjgl.opengl.GL32.glDrawElementsBaseVertex(mode, bb, basevertex);
 			bb.limit(oldLimit);
 		} else
-			throw new GdxRuntimeException(
+			throw new MicroRuntimeException(
 					"Can't use " + indices.getClass().getName() + " with this method. Use ShortBuffer or ByteBuffer instead.");
 	}
 	
@@ -187,7 +187,7 @@ public class Lwjgl3GL32 extends Lwjgl3GL31 implements GL32 {
 			org.lwjgl.opengl.GL32.glDrawRangeElementsBaseVertex(mode, start, end, bb, basevertex);
 			bb.limit(oldLimit);
 		} else
-			throw new GdxRuntimeException(
+			throw new MicroRuntimeException(
 					"Can't use " + indices.getClass().getName() + " with this method. Use ShortBuffer or ByteBuffer instead.");
 	}
 	
@@ -214,7 +214,7 @@ public class Lwjgl3GL32 extends Lwjgl3GL31 implements GL32 {
 			org.lwjgl.opengl.GL32.glDrawElementsInstancedBaseVertex(mode, bb, instanceCount, basevertex);
 			bb.limit(oldLimit);
 		} else
-			throw new GdxRuntimeException(
+			throw new MicroRuntimeException(
 					"Can't use " + indices.getClass().getName() + " with this method. Use ShortBuffer or ByteBuffer instead.");
 	}
 	
@@ -250,7 +250,7 @@ public class Lwjgl3GL32 extends Lwjgl3GL31 implements GL32 {
 			} else if (data instanceof FloatBuffer) {
 				GL45.glReadnPixels(x, y, width, height, format, type, (FloatBuffer) data);
 			} else {
-				throw new GdxRuntimeException("buffer type not supported");
+				throw new MicroRuntimeException("buffer type not supported");
 			}
 			data.limit(oldLimit);
 		}

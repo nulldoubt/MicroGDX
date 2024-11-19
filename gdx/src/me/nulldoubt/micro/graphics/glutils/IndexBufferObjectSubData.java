@@ -19,7 +19,7 @@ package me.nulldoubt.micro.graphics.glutils;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.utils.BufferUtils;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -177,7 +177,7 @@ public class IndexBufferObjectSubData implements IndexData {
 	 */
 	public void bind() {
 		if (bufferHandle == 0)
-			throw new GdxRuntimeException("IndexBufferObject cannot be used after it has been disposed.");
+			throw new MicroRuntimeException("IndexBufferObject cannot be used after it has been disposed.");
 		
 		Micro.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, bufferHandle);
 		if (isDirty) {

@@ -24,7 +24,7 @@ import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.Files.FileType;
 import me.nulldoubt.micro.backends.android.ZipResourceFile.ZipEntryRO;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 /** @author sarkanyi */
 public class AndroidZipFileHandle extends AndroidFileHandle {
@@ -78,7 +78,7 @@ public class AndroidZipFileHandle extends AndroidFileHandle {
 		try {
 			input = expansionFile.getInputStream(getPath());
 		} catch (IOException ex) {
-			throw new GdxRuntimeException("Error reading file: " + file + " (ZipResourceFile)", ex);
+			throw new MicroRuntimeException("Error reading file: " + file + " (ZipResourceFile)", ex);
 		}
 		return input;
 	}
@@ -91,7 +91,7 @@ public class AndroidZipFileHandle extends AndroidFileHandle {
 
 	@Override
 	public FileHandle sibling (String name) {
-		if (file.getPath().length() == 0) throw new GdxRuntimeException("Cannot get the sibling of the root.");
+		if (file.getPath().length() == 0) throw new MicroRuntimeException("Cannot get the sibling of the root.");
 		return Micro.files.getFileHandle(new File(file.getParent(), name).getPath(), type); // this way we can find the sibling even
 																														// if it's not inside the obb
 	}

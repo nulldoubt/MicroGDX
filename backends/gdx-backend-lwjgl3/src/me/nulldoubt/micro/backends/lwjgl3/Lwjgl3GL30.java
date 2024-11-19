@@ -16,7 +16,7 @@
 
 package me.nulldoubt.micro.backends.lwjgl3;
 
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import org.lwjgl.opengl.*;
 
 import java.nio.*;
@@ -37,7 +37,7 @@ class Lwjgl3GL30 extends Lwjgl3GL20 implements me.nulldoubt.micro.graphics.GL30 
 		else if (indices instanceof IntBuffer)
 			GL12.glDrawRangeElements(mode, start, end, (IntBuffer) indices);
 		else
-			throw new GdxRuntimeException("indices must be byte, short or int buffer");
+			throw new MicroRuntimeException("indices must be byte, short or int buffer");
 	}
 	
 	@Override
@@ -67,7 +67,7 @@ class Lwjgl3GL30 extends Lwjgl3GL20 implements me.nulldoubt.micro.graphics.GL30 
 		else if (pixels instanceof DoubleBuffer)
 			GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (DoubleBuffer) pixels);
 		else
-			throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
+			throw new MicroRuntimeException("Can't use " + pixels.getClass().getName()
 					+ " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
 	}
 	
@@ -97,7 +97,7 @@ class Lwjgl3GL30 extends Lwjgl3GL20 implements me.nulldoubt.micro.graphics.GL30 
 		else if (pixels instanceof DoubleBuffer)
 			GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (DoubleBuffer) pixels);
 		else
-			throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
+			throw new MicroRuntimeException("Can't use " + pixels.getClass().getName()
 					+ " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
 	}
 	

@@ -7,7 +7,7 @@ import me.nulldoubt.micro.assets.loaders.AsynchronousAssetLoader;
 import me.nulldoubt.micro.assets.loaders.SynchronousAssetLoader;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.async.AsyncExecutor;
 import me.nulldoubt.micro.utils.async.AsyncResult;
 import me.nulldoubt.micro.utils.async.AsyncTask;
@@ -91,7 +91,7 @@ public class AssetLoadingTask implements AsyncTask<Void> {
 				try {
 					depsFuture.get();
 				} catch (Exception e) {
-					throw new GdxRuntimeException("Couldn't load dependencies of asset: " + assetDesc.fileName, e);
+					throw new MicroRuntimeException("Couldn't load dependencies of asset: " + assetDesc.fileName, e);
 				}
 				dependenciesLoaded = true;
 				if (asyncDone)
@@ -105,7 +105,7 @@ public class AssetLoadingTask implements AsyncTask<Void> {
 			try {
 				loadFuture.get();
 			} catch (Exception e) {
-				throw new GdxRuntimeException("Couldn't load asset: " + assetDesc.fileName, e);
+				throw new MicroRuntimeException("Couldn't load asset: " + assetDesc.fileName, e);
 			}
 			asset = asyncLoader.loadSync(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.params);
 		}

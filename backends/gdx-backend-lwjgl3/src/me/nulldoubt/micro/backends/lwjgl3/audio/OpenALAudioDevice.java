@@ -18,7 +18,7 @@ package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.audio.AudioDevice;
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
 
@@ -74,7 +74,7 @@ public class OpenALAudioDevice implements AudioDevice {
 				alGetError();
 				alGenBuffers(buffers);
 				if (alGetError() != AL_NO_ERROR)
-					throw new GdxRuntimeException("Unabe to allocate audio buffers.");
+					throw new MicroRuntimeException("Unabe to allocate audio buffers.");
 			}
 			alSourcei(sourceID, AL_LOOPING, AL_FALSE);
 			alSourcef(sourceID, AL_GAIN, volume);

@@ -22,7 +22,7 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 
 import me.nulldoubt.micro.audio.AudioRecorder;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 /** {@link AudioRecorder} implementation for the android system based on AudioRecord
  * @author badlogicgames@gmail.com */
@@ -37,7 +37,7 @@ public class AndroidAudioRecorder implements AudioRecorder {
 		recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, samplingRate, channelConfig, AudioFormat.ENCODING_PCM_16BIT,
 			minBufferSize);
 		if (recorder.getState() != AudioRecord.STATE_INITIALIZED)
-			throw new GdxRuntimeException("Unable to initialize AudioRecorder.\nDo you have the RECORD_AUDIO permission?");
+			throw new MicroRuntimeException("Unable to initialize AudioRecorder.\nDo you have the RECORD_AUDIO permission?");
 		recorder.startRecording();
 	}
 

@@ -27,7 +27,7 @@ import me.nulldoubt.micro.scenes.scene2d.Stage;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
 import me.nulldoubt.micro.scenes.scene2d.utils.Layout;
 import me.nulldoubt.micro.utils.ScissorStack;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import com.nulldoubt.micro.utils.Null;
 
 /** A container that contains two widgets and is divided either horizontally or vertically. The user may resize the widgets. The
@@ -314,7 +314,7 @@ public class SplitPane extends WidgetGroup {
 	}
 
 	public void setMinSplitAmount (float minAmount) {
-		if (minAmount < 0 || minAmount > 1) throw new GdxRuntimeException("minAmount has to be >= 0 and <= 1");
+		if (minAmount < 0 || minAmount > 1) throw new MicroRuntimeException("minAmount has to be >= 0 and <= 1");
 		this.minAmount = minAmount;
 	}
 
@@ -323,7 +323,7 @@ public class SplitPane extends WidgetGroup {
 	}
 
 	public void setMaxSplitAmount (float maxAmount) {
-		if (maxAmount < 0 || maxAmount > 1) throw new GdxRuntimeException("maxAmount has to be >= 0 and <= 1");
+		if (maxAmount < 0 || maxAmount > 1) throw new MicroRuntimeException("maxAmount has to be >= 0 and <= 1");
 		this.maxAmount = maxAmount;
 	}
 

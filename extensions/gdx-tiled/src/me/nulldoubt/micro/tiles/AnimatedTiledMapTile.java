@@ -21,7 +21,7 @@ import me.nulldoubt.micro.maps.MapObjects;
 import me.nulldoubt.micro.maps.MapProperties;
 import me.nulldoubt.micro.tiled.TiledMapTile;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.IntArray;
 
 /** @brief Represents a changing {@link TiledMapTile}. */
@@ -72,7 +72,7 @@ public class AnimatedTiledMapTile implements TiledMapTile {
 			currentTime -= animationInterval;
 		}
 
-		throw new GdxRuntimeException(
+		throw new MicroRuntimeException(
 			"Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen.");
 	}
 
@@ -87,7 +87,7 @@ public class AnimatedTiledMapTile implements TiledMapTile {
 
 	@Override
 	public void setTextureRegion (TextureRegion textureRegion) {
-		throw new GdxRuntimeException("Cannot set the texture region of AnimatedTiledMapTile.");
+		throw new MicroRuntimeException("Cannot set the texture region of AnimatedTiledMapTile.");
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class AnimatedTiledMapTile implements TiledMapTile {
 
 	@Override
 	public void setOffsetX (float offsetX) {
-		throw new GdxRuntimeException("Cannot set offset of AnimatedTiledMapTile.");
+		throw new MicroRuntimeException("Cannot set offset of AnimatedTiledMapTile.");
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class AnimatedTiledMapTile implements TiledMapTile {
 
 	@Override
 	public void setOffsetY (float offsetY) {
-		throw new GdxRuntimeException("Cannot set offset of AnimatedTiledMapTile.");
+		throw new MicroRuntimeException("Cannot set offset of AnimatedTiledMapTile.");
 	}
 
 	public int[] getAnimationIntervals () {
@@ -124,7 +124,7 @@ public class AnimatedTiledMapTile implements TiledMapTile {
 			}
 
 		} else {
-			throw new GdxRuntimeException("Cannot set " + intervals.length + " frame intervals. The given int[] must have a size of "
+			throw new MicroRuntimeException("Cannot set " + intervals.length + " frame intervals. The given int[] must have a size of "
 				+ animationIntervals.length + ".");
 		}
 	}

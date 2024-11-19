@@ -5,7 +5,7 @@ import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.g2d.Gdx2DPixmap;
 import me.nulldoubt.micro.utils.BufferUtils;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -30,7 +30,7 @@ public class Pixmap implements Disposable {
 				return Gdx2DPixmap.GDX2D_FORMAT_RGB888;
 			if (format == RGBA8888)
 				return Gdx2DPixmap.GDX2D_FORMAT_RGBA8888;
-			throw new GdxRuntimeException("Unknown Format: " + format);
+			throw new MicroRuntimeException("Unknown Format: " + format);
 		}
 		
 		public static Format fromGdx2DPixmapFormat(int format) {
@@ -46,7 +46,7 @@ public class Pixmap implements Disposable {
 				return RGB888;
 			if (format == Gdx2DPixmap.GDX2D_FORMAT_RGBA8888)
 				return RGBA8888;
-			throw new GdxRuntimeException("Unknown Gdx2DPixmap Format: " + format);
+			throw new MicroRuntimeException("Unknown Gdx2DPixmap Format: " + format);
 		}
 		
 		public static int toGlFormat(Format format) {
@@ -104,17 +104,17 @@ public class Pixmap implements Disposable {
 		try {
 			pixmap = new Gdx2DPixmap(encodedData, offset, len, 0);
 		} catch (IOException e) {
-			throw new GdxRuntimeException("Couldn't load pixmap from image data", e);
+			throw new MicroRuntimeException("Couldn't load pixmap from image data", e);
 		}
 	}
 	
 	public Pixmap(ByteBuffer encodedData, int offset, int len) {
 		if (!encodedData.isDirect())
-			throw new GdxRuntimeException("Couldn't load pixmap from non-direct ByteBuffer");
+			throw new MicroRuntimeException("Couldn't load pixmap from non-direct ByteBuffer");
 		try {
 			pixmap = new Gdx2DPixmap(encodedData, offset, len, 0);
 		} catch (IOException e) {
-			throw new GdxRuntimeException("Couldn't load pixmap from image data", e);
+			throw new MicroRuntimeException("Couldn't load pixmap from image data", e);
 		}
 	}
 	
@@ -127,7 +127,7 @@ public class Pixmap implements Disposable {
 			byte[] bytes = file.readBytes();
 			pixmap = new Gdx2DPixmap(bytes, 0, bytes.length, 0);
 		} catch (Exception e) {
-			throw new GdxRuntimeException("Couldn't load file: " + file, e);
+			throw new MicroRuntimeException("Couldn't load file: " + file, e);
 		}
 	}
 	
@@ -234,13 +234,13 @@ public class Pixmap implements Disposable {
 	
 	public ByteBuffer getPixels() {
 		if (disposed)
-			throw new GdxRuntimeException("Pixmap already disposed");
+			throw new MicroRuntimeException("Pixmap already disposed");
 		return pixmap.getPixels();
 	}
 	
 	public void setPixels(ByteBuffer pixels) {
 		if (!pixels.isDirect())
-			throw new GdxRuntimeException("Couldn't setPixels from non-direct ByteBuffer");
+			throw new MicroRuntimeException("Couldn't setPixels from non-direct ByteBuffer");
 		ByteBuffer dst = pixmap.getPixels();
 		BufferUtils.copy(pixels, dst, dst.limit());
 	}

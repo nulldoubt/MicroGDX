@@ -154,7 +154,7 @@ public class ParticleEffect implements Disposable {
 				emitters.add(emitter);
 			} while (reader.readLine() != null);
 		} catch (IOException ex) {
-			throw new GdxRuntimeException("Error loading effect: " + effectFile, ex);
+			throw new MicroRuntimeException("Error loading effect: " + effectFile, ex);
 		} finally {
 			StreamUtils.closeQuietly(reader);
 		}

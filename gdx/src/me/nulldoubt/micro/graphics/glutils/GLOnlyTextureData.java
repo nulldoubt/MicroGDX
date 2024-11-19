@@ -4,7 +4,7 @@ import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.graphics.TextureData;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class GLOnlyTextureData implements TextureData {
 	
@@ -42,7 +42,7 @@ public class GLOnlyTextureData implements TextureData {
 	@Override
 	public void prepare() {
 		if (isPrepared)
-			throw new GdxRuntimeException("Already prepared");
+			throw new MicroRuntimeException("Already prepared");
 		isPrepared = true;
 	}
 	
@@ -53,12 +53,12 @@ public class GLOnlyTextureData implements TextureData {
 	
 	@Override
 	public Pixmap consumePixmap() {
-		throw new GdxRuntimeException("This TextureData implementation does not return a Pixmap");
+		throw new MicroRuntimeException("This TextureData implementation does not return a Pixmap");
 	}
 	
 	@Override
 	public boolean disposePixmap() {
-		throw new GdxRuntimeException("This TextureData implementation does not return a Pixmap");
+		throw new MicroRuntimeException("This TextureData implementation does not return a Pixmap");
 	}
 	
 	@Override

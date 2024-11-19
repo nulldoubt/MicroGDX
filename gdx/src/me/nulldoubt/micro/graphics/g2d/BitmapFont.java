@@ -7,7 +7,6 @@ import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.Texture.TextureFilter;
 import me.nulldoubt.micro.graphics.g2d.GlyphLayout.GlyphRun;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.*;
 
 import java.io.BufferedReader;
@@ -472,12 +471,12 @@ public class BitmapFont implements Disposable {
 			try {
 				String line = reader.readLine(); // info
 				if (line == null)
-					throw new GdxRuntimeException("File is empty.");
+					throw new MicroRuntimeException("File is empty.");
 				
 				line = line.substring(line.indexOf("padding=") + 8);
 				String[] padding = line.substring(0, line.indexOf(' ')).split(",", 4);
 				if (padding.length != 4)
-					throw new GdxRuntimeException("Invalid padding.");
+					throw new MicroRuntimeException("Invalid padding.");
 				padTop = Integer.parseInt(padding[0]);
 				padRight = Integer.parseInt(padding[1]);
 				padBottom = Integer.parseInt(padding[2]);
@@ -486,19 +485,19 @@ public class BitmapFont implements Disposable {
 				
 				line = reader.readLine();
 				if (line == null)
-					throw new GdxRuntimeException("Missing common header.");
+					throw new MicroRuntimeException("Missing common header.");
 				String[] common = line.split(" ", 9); // At most we want the 6th element; i.e. "page=N"
 				
 				// At least lineHeight and base are required.
 				if (common.length < 3)
-					throw new GdxRuntimeException("Invalid common header.");
+					throw new MicroRuntimeException("Invalid common header.");
 				
 				if (!common[1].startsWith("lineHeight="))
-					throw new GdxRuntimeException("Missing: lineHeight");
+					throw new MicroRuntimeException("Missing: lineHeight");
 				lineHeight = Integer.parseInt(common[1].substring(11));
 				
 				if (!common[2].startsWith("base="))
-					throw new GdxRuntimeException("Missing: base");
+					throw new MicroRuntimeException("Missing: base");
 				float baseLine = Integer.parseInt(common[2].substring(5));
 				
 				int pageCount = 1;
@@ -516,7 +515,7 @@ public class BitmapFont implements Disposable {
 					// Read each "page" info line.
 					line = reader.readLine();
 					if (line == null)
-						throw new GdxRuntimeException("Missing additional page definitions.");
+						throw new MicroRuntimeException("Missing additional page definitions.");
 					
 					// Expect ID to mean "index".
 					Matcher matcher = Pattern.compile(".*id=(\\d+)").matcher(line);
@@ -525,15 +524,15 @@ public class BitmapFont implements Disposable {
 						try {
 							int pageID = Integer.parseInt(id);
 							if (pageID != p)
-								throw new GdxRuntimeException("Page IDs must be indices starting at 0: " + id);
+								throw new MicroRuntimeException("Page IDs must be indices starting at 0: " + id);
 						} catch (NumberFormatException ex) {
-							throw new GdxRuntimeException("Invalid page id: " + id, ex);
+							throw new MicroRuntimeException("Invalid page id: " + id, ex);
 						}
 					}
 					
 					matcher = Pattern.compile(".*file=\"?([^\"]+)\"?").matcher(line);
 					if (!matcher.find())
-						throw new GdxRuntimeException("Missing: file");
+						throw new MicroRuntimeException("Missing: file");
 					String fileName = matcher.group(1);
 					
 					imagePaths[p] = fontFile.parent().child(fileName).path().replaceAll("\\\\", "/");
@@ -716,7 +715,7 @@ public class BitmapFont implements Disposable {
 				}
 				
 			} catch (Exception ex) {
-				throw new GdxRuntimeException("Error loading font file: " + fontFile, ex);
+				throw new MicroRuntimeException("Error loading font file: " + fontFile, ex);
 			} finally {
 				StreamUtils.closeQuietly(reader);
 			}
@@ -812,7 +811,7 @@ public class BitmapFont implements Disposable {
 					return glyph;
 				}
 			}
-			throw new GdxRuntimeException("No glyphs found.");
+			throw new MicroRuntimeException("No glyphs found.");
 		}
 		
 		/**

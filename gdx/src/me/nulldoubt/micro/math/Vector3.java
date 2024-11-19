@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.math;
 
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.NumberUtils;
 
 import java.io.Serializable;
@@ -712,7 +712,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 				// Throw a GdxRuntimeException
 			}
 		}
-		throw new GdxRuntimeException("Malformed Vector3: " + v);
+		throw new MicroRuntimeException("Malformed Vector3: " + v);
 	}
 	
 	@Override

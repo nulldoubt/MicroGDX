@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.graphics;
 
 import me.nulldoubt.micro.utils.Collections;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -205,7 +205,7 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
 		@Override
 		public boolean hasNext() {
 			if (!valid)
-				throw new GdxRuntimeException("#iterator() cannot be used nested.");
+				throw new MicroRuntimeException("#iterator() cannot be used nested.");
 			return index < array.length;
 		}
 		
@@ -214,13 +214,13 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
 			if (index >= array.length)
 				throw new NoSuchElementException(String.valueOf(index));
 			if (!valid)
-				throw new GdxRuntimeException("#iterator() cannot be used nested.");
+				throw new MicroRuntimeException("#iterator() cannot be used nested.");
 			return array[index++];
 		}
 		
 		@Override
 		public void remove() {
-			throw new GdxRuntimeException("Remove not allowed.");
+			throw new MicroRuntimeException("Remove not allowed.");
 		}
 		
 		public void reset() {

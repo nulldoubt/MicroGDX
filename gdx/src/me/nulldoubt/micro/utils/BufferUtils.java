@@ -271,7 +271,7 @@ public final class BufferUtils {
 			case LongBuffer _ -> destination.position() << 3;
 			case FloatBuffer _ -> destination.position() << 2;
 			case DoubleBuffer _ -> destination.position() << 3;
-			case null, default -> throw new GdxRuntimeException("Can't copy to buffer instance");
+			case null, default -> throw new MicroRuntimeException("Can't copy to buffer instance");
 		};
 	}
 	
@@ -283,7 +283,7 @@ public final class BufferUtils {
 			case LongBuffer _ -> bytes >>> 3;
 			case FloatBuffer _ -> bytes >>> 2;
 			case DoubleBuffer _ -> bytes >>> 3;
-			case null, default -> throw new GdxRuntimeException("Can't copy to buffer instance");
+			case null, default -> throw new MicroRuntimeException("Can't copy to buffer instance");
 		};
 	}
 	
@@ -295,7 +295,7 @@ public final class BufferUtils {
 			case LongBuffer _ -> elements << 3;
 			case FloatBuffer _ -> elements << 2;
 			case DoubleBuffer _ -> elements << 3;
-			case null, default -> throw new GdxRuntimeException("Can't copy to buffer instance");
+			case null, default -> throw new MicroRuntimeException("Can't copy to buffer instance");
 		};
 	}
 	

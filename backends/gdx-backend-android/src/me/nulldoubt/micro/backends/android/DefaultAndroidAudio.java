@@ -32,7 +32,7 @@ import me.nulldoubt.micro.audio.AudioRecorder;
 import me.nulldoubt.micro.audio.Music;
 import me.nulldoubt.micro.audio.Sound;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -113,7 +113,7 @@ public class DefaultAndroidAudio implements AndroidAudio {
 				}
 				return music;
 			} catch (Exception ex) {
-				throw new GdxRuntimeException(
+				throw new MicroRuntimeException(
 					"Error loading audio file: " + file + "\nNote: Internal audio files must be placed in the assets directory.", ex);
 			}
 		} else {
@@ -126,7 +126,7 @@ public class DefaultAndroidAudio implements AndroidAudio {
 				}
 				return music;
 			} catch (Exception ex) {
-				throw new GdxRuntimeException("Error loading audio file: " + file, ex);
+				throw new MicroRuntimeException("Error loading audio file: " + file, ex);
 			}
 		}
 
@@ -161,7 +161,7 @@ public class DefaultAndroidAudio implements AndroidAudio {
 			}
 			return music;
 		} catch (Exception ex) {
-			throw new GdxRuntimeException("Error loading audio from FileDescriptor", ex);
+			throw new MicroRuntimeException("Error loading audio from FileDescriptor", ex);
 		}
 	}
 
@@ -176,14 +176,14 @@ public class DefaultAndroidAudio implements AndroidAudio {
 				androidSound = new AndroidSound(soundPool, manager, soundPool.load(descriptor, 1));
 				descriptor.close();
 			} catch (IOException ex) {
-				throw new GdxRuntimeException(
+				throw new MicroRuntimeException(
 					"Error loading audio file: " + file + "\nNote: Internal audio files must be placed in the assets directory.", ex);
 			}
 		} else {
 			try {
 				androidSound = new AndroidSound(soundPool, manager, soundPool.load(aHandle.file().getPath(), 1));
 			} catch (Exception ex) {
-				throw new GdxRuntimeException("Error loading audio file: " + file, ex);
+				throw new MicroRuntimeException("Error loading audio file: " + file, ex);
 			}
 		}
 		return androidSound;

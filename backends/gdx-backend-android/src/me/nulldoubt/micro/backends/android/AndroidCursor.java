@@ -6,7 +6,7 @@ import android.view.PointerIcon;
 import android.view.View;
 
 import me.nulldoubt.micro.graphics.Cursor;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class AndroidCursor implements Cursor {
 
@@ -25,7 +25,7 @@ public class AndroidCursor implements Cursor {
 				case AllResize: type = PointerIcon.TYPE_ALL_SCROLL; break;
 				case NotAllowed: type = PointerIcon.TYPE_NO_DROP; break; // Closest match
 				case None: type = PointerIcon.TYPE_NULL; break;
-				default: throw new GdxRuntimeException("Unknown system cursor " + systemCursor); //@on
+				default: throw new MicroRuntimeException("Unknown system cursor " + systemCursor); //@on
 			}
 			view.setPointerIcon(PointerIcon.getSystemIcon(view.getContext(), type));
 		}

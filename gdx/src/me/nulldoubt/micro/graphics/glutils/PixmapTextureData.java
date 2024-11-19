@@ -19,7 +19,7 @@ package me.nulldoubt.micro.graphics.glutils;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.graphics.TextureData;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class PixmapTextureData implements TextureData {
 	
@@ -78,7 +78,7 @@ public class PixmapTextureData implements TextureData {
 	
 	@Override
 	public void consumeCustomData(int target) {
-		throw new GdxRuntimeException("This TextureData implementation does not upload data itself");
+		throw new MicroRuntimeException("This TextureData implementation does not upload data itself");
 	}
 	
 	@Override
@@ -88,7 +88,7 @@ public class PixmapTextureData implements TextureData {
 	
 	@Override
 	public void prepare() {
-		throw new GdxRuntimeException("prepare() must not be called on a PixmapTextureData instance as it is already prepared.");
+		throw new MicroRuntimeException("prepare() must not be called on a PixmapTextureData instance as it is already prepared.");
 	}
 	
 }

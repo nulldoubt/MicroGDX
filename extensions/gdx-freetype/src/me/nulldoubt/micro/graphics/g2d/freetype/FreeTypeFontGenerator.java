@@ -46,7 +46,7 @@ import me.nulldoubt.micro.graphics.g2d.freetype.FreeType.Stroker;
 import me.nulldoubt.micro.math.MathUtils;
 import me.nulldoubt.micro.utils.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import com.nulldoubt.micro.utils.Null;
 
 /** Generates {@link BitmapFont} and {@link BitmapFontData} instances from TrueType, OTF, and other FreeType supported fonts.
@@ -90,7 +90,7 @@ public class FreeTypeFontGenerator implements Disposable {
 
 	/** Creates a new generator from the given font file. Uses {@link FileHandle#length()} to determine the file size. If the file
 	 * length could not be determined (it was 0), an extra copy of the font bytes is performed. Throws a
-	 * {@link GdxRuntimeException} if loading did not succeed. */
+	 * {@link MicroRuntimeException} if loading did not succeed. */
 	public FreeTypeFontGenerator (FileHandle fontFile, int faceIndex) {
 		name = fontFile.nameWithoutExtension();
 		library = FreeType.initFreeType();
@@ -162,7 +162,7 @@ public class FreeTypeFontGenerator implements Disposable {
 		generateData(parameter, data);
 		if (updateTextureRegions)
 			parameter.packer.updateTextureRegions(data.regions, parameter.minFilter, parameter.magFilter, parameter.genMipMaps);
-		if (data.regions.isEmpty()) throw new GdxRuntimeException("Unable to create a font with no texture regions.");
+		if (data.regions.isEmpty()) throw new MicroRuntimeException("Unable to create a font with no texture regions.");
 		BitmapFont font = newBitmapFont(data, data.regions, true);
 		font.setOwnsTexture(parameter.packer == null);
 		return font;
@@ -230,7 +230,7 @@ public class FreeTypeFontGenerator implements Disposable {
 
 		// Try to load character
 		if (!loadChar(c)) {
-			throw new GdxRuntimeException("Unable to load character!");
+			throw new MicroRuntimeException("Unable to load character!");
 		}
 
 		GlyphSlot slot = face.getGlyph();
@@ -283,7 +283,7 @@ public class FreeTypeFontGenerator implements Disposable {
 	void setPixelSizes (int pixelWidth, int pixelHeight) {
 		this.pixelWidth = pixelWidth;
 		this.pixelHeight = pixelHeight;
-		if (!bitmapped && !face.setPixelSizes(pixelWidth, pixelHeight)) throw new GdxRuntimeException("Couldn't set size for font");
+		if (!bitmapped && !face.setPixelSizes(pixelWidth, pixelHeight)) throw new MicroRuntimeException("Couldn't set size for font");
 	}
 
 	/** Generates a new {@link BitmapFontData} instance, expert usage only. Throws a GdxRuntimeException if something went wrong.
@@ -329,7 +329,7 @@ public class FreeTypeFontGenerator implements Disposable {
 			data.xHeight = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
 			break;
 		}
-		if (data.xHeight == 0) throw new GdxRuntimeException("No x-height character found in font");
+		if (data.xHeight == 0) throw new MicroRuntimeException("No x-height character found in font");
 
 		// determine cap height
 		for (char capChar : data.capChars) {
@@ -337,7 +337,7 @@ public class FreeTypeFontGenerator implements Disposable {
 			data.capHeight = FreeType.toInt(face.getGlyph().getMetrics().getHeight()) + Math.abs(parameter.shadowOffsetY);
 			break;
 		}
-		if (!bitmapped && data.capHeight == 1) throw new GdxRuntimeException("No cap character found in font");
+		if (!bitmapped && data.capHeight == 1) throw new MicroRuntimeException("No cap character found in font");
 
 		data.ascent -= data.capHeight;
 		data.down = -data.lineHeight;
@@ -491,7 +491,7 @@ public class FreeTypeFontGenerator implements Disposable {
 		FreeType.Glyph mainGlyph = slot.getGlyph();
 		try {
 			mainGlyph.toBitmap(parameter.mono ? FreeType.FT_RENDER_MODE_MONO : FreeType.FT_RENDER_MODE_NORMAL);
-		} catch (GdxRuntimeException e) {
+		} catch (MicroRuntimeException e) {
 			mainGlyph.dispose();
 			Micro.app.log("FreeTypeFontGenerator", "Couldn't render char: " + c);
 			return null;

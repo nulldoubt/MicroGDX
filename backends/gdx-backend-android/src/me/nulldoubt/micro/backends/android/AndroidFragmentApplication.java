@@ -19,8 +19,8 @@ import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxNativesLoader;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroNativesLoader;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.SnapshotArray;
 
 /** Implementation of the {@link AndroidApplicationBase} that is based on the {@link Fragment} class. This class is similar in use
@@ -129,9 +129,9 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
 	 * @return the GLSurfaceView of the application */
 	public View initializeForView (ApplicationListener listener, AndroidApplicationConfiguration config) {
 		if (this.getVersion() < MINIMUM_SDK) {
-			throw new GdxRuntimeException("libGDX requires Android API Level " + MINIMUM_SDK + " or later.");
+			throw new MicroRuntimeException("libGDX requires Android API Level " + MINIMUM_SDK + " or later.");
 		}
-		GdxNativesLoader.load();
+		MicroNativesLoader.load();
 		setApplicationLogger(new AndroidApplicationLogger());
 		graphics = new AndroidGraphics(this, config,
 			config.resolutionStrategy == null ? new FillResolutionStrategy() : config.resolutionStrategy);

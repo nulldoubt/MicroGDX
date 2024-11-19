@@ -78,7 +78,7 @@ public interface Predicate<T> {
 
 		@Override
 		public void remove () {
-			if (peeked) throw new GdxRuntimeException("Cannot remove between a call to hasNext() and next().");
+			if (peeked) throw new MicroRuntimeException("Cannot remove between a call to hasNext() and next().");
 			iterator.remove();
 		}
 	}

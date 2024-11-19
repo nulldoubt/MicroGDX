@@ -4,7 +4,7 @@ import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.graphics.TextureData;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class FileTextureData implements TextureData {
 	
@@ -37,7 +37,7 @@ public class FileTextureData implements TextureData {
 	@Override
 	public void prepare() {
 		if (isPrepared)
-			throw new GdxRuntimeException("Already prepared");
+			throw new MicroRuntimeException("Already prepared");
 		if (pixmap == null) {
 			pixmap = new Pixmap(file);
 			width = pixmap.getWidth();
@@ -51,7 +51,7 @@ public class FileTextureData implements TextureData {
 	@Override
 	public Pixmap consumePixmap() {
 		if (!isPrepared)
-			throw new GdxRuntimeException("Call prepare() before calling getPixmap()");
+			throw new MicroRuntimeException("Call prepare() before calling getPixmap()");
 		isPrepared = false;
 		Pixmap pixmap = this.pixmap;
 		this.pixmap = null;
@@ -94,7 +94,7 @@ public class FileTextureData implements TextureData {
 	
 	@Override
 	public void consumeCustomData(int target) {
-		throw new GdxRuntimeException("This TextureData implementation does not upload data itself");
+		throw new MicroRuntimeException("This TextureData implementation does not upload data itself");
 	}
 	
 	public String toString() {

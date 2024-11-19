@@ -38,7 +38,7 @@ import me.nulldoubt.micro.backends.android.keyboardheight.StandardKeyboardHeight
 import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.SnapshotArray;
 
 /** An implementation of the {@link Application} interface for Android. Create an {@link Activity} that derives from this class.
@@ -119,7 +119,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 
 	private void init (ApplicationListener listener, AndroidApplicationConfiguration config, boolean isForView) {
 		if (this.getVersion() < MINIMUM_SDK) {
-			throw new GdxRuntimeException("libGDX requires Android API Level " + MINIMUM_SDK + " or later.");
+			throw new MicroRuntimeException("libGDX requires Android API Level " + MINIMUM_SDK + " or later.");
 		}
 		config.nativeLoader.load();
 		setApplicationLogger(new AndroidApplicationLogger());

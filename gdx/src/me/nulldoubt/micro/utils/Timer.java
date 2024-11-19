@@ -243,7 +243,7 @@ public class Timer {
 							try {
 								waitMillis = instances.get(i).update(this, timeMillis, waitMillis);
 							} catch (Throwable ex) {
-								throw new GdxRuntimeException("Task failed: " + instances.get(i).getClass().getName(), ex);
+								throw new MicroRuntimeException("Task failed: " + instances.get(i).getClass().getName(), ex);
 							}
 						}
 					}

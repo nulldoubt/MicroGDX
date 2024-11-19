@@ -19,7 +19,7 @@ import me.nulldoubt.micro.math.MathUtils;
 import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.utils.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.IntArray;
 
 /** Draws 2D images, optimized for geometry that does not change. Sprites and/or textures are cached and given an ID, which can
@@ -196,7 +196,7 @@ public class SpriteCache implements Disposable {
 		} else {
 			// Redefine existing cache.
 			if (cacheCount > cache.maxCount) {
-				throw new GdxRuntimeException(
+				throw new MicroRuntimeException(
 					"If a cache is not the last created, it cannot be redefined with more entries than when it was first created: "
 						+ cacheCount + " (" + cache.maxCount + " max)");
 			}

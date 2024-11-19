@@ -37,7 +37,7 @@ import me.nulldoubt.micro.scenes.scene2d.utils.TextureRegionDrawable;
 import me.nulldoubt.micro.scenes.scene2d.utils.TiledDrawable;
 import me.nulldoubt.micro.utils.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import com.nulldoubt.micro.utils.Json;
 import com.nulldoubt.micro.utils.Json.ReadOnlySerializer;
 import com.nulldoubt.micro.utils.JsonValue;
@@ -142,13 +142,13 @@ public class Skin implements Disposable {
 	}
 
 	/** Returns a resource named "default" for the specified type.
-	 * @throws GdxRuntimeException if the resource was not found. */
+	 * @throws MicroRuntimeException if the resource was not found. */
 	public <T> T get (Class<T> type) {
 		return get("default", type);
 	}
 
 	/** Returns a named resource of the specified type.
-	 * @throws GdxRuntimeException if the resource was not found. */
+	 * @throws MicroRuntimeException if the resource was not found. */
 	public <T> T get (String name, Class<T> type) {
 		if (name == null) throw new IllegalArgumentException("name cannot be null.");
 		if (type == null) throw new IllegalArgumentException("type cannot be null.");
@@ -159,9 +159,9 @@ public class Skin implements Disposable {
 		if (type == Sprite.class) return (T)getSprite(name);
 
 		ObjectMap<String, Object> typeResources = resources.get(type);
-		if (typeResources == null) throw new GdxRuntimeException("No " + type.getName() + " registered with name: " + name);
+		if (typeResources == null) throw new MicroRuntimeException("No " + type.getName() + " registered with name: " + name);
 		Object resource = typeResources.get(name);
-		if (resource == null) throw new GdxRuntimeException("No " + type.getName() + " registered with name: " + name);
+		if (resource == null) throw new MicroRuntimeException("No " + type.getName() + " registered with name: " + name);
 		return (T)resource;
 	}
 
@@ -201,7 +201,7 @@ public class Skin implements Disposable {
 		if (region != null) return region;
 
 		Texture texture = optional(name, Texture.class);
-		if (texture == null) throw new GdxRuntimeException("No TextureRegion or Texture registered with name: " + name);
+		if (texture == null) throw new MicroRuntimeException("No TextureRegion or Texture registered with name: " + name);
 		region = new TextureRegion(texture);
 		add(name, region, TextureRegion.class);
 		return region;
@@ -259,8 +259,8 @@ public class Skin implements Disposable {
 			if (scale != 1) patch.scale(scale, scale);
 			add(name, patch, NinePatch.class);
 			return patch;
-		} catch (GdxRuntimeException ex) {
-			throw new GdxRuntimeException("No NinePatch, TextureRegion, or Texture registered with name: " + name);
+		} catch (MicroRuntimeException ex) {
+			throw new MicroRuntimeException("No NinePatch, TextureRegion, or Texture registered with name: " + name);
 		}
 	}
 
@@ -282,8 +282,8 @@ public class Skin implements Disposable {
 			if (scale != 1) sprite.setSize(sprite.getWidth() * scale, sprite.getHeight() * scale);
 			add(name, sprite, Sprite.class);
 			return sprite;
-		} catch (GdxRuntimeException ex) {
-			throw new GdxRuntimeException("No NinePatch, TextureRegion, or Texture registered with name: " + name);
+		} catch (MicroRuntimeException ex) {
+			throw new MicroRuntimeException("No NinePatch, TextureRegion, or Texture registered with name: " + name);
 		}
 	}
 
@@ -307,7 +307,7 @@ public class Skin implements Disposable {
 				drawable = new TextureRegionDrawable(textureRegion);
 				if (scale != 1) scale(drawable);
 			}
-		} catch (GdxRuntimeException ignored) {
+		} catch (MicroRuntimeException ignored) {
 		}
 
 		// Check for explicit registration of ninepatch, sprite, or tiled drawable.
@@ -320,7 +320,7 @@ public class Skin implements Disposable {
 				if (sprite != null)
 					drawable = new SpriteDrawable(sprite);
 				else
-					throw new GdxRuntimeException(
+					throw new MicroRuntimeException(
 						"No Drawable, NinePatch, TextureRegion, Texture, or Sprite registered with name: " + name);
 			}
 		}
@@ -361,7 +361,7 @@ public class Skin implements Disposable {
 		if (drawable instanceof TextureRegionDrawable) return new TextureRegionDrawable((TextureRegionDrawable)drawable);
 		if (drawable instanceof NinePatchDrawable) return new NinePatchDrawable((NinePatchDrawable)drawable);
 		if (drawable instanceof SpriteDrawable) return new SpriteDrawable((SpriteDrawable)drawable);
-		throw new GdxRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
+		throw new MicroRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
 	}
 
 	/** Returns a tinted copy of a drawable found in the skin via {@link #getDrawable(String)}. */
@@ -379,7 +379,7 @@ public class Skin implements Disposable {
 		else if (drawable instanceof SpriteDrawable)
 			newDrawable = ((SpriteDrawable)drawable).tint(tint);
 		else
-			throw new GdxRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
+			throw new MicroRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
 
 		if (newDrawable instanceof BaseDrawable) {
 			BaseDrawable named = (BaseDrawable)newDrawable;
@@ -481,7 +481,7 @@ public class Skin implements Disposable {
 						try {
 							copyFields(get(parentName, parentType), object);
 							break;
-						} catch (GdxRuntimeException ex) { // Parent resource doesn't exist.
+						} catch (MicroRuntimeException ex) { // Parent resource doesn't exist.
 							parentType = parentType.getSuperclass(); // Try resource for super class.
 							if (parentType == Object.class) {
 								SerializationException se = new SerializationException(

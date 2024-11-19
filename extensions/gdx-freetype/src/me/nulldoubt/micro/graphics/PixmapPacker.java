@@ -9,7 +9,7 @@ import me.nulldoubt.micro.graphics.glutils.PixmapTextureData;
 import me.nulldoubt.micro.math.shapes.Rectangle;
 import me.nulldoubt.micro.utils.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.OrderedMap;
 
 import java.util.Arrays;
@@ -64,7 +64,7 @@ public class PixmapPacker implements Disposable {
 		if (disposed)
 			return null;
 		if (name != null && getRect(name) != null)
-			throw new GdxRuntimeException("Pixmap has already been packed with name: " + name);
+			throw new MicroRuntimeException("Pixmap has already been packed with name: " + name);
 		
 		PixmapPackerRectangle rect;
 		Pixmap pixmapToDispose = null;
@@ -147,8 +147,8 @@ public class PixmapPacker implements Disposable {
 		
 		if (rect.getWidth() > pageWidth || rect.getHeight() > pageHeight) {
 			if (name == null)
-				throw new GdxRuntimeException("Page size too small for pixmap.");
-			throw new GdxRuntimeException("Page size too small for pixmap: " + name);
+				throw new MicroRuntimeException("Page size too small for pixmap.");
+			throw new MicroRuntimeException("Page size too small for pixmap: " + name);
 		}
 		
 		Page page = packStrategy.pack(this, name, rect);

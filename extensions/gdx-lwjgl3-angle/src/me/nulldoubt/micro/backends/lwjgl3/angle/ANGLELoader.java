@@ -16,7 +16,7 @@
 
 package me.nulldoubt.micro.backends.lwjgl3.angle;
 
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -71,7 +71,7 @@ public class ANGLELoader {
 
 	private static File extractFile (String sourcePath, File outFile) {
 		try {
-			if (!outFile.getParentFile().exists() && !outFile.getParentFile().mkdirs()) throw new GdxRuntimeException(
+			if (!outFile.getParentFile().exists() && !outFile.getParentFile().mkdirs()) throw new MicroRuntimeException(
 				"Couldn't create ANGLE native library output directory " + outFile.getParentFile().getAbsolutePath());
 			OutputStream out = null;
 			InputStream in = null;
@@ -95,7 +95,7 @@ public class ANGLELoader {
 				closeQuietly(in);
 			}
 		} catch (Throwable t) {
-			throw new GdxRuntimeException("Couldn't load ANGLE shared library " + sourcePath, t);
+			throw new MicroRuntimeException("Couldn't load ANGLE shared library " + sourcePath, t);
 		}
 	}
 
@@ -171,7 +171,7 @@ public class ANGLELoader {
 
 	public static void load () {
 		if ((isARM && !isMac) || (!isWindows && !isLinux && !isMac))
-			throw new GdxRuntimeException("ANGLE is only supported on x86/x86_64 Windows, x64 Linux, and x64/arm64 macOS.");
+			throw new MicroRuntimeException("ANGLE is only supported on x86/x86_64 Windows, x64 Linux, and x64/arm64 macOS.");
 		String osDir = null;
 		String ext = null;
 		if (isWindows) {

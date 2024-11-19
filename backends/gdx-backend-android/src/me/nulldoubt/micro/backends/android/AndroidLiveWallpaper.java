@@ -31,8 +31,8 @@ import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import me.nulldoubt.micro.graphics.Color;
 import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxNativesLoader;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroNativesLoader;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.SnapshotArray;
 
 /** An implementation of the {@link Application} interface to be used with an AndroidLiveWallpaperService. Not directly
@@ -65,9 +65,9 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 
 	public void initialize (ApplicationListener listener, AndroidApplicationConfiguration config) {
 		if (this.getVersion() < MINIMUM_SDK) {
-			throw new GdxRuntimeException("libGDX requires Android API Level " + MINIMUM_SDK + " or later.");
+			throw new MicroRuntimeException("libGDX requires Android API Level " + MINIMUM_SDK + " or later.");
 		}
-		GdxNativesLoader.load();
+		MicroNativesLoader.load();
 		setApplicationLogger(new AndroidApplicationLogger());
 		graphics = new AndroidGraphicsLiveWallpaper(this, config,
 			config.resolutionStrategy == null ? new FillResolutionStrategy() : config.resolutionStrategy);

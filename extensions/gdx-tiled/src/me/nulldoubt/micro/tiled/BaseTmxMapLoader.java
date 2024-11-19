@@ -486,7 +486,7 @@ public abstract class BaseTmxMapLoader<P extends BaseTmxMapLoader.Parameters> ex
 						// [Runnable] should not run until the end of [loadTiledMap]
 						runOnEndOfLoadTiled.add(fetch);
 					} catch (Exception exception) {
-						throw new GdxRuntimeException(
+						throw new MicroRuntimeException(
 							"Error parsing property [\" + name + \"] of type \"object\" with value: [" + value + "]", exception);
 					}
 				} else {
@@ -512,7 +512,7 @@ public abstract class BaseTmxMapLoader<P extends BaseTmxMapLoader.Parameters> ex
 			String alpha = value.substring(1, 3);
 			return Color.valueOf(opaqueColor + alpha);
 		} else {
-			throw new GdxRuntimeException(
+			throw new MicroRuntimeException(
 				"Wrong type given for property " + name + ", given : " + type + ", supported : string, bool, int, float, color");
 		}
 	}
@@ -542,7 +542,7 @@ public abstract class BaseTmxMapLoader<P extends BaseTmxMapLoader.Parameters> ex
 		Element data = element.getChildByName("data");
 		String encoding = data.getAttribute("encoding", null);
 		if (encoding == null) { // no 'encoding' attribute means that the encoding is XML
-			throw new GdxRuntimeException("Unsupported encoding (XML) for TMX Layer Data");
+			throw new MicroRuntimeException("Unsupported encoding (XML) for TMX Layer Data");
 		}
 		int[] ids = new int[width * height];
 		if (encoding.equals("csv")) {
@@ -562,7 +562,7 @@ public abstract class BaseTmxMapLoader<P extends BaseTmxMapLoader.Parameters> ex
 					else if (compression.equals("zlib"))
 						is = new BufferedInputStream(new InflaterInputStream(new ByteArrayInputStream(bytes)));
 					else
-						throw new GdxRuntimeException("Unrecognised compression (" + compression + ") for TMX Layer Data");
+						throw new MicroRuntimeException("Unrecognised compression (" + compression + ") for TMX Layer Data");
 
 					byte[] temp = new byte[4];
 					for (int y = 0; y < height; y++) {
@@ -574,20 +574,20 @@ public abstract class BaseTmxMapLoader<P extends BaseTmxMapLoader.Parameters> ex
 								read += curr;
 							}
 							if (read != temp.length)
-								throw new GdxRuntimeException("Error Reading TMX Layer Data: Premature end of tile data");
+								throw new MicroRuntimeException("Error Reading TMX Layer Data: Premature end of tile data");
 							ids[y * width + x] = unsignedByteToInt(temp[0]) | unsignedByteToInt(temp[1]) << 8
 								| unsignedByteToInt(temp[2]) << 16 | unsignedByteToInt(temp[3]) << 24;
 						}
 					}
 				} catch (IOException e) {
-					throw new GdxRuntimeException("Error Reading TMX Layer Data - IOException: " + e.getMessage());
+					throw new MicroRuntimeException("Error Reading TMX Layer Data - IOException: " + e.getMessage());
 				} finally {
 					StreamUtils.closeQuietly(is);
 				}
 			} else {
 				// any other value of 'encoding' is one we're not aware of, probably a feature of a future version of Tiled
 				// or another editor
-				throw new GdxRuntimeException("Unrecognised encoding (" + encoding + ") for TMX Layer Data");
+				throw new MicroRuntimeException("Unrecognised encoding (" + encoding + ") for TMX Layer Data");
 			}
 		}
 		return ids;
@@ -632,7 +632,7 @@ public abstract class BaseTmxMapLoader<P extends BaseTmxMapLoader.Parameters> ex
 						image = getRelativeFileHandle(tsx, imageSource);
 					}
 				} catch (SerializationException e) {
-					throw new GdxRuntimeException("Error parsing external tileset.");
+					throw new MicroRuntimeException("Error parsing external tileset.");
 				}
 			} else {
 				Element imageElement = element.getChildByName("image");

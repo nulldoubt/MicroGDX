@@ -1,6 +1,5 @@
 package me.nulldoubt.micro;
 
-import com.nulldoubt.micro.graphics.*;
 import me.nulldoubt.micro.graphics.*;
 import me.nulldoubt.micro.graphics.Cursor.SystemCursor;
 import me.nulldoubt.micro.graphics.glutils.GLVersion;

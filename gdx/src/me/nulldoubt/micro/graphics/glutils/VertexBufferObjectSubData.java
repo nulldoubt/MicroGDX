@@ -25,7 +25,7 @@ import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.VertexAttribute;
 import me.nulldoubt.micro.graphics.VertexAttributes;
 import me.nulldoubt.micro.utils.BufferUtils;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 /**
  * <p>
@@ -148,7 +148,7 @@ public class VertexBufferObjectSubData implements VertexData {
 			BufferUtils.copy(vertices, sourceOffset, count, byteBuffer);
 			((Buffer)byteBuffer).position(pos);
 		} else
-			throw new GdxRuntimeException("Buffer must be allocated direct."); // Should never happen
+			throw new MicroRuntimeException("Buffer must be allocated direct."); // Should never happen
 
 		bufferChanged();
 	}

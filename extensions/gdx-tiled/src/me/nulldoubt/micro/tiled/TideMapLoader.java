@@ -33,7 +33,7 @@ import me.nulldoubt.micro.tiled.TiledMapTileLayer.Cell;
 import me.nulldoubt.micro.tiles.AnimatedTiledMapTile;
 import me.nulldoubt.micro.tiles.StaticTiledMapTile;
 import me.nulldoubt.micro.utils.Array;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.ObjectMap;
 import me.nulldoubt.micro.utils.XmlReader;
 import me.nulldoubt.micro.utils.XmlReader.Element;
@@ -71,7 +71,7 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
 			map.setOwnedResources(textures.values().toArray());
 			return map;
 		} catch (IOException e) {
-			throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+			throw new MicroRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
 		}
 
 	}
@@ -81,7 +81,7 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
 		try {
 			return loadMap(root, tideFile, new AssetManagerImageResolver(assetManager));
 		} catch (Exception e) {
-			throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+			throw new MicroRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
 			}
 			return dependencies;
 		} catch (IOException e) {
-			throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+			throw new MicroRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
 		}
 	}
 

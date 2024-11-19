@@ -5,7 +5,7 @@ import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Blending;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 public class MipMapGenerator {
 	
@@ -56,7 +56,7 @@ public class MipMapGenerator {
 		Micro.gl.glTexImage2D(target, 0, pixmap.getGLInternalFormat(), pixmap.getWidth(), pixmap.getHeight(), 0, pixmap.getGLFormat(),
 				pixmap.getGLType(), pixmap.getPixels());
 		if ((Micro.gl20 == null) && textureWidth != textureHeight)
-			throw new GdxRuntimeException("texture width and height must be square when using mipmapping.");
+			throw new MicroRuntimeException("texture width and height must be square when using mipmapping.");
 		int width = pixmap.getWidth() / 2;
 		int height = pixmap.getHeight() / 2;
 		int level = 1;

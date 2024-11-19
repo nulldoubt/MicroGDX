@@ -23,7 +23,7 @@ import android.view.SurfaceHolder;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.backends.android.surfaceview.GLSurfaceView20;
 import me.nulldoubt.micro.backends.android.surfaceview.ResolutionStrategy;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 /** A subclass of {@link AndroidGraphics} specialized for live wallpaper applications.
  * 
@@ -54,7 +54,7 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 	@Override
 	protected GLSurfaceView20 createGLSurfaceView (AndroidApplicationBase application,
 		final ResolutionStrategy resolutionStrategy) {
-		if (!checkGL20()) throw new GdxRuntimeException("libGDX requires OpenGL ES 2.0");
+		if (!checkGL20()) throw new MicroRuntimeException("libGDX requires OpenGL ES 2.0");
 
 		EGLConfigChooser configChooser = getEglConfigChooser();
 		GLSurfaceView20 view = new GLSurfaceView20(application.getContext(), resolutionStrategy) {

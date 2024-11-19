@@ -16,7 +16,7 @@
 
 package me.nulldoubt.micro.backends.lwjgl3;
 
-import me.nulldoubt.micro.utils.GdxNativesLoader;
+import me.nulldoubt.micro.utils.MicroNativesLoader;
 
 public final class Lwjgl3NativesLoader {
 	
@@ -25,7 +25,7 @@ public final class Lwjgl3NativesLoader {
 	}
 	
 	public static void load() {
-		GdxNativesLoader.load();
+		MicroNativesLoader.load();
 	}
 	
 }

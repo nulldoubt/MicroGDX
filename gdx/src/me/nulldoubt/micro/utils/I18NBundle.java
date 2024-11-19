@@ -355,7 +355,7 @@ public class I18NBundle {
 				bundle.load(reader);
 			}
 		} catch (IOException e) {
-			throw new GdxRuntimeException(e);
+			throw new MicroRuntimeException(e);
 		} finally {
 			StreamUtils.closeQuietly(reader);
 		}

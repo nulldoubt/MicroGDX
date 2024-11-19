@@ -44,7 +44,7 @@ import me.nulldoubt.micro.graphics.glutils.FrameBuffer;
 import me.nulldoubt.micro.graphics.glutils.GLVersion;
 import me.nulldoubt.micro.graphics.glutils.Shader;
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.SnapshotArray;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -124,7 +124,7 @@ public class AndroidGraphics extends AbstractGraphics implements Renderer {
 
 	protected GLSurfaceView20 createGLSurfaceView (AndroidApplicationBase application,
 		final ResolutionStrategy resolutionStrategy) {
-		if (!checkGL20()) throw new GdxRuntimeException("libGDX requires OpenGL ES 2.0");
+		if (!checkGL20()) throw new MicroRuntimeException("libGDX requires OpenGL ES 2.0");
 
 		EGLConfigChooser configChooser = getEglConfigChooser();
 		GLSurfaceView20 view = new GLSurfaceView20(application.getContext(), resolutionStrategy, config.useGL30 ? 3 : 2);

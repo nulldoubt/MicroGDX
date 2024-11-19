@@ -23,7 +23,7 @@
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.Micro;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.StreamUtils;
 import com.jcraft.jogg.Packet;
 import com.jcraft.jogg.Page;
@@ -113,7 +113,7 @@ public class OggInputStream extends InputStream {
 		try {
 			total = input.available();
 		} catch (IOException ex) {
-			throw new GdxRuntimeException(ex);
+			throw new MicroRuntimeException(ex);
 		}
 		
 		init();
@@ -168,7 +168,7 @@ public class OggInputStream extends InputStream {
 		try {
 			bytes = input.read(buffer, index, BUFFER_SIZE);
 		} catch (Exception e) {
-			throw new GdxRuntimeException("Failure reading Vorbis.", e);
+			throw new MicroRuntimeException("Failure reading Vorbis.", e);
 		}
 		syncState.wrote(bytes);
 		
@@ -179,7 +179,7 @@ public class OggInputStream extends InputStream {
 				return false;
 			
 			// error case. Must not be Vorbis data
-			throw new GdxRuntimeException("Input does not appear to be an Ogg bitstream.");
+			throw new MicroRuntimeException("Input does not appear to be an Ogg bitstream.");
 		}
 		
 		// Get the serial number and set up the rest of decode.
@@ -198,17 +198,17 @@ public class OggInputStream extends InputStream {
 		comment.init();
 		if (streamState.pagein(page) < 0) {
 			// error; stream version mismatch perhaps
-			throw new GdxRuntimeException("Error reading first page of Ogg bitstream.");
+			throw new MicroRuntimeException("Error reading first page of Ogg bitstream.");
 		}
 		
 		if (streamState.packetout(packet) != 1) {
 			// no page? must not be vorbis
-			throw new GdxRuntimeException("Error reading initial header packet.");
+			throw new MicroRuntimeException("Error reading initial header packet.");
 		}
 		
 		if (oggInfo.synthesis_headerin(comment, packet) < 0) {
 			// error case; not a vorbis header
-			throw new GdxRuntimeException("Ogg bitstream does not contain Vorbis audio data.");
+			throw new MicroRuntimeException("Ogg bitstream does not contain Vorbis audio data.");
 		}
 		
 		// At this point, we're sure we're Vorbis. We've set up the logical
@@ -240,7 +240,7 @@ public class OggInputStream extends InputStream {
 						if (result == -1) {
 							// Uh oh; data at some point was corrupted or missing!
 							// We can't tolerate that in a header. Die.
-							throw new GdxRuntimeException("Corrupt secondary header.");
+							throw new MicroRuntimeException("Corrupt secondary header.");
 						}
 						
 						oggInfo.synthesis_headerin(comment, packet);
@@ -256,10 +256,10 @@ public class OggInputStream extends InputStream {
 			try {
 				bytes = input.read(buffer, index, BUFFER_SIZE);
 			} catch (Exception e) {
-				throw new GdxRuntimeException("Failed to read Vorbis.", e);
+				throw new MicroRuntimeException("Failed to read Vorbis.", e);
 			}
 			if (bytes == 0 && i < 2) {
-				throw new GdxRuntimeException("End of file before finding all Vorbis headers.");
+				throw new MicroRuntimeException("End of file before finding all Vorbis headers.");
 			}
 			syncState.wrote(bytes);
 		}
@@ -357,7 +357,7 @@ public class OggInputStream extends InputStream {
 									
 									int bytesToWrite = 2 * oggInfo.channels * bout;
 									if (bytesToWrite > pcmBuffer.remaining()) {
-										throw new GdxRuntimeException(
+										throw new MicroRuntimeException(
 												"Ogg block too big to be buffered: " + bytesToWrite + " :: " + pcmBuffer.remaining());
 									} else {
 										pcmBuffer.put(convbuffer, 0, bytesToWrite);
@@ -386,7 +386,7 @@ public class OggInputStream extends InputStream {
 						try {
 							bytes = input.read(buffer, index, BUFFER_SIZE);
 						} catch (Exception e) {
-							throw new GdxRuntimeException("Error during Vorbis decoding.", e);
+							throw new MicroRuntimeException("Error during Vorbis decoding.", e);
 						}
 					} else {
 						bytes = 0;

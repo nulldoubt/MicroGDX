@@ -1,7 +1,6 @@
 package me.nulldoubt.micro.graphics.g2d;
 
 import me.nulldoubt.micro.Micro;
-import com.nulldoubt.micro.graphics.*;
 import me.nulldoubt.micro.graphics.*;
 import me.nulldoubt.micro.graphics.Mesh.VertexDataType;
 import me.nulldoubt.micro.graphics.VertexAttributes.Usage;

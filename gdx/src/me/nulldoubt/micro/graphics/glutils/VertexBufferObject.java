@@ -21,7 +21,7 @@ import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.VertexAttribute;
 import me.nulldoubt.micro.graphics.VertexAttributes;
 import me.nulldoubt.micro.utils.BufferUtils;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -125,14 +125,14 @@ public class VertexBufferObject implements VertexData {
 	 */
 	protected void setBuffer(Buffer data, boolean ownsBuffer, VertexAttributes value) {
 		if (isBound)
-			throw new GdxRuntimeException("Cannot change attributes while VBO is bound");
+			throw new MicroRuntimeException("Cannot change attributes while VBO is bound");
 		if (this.ownsBuffer && byteBuffer != null)
 			BufferUtils.disposeUnsafeByteBuffer(byteBuffer);
 		attributes = value;
 		if (data instanceof ByteBuffer)
 			byteBuffer = (ByteBuffer) data;
 		else
-			throw new GdxRuntimeException("Only ByteBuffer is currently supported");
+			throw new MicroRuntimeException("Only ByteBuffer is currently supported");
 		this.ownsBuffer = ownsBuffer;
 		
 		final int l = byteBuffer.limit();
@@ -183,7 +183,7 @@ public class VertexBufferObject implements VertexData {
 	 */
 	protected void setUsage(int value) {
 		if (isBound)
-			throw new GdxRuntimeException("Cannot change usage while VBO is bound");
+			throw new MicroRuntimeException("Cannot change usage while VBO is bound");
 		usage = value;
 	}
 	

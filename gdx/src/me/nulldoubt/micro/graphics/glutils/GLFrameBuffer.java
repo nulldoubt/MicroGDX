@@ -2,8 +2,6 @@ package me.nulldoubt.micro.graphics.glutils;
 
 import me.nulldoubt.micro.Application;
 import me.nulldoubt.micro.Micro;
-import com.nulldoubt.micro.graphics.*;
-import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.graphics.*;
 import me.nulldoubt.micro.utils.*;
 
@@ -19,48 +17,18 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 	
 	protected final static int GL_DEPTH24_STENCIL8_OES = 0x88F0;
 	
-	/**
-	 * the color buffer texture
-	 **/
 	protected Array<T> textureAttachments = new Array<T>();
 	
-	/**
-	 * the default framebuffer handle, a.k.a screen.
-	 */
 	protected static int defaultFramebufferHandle;
-	/**
-	 * true if we have polled for the default handle already.
-	 */
 	protected static boolean defaultFramebufferHandleInitialized = false;
 	
-	/**
-	 * the framebuffer handle
-	 **/
 	protected int framebufferHandle;
-	/**
-	 * the depthbuffer render object handle
-	 **/
 	protected int depthbufferHandle;
-	/**
-	 * the stencilbuffer render object handle
-	 **/
 	protected int stencilbufferHandle;
-	/**
-	 * the depth stencil packed render buffer object handle
-	 **/
 	protected int depthStencilPackedBufferHandle;
-	/**
-	 * if has depth stencil packed buffer
-	 **/
 	protected boolean hasDepthStencilPackedBuffer;
-	/**
-	 * the colorbuffer render object handles
-	 **/
 	protected final IntArray colorBufferHandles = new IntArray();
 	
-	/**
-	 * if multiple texture attachments are present
-	 **/
 	protected boolean isMRT;
 	
 	protected GLFrameBufferBuilder<? extends GLFrameBuffer<T>> bufferBuilder;
@@ -300,10 +268,10 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 	private void checkValidBuilder() {
 		
 		if (bufferBuilder.samples > 0 && !Micro.graphics.isGL31Available()) {
-			throw new GdxRuntimeException("Framebuffer multisample requires GLES 3.1+");
+			throw new MicroRuntimeException("Framebuffer multisample requires GLES 3.1+");
 		}
 		if (bufferBuilder.samples > 0 && bufferBuilder.textureAttachmentSpecs.size > 0) {
-			throw new GdxRuntimeException("Framebuffer multisample with texture attachments not yet supported");
+			throw new MicroRuntimeException("Framebuffer multisample with texture attachments not yet supported");
 		}
 		
 		boolean runningGL30 = Micro.graphics.isGL30Available();
@@ -313,19 +281,19 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 					|| Micro.graphics.supportsExtension("GL_EXT_packed_depth_stencil");
 			
 			if (bufferBuilder.hasPackedStencilDepthRenderBuffer && !supportsPackedDepthStencil) {
-				throw new GdxRuntimeException("Packed Stencil/Render render buffers are not available on GLES 2.0");
+				throw new MicroRuntimeException("Packed Stencil/Render render buffers are not available on GLES 2.0");
 			}
 			if (bufferBuilder.textureAttachmentSpecs.size > 1) {
-				throw new GdxRuntimeException("Multiple render targets not available on GLES 2.0");
+				throw new MicroRuntimeException("Multiple render targets not available on GLES 2.0");
 			}
 			for (FrameBufferTextureAttachmentSpec spec : bufferBuilder.textureAttachmentSpecs) {
 				if (spec.isDepth)
-					throw new GdxRuntimeException("Depth texture FrameBuffer Attachment not available on GLES 2.0");
+					throw new MicroRuntimeException("Depth texture FrameBuffer Attachment not available on GLES 2.0");
 				if (spec.isStencil)
-					throw new GdxRuntimeException("Stencil texture FrameBuffer Attachment not available on GLES 2.0");
+					throw new MicroRuntimeException("Stencil texture FrameBuffer Attachment not available on GLES 2.0");
 				if (spec.isFloat) {
 					if (!Micro.graphics.supportsExtension("OES_texture_float")) {
-						throw new GdxRuntimeException("Float texture FrameBuffer Attachment not available on GLES 2.0");
+						throw new MicroRuntimeException("Float texture FrameBuffer Attachment not available on GLES 2.0");
 					}
 				}
 			}
@@ -333,7 +301,7 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 		
 		if (bufferBuilder.hasPackedStencilDepthRenderBuffer) {
 			if (bufferBuilder.hasDepthRenderBuffer || bufferBuilder.hasStencilRenderBuffer)
-				throw new GdxRuntimeException(
+				throw new MicroRuntimeException(
 						"Frame buffer couldn't be constructed: packed stencil depth buffer cannot be specified together with separated depth or stencil buffer");
 		}
 	}

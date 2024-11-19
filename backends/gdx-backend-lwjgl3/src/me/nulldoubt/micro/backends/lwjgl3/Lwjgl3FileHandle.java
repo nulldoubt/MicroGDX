@@ -18,7 +18,7 @@ package me.nulldoubt.micro.backends.lwjgl3;
 
 import me.nulldoubt.micro.Files.FileType;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 
 import java.io.File;
 
@@ -52,7 +52,7 @@ public final class Lwjgl3FileHandle extends FileHandle {
 	
 	public FileHandle sibling(String name) {
 		if (file.getPath().length() == 0)
-			throw new GdxRuntimeException("Cannot get the sibling of the root.");
+			throw new MicroRuntimeException("Cannot get the sibling of the root.");
 		return new Lwjgl3FileHandle(new File(file.getParent(), name), type);
 	}
 	

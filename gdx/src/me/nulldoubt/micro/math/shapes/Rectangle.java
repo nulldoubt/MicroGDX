@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.math.shapes;
 
 import me.nulldoubt.micro.math.Vector2;
-import me.nulldoubt.micro.utils.GdxRuntimeException;
+import me.nulldoubt.micro.utils.MicroRuntimeException;
 import me.nulldoubt.micro.utils.NumberUtils;
 
 import java.io.Serializable;
@@ -250,7 +250,7 @@ public class Rectangle implements Serializable, Shape2D {
 				// Throw a GdxRuntimeException
 			}
 		}
-		throw new GdxRuntimeException("Malformed Rectangle: " + v);
+		throw new MicroRuntimeException("Malformed Rectangle: " + v);
 	}
 	
 	public float area() {
