@@ -16,10 +16,5 @@ include ':extensions:gdx-particles'
 include ":extensions:gdx-freetype"
 include ":extensions:gdx-lwjgl3-angle"
 
-include ":tests"
-include ":tests:gdx-tests"
-include ":tests:gdx-tests-android"
-include ":tests:gdx-tests-lwjgl3"
-
 rootProject.name = "MicroGDX"
 

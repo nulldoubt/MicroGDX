@@ -1,4 +1,4 @@
-configure(subprojects - project(":tests:gdx-tests-android") - project(":backends:gdx-backend-android")) {
+configure(subprojects - project(":backends:gdx-backend-android")) {
 	tasks.register('uberJar', Jar) {
         archiveClassifier = ''
         archiveVersion = ''
