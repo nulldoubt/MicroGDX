@@ -27,20 +27,25 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
-/** @author Nathan Sweet */
+/**
+ * @author Nathan Sweet
+ */
 public class Ogg {
+	
 	static public class Music extends OpenALMusic {
+		
 		private OggInputStream input;
 		private OggInputStream previousInput;
-
-		public Music (OpenALLwjgl3Audio audio, FileHandle file) {
+		
+		public Music(OpenALLwjgl3Audio audio, FileHandle file) {
 			super(audio, file);
-			if (audio.noDevice) return;
+			if (audio.noDevice)
+				return;
 			input = new OggInputStream(file.read());
 			setup(input.getChannels(), 16, input.getSampleRate());
 		}
-
-		public int read (byte[] buffer) {
+		
+		public int read(byte[] buffer) {
 			if (input == null) {
 				input = new OggInputStream(file.read(), previousInput);
 				setup(input.getChannels(), 16, input.getSampleRate());
@@ -48,36 +53,39 @@ public class Ogg {
 			}
 			return input.read(buffer);
 		}
-
-		public void reset () {
+		
+		public void reset() {
 			StreamUtils.closeQuietly(input);
 			previousInput = null;
 			input = null;
 		}
-
+		
 		@Override
-		protected void loop () {
+		protected void loop() {
 			StreamUtils.closeQuietly(input);
 			previousInput = input;
 			input = null;
 		}
+		
 	}
-
+	
 	static public class Sound extends OpenALSound {
-		public Sound (OpenALLwjgl3Audio audio, FileHandle file) {
+		
+		public Sound(OpenALLwjgl3Audio audio, FileHandle file) {
 			super(audio);
-			if (audio.noDevice) return;
-
+			if (audio.noDevice)
+				return;
+			
 			// put the encoded audio data in a ByteBuffer
 			byte[] streamData = file.readBytes();
 			ByteBuffer encodedData = BufferUtils.newByteBuffer(streamData.length);
 			encodedData.put(streamData);
 			encodedData.flip();
-
+			
 			try (MemoryStack stack = MemoryStack.stackPush()) {
 				final IntBuffer channelsBuffer = stack.mallocInt(1);
 				final IntBuffer sampleRateBuffer = stack.mallocInt(1);
-
+				
 				// decode
 				final ShortBuffer decodedData = STBVorbis.stb_vorbis_decode_memory(encodedData, channelsBuffer, sampleRateBuffer);
 				int channels = channelsBuffer.get(0);
@@ -85,9 +93,11 @@ public class Ogg {
 				if (decodedData == null) {
 					throw new GdxRuntimeException("Error decoding OGG file: " + file);
 				}
-
+				
 				setup(decodedData, channels, 16, sampleRate);
 			}
 		}
+		
 	}
+	
 }

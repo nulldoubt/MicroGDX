@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,34 +16,34 @@
 
 package com.badlogic.gdx.backends.lwjgl3.audio;
 
-import java.io.ByteArrayOutputStream;
-
-import javazoom.jl.decoder.Bitstream;
-import javazoom.jl.decoder.BitstreamException;
-import javazoom.jl.decoder.Header;
-import javazoom.jl.decoder.MP3Decoder;
-import javazoom.jl.decoder.OutputBuffer;
-
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import javazoom.jl.decoder.*;
 
-/** @author Nathan Sweet */
+import java.io.ByteArrayOutputStream;
+
+/**
+ * @author Nathan Sweet
+ */
 public class Mp3 {
+	
 	static public class Music extends OpenALMusic {
 		// Note: This uses a slightly modified version of JLayer.
-
+		
 		private Bitstream bitstream;
 		private OutputBuffer outputBuffer;
 		private MP3Decoder decoder;
-
-		public Music (OpenALLwjgl3Audio audio, FileHandle file) {
+		
+		public Music(OpenALLwjgl3Audio audio, FileHandle file) {
 			super(audio, file);
-			if (audio.noDevice) return;
+			if (audio.noDevice)
+				return;
 			bitstream = new Bitstream(file.read());
 			decoder = new MP3Decoder();
 			try {
 				Header header = bitstream.readFrame();
-				if (header == null) throw new GdxRuntimeException("Empty MP3");
+				if (header == null)
+					throw new GdxRuntimeException("Empty MP3");
 				int channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
 				outputBuffer = new OutputBuffer(channels, false);
 				decoder.setOutputBuffer(outputBuffer);
@@ -52,20 +52,21 @@ public class Mp3 {
 				throw new GdxRuntimeException("Error while preloading MP3", e);
 			}
 		}
-
-		public int read (byte[] buffer) {
+		
+		public int read(byte[] buffer) {
 			try {
 				boolean setup = bitstream == null;
 				if (setup) {
 					bitstream = new Bitstream(file.read());
 					decoder = new MP3Decoder();
 				}
-
+				
 				int totalLength = 0;
 				int minRequiredLength = buffer.length - OutputBuffer.BUFFERSIZE * 2;
 				while (totalLength <= minRequiredLength) {
 					Header header = bitstream.readFrame();
-					if (header == null) break;
+					if (header == null)
+						break;
 					if (setup) {
 						int channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
 						outputBuffer = new OutputBuffer(channels, false);
@@ -79,7 +80,7 @@ public class Mp3 {
 						// JLayer's decoder throws ArrayIndexOutOfBoundsException sometimes!?
 					}
 					bitstream.closeFrame();
-
+					
 					int length = outputBuffer.reset();
 					System.arraycopy(outputBuffer.getBuffer(), 0, buffer, totalLength, length);
 					totalLength += length;
@@ -90,34 +91,38 @@ public class Mp3 {
 				throw new GdxRuntimeException("Error reading audio data.", ex);
 			}
 		}
-
-		public void reset () {
-			if (bitstream == null) return;
+		
+		public void reset() {
+			if (bitstream == null)
+				return;
 			try {
 				bitstream.close();
 			} catch (BitstreamException ignored) {
 			}
 			bitstream = null;
 		}
+		
 	}
-
+	
 	static public class Sound extends OpenALSound {
 		// Note: This uses a slightly modified version of JLayer.
-
-		public Sound (OpenALLwjgl3Audio audio, FileHandle file) {
+		
+		public Sound(OpenALLwjgl3Audio audio, FileHandle file) {
 			super(audio);
-			if (audio.noDevice) return;
+			if (audio.noDevice)
+				return;
 			ByteArrayOutputStream output = new ByteArrayOutputStream(4096);
-
+			
 			Bitstream bitstream = new Bitstream(file.read());
 			MP3Decoder decoder = new MP3Decoder();
-
+			
 			try {
 				OutputBuffer outputBuffer = null;
 				int sampleRate = -1, channels = -1;
 				while (true) {
 					Header header = bitstream.readFrame();
-					if (header == null) break;
+					if (header == null)
+						break;
 					if (outputBuffer == null) {
 						channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
 						outputBuffer = new OutputBuffer(channels, false);
@@ -138,5 +143,7 @@ public class Mp3 {
 				throw new GdxRuntimeException("Error reading audio data.", ex);
 			}
 		}
+		
 	}
+	
 }

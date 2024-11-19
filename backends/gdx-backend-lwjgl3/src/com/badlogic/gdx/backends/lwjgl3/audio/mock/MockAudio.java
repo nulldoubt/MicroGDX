@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,45 +23,48 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl3.audio.Lwjgl3Audio;
 import com.badlogic.gdx.files.FileHandle;
 
-/** The headless backend does its best to mock elements. This is intended to make code-sharing between server and client as simple
- * as possible. */
+/**
+ * The headless backend does its best to mock elements. This is intended to make code-sharing between server and client as simple
+ * as possible.
+ */
 public class MockAudio implements Lwjgl3Audio {
-
+	
 	@Override
-	public AudioDevice newAudioDevice (int samplingRate, boolean isMono) {
+	public AudioDevice newAudioDevice(int samplingRate, boolean isMono) {
 		return new MockAudioDevice();
 	}
-
+	
 	@Override
-	public AudioRecorder newAudioRecorder (int samplingRate, boolean isMono) {
+	public AudioRecorder newAudioRecorder(int samplingRate, boolean isMono) {
 		return new MockAudioRecorder();
 	}
-
+	
 	@Override
-	public Sound newSound (FileHandle fileHandle) {
+	public Sound newSound(FileHandle fileHandle) {
 		return new MockSound();
 	}
-
+	
 	@Override
-	public Music newMusic (FileHandle file) {
+	public Music newMusic(FileHandle file) {
 		return new MockMusic();
 	}
-
+	
 	@Override
-	public boolean switchOutputDevice (String deviceIdentifier) {
+	public boolean switchOutputDevice(String deviceIdentifier) {
 		return true;
 	}
-
+	
 	@Override
-	public String[] getAvailableOutputDevices () {
+	public String[] getAvailableOutputDevices() {
 		return new String[0];
 	}
-
+	
 	@Override
-	public void update () {
+	public void update() {
 	}
-
+	
 	@Override
-	public void dispose () {
+	public void dispose() {
 	}
+	
 }
