@@ -16,4 +16,5 @@ configure(subprojects - project(":backends:gdx-backend-android")) {
 	dependencies {
 		api project(":gdx")
 	}
+
 }

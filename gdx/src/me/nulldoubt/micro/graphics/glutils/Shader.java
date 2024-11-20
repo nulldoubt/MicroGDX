@@ -9,11 +9,12 @@ import me.nulldoubt.micro.math.Matrix3;
 import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.math.Vector3;
-import me.nulldoubt.micro.utils.strings.StringBuilder;
-import me.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Disposable;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.ObjectIntMap;
 import me.nulldoubt.micro.utils.collections.ObjectMap;
+import me.nulldoubt.micro.utils.strings.StringBuilder;
 
 import java.nio.*;
 
@@ -53,22 +54,11 @@ public class Shader implements Disposable {
 	
 	private int fragmentShaderHandle;
 	
-	private final FloatBuffer matrix;
-	
 	private final String vertexShaderSource;
 	
 	private final String fragmentShaderSource;
 	
 	private boolean invalidated;
-	
-	private int refCount = 0;
-	
-	/**
-	 * Constructs a new ShaderProgram and immediately compiles it.
-	 *
-	 * @param vertexShader   the vertex shader
-	 * @param fragmentShader the fragment shader
-	 */
 	
 	public Shader(String vertexShader, String fragmentShader) {
 		if (vertexShader == null)
@@ -83,7 +73,6 @@ public class Shader implements Disposable {
 		
 		this.vertexShaderSource = vertexShader;
 		this.fragmentShaderSource = fragmentShader;
-		this.matrix = BufferUtils.newFloatBuffer(16);
 		
 		compileShaders(vertexShader, fragmentShader);
 		if (isCompiled()) {
@@ -171,28 +160,12 @@ public class Shader implements Disposable {
 		return program;
 	}
 	
-	final static IntBuffer intbuf = BufferUtils.newIntBuffer(1);
-	
-	/**
-	 * @return the log info for the shader compilation and program linking stage. The shader needs to be bound for this method to
-	 * have an effect.
-	 */
 	public String getLog() {
-		if (compiled) {
-			// Gdx.gl20.glGetProgramiv(program, GL20.GL_INFO_LOG_LENGTH, intbuf);
-			// int infoLogLength = intbuf.get(0);
-			// if (infoLogLength > 1) {
+		if (compiled)
 			log = Micro.gl20.glGetProgramInfoLog(program);
-			// }
-			return log;
-		} else {
-			return log;
-		}
+		return log;
 	}
 	
-	/**
-	 * @return whether this ShaderProgram compiled successfully.
-	 */
 	public boolean isCompiled() {
 		return compiled;
 	}
@@ -229,12 +202,6 @@ public class Shader implements Disposable {
 		return location;
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name  the name of the uniform
-	 * @param value the value
-	 */
 	public void setUniformi(String name, int value) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -248,13 +215,6 @@ public class Shader implements Disposable {
 		gl.glUniform1i(location, value);
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param value1 the first value
-	 * @param value2 the second value
-	 */
 	public void setUniformi(String name, int value1, int value2) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -268,14 +228,6 @@ public class Shader implements Disposable {
 		gl.glUniform2i(location, value1, value2);
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param value1 the first value
-	 * @param value2 the second value
-	 * @param value3 the third value
-	 */
 	public void setUniformi(String name, int value1, int value2, int value3) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -289,15 +241,6 @@ public class Shader implements Disposable {
 		gl.glUniform3i(location, value1, value2, value3);
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param value1 the first value
-	 * @param value2 the second value
-	 * @param value3 the third value
-	 * @param value4 the fourth value
-	 */
 	public void setUniformi(String name, int value1, int value2, int value3, int value4) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -311,12 +254,6 @@ public class Shader implements Disposable {
 		gl.glUniform4i(location, value1, value2, value3, value4);
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name  the name of the uniform
-	 * @param value the value
-	 */
 	public void setUniformf(String name, float value) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -330,13 +267,6 @@ public class Shader implements Disposable {
 		gl.glUniform1f(location, value);
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param value1 the first value
-	 * @param value2 the second value
-	 */
 	public void setUniformf(String name, float value1, float value2) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -350,14 +280,6 @@ public class Shader implements Disposable {
 		gl.glUniform2f(location, value1, value2);
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param value1 the first value
-	 * @param value2 the second value
-	 * @param value3 the third value
-	 */
 	public void setUniformf(String name, float value1, float value2, float value3) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -371,15 +293,6 @@ public class Shader implements Disposable {
 		gl.glUniform3f(location, value1, value2, value3);
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param value1 the first value
-	 * @param value2 the second value
-	 * @param value3 the third value
-	 * @param value4 the fourth value
-	 */
 	public void setUniformf(String name, float value1, float value2, float value3, float value4) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -445,23 +358,10 @@ public class Shader implements Disposable {
 		gl.glUniform4fv(location, length / 4, values, offset);
 	}
 	
-	/**
-	 * Sets the uniform matrix with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param matrix the matrix
-	 */
 	public void setUniformMatrix(String name, Matrix4 matrix) {
 		setUniformMatrix(name, matrix, false);
 	}
 	
-	/**
-	 * Sets the uniform matrix with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name      the name of the uniform
-	 * @param matrix    the matrix
-	 * @param transpose whether the matrix should be transposed
-	 */
 	public void setUniformMatrix(String name, Matrix4 matrix, boolean transpose) {
 		setUniformMatrix(fetchUniformLocation(name), matrix, transpose);
 	}
@@ -476,23 +376,10 @@ public class Shader implements Disposable {
 		gl.glUniformMatrix4fv(location, 1, transpose, matrix.val, 0);
 	}
 	
-	/**
-	 * Sets the uniform matrix with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param matrix the matrix
-	 */
 	public void setUniformMatrix(String name, Matrix3 matrix) {
 		setUniformMatrix(name, matrix, false);
 	}
 	
-	/**
-	 * Sets the uniform matrix with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name      the name of the uniform
-	 * @param matrix    the matrix
-	 * @param transpose whether the uniform matrix should be transposed
-	 */
 	public void setUniformMatrix(String name, Matrix3 matrix, boolean transpose) {
 		setUniformMatrix(fetchUniformLocation(name), matrix, transpose);
 	}
@@ -507,13 +394,6 @@ public class Shader implements Disposable {
 		gl.glUniformMatrix3fv(location, 1, transpose, matrix.val, 0);
 	}
 	
-	/**
-	 * Sets an array of uniform matrices with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name      the name of the uniform
-	 * @param buffer    buffer containing the matrix data
-	 * @param transpose whether the uniform matrix should be transposed
-	 */
 	public void setUniformMatrix3fv(String name, FloatBuffer buffer, int count, boolean transpose) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -547,12 +427,6 @@ public class Shader implements Disposable {
 		setUniformMatrix4fv(fetchUniformLocation(name), values, offset, length);
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param values x and y as the first and second values respectively
-	 */
 	public void setUniformf(String name, Vector2 values) {
 		setUniformf(name, values.x, values.y);
 	}
@@ -561,12 +435,6 @@ public class Shader implements Disposable {
 		setUniformf(location, values.x, values.y);
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param values x, y and z as the first, second and third values respectively
-	 */
 	public void setUniformf(String name, Vector3 values) {
 		setUniformf(name, values.x, values.y, values.z);
 	}
@@ -575,12 +443,6 @@ public class Shader implements Disposable {
 		setUniformf(location, values.x, values.y, values.z);
 	}
 	
-	/**
-	 * Sets the uniform with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name   the name of the uniform
-	 * @param values r, g, b and a as the first through fourth values respectively
-	 */
 	public void setUniformf(String name, Color values) {
 		setUniformf(name, values.r, values.g, values.b, values.a);
 	}
@@ -589,17 +451,6 @@ public class Shader implements Disposable {
 		setUniformf(location, values.r, values.g, values.b, values.a);
 	}
 	
-	/**
-	 * Sets the vertex attribute with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name      the attribute name
-	 * @param size      the number of components, must be >= 1 and <= 4
-	 * @param type      the type, must be one of GL20.GL_BYTE, GL20.GL_UNSIGNED_BYTE, GL20.GL_SHORT,
-	 *                  GL20.GL_UNSIGNED_SHORT,GL20.GL_FIXED, or GL20.GL_FLOAT. GL_FIXED will not work on the desktop
-	 * @param normalize whether fixed point data should be normalized. Will not work on the desktop
-	 * @param stride    the stride in bytes between successive attributes
-	 * @param buffer    the buffer containing the vertex attributes.
-	 */
 	public void setVertexAttribute(String name, int size, int type, boolean normalize, int stride, Buffer buffer) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -615,17 +466,6 @@ public class Shader implements Disposable {
 		gl.glVertexAttribPointer(location, size, type, normalize, stride, buffer);
 	}
 	
-	/**
-	 * Sets the vertex attribute with the given name. The {@link Shader} must be bound for this to work.
-	 *
-	 * @param name      the attribute name
-	 * @param size      the number of components, must be >= 1 and <= 4
-	 * @param type      the type, must be one of GL20.GL_BYTE, GL20.GL_UNSIGNED_BYTE, GL20.GL_SHORT,
-	 *                  GL20.GL_UNSIGNED_SHORT,GL20.GL_FIXED, or GL20.GL_FLOAT. GL_FIXED will not work on the desktop
-	 * @param normalize whether fixed point data should be normalized. Will not work on the desktop
-	 * @param stride    the stride in bytes between successive attributes
-	 * @param offset    byte offset into the vertex buffer object bound to GL20.GL_ARRAY_BUFFER.
-	 */
 	public void setVertexAttribute(String name, int size, int type, boolean normalize, int stride, int offset) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -641,30 +481,12 @@ public class Shader implements Disposable {
 		gl.glVertexAttribPointer(location, size, type, normalize, stride, offset);
 	}
 	
-	/**
-	 * @deprecated use {@link #bind()} instead, this method will be remove in future version
-	 */
-	@Deprecated
-	public void begin() {
-		bind();
-	}
-	
 	public void bind() {
 		GL20 gl = Micro.gl20;
 		checkManaged();
 		gl.glUseProgram(program);
 	}
 	
-	/**
-	 * @deprecated no longer necessary, this method will be remove in future version
-	 */
-	@Deprecated
-	public void end() {
-	}
-	
-	/**
-	 * Disposes all resources associated with this shader. Must be called when the shader is no longer used.
-	 */
 	public void dispose() {
 		GL20 gl = Micro.gl20;
 		gl.glUseProgram(0);
@@ -675,11 +497,6 @@ public class Shader implements Disposable {
 			shaders.get(Micro.app).removeValue(this, true);
 	}
 	
-	/**
-	 * Disables the vertex attribute with the given name
-	 *
-	 * @param name the vertex attribute name
-	 */
 	public void disableVertexAttribute(String name) {
 		GL20 gl = Micro.gl20;
 		checkManaged();
@@ -695,11 +512,6 @@ public class Shader implements Disposable {
 		gl.glDisableVertexAttribArray(location);
 	}
 	
-	/**
-	 * Enables the vertex attribute with the given name
-	 *
-	 * @param name the vertex attribute name
-	 */
 	public void enableVertexAttribute(String name) {
 		GL20 gl = Micro.gl20;
 		checkManaged();

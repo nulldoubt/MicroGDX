@@ -108,14 +108,6 @@ public final class ScreenUtils {
 	}
 	
 	/**
-	 * @deprecated use {@link Pixmap#createFromFrameBuffer(int, int, int, int)} instead.
-	 */
-	@Deprecated
-	public static Pixmap getFrameBufferPixmap(int x, int y, int w, int h) {
-		return Pixmap.createFromFrameBuffer(x, y, w, h);
-	}
-	
-	/**
 	 * Returns the current framebuffer contents as a byte[] array with a length equal to screen width * height * 4. The byte[]
 	 * will always contain RGBA8888 data. Because of differences in screen and image origins the framebuffer contents should be
 	 * flipped along the Y axis if you intend save them to disk as a bitmap. Flipping is not a cheap operation, so use this

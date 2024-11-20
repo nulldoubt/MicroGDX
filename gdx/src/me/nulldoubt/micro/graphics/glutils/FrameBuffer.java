@@ -15,15 +15,13 @@ public class FrameBuffer extends GLFrameBuffer<Texture> {
 		super(bufferBuilder);
 	}
 	
-	public FrameBuffer(final Pixmap.Format format, final int width, final int height, final boolean hasDepth) {
-		this(format, width, height, hasDepth, false);
+	public FrameBuffer(final Pixmap.Format format, final int width, final int height) {
+		this(format, width, height, false);
 	}
 	
-	public FrameBuffer(final Pixmap.Format format, final int width, final int height, final boolean hasDepth, final boolean hasStencil) {
+	public FrameBuffer(final Pixmap.Format format, final int width, final int height, final boolean hasStencil) {
 		FrameBufferBuilder frameBufferBuilder = new FrameBufferBuilder(width, height);
 		frameBufferBuilder.addBasicColorTextureAttachment(format);
-		if (hasDepth)
-			frameBufferBuilder.addBasicDepthRenderBuffer();
 		if (hasStencil)
 			frameBufferBuilder.addBasicStencilRenderBuffer();
 		this.bufferBuilder = frameBufferBuilder;

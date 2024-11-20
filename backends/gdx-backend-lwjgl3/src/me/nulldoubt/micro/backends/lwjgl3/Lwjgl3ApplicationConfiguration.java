@@ -1,30 +1,11 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.backends.lwjgl3;
 
-import com.nulldoubt.micro.*;
-import com.nulldoubt.micro.graphics.glutils.HdpiMode;
 import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.Files.FileType;
 import me.nulldoubt.micro.Graphics.DisplayMode;
 import me.nulldoubt.micro.Graphics.Monitor;
 import me.nulldoubt.micro.audio.Music;
 import me.nulldoubt.micro.backends.lwjgl3.Lwjgl3Graphics.Lwjgl3Monitor;
-import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.glutils.HdpiUtils;
 import me.nulldoubt.micro.math.GridPoint2;
 import org.lwjgl.BufferUtils;
@@ -73,9 +54,6 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 		return copy;
 	}
 	
-	/**
-	 * @return the currently active {@link DisplayMode} of the primary monitor
-	 */
 	public static DisplayMode getDisplayMode() {
 		Lwjgl3Application.initializeGlfw();
 		GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
@@ -108,9 +86,6 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 		return result;
 	}
 	
-	/**
-	 * @return the available {@link DisplayMode}s of the given {@link Monitor}
-	 */
 	public static DisplayMode[] getDisplayModes(Monitor monitor) {
 		Lwjgl3Application.initializeGlfw();
 		Buffer videoModes = GLFW.glfwGetVideoModes(((Lwjgl3Monitor) monitor).monitorHandle);
@@ -123,17 +98,11 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 		return result;
 	}
 	
-	/**
-	 * @return the primary {@link Monitor}
-	 */
 	public static Monitor getPrimaryMonitor() {
 		Lwjgl3Application.initializeGlfw();
 		return toLwjgl3Monitor(GLFW.glfwGetPrimaryMonitor());
 	}
 	
-	/**
-	 * @return the connected {@link Monitor}s
-	 */
 	public static Monitor[] getMonitors() {
 		Lwjgl3Application.initializeGlfw();
 		PointerBuffer glfwMonitors = GLFW.glfwGetMonitors();
@@ -290,11 +259,6 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 		this.samples = samples;
 	}
 	
-	/**
-	 * Set transparent window hint. Results may vary on different OS and GPUs. Usage with the ANGLE backend is less consistent.
-	 *
-	 * @param transparentFramebuffer
-	 */
 	public void setTransparentFramebuffer(boolean transparentFramebuffer) {
 		this.transparentFramebuffer = transparentFramebuffer;
 	}
@@ -339,28 +303,10 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 		this.preferencesFileType = preferencesFileType;
 	}
 	
-	/**
-	 * Defines how HDPI monitors are handled. Operating systems may have a per-monitor HDPI scale setting. The operating system
-	 * may report window width/height and mouse coordinates in a logical coordinate system at a lower resolution than the actual
-	 * physical resolution. This setting allows you to specify whether you want to work in logical or raw pixel units. See
-	 * {@link HdpiMode} for more information. Note that some OpenGL functions like {@link GL20#glViewport(int, int, int, int)} and
-	 * {@link GL20#glScissor(int, int, int, int)} require raw pixel units. Use {@link HdpiUtils} to help with the conversion if
-	 * HdpiMode is set to {@link HdpiMode#Logical}. Defaults to {@link HdpiMode#Logical}.
-	 */
-	public void setHdpiMode(HdpiMode mode) {
+	public void setHdpiMode(HdpiUtils.HdpiMode mode) {
 		this.hdpiMode = mode;
 	}
 	
-	/**
-	 * Enables use of OpenGL debug message callbacks. If not supported by the core GL driver (since GL 4.3), this uses the
-	 * KHR_debug, ARB_debug_output or AMD_debug_output extension if available. By default, debug messages with NOTIFICATION
-	 * severity are disabled to avoid log spam.
-	 * <p>
-	 * You can call with {@link System#err} to output to the "standard" error output stream.
-	 * <p>
-	 * Use {@link Lwjgl3Application#setGLDebugMessageControl(Lwjgl3Application.GLDebugMessageSeverity, boolean)} to enable or
-	 * disable other severity debug levels.
-	 */
 	public void enableGLDebugOutput(boolean enable, PrintStream debugOutputStream) {
 		debug = enable;
 		debugStream = debugOutputStream;

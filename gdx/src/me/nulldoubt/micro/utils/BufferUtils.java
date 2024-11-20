@@ -7,7 +7,7 @@ import me.nulldoubt.micro.utils.collections.Array;
 
 import java.nio.*;
 
-public final class BufferUtils {
+public class BufferUtils {
 	
 	private BufferUtils() {}
 	
@@ -385,8 +385,7 @@ public final class BufferUtils {
 		return allocatedUnsafe;
 	}
 	
-	// @off
-	/*JNI 
+	/*JNI
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
