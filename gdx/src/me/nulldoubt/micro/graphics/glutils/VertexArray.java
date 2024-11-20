@@ -1,42 +1,14 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.graphics.glutils;
 
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.VertexAttribute;
 import me.nulldoubt.micro.graphics.VertexAttributes;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
-/**
- * <p>
- * Convenience class for working with OpenGL vertex arrays. It interleaves all data in the order you specified in the constructor
- * via {@link VertexAttribute}.
- * </p>
- *
- * <p>
- * This class is not compatible with OpenGL 3+ core profiles. For this {@link VertexBufferObject}s are needed.
- * </p>
- *
- * @author mzechner, Dave Clayton <contact@redskyforge.com>
- */
 public class VertexArray implements VertexData {
 	
 	final VertexAttributes attributes;
@@ -62,7 +34,7 @@ public class VertexArray implements VertexData {
 	 */
 	public VertexArray(int numVertices, VertexAttributes attributes) {
 		this.attributes = attributes;
-		byteBuffer = BufferUtils.newUnsafeByteBuffer(this.attributes.vertexSize * numVertices);
+		byteBuffer = Buffers.newUnsafeByteBuffer(this.attributes.vertexSize * numVertices);
 		buffer = byteBuffer.asFloatBuffer();
 		((Buffer) buffer).flip();
 		((Buffer) byteBuffer).flip();
@@ -70,7 +42,7 @@ public class VertexArray implements VertexData {
 	
 	@Override
 	public void dispose() {
-		BufferUtils.disposeUnsafeByteBuffer(byteBuffer);
+		Buffers.disposeUnsafeByteBuffer(byteBuffer);
 	}
 	
 	@Override
@@ -89,7 +61,7 @@ public class VertexArray implements VertexData {
 	
 	@Override
 	public void setVertices(float[] vertices, int offset, int count) {
-		BufferUtils.copy(vertices, byteBuffer, count, offset);
+		Buffers.copy(vertices, byteBuffer, count, offset);
 		((Buffer) buffer).position(0);
 		((Buffer) buffer).limit(count);
 	}
@@ -98,7 +70,7 @@ public class VertexArray implements VertexData {
 	public void updateVertices(int targetOffset, float[] vertices, int sourceOffset, int count) {
 		final int pos = byteBuffer.position();
 		((Buffer) byteBuffer).position(targetOffset * 4);
-		BufferUtils.copy(vertices, sourceOffset, count, byteBuffer);
+		Buffers.copy(vertices, sourceOffset, count, byteBuffer);
 		((Buffer) byteBuffer).position(pos);
 	}
 	

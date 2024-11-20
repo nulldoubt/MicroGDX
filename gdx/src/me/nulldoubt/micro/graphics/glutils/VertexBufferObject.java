@@ -5,7 +5,7 @@ import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.VertexAttribute;
 import me.nulldoubt.micro.graphics.VertexAttributes;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -43,7 +43,7 @@ public class VertexBufferObject implements VertexData {
 	public VertexBufferObject(boolean isStatic, int numVertices, VertexAttributes attributes) {
 		bufferHandle = Micro.gl20.glGenBuffer();
 		
-		ByteBuffer data = BufferUtils.newUnsafeByteBuffer(attributes.vertexSize * numVertices);
+		ByteBuffer data = Buffers.newUnsafeByteBuffer(attributes.vertexSize * numVertices);
 		((Buffer) data).limit(0);
 		setBuffer(data, true, attributes);
 		setUsage(isStatic ? GL20.GL_STATIC_DRAW : GL20.GL_DYNAMIC_DRAW);
@@ -88,7 +88,7 @@ public class VertexBufferObject implements VertexData {
 		if (isBound)
 			throw new MicroRuntimeException("Cannot change attributes while VBO is bound");
 		if (this.ownsBuffer && byteBuffer != null)
-			BufferUtils.disposeUnsafeByteBuffer(byteBuffer);
+			Buffers.disposeUnsafeByteBuffer(byteBuffer);
 		attributes = value;
 		if (data instanceof ByteBuffer)
 			byteBuffer = (ByteBuffer) data;
@@ -113,7 +113,7 @@ public class VertexBufferObject implements VertexData {
 	@Override
 	public void setVertices(float[] vertices, int offset, int count) {
 		isDirty = true;
-		BufferUtils.copy(vertices, byteBuffer, count, offset);
+		Buffers.copy(vertices, byteBuffer, count, offset);
 		((Buffer) buffer).position(0);
 		((Buffer) buffer).limit(count);
 		bufferChanged();
@@ -124,7 +124,7 @@ public class VertexBufferObject implements VertexData {
 		isDirty = true;
 		final int pos = byteBuffer.position();
 		((Buffer) byteBuffer).position(targetOffset * 4);
-		BufferUtils.copy(vertices, sourceOffset, count, byteBuffer);
+		Buffers.copy(vertices, sourceOffset, count, byteBuffer);
 		((Buffer) byteBuffer).position(pos);
 		((Buffer) buffer).position(0);
 		bufferChanged();
@@ -245,7 +245,7 @@ public class VertexBufferObject implements VertexData {
 		gl.glDeleteBuffer(bufferHandle);
 		bufferHandle = 0;
 		if (ownsBuffer)
-			BufferUtils.disposeUnsafeByteBuffer(byteBuffer);
+			Buffers.disposeUnsafeByteBuffer(byteBuffer);
 	}
 	
 }

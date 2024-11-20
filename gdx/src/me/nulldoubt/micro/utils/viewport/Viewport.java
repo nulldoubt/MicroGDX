@@ -7,7 +7,7 @@ import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.math.Vector3;
 import me.nulldoubt.micro.math.shapes.Rectangle;
-import me.nulldoubt.micro.utils.ScissorStack;
+import me.nulldoubt.micro.utils.Scissors;
 
 public abstract class Viewport {
 	
@@ -63,7 +63,7 @@ public abstract class Viewport {
 	}
 	
 	public void calculateScissors(Matrix4 batchTransform, Rectangle area, Rectangle scissor) {
-		ScissorStack.calculateScissors(camera, screenX, screenY, screenWidth, screenHeight, batchTransform, area, scissor);
+		Scissors.calculateScissors(camera, screenX, screenY, screenWidth, screenHeight, batchTransform, area, scissor);
 	}
 	
 	public Vector2 toScreenCoordinates(Vector2 worldCoords, Matrix4 transformMatrix) {

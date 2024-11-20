@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.math;
 
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
-import me.nulldoubt.micro.utils.NumberUtils;
+import me.nulldoubt.micro.utils.Numbers;
 
 import java.io.Serializable;
 
@@ -361,8 +361,8 @@ public class Vector2 implements Serializable, Vector<Vector2> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + NumberUtils.floatToIntBits(x);
-		result = prime * result + NumberUtils.floatToIntBits(y);
+		result = prime * result + Numbers.floatToIntBits(x);
+		result = prime * result + Numbers.floatToIntBits(y);
 		return result;
 	}
 	
@@ -375,9 +375,9 @@ public class Vector2 implements Serializable, Vector<Vector2> {
 		if (getClass() != obj.getClass())
 			return false;
 		Vector2 other = (Vector2) obj;
-		if (NumberUtils.floatToIntBits(x) != NumberUtils.floatToIntBits(other.x))
+		if (Numbers.floatToIntBits(x) != Numbers.floatToIntBits(other.x))
 			return false;
-		return NumberUtils.floatToIntBits(y) == NumberUtils.floatToIntBits(other.y);
+		return Numbers.floatToIntBits(y) == Numbers.floatToIntBits(other.y);
 	}
 	
 	@Override

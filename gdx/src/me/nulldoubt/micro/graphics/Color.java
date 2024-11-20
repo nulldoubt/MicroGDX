@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.graphics;
 
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.NumberUtils;
+import me.nulldoubt.micro.utils.Numbers;
 
 public class Color {
 	
@@ -213,16 +213,16 @@ public class Color {
 	
 	@Override
 	public int hashCode() {
-		int result = (r != +0.0f ? NumberUtils.floatToIntBits(r) : 0);
-		result = 31 * result + (g != +0.0f ? NumberUtils.floatToIntBits(g) : 0);
-		result = 31 * result + (b != +0.0f ? NumberUtils.floatToIntBits(b) : 0);
-		result = 31 * result + (a != +0.0f ? NumberUtils.floatToIntBits(a) : 0);
+		int result = (r != +0.0f ? Numbers.floatToIntBits(r) : 0);
+		result = 31 * result + (g != +0.0f ? Numbers.floatToIntBits(g) : 0);
+		result = 31 * result + (b != +0.0f ? Numbers.floatToIntBits(b) : 0);
+		result = 31 * result + (a != +0.0f ? Numbers.floatToIntBits(a) : 0);
 		return result;
 	}
 	
 	public float toFloatBits() {
 		int color = ((int) (255 * a) << 24) | ((int) (255 * b) << 16) | ((int) (255 * g) << 8) | ((int) (255 * r));
-		return NumberUtils.intToFloatColor(color);
+		return Numbers.intToFloatColor(color);
 	}
 	
 	public int toIntBits() {
@@ -250,11 +250,11 @@ public class Color {
 	}
 	
 	public static float toFloatBits(int r, int g, int b, int a) {
-		return NumberUtils.intToFloatColor((a << 24) | (b << 16) | (g << 8) | r);
+		return Numbers.intToFloatColor((a << 24) | (b << 16) | (g << 8) | r);
 	}
 	
 	public static float toFloatBits(float r, float g, float b, float a) {
-		return NumberUtils.intToFloatColor(((int) (255 * a) << 24) | ((int) (255 * b) << 16) | ((int) (255 * g) << 8) | ((int) (255 * r)));
+		return Numbers.intToFloatColor(((int) (255 * a) << 24) | ((int) (255 * b) << 16) | ((int) (255 * g) << 8) | ((int) (255 * r)));
 	}
 	
 	public static int toIntBits(int r, int g, int b, int a) {
@@ -350,7 +350,7 @@ public class Color {
 	}
 	
 	public static void abgr8888ToColor(Color color, float value) {
-		int c = NumberUtils.floatToIntColor(value);
+		int c = Numbers.floatToIntColor(value);
 		color.a = ((c & 0xff000000) >>> 24) / 255f;
 		color.b = ((c & 0x00ff0000) >>> 16) / 255f;
 		color.g = ((c & 0x0000ff00) >>> 8) / 255f;

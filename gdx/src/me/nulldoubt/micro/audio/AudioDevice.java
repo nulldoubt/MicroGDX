@@ -12,8 +12,6 @@ public interface AudioDevice extends Disposable {
 	
 	int getLatency();
 	
-	void dispose();
-	
 	void setVolume(float volume);
 	
 	void pause();

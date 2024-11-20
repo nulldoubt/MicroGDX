@@ -29,7 +29,7 @@ import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.graphics.g2d.TextureRegion;
 import me.nulldoubt.micro.scenes.scene2d.utils.ActorGestureListener;
 import me.nulldoubt.micro.scenes.scene2d.utils.ClickListener;
-import me.nulldoubt.micro.utils.ScissorStack;
+import me.nulldoubt.micro.utils.Scissors;
 import me.nulldoubt.micro.utils.Align;
 import me.nulldoubt.micro.utils.collections.Array;
 import com.nulldoubt.micro.utils.DelayedRemovalArray;
@@ -825,7 +825,7 @@ public class Actor {
 	 * transform matrix and the stage's camera must not have rotational components. Calling this method must be followed by a call
 	 * to {@link #clipEnd()} if true is returned.
 	 * @return false if the clipping area is zero and no drawing should occur.
-	 * @see ScissorStack */
+	 * @see Scissors */
 	public boolean clipBegin (float x, float y, float width, float height) {
 		if (width <= 0 || height <= 0) return false;
 		Stage stage = this.stage;
@@ -837,14 +837,14 @@ public class Actor {
 		tableBounds.height = height;
 		Rectangle scissorBounds = Pools.obtain(Rectangle.class);
 		stage.calculateScissors(tableBounds, scissorBounds);
-		if (ScissorStack.pushScissors(scissorBounds)) return true;
+		if (Scissors.pushScissors(scissorBounds)) return true;
 		Pools.free(scissorBounds);
 		return false;
 	}
 
 	/** Ends clipping begun by {@link #clipBegin(float, float, float, float)}. */
 	public void clipEnd () {
-		Pools.free(ScissorStack.popScissors());
+		Pools.free(Scissors.popScissors());
 	}
 
 	/** Transforms the specified point in screen coordinates to the actor's local coordinate system.

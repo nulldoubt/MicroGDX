@@ -5,15 +5,15 @@ import me.nulldoubt.micro.graphics.Camera;
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.glutils.HdpiUtils;
 import me.nulldoubt.micro.math.Matrix4;
-import me.nulldoubt.micro.math.shapes.Rectangle;
 import me.nulldoubt.micro.math.Vector3;
+import me.nulldoubt.micro.math.shapes.Rectangle;
 import me.nulldoubt.micro.utils.collections.Array;
 
-public class ScissorStack {
+public final class Scissors {
 	
 	private static final Array<Rectangle> scissors = new Array<>();
-	static Vector3 tmp = new Vector3();
-	static final Rectangle viewport = new Rectangle();
+	private static final Vector3 tmp = new Vector3();
+	private static final Rectangle viewport = new Rectangle();
 	
 	public static boolean pushScissors(Rectangle scissor) {
 		fix(scissor);
@@ -23,7 +23,7 @@ public class ScissorStack {
 				return false;
 			Micro.gl.glEnable(GL20.GL_SCISSOR_TEST);
 		} else {
-			// merge scissors
+			
 			Rectangle parent = scissors.get(scissors.size - 1);
 			float minX = Math.max(parent.x, scissor.x);
 			float maxX = Math.min(parent.x + parent.width, scissor.x + scissor.width);
@@ -45,12 +45,6 @@ public class ScissorStack {
 		return true;
 	}
 	
-	/**
-	 * Pops the current scissor rectangle from the stack and sets the new scissor area to the new top of stack rectangle. In case
-	 * no more rectangles are on the stack, {@link GL20#GL_SCISSOR_TEST} is disabled.
-	 * <p>
-	 * Any drawing should be flushed before popping scissors.
-	 */
 	public static Rectangle popScissors() {
 		Rectangle old = scissors.pop();
 		if (scissors.size == 0)
@@ -83,29 +77,11 @@ public class ScissorStack {
 		}
 	}
 	
-	/**
-	 * Calculates a scissor rectangle using 0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight() as the viewport.
-	 *
-	 * @see #calculateScissors(Camera, float, float, float, float, Matrix4, Rectangle, Rectangle)
-	 */
 	public static void calculateScissors(Camera camera, Matrix4 batchTransform, Rectangle area, Rectangle scissor) {
 		calculateScissors(camera, 0, 0, Micro.graphics.getWidth(), Micro.graphics.getHeight(), batchTransform, area, scissor);
 	}
 	
-	/**
-	 * Calculates a scissor rectangle in OpenGL ES window coordinates from a {@link Camera}, a transformation {@link Matrix4} and
-	 * an axis aligned {@link Rectangle}. The rectangle will get transformed by the camera and transform matrices and is then
-	 * projected to screen coordinates. Note that only axis aligned rectangles will work with this method. If either the Camera or
-	 * the Matrix4 have rotational components, the output of this method will not be suitable for
-	 * {@link GL20#glScissor(int, int, int, int)}.
-	 *
-	 * @param camera         the {@link Camera}
-	 * @param batchTransform the transformation {@link Matrix4}
-	 * @param area           the {@link Rectangle} to transform to window coordinates
-	 * @param scissor        the Rectangle to store the result in
-	 */
-	public static void calculateScissors(Camera camera, float viewportX, float viewportY, float viewportWidth,
-										 float viewportHeight, Matrix4 batchTransform, Rectangle area, Rectangle scissor) {
+	public static void calculateScissors(Camera camera, float viewportX, float viewportY, float viewportWidth, float viewportHeight, Matrix4 batchTransform, Rectangle area, Rectangle scissor) {
 		tmp.set(area.x, area.y, 0);
 		tmp.mul(batchTransform);
 		camera.project(tmp, viewportX, viewportY, viewportWidth, viewportHeight);

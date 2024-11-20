@@ -68,7 +68,7 @@ public class XmlReader {
 		} catch (IOException ex) {
 			throw new SerializationException(ex);
 		} finally {
-			StreamUtils.closeQuietly(reader);
+			Streams.closeQuietly(reader);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class XmlReader {
 		} catch (IOException ex) {
 			throw new SerializationException(ex);
 		} finally {
-			StreamUtils.closeQuietly(input);
+			Streams.closeQuietly(input);
 		}
 	}
 

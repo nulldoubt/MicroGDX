@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.math;
 
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
-import me.nulldoubt.micro.utils.NumberUtils;
+import me.nulldoubt.micro.utils.Numbers;
 
 import java.io.Serializable;
 
@@ -487,9 +487,9 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + NumberUtils.floatToIntBits(x);
-		result = prime * result + NumberUtils.floatToIntBits(y);
-		result = prime * result + NumberUtils.floatToIntBits(z);
+		result = prime * result + Numbers.floatToIntBits(x);
+		result = prime * result + Numbers.floatToIntBits(y);
+		result = prime * result + Numbers.floatToIntBits(z);
 		return result;
 	}
 	
@@ -502,11 +502,11 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 		if (getClass() != obj.getClass())
 			return false;
 		Vector3 other = (Vector3) obj;
-		if (NumberUtils.floatToIntBits(x) != NumberUtils.floatToIntBits(other.x))
+		if (Numbers.floatToIntBits(x) != Numbers.floatToIntBits(other.x))
 			return false;
-		if (NumberUtils.floatToIntBits(y) != NumberUtils.floatToIntBits(other.y))
+		if (Numbers.floatToIntBits(y) != Numbers.floatToIntBits(other.y))
 			return false;
-		return NumberUtils.floatToIntBits(z) == NumberUtils.floatToIntBits(other.z);
+		return Numbers.floatToIntBits(z) == Numbers.floatToIntBits(other.z);
 	}
 	
 	@Override

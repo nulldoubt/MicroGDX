@@ -587,7 +587,7 @@ public abstract class BaseTmxMapLoader<P extends BaseTmxMapLoader.Parameters> ex
 				} catch (IOException e) {
 					throw new MicroRuntimeException("Error Reading TMX Layer Data - IOException: " + e.getMessage());
 				} finally {
-					StreamUtils.closeQuietly(is);
+					Streams.closeQuietly(is);
 				}
 			} else {
 				// any other value of 'encoding' is one we're not aware of, probably a feature of a future version of Tiled

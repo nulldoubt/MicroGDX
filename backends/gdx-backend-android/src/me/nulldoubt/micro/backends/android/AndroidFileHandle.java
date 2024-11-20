@@ -33,7 +33,7 @@ import me.nulldoubt.micro.Files.FileType;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
-import me.nulldoubt.micro.utils.StreamUtils;
+import me.nulldoubt.micro.utils.Streams;
 
 /** @author mzechner
  * @author Nathan Sweet */
@@ -100,7 +100,7 @@ public class AndroidFileHandle extends FileHandle {
 			} catch (Exception ex) {
 				throw new MicroRuntimeException("Error memory mapping file: " + this + " (" + type + ")", ex);
 			} finally {
-				StreamUtils.closeQuietly(input);
+				Streams.closeQuietly(input);
 			}
 		}
 		return super.map(mode);

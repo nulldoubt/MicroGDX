@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.backends.lwjgl3;
 
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 import org.lwjgl.opengl.*;
 
 import java.nio.*;
@@ -14,7 +14,7 @@ class Lwjgl3GL20 implements me.nulldoubt.micro.graphics.GL20 {
 	
 	private void ensureBufferCapacity(int numBytes) {
 		if (buffer == null || buffer.capacity() < numBytes) {
-			buffer = BufferUtils.newByteBuffer(numBytes);
+			buffer = Buffers.newByteBuffer(numBytes);
 			floatBuffer = buffer.asFloatBuffer();
 			intBuffer = buffer.asIntBuffer();
 		}

@@ -5,7 +5,7 @@ import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.GL30;
 import me.nulldoubt.micro.graphics.VertexAttribute;
 import me.nulldoubt.micro.graphics.VertexAttributes;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 import me.nulldoubt.micro.utils.collections.IntArray;
 
 import java.nio.Buffer;
@@ -15,7 +15,7 @@ import java.nio.IntBuffer;
 
 public class VertexBufferObjectWithVAO implements VertexData {
 	
-	final static IntBuffer tmpHandle = BufferUtils.newIntBuffer(1);
+	final static IntBuffer tmpHandle = Buffers.newIntBuffer(1);
 	
 	final VertexAttributes attributes;
 	final FloatBuffer buffer;
@@ -51,7 +51,7 @@ public class VertexBufferObjectWithVAO implements VertexData {
 		this.isStatic = isStatic;
 		this.attributes = attributes;
 		
-		byteBuffer = BufferUtils.newUnsafeByteBuffer(this.attributes.vertexSize * numVertices);
+		byteBuffer = Buffers.newUnsafeByteBuffer(this.attributes.vertexSize * numVertices);
 		buffer = byteBuffer.asFloatBuffer();
 		ownsBuffer = true;
 		((Buffer) buffer).flip();
@@ -107,7 +107,7 @@ public class VertexBufferObjectWithVAO implements VertexData {
 	@Override
 	public void setVertices(float[] vertices, int offset, int count) {
 		isDirty = true;
-		BufferUtils.copy(vertices, byteBuffer, count, offset);
+		Buffers.copy(vertices, byteBuffer, count, offset);
 		((Buffer) buffer).position(0);
 		((Buffer) buffer).limit(count);
 		bufferChanged();
@@ -118,7 +118,7 @@ public class VertexBufferObjectWithVAO implements VertexData {
 		isDirty = true;
 		final int pos = byteBuffer.position();
 		((Buffer) byteBuffer).position(targetOffset * 4);
-		BufferUtils.copy(vertices, sourceOffset, count, byteBuffer);
+		Buffers.copy(vertices, sourceOffset, count, byteBuffer);
 		((Buffer) byteBuffer).position(pos);
 		((Buffer) buffer).position(0);
 		bufferChanged();
@@ -253,7 +253,7 @@ public class VertexBufferObjectWithVAO implements VertexData {
 		gl.glDeleteBuffer(bufferHandle);
 		bufferHandle = 0;
 		if (ownsBuffer) {
-			BufferUtils.disposeUnsafeByteBuffer(byteBuffer);
+			Buffers.disposeUnsafeByteBuffer(byteBuffer);
 		}
 		deleteVAO();
 	}

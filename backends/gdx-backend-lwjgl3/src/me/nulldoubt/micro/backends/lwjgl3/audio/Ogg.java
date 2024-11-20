@@ -2,8 +2,8 @@ package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.BufferUtils;
-import me.nulldoubt.micro.utils.StreamUtils;
+import me.nulldoubt.micro.utils.Buffers;
+import me.nulldoubt.micro.utils.Streams;
 import org.lwjgl.stb.STBVorbis;
 import org.lwjgl.system.MemoryStack;
 
@@ -36,14 +36,14 @@ public class Ogg {
 		}
 		
 		public void reset() {
-			StreamUtils.closeQuietly(input);
+			Streams.closeQuietly(input);
 			previousInput = null;
 			input = null;
 		}
 		
 		@Override
 		protected void loop() {
-			StreamUtils.closeQuietly(input);
+			Streams.closeQuietly(input);
 			previousInput = input;
 			input = null;
 		}
@@ -59,7 +59,7 @@ public class Ogg {
 			
 			// put the encoded audio data in a ByteBuffer
 			byte[] streamData = file.readBytes();
-			ByteBuffer encodedData = BufferUtils.newByteBuffer(streamData.length);
+			ByteBuffer encodedData = Buffers.newByteBuffer(streamData.length);
 			encodedData.put(streamData);
 			encodedData.flip();
 			

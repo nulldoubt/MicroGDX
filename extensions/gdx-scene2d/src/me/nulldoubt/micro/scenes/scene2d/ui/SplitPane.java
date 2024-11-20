@@ -26,7 +26,7 @@ import me.nulldoubt.micro.scenes.scene2d.InputListener;
 import me.nulldoubt.micro.scenes.scene2d.Stage;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
 import me.nulldoubt.micro.scenes.scene2d.utils.Layout;
-import me.nulldoubt.micro.utils.ScissorStack;
+import me.nulldoubt.micro.utils.Scissors;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import com.nulldoubt.micro.utils.Null;
 
@@ -252,19 +252,19 @@ public class SplitPane extends WidgetGroup {
 		if (firstWidget != null && firstWidget.isVisible()) {
 			batch.flush();
 			stage.calculateScissors(firstWidgetBounds, tempScissors);
-			if (ScissorStack.pushScissors(tempScissors)) {
+			if (Scissors.pushScissors(tempScissors)) {
 				firstWidget.draw(batch, alpha);
 				batch.flush();
-				ScissorStack.popScissors();
+				Scissors.popScissors();
 			}
 		}
 		if (secondWidget != null && secondWidget.isVisible()) {
 			batch.flush();
 			stage.calculateScissors(secondWidgetBounds, tempScissors);
-			if (ScissorStack.pushScissors(tempScissors)) {
+			if (Scissors.pushScissors(tempScissors)) {
 				secondWidget.draw(batch, alpha);
 				batch.flush();
-				ScissorStack.popScissors();
+				Scissors.popScissors();
 			}
 		}
 		batch.setColor(color.r, color.g, color.b, alpha);

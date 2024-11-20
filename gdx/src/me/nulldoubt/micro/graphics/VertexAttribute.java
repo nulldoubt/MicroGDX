@@ -3,14 +3,6 @@ package me.nulldoubt.micro.graphics;
 import me.nulldoubt.micro.graphics.VertexAttributes.Usage;
 import me.nulldoubt.micro.graphics.glutils.Shader;
 
-/**
- * A single vertex attribute defined by its {@link Usage}, its number of components and its shader alias. The Usage is used for
- * uniquely identifying the vertex attribute from among its {@linkplain VertexAttributes} siblings. The number of components
- * defines how many components the attribute has. The alias defines to which shader attribute this attribute should bind. The
- * alias is used by a {@link Mesh} when drawing with a {@link Shader}. The alias can be changed at any time.
- *
- * @author mzechner
- */
 public final class VertexAttribute {
 	
 	/**

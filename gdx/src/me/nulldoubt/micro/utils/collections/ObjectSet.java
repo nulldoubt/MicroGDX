@@ -60,30 +60,10 @@ public class ObjectSet<T> implements Iterable<T> {
 		size = set.size;
 	}
 	
-	/**
-	 * Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
-	 * <p>
-	 * The default implementation uses Fibonacci hashing on the item's {@link Object#hashCode()}: the hashcode is multiplied by a
-	 * long constant (2 to the 64th, divided by the golden ratio) then the uppermost bits are shifted into the lowest positions to
-	 * obtain an index in the desired range. Multiplication by a long may be slower than int (eg on GWT) but greatly improves
-	 * rehashing, allowing even very poor hashcodes, such as those that only differ in their upper bits, to be used without high
-	 * collision rates. Fibonacci hashing has increased collision rates when all or most hashcodes are multiples of larger
-	 * Fibonacci numbers (see <a href=
-	 * "https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/">Malte
-	 * Skarupke's blog post</a>).
-	 * <p>
-	 * This method can be overriden to customizing hashing. This may be useful eg in the unlikely event that most hashcodes are
-	 * Fibonacci numbers, if keys provide poor or incorrect hashcodes, or to simplify hashing if keys provide high quality
-	 * hashcodes and don't need Fibonacci hashing: {@code return item.hashCode() & mask;}
-	 */
 	protected int place(T item) {
 		return (int) (item.hashCode() * 0x9E3779B97F4A7C15L >>> shift);
 	}
 	
-	/**
-	 * Returns the index of the key if already present, else -(index + 1) for the next empty index. This can be overridden in this
-	 * pacakge to compare for equality differently than {@link Object#equals(Object)}.
-	 */
 	int locateKey(T key) {
 		if (key == null)
 			throw new IllegalArgumentException("key cannot be null.");

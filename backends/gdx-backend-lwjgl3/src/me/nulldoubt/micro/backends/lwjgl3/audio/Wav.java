@@ -2,7 +2,7 @@ package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.StreamUtils;
+import me.nulldoubt.micro.utils.Streams;
 
 import java.io.EOFException;
 import java.io.FilterInputStream;
@@ -35,7 +35,7 @@ public class Wav {
 		}
 		
 		public void reset() {
-			StreamUtils.closeQuietly(input);
+			Streams.closeQuietly(input);
 			input = null;
 		}
 		
@@ -55,12 +55,12 @@ public class Wav {
 					setType("mp3");
 					return;
 				}
-				setup(StreamUtils.copyStreamToByteArray(input, input.dataRemaining), input.channels, input.bitDepth,
+				setup(Streams.copyStreamToByteArray(input, input.dataRemaining), input.channels, input.bitDepth,
 						input.sampleRate);
 			} catch (IOException ex) {
 				throw new MicroRuntimeException("Error reading WAV file: " + file, ex);
 			} finally {
-				StreamUtils.closeQuietly(input);
+				Streams.closeQuietly(input);
 			}
 		}
 		
@@ -114,7 +114,7 @@ public class Wav {
 				
 				dataRemaining = seekToChunk('d', 'a', 't', 'a');
 			} catch (Throwable ex) {
-				StreamUtils.closeQuietly(this);
+				Streams.closeQuietly(this);
 				throw new MicroRuntimeException("Error reading WAV file: " + file, ex);
 			}
 		}

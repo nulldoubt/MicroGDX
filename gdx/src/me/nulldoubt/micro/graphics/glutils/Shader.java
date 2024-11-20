@@ -9,7 +9,7 @@ import me.nulldoubt.micro.math.Matrix3;
 import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.math.Vector3;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 import me.nulldoubt.micro.utils.Disposable;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.ObjectIntMap;
@@ -106,7 +106,7 @@ public class Shader implements Disposable {
 	
 	private int loadShader(int type, String source) {
 		GL20 gl = Micro.gl20;
-		IntBuffer intbuf = BufferUtils.newIntBuffer(1);
+		IntBuffer intbuf = Buffers.newIntBuffer(1);
 		
 		int shader = gl.glCreateShader(type);
 		if (shader == 0)
@@ -581,8 +581,8 @@ public class Shader implements Disposable {
 		gl.glVertexAttrib4f(location, value1, value2, value3, value4);
 	}
 	
-	IntBuffer params = BufferUtils.newIntBuffer(1);
-	IntBuffer type = BufferUtils.newIntBuffer(1);
+	IntBuffer params = Buffers.newIntBuffer(1);
+	IntBuffer type = Buffers.newIntBuffer(1);
 	
 	private void fetchUniforms() {
 		((Buffer) params).clear();

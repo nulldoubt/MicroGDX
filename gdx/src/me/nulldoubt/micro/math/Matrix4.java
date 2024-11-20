@@ -2,7 +2,7 @@ package me.nulldoubt.micro.math;
 
 import java.io.Serializable;
 
-public class Matrix4 implements Serializable {
+public final class Matrix4 implements Serializable {
 	
 	/**
 	 * XX: Typically the unrotated X component for scaling, also the cosine of the angle when rotated on the Y and/or Z axis. On

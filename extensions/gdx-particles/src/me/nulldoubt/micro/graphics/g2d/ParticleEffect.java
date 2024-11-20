@@ -159,7 +159,7 @@ public class ParticleEffect implements Disposable {
 		} catch (IOException ex) {
 			throw new MicroRuntimeException("Error loading effect: " + effectFile, ex);
 		} finally {
-			StreamUtils.closeQuietly(reader);
+			Streams.closeQuietly(reader);
 		}
 	}
 	

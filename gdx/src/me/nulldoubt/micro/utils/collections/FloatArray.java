@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.utils.collections;
 
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.NumberUtils;
+import me.nulldoubt.micro.utils.Numbers;
 import me.nulldoubt.micro.utils.strings.StringBuilder;
 
 import java.util.Arrays;
@@ -360,7 +360,7 @@ public class FloatArray {
 		float[] items = this.items;
 		int h = 1;
 		for (int i = 0, n = size; i < n; i++)
-			h = h * 31 + NumberUtils.floatToRawIntBits(items[i]);
+			h = h * 31 + Numbers.floatToRawIntBits(items[i]);
 		return h;
 	}
 	

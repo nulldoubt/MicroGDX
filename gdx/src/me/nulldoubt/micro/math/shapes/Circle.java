@@ -2,7 +2,7 @@ package me.nulldoubt.micro.math.shapes;
 
 import me.nulldoubt.micro.math.MathUtils;
 import me.nulldoubt.micro.math.Vector2;
-import me.nulldoubt.micro.utils.NumberUtils;
+import me.nulldoubt.micro.utils.Numbers;
 
 import java.io.Serializable;
 
@@ -135,9 +135,9 @@ public class Circle implements Serializable, Shape2D {
 	public int hashCode() {
 		final int prime = 41;
 		int result = 1;
-		result = prime * result + NumberUtils.floatToRawIntBits(radius);
-		result = prime * result + NumberUtils.floatToRawIntBits(x);
-		result = prime * result + NumberUtils.floatToRawIntBits(y);
+		result = prime * result + Numbers.floatToRawIntBits(radius);
+		result = prime * result + Numbers.floatToRawIntBits(x);
+		result = prime * result + Numbers.floatToRawIntBits(y);
 		return result;
 	}
 	

@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.utils.collections.operations;
 
-class ComparableTimSort {
+public class ComparableTimSort {
 	
 	private static final int MIN_MERGE = 32;
 	

@@ -2,7 +2,7 @@ package me.nulldoubt.micro.backends.lwjgl3.angle;
 
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.GL20;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 import org.lwjgl.opengles.GLES20;
 
 import java.nio.*;
@@ -15,7 +15,7 @@ public class Lwjgl3GLES20 implements GL20 {
 	
 	private void ensureBufferCapacity(int numBytes) {
 		if (buffer == null || buffer.capacity() < numBytes) {
-			buffer = BufferUtils.newByteBuffer(numBytes);
+			buffer = Buffers.newByteBuffer(numBytes);
 			floatBuffer = buffer.asFloatBuffer();
 			intBuffer = buffer.asIntBuffer();
 		}

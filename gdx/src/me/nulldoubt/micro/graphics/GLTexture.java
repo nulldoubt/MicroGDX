@@ -6,7 +6,7 @@ import me.nulldoubt.micro.graphics.Texture.TextureFilter;
 import me.nulldoubt.micro.graphics.Texture.TextureWrap;
 import me.nulldoubt.micro.graphics.glutils.MipMapGenerator;
 import me.nulldoubt.micro.math.MathUtils;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 import me.nulldoubt.micro.utils.Disposable;
 
 import java.nio.Buffer;
@@ -259,7 +259,7 @@ public abstract class GLTexture implements Disposable {
 		if (maxAnisotropicFilterLevel > 0)
 			return maxAnisotropicFilterLevel;
 		if (Micro.graphics.supportsExtension("GL_EXT_texture_filter_anisotropic")) {
-			FloatBuffer buffer = BufferUtils.newFloatBuffer(16);
+			FloatBuffer buffer = Buffers.newFloatBuffer(16);
 			((Buffer) buffer).position(0);
 			((Buffer) buffer).limit(buffer.capacity());
 			Micro.gl20.glGetFloatv(GL20.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer);

@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.utils;
 
-public final class NumberUtils {
+public final class Numbers {
 	
 	public static int floatToIntBits(float value) {
 		return Float.floatToIntBits(value);

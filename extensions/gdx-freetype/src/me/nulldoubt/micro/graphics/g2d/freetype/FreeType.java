@@ -26,12 +26,12 @@ import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Blending;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 import me.nulldoubt.micro.utils.Disposable;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.utils.collections.LongMap;
 import com.nulldoubt.micro.utils.SharedLibraryLoader;
-import me.nulldoubt.micro.utils.StreamUtils;
+import me.nulldoubt.micro.utils.Streams;
 
 public class FreeType {
 	// @off
@@ -70,8 +70,8 @@ public class FreeType {
 		public void dispose () {
 			doneFreeType(address);
 			for(ByteBuffer buffer: fontData.values()) {
-				if (BufferUtils.isUnsafeByteBuffer(buffer)) 
-					BufferUtils.disposeUnsafeByteBuffer(buffer);
+				if (Buffers.isUnsafeByteBuffer(buffer))
+					Buffers.disposeUnsafeByteBuffer(buffer);
 			}
 		}
 
@@ -92,34 +92,34 @@ public class FreeType {
 					int fileSize = (int)fontFile.length();
 					if (fileSize == 0) {
 						// Copy to a byte[] to get the size, then copy to the buffer.
-						byte[] data = StreamUtils.copyStreamToByteArray(input, 1024 * 16);
-						buffer = BufferUtils.newUnsafeByteBuffer(data.length);
-						BufferUtils.copy(data, 0, buffer, data.length);
+						byte[] data = Streams.copyStreamToByteArray(input, 1024 * 16);
+						buffer = Buffers.newUnsafeByteBuffer(data.length);
+						Buffers.copy(data, 0, buffer, data.length);
 					} else {
 						// Trust the specified file size.
-						buffer = BufferUtils.newUnsafeByteBuffer(fileSize);
-						StreamUtils.copyStream(input, buffer);
+						buffer = Buffers.newUnsafeByteBuffer(fileSize);
+						Streams.copyStream(input, buffer);
 					}
 				} catch (IOException ex) {
 					throw new MicroRuntimeException(ex);
 				} finally {
-					StreamUtils.closeQuietly(input);
+					Streams.closeQuietly(input);
 				}
 			}
 			return newMemoryFace(buffer, faceIndex);
 		}
 
 		public Face newMemoryFace(byte[] data, int dataSize, int faceIndex) {
-			ByteBuffer buffer = BufferUtils.newUnsafeByteBuffer(data.length);
-			BufferUtils.copy(data, 0, buffer, data.length);
+			ByteBuffer buffer = Buffers.newUnsafeByteBuffer(data.length);
+			Buffers.copy(data, 0, buffer, data.length);
 			return newMemoryFace(buffer, faceIndex);
 		}
 
 		public Face newMemoryFace(ByteBuffer buffer, int faceIndex) {
 			long face = newMemoryFace(address, buffer, buffer.remaining(), faceIndex);
 			if(face == 0) {
-				if (BufferUtils.isUnsafeByteBuffer(buffer)) 
-					BufferUtils.disposeUnsafeByteBuffer(buffer);
+				if (Buffers.isUnsafeByteBuffer(buffer))
+					Buffers.disposeUnsafeByteBuffer(buffer);
 				throw new MicroRuntimeException("Couldn't load font, FreeType error code: " + getLastErrorCode());
 			}
 			else {
@@ -169,8 +169,8 @@ public class FreeType {
 			ByteBuffer buffer = library.fontData.get(address);
 			if(buffer != null) {
 				library.fontData.remove(address);
-				if (BufferUtils.isUnsafeByteBuffer(buffer)) 
-					BufferUtils.disposeUnsafeByteBuffer(buffer);
+				if (Buffers.isUnsafeByteBuffer(buffer))
+					Buffers.disposeUnsafeByteBuffer(buffer);
 			}
 		}
 
@@ -647,7 +647,7 @@ public class FreeType {
 				//              FreeType sets FT_Bitmap::buffer to NULL when the bitmap is empty (e.g. for ' ')
 				//              JNICheck is on by default on emulators and might have a point anyway...
 				//              So let's avoid this and just return a dummy non-null non-zero buffer
-				return BufferUtils.newByteBuffer(1);
+				return Buffers.newByteBuffer(1);
 			return getBuffer(address);
 		}
 
@@ -665,7 +665,7 @@ public class FreeType {
 			int rowBytes = Math.abs(getPitch()); // We currently ignore negative pitch.
 			if (color == Color.WHITE && pixelMode == FT_PIXEL_MODE_GRAY && rowBytes == width && gamma == 1) {
 				pixmap = new Pixmap(width, rows, Format.Alpha);
-				BufferUtils.copy(src, pixmap.getPixels(), pixmap.getPixels().capacity());
+				Buffers.copy(src, pixmap.getPixels(), pixmap.getPixels().capacity());
 			} else {
 				pixmap = new Pixmap(width, rows, Format.RGBA8888);
 				int rgba = Color.rgba8888(color);

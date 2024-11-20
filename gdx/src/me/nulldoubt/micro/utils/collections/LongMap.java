@@ -21,16 +21,6 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>> {
 	private final float loadFactor;
 	private int threshold;
 	
-	/**
-	 * Used by {@link #place(long)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
-	 * {@link #mask}). The shift can be negative, which is convenient to match the number of bits in mask: if mask is a 7-bit
-	 * number, a shift of -7 shifts the upper 7 bits into the lowest 7 positions. This class sets the shift &gt; 32 and &lt; 64,
-	 * which if used with an int will still move the upper bits of an int to the lower bits due to Java's implicit modulus on
-	 * shifts.
-	 * <p>
-	 * {@link #mask} can also be used to mask the low bits of a number, which may be faster for some hashcodes, if
-	 * {@link #place(long)} is overridden.
-	 */
 	protected int shift;
 	
 	/**
@@ -39,10 +29,6 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>> {
 	 * hash.
 	 */
 	protected int mask;
-	
-	private transient Entries entries1, entries2;
-	private transient Values values1, values2;
-	private transient Keys keys1, keys2;
 	
 	/**
 	 * Creates a new map with an initial capacity of 51 and a load factor of 0.8.
@@ -92,22 +78,6 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>> {
 		hasZeroValue = map.hasZeroValue;
 	}
 	
-	/**
-	 * Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
-	 * <p>
-	 * The default implementation uses Fibonacci hashing on the item's {@link Object#hashCode()}: the hashcode is multiplied by a
-	 * long constant (2 to the 64th, divided by the golden ratio) then the uppermost bits are shifted into the lowest positions to
-	 * obtain an index in the desired range. Multiplication by a long may be slower than int (eg on GWT) but greatly improves
-	 * rehashing, allowing even very poor hashcodes, such as those that only differ in their upper bits, to be used without high
-	 * collision rates. Fibonacci hashing has increased collision rates when all or most hashcodes are multiples of larger
-	 * Fibonacci numbers (see <a href=
-	 * "https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/">Malte
-	 * Skarupke's blog post</a>).
-	 * <p>
-	 * This method can be overriden to customizing hashing. This may be useful eg in the unlikely event that most hashcodes are
-	 * Fibonacci numbers, if keys provide poor or incorrect hashcodes, or to simplify hashing if keys provide high quality
-	 * hashcodes and don't need Fibonacci hashing: {@code return item.hashCode() & mask;}
-	 */
 	protected int place(long item) {
 		return (int) ((item ^ item >>> 32) * 0x9E3779B97F4A7C15L >>> shift);
 	}

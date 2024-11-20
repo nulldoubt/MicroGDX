@@ -884,7 +884,7 @@ public class Stage implements InputProcessor, Disposable {
 	/**
 	 * Calculates window scissor coordinates from local coordinates using the batch's current transformation matrix.
 	 *
-	 * @see ScissorStack#calculateScissors(Camera, float, float, float, float, Matrix4, Rectangle, Rectangle)
+	 * @see Scissors#calculateScissors(Camera, float, float, float, float, Matrix4, Rectangle, Rectangle)
 	 */
 	public void calculateScissors(Rectangle localRect, Rectangle scissorRect) {
 		Matrix4 transformMatrix;

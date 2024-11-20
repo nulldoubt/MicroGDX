@@ -5,12 +5,12 @@ import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.assets.loaders.AssetLoader;
 import me.nulldoubt.micro.assets.loaders.AsynchronousAssetLoader;
 import me.nulldoubt.micro.assets.loaders.SynchronousAssetLoader;
-import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.utils.async.AsyncExecutor;
 import me.nulldoubt.micro.utils.async.AsyncResult;
 import me.nulldoubt.micro.utils.async.AsyncTask;
+import me.nulldoubt.micro.utils.collections.Array;
 
 public class AssetLoadingTask implements AsyncTask<Void> {
 	

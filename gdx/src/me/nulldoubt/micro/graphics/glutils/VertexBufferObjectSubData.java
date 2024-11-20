@@ -5,7 +5,7 @@ import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.VertexAttribute;
 import me.nulldoubt.micro.graphics.VertexAttributes;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -44,7 +44,7 @@ public class VertexBufferObjectSubData implements VertexData {
 	public VertexBufferObjectSubData(boolean isStatic, int numVertices, VertexAttributes attributes) {
 		this.isStatic = isStatic;
 		this.attributes = attributes;
-		byteBuffer = BufferUtils.newByteBuffer(this.attributes.vertexSize * numVertices);
+		byteBuffer = Buffers.newByteBuffer(this.attributes.vertexSize * numVertices);
 		isDirect = true;
 		
 		usage = isStatic ? GL20.GL_STATIC_DRAW : GL20.GL_DYNAMIC_DRAW;
@@ -94,7 +94,7 @@ public class VertexBufferObjectSubData implements VertexData {
 	public void setVertices(float[] vertices, int offset, int count) {
 		isDirty = true;
 		if (isDirect) {
-			BufferUtils.copy(vertices, byteBuffer, count, offset);
+			Buffers.copy(vertices, byteBuffer, count, offset);
 			((Buffer) buffer).position(0);
 			((Buffer) buffer).limit(count);
 		} else {
@@ -114,7 +114,7 @@ public class VertexBufferObjectSubData implements VertexData {
 		if (isDirect) {
 			final int pos = byteBuffer.position();
 			((Buffer) byteBuffer).position(targetOffset * 4);
-			BufferUtils.copy(vertices, sourceOffset, count, byteBuffer);
+			Buffers.copy(vertices, sourceOffset, count, byteBuffer);
 			((Buffer) byteBuffer).position(pos);
 		} else
 			throw new MicroRuntimeException("Buffer must be allocated direct."); // Should never happen

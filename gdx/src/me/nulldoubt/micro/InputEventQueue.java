@@ -1,7 +1,7 @@
 package me.nulldoubt.micro;
 
+import me.nulldoubt.micro.utils.Numbers;
 import me.nulldoubt.micro.utils.collections.IntArray;
-import me.nulldoubt.micro.utils.NumberUtils;
 
 public class InputEventQueue {
 	
@@ -58,7 +58,7 @@ public class InputEventQueue {
 					processor.mouseMoved(q[i++], q[i++]);
 					break;
 				case SCROLLED:
-					processor.scrolled(NumberUtils.intBitsToFloat(q[i++]), NumberUtils.intBitsToFloat(q[i++]));
+					processor.scrolled(Numbers.intBitsToFloat(q[i++]), Numbers.intBitsToFloat(q[i++]));
 					break;
 				default:
 					throw new RuntimeException();
@@ -179,8 +179,8 @@ public class InputEventQueue {
 	public synchronized boolean scrolled(final float amountX, final float amountY, final long time) {
 		queue.add(SCROLLED);
 		queueTime(time);
-		queue.add(NumberUtils.floatToIntBits(amountX));
-		queue.add(NumberUtils.floatToIntBits(amountY));
+		queue.add(Numbers.floatToIntBits(amountX));
+		queue.add(Numbers.floatToIntBits(amountY));
 		return false;
 	}
 	

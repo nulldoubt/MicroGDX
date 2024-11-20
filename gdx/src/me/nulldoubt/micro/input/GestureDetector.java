@@ -213,17 +213,11 @@ public class GestureDetector implements InputProcessor {
 		return InputProcessor.super.touchCancelled(screenX, screenY, pointer, button);
 	}
 	
-	/**
-	 * No further gesture events will be triggered for the current touch, if any.
-	 */
 	public void cancel() {
 		longPressTask.cancel();
 		longPressFired = true;
 	}
 	
-	/**
-	 * @return whether the user touched the screen long enough to trigger a long press event.
-	 */
 	public boolean isLongPressed() {
 		return isLongPressed(longPressSeconds);
 	}
@@ -231,7 +225,7 @@ public class GestureDetector implements InputProcessor {
 	public boolean isLongPressed(float duration) {
 		if (touchDownTime == 0)
 			return false;
-		return System.nanoTime() - touchDownTime > (long) (duration * 1000000000l);
+		return System.nanoTime() - touchDownTime > (long) (duration * 1000000000L);
 	}
 	
 	public boolean isPanning() {
@@ -250,9 +244,6 @@ public class GestureDetector implements InputProcessor {
 		return Math.abs(x - centerX) < tapRectangleWidth && Math.abs(y - centerY) < tapRectangleHeight;
 	}
 	
-	/**
-	 * The tap square will no longer be used for the current touch.
-	 */
 	public void invalidateTapSquare() {
 		inTapRectangle = false;
 	}
@@ -266,10 +257,6 @@ public class GestureDetector implements InputProcessor {
 		this.tapRectangleHeight = halfTapRectangleHeight;
 	}
 	
-	/**
-	 * @param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive
-	 *                         taps.
-	 */
 	public void setTapCountInterval(float tapCountInterval) {
 		this.tapCountInterval = (long) (tapCountInterval * 1000000000L);
 	}

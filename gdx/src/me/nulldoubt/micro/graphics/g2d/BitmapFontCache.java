@@ -6,7 +6,7 @@ import me.nulldoubt.micro.graphics.g2d.GlyphLayout.GlyphRun;
 import me.nulldoubt.micro.utils.Align;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.IntArray;
-import me.nulldoubt.micro.utils.NumberUtils;
+import me.nulldoubt.micro.utils.Numbers;
 import me.nulldoubt.micro.utils.pools.Pools;
 
 import java.util.Arrays;
@@ -123,9 +123,9 @@ public class BitmapFontCache {
 				float c = vertices[i];
 				if (c != prev || i == 2) {
 					prev = c;
-					int rgba = NumberUtils.floatToIntColor(c);
+					int rgba = Numbers.floatToIntColor(c);
 					rgba = (rgba & 0x00FFFFFF) | alphaBits;
-					newColor = NumberUtils.intToFloatColor(rgba);
+					newColor = Numbers.intToFloatColor(rgba);
 				}
 				vertices[i] = newColor;
 			}
@@ -146,7 +146,7 @@ public class BitmapFontCache {
 	
 	public void setColors(float r, float g, float b, float a) {
 		int intBits = ((int) (255 * a) << 24) | ((int) (255 * b) << 16) | ((int) (255 * g) << 8) | ((int) (255 * r));
-		setColors(NumberUtils.intToFloatColor(intBits));
+		setColors(Numbers.intToFloatColor(intBits));
 	}
 	
 	public void setColors(Color tint, int start, int end) {
@@ -366,7 +366,7 @@ public class BitmapFontCache {
 			float gx = x + run.x, gy = y + run.y;
 			for (int ii = 0, nn = run.glyphs.size; ii < nn; ii++) {
 				if (glyphIndex++ == nextColorGlyphIndex) {
-					lastColorFloatBits = NumberUtils.intToFloatColor(colors.get(++colorsIndex));
+					lastColorFloatBits = Numbers.intToFloatColor(colors.get(++colorsIndex));
 					nextColorGlyphIndex = ++colorsIndex < colors.size ? colors.get(colorsIndex) : -1;
 				}
 				gx += xAdvances[ii];

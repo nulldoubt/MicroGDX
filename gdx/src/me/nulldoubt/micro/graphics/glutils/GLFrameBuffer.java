@@ -4,7 +4,7 @@ import me.nulldoubt.micro.Application;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.*;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 import me.nulldoubt.micro.utils.Disposable;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.IntArray;
@@ -20,7 +20,7 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 	
 	protected final static int GL_DEPTH24_STENCIL8_OES = 0x88F0;
 	
-	protected Array<T> textureAttachments = new Array<T>();
+	protected Array<T> textureAttachments = new Array<>();
 	
 	protected static int defaultFramebufferHandle;
 	protected static boolean defaultFramebufferHandleInitialized = false;
@@ -114,7 +114,7 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 		}
 		
 		if (isMRT || bufferBuilder.samples > 0) {
-			defaultDrawBuffers = BufferUtils.newIntBuffer(colorAttachmentCounter);
+			defaultDrawBuffers = Buffers.newIntBuffer(colorAttachmentCounter);
 			for (int i = 0; i < colorAttachmentCounter; i++)
 				defaultDrawBuffers.put(GL30.GL_COLOR_ATTACHMENT0 + i);
 			((Buffer) defaultDrawBuffers).position(0);
@@ -234,7 +234,7 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 		Micro.gl20.glViewport(x, y, width, height);
 	}
 	
-	static final IntBuffer singleInt = BufferUtils.newIntBuffer(1);
+	static final IntBuffer singleInt = Buffers.newIntBuffer(1);
 	
 	public void transfer(GLFrameBuffer<T> destination) {
 		int copyBits = 0;

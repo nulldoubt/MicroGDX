@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.graphics.glutils;
 
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -19,7 +19,7 @@ public class IndexArray implements IndexData {
 		if (empty)
 			maxIndices = 1;
 		
-		byteBuffer = BufferUtils.newUnsafeByteBuffer(maxIndices * 2);
+		byteBuffer = Buffers.newUnsafeByteBuffer(maxIndices * 2);
 		buffer = byteBuffer.asShortBuffer();
 		((Buffer) buffer).flip();
 		((Buffer) byteBuffer).flip();
@@ -56,7 +56,7 @@ public class IndexArray implements IndexData {
 	public void updateIndices(int targetOffset, short[] indices, int offset, int count) {
 		final int pos = byteBuffer.position();
 		((Buffer) byteBuffer).position(targetOffset * 2);
-		BufferUtils.copy(indices, offset, byteBuffer, count);
+		Buffers.copy(indices, offset, byteBuffer, count);
 		((Buffer) byteBuffer).position(pos);
 	}
 	
@@ -72,7 +72,7 @@ public class IndexArray implements IndexData {
 	public void invalidate() {}
 	
 	public void dispose() {
-		BufferUtils.disposeUnsafeByteBuffer(byteBuffer);
+		Buffers.disposeUnsafeByteBuffer(byteBuffer);
 	}
 	
 }

@@ -4,7 +4,7 @@ import me.nulldoubt.micro.Files.FileType;
 import me.nulldoubt.micro.Preferences;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.utils.StreamUtils;
+import me.nulldoubt.micro.utils.Streams;
 
 import java.io.*;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class Lwjgl3Preferences implements Preferences {
 		} catch (Throwable t) {
 			t.printStackTrace();
 		} finally {
-			StreamUtils.closeQuietly(in);
+			Streams.closeQuietly(in);
 		}
 	}
 	
@@ -176,7 +176,7 @@ public class Lwjgl3Preferences implements Preferences {
 		} catch (Exception ex) {
 			throw new MicroRuntimeException("Error writing preferences: " + file, ex);
 		} finally {
-			StreamUtils.closeQuietly(out);
+			Streams.closeQuietly(out);
 		}
 	}
 	

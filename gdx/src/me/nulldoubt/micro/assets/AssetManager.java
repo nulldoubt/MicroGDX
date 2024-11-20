@@ -10,15 +10,14 @@ import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.g2d.BitmapFont;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas;
 import me.nulldoubt.micro.graphics.glutils.Shader;
-import me.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.Disposable;
+import me.nulldoubt.micro.utils.I18NBundle;
+import me.nulldoubt.micro.utils.async.AsyncExecutor;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.ObjectIntMap;
 import me.nulldoubt.micro.utils.collections.ObjectMap;
 import me.nulldoubt.micro.utils.collections.ObjectMap.Entry;
-import me.nulldoubt.micro.utils.async.AsyncExecutor;
 import me.nulldoubt.micro.utils.collections.ObjectSet;
-
-import java.lang.StringBuilder;
 
 public class AssetManager implements Disposable {
 	

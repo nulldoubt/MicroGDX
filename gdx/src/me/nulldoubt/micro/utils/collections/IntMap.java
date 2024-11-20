@@ -21,51 +21,18 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 	private final float loadFactor;
 	private int threshold;
 	
-	/**
-	 * Used by {@link #place(int)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
-	 * {@link #mask}). The shift can be negative, which is convenient to match the number of bits in mask: if mask is a 7-bit
-	 * number, a shift of -7 shifts the upper 7 bits into the lowest 7 positions. This class sets the shift &gt; 32 and &lt; 64,
-	 * which if used with an int will still move the upper bits of an int to the lower bits due to Java's implicit modulus on
-	 * shifts.
-	 * <p>
-	 * {@link #mask} can also be used to mask the low bits of a number, which may be faster for some hashcodes, if
-	 * {@link #place(int)} is overridden.
-	 */
 	protected int shift;
 	
-	/**
-	 * A bitmask used to confine hashcodes to the size of the table. Must be all 1 bits in its low positions, ie a power of two
-	 * minus 1. If {@link #place(int)} is overriden, this can be used instead of {@link #shift} to isolate usable bits of a
-	 * hash.
-	 */
 	protected int mask;
 	
-	private transient Entries entries1, entries2;
-	private transient Values values1, values2;
-	private transient Keys keys1, keys2;
-	
-	/**
-	 * Creates a new map with an initial capacity of 51 and a load factor of 0.8.
-	 */
 	public IntMap() {
 		this(51, 0.8f);
 	}
 	
-	/**
-	 * Creates a new map with a load factor of 0.8.
-	 *
-	 * @param initialCapacity The backing array size is initialCapacity / loadFactor, increased to the next power of two.
-	 */
 	public IntMap(int initialCapacity) {
 		this(initialCapacity, 0.8f);
 	}
 	
-	/**
-	 * Creates a new map with the specified initial capacity and load factor. This map will hold initialCapacity items before
-	 * growing the backing table.
-	 *
-	 * @param initialCapacity The backing array size is initialCapacity / loadFactor, increased to the next power of two.
-	 */
 	public IntMap(int initialCapacity, float loadFactor) {
 		if (loadFactor <= 0f || loadFactor >= 1f)
 			throw new IllegalArgumentException("loadFactor must be > 0 and < 1: " + loadFactor);
@@ -80,9 +47,6 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		valueTable = (V[]) new Object[tableSize];
 	}
 	
-	/**
-	 * Creates a new map identical to the specified map.
-	 */
 	public IntMap(IntMap<? extends V> map) {
 		this((int) (map.keyTable.length * map.loadFactor), map.loadFactor);
 		System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
@@ -92,30 +56,10 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		hasZeroValue = map.hasZeroValue;
 	}
 	
-	/**
-	 * Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
-	 * <p>
-	 * The default implementation uses Fibonacci hashing on the item's {@link Object#hashCode()}: the hashcode is multiplied by a
-	 * long constant (2 to the 64th, divided by the golden ratio) then the uppermost bits are shifted into the lowest positions to
-	 * obtain an index in the desired range. Multiplication by a long may be slower than int (eg on GWT) but greatly improves
-	 * rehashing, allowing even very poor hashcodes, such as those that only differ in their upper bits, to be used without high
-	 * collision rates. Fibonacci hashing has increased collision rates when all or most hashcodes are multiples of larger
-	 * Fibonacci numbers (see <a href=
-	 * "https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/">Malte
-	 * Skarupke's blog post</a>).
-	 * <p>
-	 * This method can be overriden to customizing hashing. This may be useful eg in the unlikely event that most hashcodes are
-	 * Fibonacci numbers, if keys provide poor or incorrect hashcodes, or to simplify hashing if keys provide high quality
-	 * hashcodes and don't need Fibonacci hashing: {@code return item.hashCode() & mask;}
-	 */
 	protected int place(int item) {
 		return (int) (item * 0x9E3779B97F4A7C15L >>> shift);
 	}
 	
-	/**
-	 * Returns the index of the key if already present, else -(index + 1) for the next empty index. This can be overridden in this
-	 * pacakge to compare for equality differently than {@link Object#equals(Object)}.
-	 */
 	private int locateKey(int key) {
 		int[] keyTable = this.keyTable;
 		for (int i = place(key); ; i = i + 1 & mask) {
@@ -164,9 +108,6 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		}
 	}
 	
-	/**
-	 * Skips checks for existing keys, doesn't increment size, doesn't need to handle key 0.
-	 */
 	private void putResize(int key, V value) {
 		int[] keyTable = this.keyTable;
 		for (int i = place(key); ; i = (i + 1) & mask) {
@@ -192,9 +133,6 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		return i >= 0 ? valueTable[i] : defaultValue;
 	}
 	
-	/**
-	 * Returns the value for the removed key, or null if the key is not in the map.
-	 */
 	public V remove(int key) {
 		if (key == 0) {
 			if (!hasZeroValue)
@@ -228,25 +166,14 @@ public class IntMap<V> implements Iterable<IntMap.Entry<V>> {
 		return oldValue;
 	}
 	
-	/**
-	 * Returns true if the map has one or more items.
-	 */
 	public boolean notEmpty() {
 		return size > 0;
 	}
 	
-	/**
-	 * Returns true if the map is empty.
-	 */
 	public boolean isEmpty() {
 		return size == 0;
 	}
 	
-	/**
-	 * Reduces the size of the backing arrays to be the specified capacity / loadFactor, or less. If the capacity is already less,
-	 * nothing is done. If the map contains more items than the specified capacity, the next highest power of two capacity is used
-	 * instead.
-	 */
 	public void shrink(int maximumCapacity) {
 		if (maximumCapacity < 0)
 			throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);

@@ -3,7 +3,7 @@ package me.nulldoubt.micro.graphics;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.g2d.Gdx2DPixmap;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 import me.nulldoubt.micro.utils.Disposable;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
@@ -242,7 +242,7 @@ public class Pixmap implements Disposable {
 		if (!pixels.isDirect())
 			throw new MicroRuntimeException("Couldn't setPixels from non-direct ByteBuffer");
 		ByteBuffer dst = pixmap.getPixels();
-		BufferUtils.copy(pixels, dst, dst.limit());
+		Buffers.copy(pixels, dst, dst.limit());
 	}
 	
 	public Format getFormat() {

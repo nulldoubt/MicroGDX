@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.backends.lwjgl3;
 
 import me.nulldoubt.micro.graphics.GL31;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 import org.lwjgl.opengl.*;
 
 import java.nio.ByteBuffer;
@@ -10,7 +10,7 @@ import java.nio.IntBuffer;
 
 public class Lwjgl3GL31 extends Lwjgl3GL30 implements GL31 {
 	
-	private final static ByteBuffer tmpByteBuffer = BufferUtils.newByteBuffer(16);
+	private final static ByteBuffer tmpByteBuffer = Buffers.newByteBuffer(16);
 	
 	@Override
 	public void glDispatchCompute(int num_groups_x, int num_groups_y, int num_groups_z) {

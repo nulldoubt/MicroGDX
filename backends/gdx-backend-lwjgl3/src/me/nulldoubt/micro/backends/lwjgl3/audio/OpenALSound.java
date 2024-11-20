@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.backends.lwjgl3.audio;
 
 import me.nulldoubt.micro.audio.Sound;
-import me.nulldoubt.micro.utils.BufferUtils;
+import me.nulldoubt.micro.utils.Buffers;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -23,7 +23,7 @@ public class OpenALSound implements Sound {
 	
 	void setup(byte[] pcm, int channels, int bitDepth, int sampleRate) {
 		int validBytes = pcm.length - (pcm.length % (channels * (bitDepth >> 3)));
-		ByteBuffer buffer = BufferUtils.newByteBuffer(validBytes);
+		ByteBuffer buffer = Buffers.newByteBuffer(validBytes);
 		buffer.put(pcm, 0, validBytes);
 		((Buffer) buffer).flip();
 		

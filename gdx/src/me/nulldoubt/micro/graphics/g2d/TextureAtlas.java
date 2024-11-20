@@ -1,19 +1,3 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.graphics.g2d;
 
 import me.nulldoubt.micro.Micro;
@@ -25,7 +9,8 @@ import me.nulldoubt.micro.graphics.Texture.TextureFilter;
 import me.nulldoubt.micro.graphics.Texture.TextureWrap;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
-import me.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.Disposable;
+import me.nulldoubt.micro.utils.Streams;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.ObjectMap;
 import me.nulldoubt.micro.utils.collections.ObjectSet;
@@ -360,7 +345,7 @@ public class TextureAtlas implements Disposable {
 				throw new MicroRuntimeException(
 						"Error reading texture atlas file: " + packFile + (line == null ? "" : "\nLine: " + line), ex);
 			} finally {
-				StreamUtils.closeQuietly(reader);
+				Streams.closeQuietly(reader);
 			}
 			
 			if (hasIndexes[0]) {

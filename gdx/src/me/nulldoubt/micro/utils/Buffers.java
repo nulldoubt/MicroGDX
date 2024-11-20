@@ -7,12 +7,12 @@ import me.nulldoubt.micro.utils.collections.Array;
 
 import java.nio.*;
 
-public class BufferUtils {
+public final class Buffers {
 	
-	private BufferUtils() {}
+	private Buffers() {}
 	
-	static final Array<ByteBuffer> unsafeBuffers = new Array<>();
-	static int allocatedUnsafe = 0;
+	private static final Array<ByteBuffer> unsafeBuffers = new Array<>();
+	private static int allocatedUnsafe = 0;
 	
 	public static void copy(float[] src, Buffer dst, int numFloats, int offset) {
 		if (dst instanceof ByteBuffer)
@@ -89,31 +89,10 @@ public class BufferUtils {
 		transform(data, dimensions, strideInBytes, count, matrix, 0);
 	}
 	
-	/**
-	 * Multiply float vector components within the buffer with the specified matrix. The {@link Buffer#position()} is used as the
-	 * offset.
-	 *
-	 * @param data          The buffer to transform.
-	 * @param dimensions    The number of components of the vector (2 for xy, 3 for xyz or 4 for xyzw)
-	 * @param strideInBytes The offset between the first and the second vector to transform
-	 * @param count         The number of vectors to transform
-	 * @param matrix        The matrix to multiply the vector with
-	 */
 	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix4 matrix) {
 		transform(data, dimensions, strideInBytes, count, matrix, 0);
 	}
 	
-	/**
-	 * Multiply float vector components within the buffer with the specified matrix. The specified offset value is added to the
-	 * {@link Buffer#position()} and used as the offset.
-	 *
-	 * @param data          The buffer to transform.
-	 * @param dimensions    The number of components of the vector (2 for xy, 3 for xyz or 4 for xyzw)
-	 * @param strideInBytes The offset between the first and the second vector to transform
-	 * @param count         The number of vectors to transform
-	 * @param matrix        The matrix to multiply the vector with
-	 * @param offset        The offset within the buffer (in bytes relative to the current position) to the vector
-	 */
 	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix4 matrix, int offset) {
 		switch (dimensions) {
 			case 4:
@@ -130,17 +109,6 @@ public class BufferUtils {
 		}
 	}
 	
-	/**
-	 * Multiply float vector components within the buffer with the specified matrix. The specified offset value is added to the
-	 * {@link Buffer#position()} and used as the offset.
-	 *
-	 * @param data          The buffer to transform.
-	 * @param dimensions    The number of components of the vector (2 for xy, 3 for xyz or 4 for xyzw)
-	 * @param strideInBytes The offset between the first and the second vector to transform
-	 * @param count         The number of vectors to transform
-	 * @param matrix        The matrix to multiply the vector with
-	 * @param offset        The offset within the buffer (in bytes relative to the current position) to the vector
-	 */
 	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix4 matrix, int offset) {
 		switch (dimensions) {
 			case 4:
@@ -157,45 +125,14 @@ public class BufferUtils {
 		}
 	}
 	
-	/**
-	 * Multiply float vector components within the buffer with the specified matrix. The {@link Buffer#position()} is used as the
-	 * offset.
-	 *
-	 * @param data          The buffer to transform.
-	 * @param dimensions    The number of components (x, y, z) of the vector (2 for xy or 3 for xyz)
-	 * @param strideInBytes The offset between the first and the second vector to transform
-	 * @param count         The number of vectors to transform
-	 * @param matrix        The matrix to multiply the vector with
-	 */
 	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix3 matrix) {
 		transform(data, dimensions, strideInBytes, count, matrix, 0);
 	}
 	
-	/**
-	 * Multiply float vector components within the buffer with the specified matrix. The {@link Buffer#position()} is used as the
-	 * offset.
-	 *
-	 * @param data          The buffer to transform.
-	 * @param dimensions    The number of components (x, y, z) of the vector (2 for xy or 3 for xyz)
-	 * @param strideInBytes The offset between the first and the second vector to transform
-	 * @param count         The number of vectors to transform
-	 * @param matrix        The matrix to multiply the vector with
-	 */
 	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix3 matrix) {
 		transform(data, dimensions, strideInBytes, count, matrix, 0);
 	}
 	
-	/**
-	 * Multiply float vector components within the buffer with the specified matrix. The specified offset value is added to the
-	 * {@link Buffer#position()} and used as the offset.
-	 *
-	 * @param data          The buffer to transform.
-	 * @param dimensions    The number of components (x, y, z) of the vector (2 for xy or 3 for xyz)
-	 * @param strideInBytes The offset between the first and the second vector to transform
-	 * @param count         The number of vectors to transform
-	 * @param matrix        The matrix to multiply the vector with,
-	 * @param offset        The offset within the buffer (in bytes relative to the current position) to the vector
-	 */
 	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix3 matrix, int offset) {
 		switch (dimensions) {
 			case 3:
@@ -209,17 +146,6 @@ public class BufferUtils {
 		}
 	}
 	
-	/**
-	 * Multiply float vector components within the buffer with the specified matrix. The specified offset value is added to the
-	 * {@link Buffer#position()} and used as the offset.
-	 *
-	 * @param data          The buffer to transform.
-	 * @param dimensions    The number of components (x, y, z) of the vector (2 for xy or 3 for xyz)
-	 * @param strideInBytes The offset between the first and the second vector to transform
-	 * @param count         The number of vectors to transform
-	 * @param matrix        The matrix to multiply the vector with,
-	 * @param offset        The offset within the buffer (in bytes relative to the current position) to the vector
-	 */
 	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix3 matrix, int offset) {
 		switch (dimensions) {
 			case 3:

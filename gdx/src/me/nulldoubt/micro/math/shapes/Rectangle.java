@@ -2,7 +2,7 @@ package me.nulldoubt.micro.math.shapes;
 
 import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
-import me.nulldoubt.micro.utils.NumberUtils;
+import me.nulldoubt.micro.utils.Numbers;
 
 import java.io.Serializable;
 
@@ -264,10 +264,10 @@ public class Rectangle implements Serializable, Shape2D {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + NumberUtils.floatToRawIntBits(height);
-		result = prime * result + NumberUtils.floatToRawIntBits(width);
-		result = prime * result + NumberUtils.floatToRawIntBits(x);
-		result = prime * result + NumberUtils.floatToRawIntBits(y);
+		result = prime * result + Numbers.floatToRawIntBits(height);
+		result = prime * result + Numbers.floatToRawIntBits(width);
+		result = prime * result + Numbers.floatToRawIntBits(x);
+		result = prime * result + Numbers.floatToRawIntBits(y);
 		return result;
 	}
 	
@@ -280,13 +280,13 @@ public class Rectangle implements Serializable, Shape2D {
 		if (getClass() != obj.getClass())
 			return false;
 		Rectangle other = (Rectangle) obj;
-		if (NumberUtils.floatToRawIntBits(height) != NumberUtils.floatToRawIntBits(other.height))
+		if (Numbers.floatToRawIntBits(height) != Numbers.floatToRawIntBits(other.height))
 			return false;
-		if (NumberUtils.floatToRawIntBits(width) != NumberUtils.floatToRawIntBits(other.width))
+		if (Numbers.floatToRawIntBits(width) != Numbers.floatToRawIntBits(other.width))
 			return false;
-		if (NumberUtils.floatToRawIntBits(x) != NumberUtils.floatToRawIntBits(other.x))
+		if (Numbers.floatToRawIntBits(x) != Numbers.floatToRawIntBits(other.x))
 			return false;
-		return NumberUtils.floatToRawIntBits(y) == NumberUtils.floatToRawIntBits(other.y);
+		return Numbers.floatToRawIntBits(y) == Numbers.floatToRawIntBits(other.y);
 	}
 	
 }

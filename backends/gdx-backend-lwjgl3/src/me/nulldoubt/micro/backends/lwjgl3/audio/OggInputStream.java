@@ -10,7 +10,7 @@ import com.jcraft.jorbis.DspState;
 import com.jcraft.jorbis.Info;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
-import me.nulldoubt.micro.utils.StreamUtils;
+import me.nulldoubt.micro.utils.Streams;
 import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
@@ -420,7 +420,7 @@ public class OggInputStream extends InputStream {
 	}
 	
 	public void close() {
-		StreamUtils.closeQuietly(input);
+		Streams.closeQuietly(input);
 	}
 	
 	public boolean atEnd() {

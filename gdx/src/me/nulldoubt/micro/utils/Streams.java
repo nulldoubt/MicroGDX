@@ -4,7 +4,7 @@ import java.io.*;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
-public final class StreamUtils {
+public final class Streams {
 	
 	public static final int DEFAULT_BUFFER_SIZE = 4096;
 	
@@ -34,7 +34,7 @@ public final class StreamUtils {
 	public static int copyStream(InputStream input, ByteBuffer output, byte[] buffer) throws IOException {
 		int startPosition = output.position(), total = 0, bytesRead;
 		while ((bytesRead = input.read(buffer)) != -1) {
-			BufferUtils.copy(buffer, 0, output, bytesRead);
+			Buffers.copy(buffer, 0, output, bytesRead);
 			total += bytesRead;
 			((Buffer) output).position(startPosition + total);
 		}

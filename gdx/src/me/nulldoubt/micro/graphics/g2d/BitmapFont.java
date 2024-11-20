@@ -9,7 +9,7 @@ import me.nulldoubt.micro.graphics.Texture.TextureFilter;
 import me.nulldoubt.micro.graphics.g2d.GlyphLayout.GlyphRun;
 import me.nulldoubt.micro.graphics.g2d.TextureAtlas.AtlasRegion;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.utils.StreamUtils;
+import me.nulldoubt.micro.utils.Streams;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.FloatArray;
 
@@ -712,7 +712,7 @@ public class BitmapFont implements Disposable {
 			} catch (Exception ex) {
 				throw new MicroRuntimeException("Error loading font file: " + fontFile, ex);
 			} finally {
-				StreamUtils.closeQuietly(reader);
+				Streams.closeQuietly(reader);
 			}
 		}
 		

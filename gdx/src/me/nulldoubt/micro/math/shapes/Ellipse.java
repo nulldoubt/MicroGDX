@@ -2,7 +2,7 @@ package me.nulldoubt.micro.math.shapes;
 
 import me.nulldoubt.micro.math.MathUtils;
 import me.nulldoubt.micro.math.Vector2;
-import me.nulldoubt.micro.utils.NumberUtils;
+import me.nulldoubt.micro.utils.Numbers;
 
 import java.io.Serializable;
 
@@ -127,10 +127,10 @@ public class Ellipse implements Serializable, Shape2D {
 	public int hashCode() {
 		final int prime = 53;
 		int result = 1;
-		result = prime * result + NumberUtils.floatToRawIntBits(this.height);
-		result = prime * result + NumberUtils.floatToRawIntBits(this.width);
-		result = prime * result + NumberUtils.floatToRawIntBits(this.x);
-		result = prime * result + NumberUtils.floatToRawIntBits(this.y);
+		result = prime * result + Numbers.floatToRawIntBits(this.height);
+		result = prime * result + Numbers.floatToRawIntBits(this.width);
+		result = prime * result + Numbers.floatToRawIntBits(this.x);
+		result = prime * result + Numbers.floatToRawIntBits(this.y);
 		return result;
 	}
 	
