@@ -48,7 +48,7 @@ public abstract class FileHandleStream extends FileHandle {
 		throw new UnsupportedOperationException();
 	}
 	
-	public void mkdirs() {
+	public boolean mkdirs() {
 		throw new UnsupportedOperationException();
 	}
 	

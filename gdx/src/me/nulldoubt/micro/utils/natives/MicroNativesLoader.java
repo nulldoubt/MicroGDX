@@ -1,4 +1,4 @@
-package me.nulldoubt.micro.utils;
+package me.nulldoubt.micro.utils.natives;
 
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 

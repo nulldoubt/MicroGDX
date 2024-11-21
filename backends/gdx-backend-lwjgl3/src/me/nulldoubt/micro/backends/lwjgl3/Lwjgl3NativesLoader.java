@@ -1,6 +1,6 @@
 package me.nulldoubt.micro.backends.lwjgl3;
 
-import me.nulldoubt.micro.utils.MicroNativesLoader;
+import me.nulldoubt.micro.utils.natives.MicroNativesLoader;
 
 public final class Lwjgl3NativesLoader {
 	

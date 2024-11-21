@@ -4,14 +4,14 @@ include ":backends"
 include ":backends:gdx-backend-android"
 include ":backends:gdx-backend-lwjgl3"
 
-include(":extensions:gdx-box2d")
-project(":extensions:gdx-box2d").name = "gdx-box2d-parent"
-include ":extensions:gdx-box2d-parent:gdx-box2d"
+//include(":extensions:gdx-box2d")
+//project(":extensions:gdx-box2d").name = "gdx-box2d-parent"
+//include ":extensions:gdx-box2d-parent:gdx-box2d"
 include ":extensions:gdx-tiled"
 include ":extensions:gdx-scene2d"
 include ":extensions:gdx-compression"
 include ':extensions:gdx-particles'
-include ":extensions:gdx-freetype"
+//include ":extensions:gdx-freetype"
 include ":extensions:gdx-lwjgl3-angle"
 
 rootProject.name = "MicroGDX"

@@ -1,4 +1,6 @@
-apply plugin: "java"
+plugins {
+    id "java"
+}
 
 if (JavaVersion.current().isJava9Compatible()) {
     compileJava {
@@ -20,16 +22,16 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+processResources.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
 dependencies {
     api "com.badlogicgames.gdx:gdx-jnigen-loader:2.5.2"
 }
 
-processResources.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
 apply plugin: "com.badlogicgames.gdx.gdx-jnigen"
 jnigen {
     sharedLibName = "gdx"
-    temporaryDir = "../target/native"
+    temporaryDir = file("build/target/native").absolutePath;
     add(Windows, x32)
     add(Windows, x64)
     add(Linux, x64)

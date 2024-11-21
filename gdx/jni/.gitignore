@@ -1,5 +1,5 @@
-com_badlogic_gdx_*.h
-com_badlogic_gdx_*.cpp
+me_nulldoubt_micro_*.h
+me_nulldoubt_micro_*.cpp
 build*.xml
 Android.mk
 Application.mk

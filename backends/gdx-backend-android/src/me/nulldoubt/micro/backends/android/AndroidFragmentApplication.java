@@ -19,7 +19,7 @@ import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import com.nulldoubt.micro.utils.*;
 import me.nulldoubt.micro.utils.collections.Array;
-import me.nulldoubt.micro.utils.MicroNativesLoader;
+import me.nulldoubt.micro.utils.natives.MicroNativesLoader;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.utils.collections.SnapshotArray;
 

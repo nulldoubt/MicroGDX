@@ -33,7 +33,7 @@ import com.nulldoubt.micro.*;
 import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import me.nulldoubt.micro.utils.collections.Array;
-import me.nulldoubt.micro.utils.MicroNativesLoader;
+import me.nulldoubt.micro.utils.natives.MicroNativesLoader;
 import me.nulldoubt.micro.utils.collections.SnapshotArray;
 
 /** An implementation of the {@link Application} interface for Android. Create an {@link Activity} that derives from this class.

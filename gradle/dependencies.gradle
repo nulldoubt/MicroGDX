@@ -5,18 +5,14 @@ ext {
 }
 
 versions.java = 22
-versions.jglwf = "1.1"
 versions.lwjgl3 = "3.3.4"
 versions.jlayer = "1.0.1-gdx"
 versions.jorbis = "0.0.17"
 versions.androidPlugin = "8.1.2"
-versions.multiDex = "2.0.1"
 versions.androidCompileSdk = 33
-versions.androidTargetSdk = 33
 versions.androidMinSdk = 24
 versions.androidBuildTools = "33.0.2"
 versions.androidFragment = "1.5.7"
-versions.javaparser = "2.3.0"
 
 libraries.compileOnly = [:]
 

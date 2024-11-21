@@ -1,11 +1,19 @@
 package me.nulldoubt.micro.utils;
 
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
+
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.math.Matrix3;
 import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.utils.collections.Array;
-
-import java.nio.*;
 
 public final class Buffers {
 	
@@ -14,86 +22,85 @@ public final class Buffers {
 	private static final Array<ByteBuffer> unsafeBuffers = new Array<>();
 	private static int allocatedUnsafe = 0;
 	
-	public static void copy(float[] src, Buffer dst, int numFloats, int offset) {
+	public static void copy (float[] src, Buffer dst, int numFloats, int offset) {
 		if (dst instanceof ByteBuffer)
 			dst.limit(numFloats << 2);
-		else if (dst instanceof FloatBuffer)
-			dst.limit(numFloats);
+		else if (dst instanceof FloatBuffer) dst.limit(numFloats);
 		
 		copyJni(src, dst, numFloats, offset);
 		dst.position(0);
 	}
 	
-	public static void copy(byte[] src, int srcOffset, Buffer dst, int numElements) {
+	public static void copy (byte[] src, int srcOffset, Buffer dst, int numElements) {
 		dst.limit(dst.position() + bytesToElements(dst, numElements));
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements);
 	}
 	
-	public static void copy(short[] src, int srcOffset, Buffer dst, int numElements) {
+	public static void copy (short[] src, int srcOffset, Buffer dst, int numElements) {
 		dst.limit(dst.position() + bytesToElements(dst, numElements << 1));
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 1);
 	}
 	
-	public static void copy(char[] src, int srcOffset, int numElements, Buffer dst) {
+	public static void copy (char[] src, int srcOffset, int numElements, Buffer dst) {
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 1);
 	}
 	
-	public static void copy(int[] src, int srcOffset, int numElements, Buffer dst) {
+	public static void copy (int[] src, int srcOffset, int numElements, Buffer dst) {
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 2);
 	}
 	
-	public static void copy(long[] src, int srcOffset, int numElements, Buffer dst) {
+	public static void copy (long[] src, int srcOffset, int numElements, Buffer dst) {
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 3);
 	}
 	
-	public static void copy(float[] src, int srcOffset, int numElements, Buffer dst) {
+	public static void copy (float[] src, int srcOffset, int numElements, Buffer dst) {
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 2);
 	}
 	
-	public static void copy(double[] src, int srcOffset, int numElements, Buffer dst) {
+	public static void copy (double[] src, int srcOffset, int numElements, Buffer dst) {
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 3);
 	}
 	
-	public static void copy(char[] src, int srcOffset, Buffer dst, int numElements) {
+	public static void copy (char[] src, int srcOffset, Buffer dst, int numElements) {
 		dst.limit(dst.position() + bytesToElements(dst, numElements << 1));
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 1);
 	}
 	
-	public static void copy(int[] src, int srcOffset, Buffer dst, int numElements) {
+	public static void copy (int[] src, int srcOffset, Buffer dst, int numElements) {
 		dst.limit(dst.position() + bytesToElements(dst, numElements << 2));
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 2);
 	}
 	
-	public static void copy(long[] src, int srcOffset, Buffer dst, int numElements) {
+	public static void copy (long[] src, int srcOffset, Buffer dst, int numElements) {
 		dst.limit(dst.position() + bytesToElements(dst, numElements << 3));
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 3);
 	}
 	
-	public static void copy(float[] src, int srcOffset, Buffer dst, int numElements) {
+	public static void copy (float[] src, int srcOffset, Buffer dst, int numElements) {
 		dst.limit(dst.position() + bytesToElements(dst, numElements << 2));
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 2);
 	}
 	
-	public static void copy(double[] src, int srcOffset, Buffer dst, int numElements) {
+	public static void copy (double[] src, int srcOffset, Buffer dst, int numElements) {
 		dst.limit(dst.position() + bytesToElements(dst, numElements << 3));
 		copyJni(src, srcOffset, dst, positionInBytes(dst), numElements << 3);
 	}
 	
-	public static void copy(Buffer src, Buffer dst, int numElements) {
+	public static void copy (Buffer src, Buffer dst, int numElements) {
 		int numBytes = elementsToBytes(src, numElements);
 		dst.limit(dst.position() + bytesToElements(dst, numBytes));
 		copyJni(src, positionInBytes(src), dst, positionInBytes(dst), numBytes);
 	}
 	
-	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix4 matrix) {
+	public static void transform (Buffer data, int dimensions, int strideInBytes, int count, Matrix4 matrix) {
 		transform(data, dimensions, strideInBytes, count, matrix, 0);
 	}
 	
-	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix4 matrix) {
+	public static void transform (float[] data, int dimensions, int strideInBytes, int count, Matrix4 matrix) {
 		transform(data, dimensions, strideInBytes, count, matrix, 0);
 	}
 	
-	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix4 matrix, int offset) {
+	public static void transform (Buffer data, int dimensions, int strideInBytes, int count, Matrix4 matrix, int offset) {
 		switch (dimensions) {
 			case 4:
 				transformV4M4Jni(data, strideInBytes, count, matrix.val, positionInBytes(data) + offset);
@@ -109,7 +116,7 @@ public final class Buffers {
 		}
 	}
 	
-	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix4 matrix, int offset) {
+	public static void transform (float[] data, int dimensions, int strideInBytes, int count, Matrix4 matrix, int offset) {
 		switch (dimensions) {
 			case 4:
 				transformV4M4Jni(data, strideInBytes, count, matrix.val, offset);
@@ -125,15 +132,15 @@ public final class Buffers {
 		}
 	}
 	
-	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix3 matrix) {
+	public static void transform (Buffer data, int dimensions, int strideInBytes, int count, Matrix3 matrix) {
 		transform(data, dimensions, strideInBytes, count, matrix, 0);
 	}
 	
-	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix3 matrix) {
+	public static void transform (float[] data, int dimensions, int strideInBytes, int count, Matrix3 matrix) {
 		transform(data, dimensions, strideInBytes, count, matrix, 0);
 	}
 	
-	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix3 matrix, int offset) {
+	public static void transform (Buffer data, int dimensions, int strideInBytes, int count, Matrix3 matrix, int offset) {
 		switch (dimensions) {
 			case 3:
 				transformV3M3Jni(data, strideInBytes, count, matrix.val, positionInBytes(data) + offset);
@@ -146,7 +153,7 @@ public final class Buffers {
 		}
 	}
 	
-	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix3 matrix, int offset) {
+	public static void transform (float[] data, int dimensions, int strideInBytes, int count, Matrix3 matrix, int offset) {
 		switch (dimensions) {
 			case 3:
 				transformV3M3Jni(data, strideInBytes, count, matrix.val, offset);
@@ -159,117 +166,138 @@ public final class Buffers {
 		}
 	}
 	
-	public static long findFloats(Buffer vertex, int strideInBytes, Buffer vertices, int numVertices) {
+	public static long findFloats (Buffer vertex, int strideInBytes, Buffer vertices, int numVertices) {
 		return find(vertex, positionInBytes(vertex), strideInBytes, vertices, positionInBytes(vertices), numVertices);
 	}
 	
-	public static long findFloats(float[] vertex, int strideInBytes, Buffer vertices, int numVertices) {
+	public static long findFloats (float[] vertex, int strideInBytes, Buffer vertices, int numVertices) {
 		return find(vertex, 0, strideInBytes, vertices, positionInBytes(vertices), numVertices);
 	}
 	
-	public static long findFloats(Buffer vertex, int strideInBytes, float[] vertices, int numVertices) {
+	public static long findFloats (Buffer vertex, int strideInBytes, float[] vertices, int numVertices) {
 		return find(vertex, positionInBytes(vertex), strideInBytes, vertices, 0, numVertices);
 	}
 	
-	public static long findFloats(float[] vertex, int strideInBytes, float[] vertices, int numVertices) {
+	public static long findFloats (float[] vertex, int strideInBytes, float[] vertices, int numVertices) {
 		return find(vertex, 0, strideInBytes, vertices, 0, numVertices);
 	}
 	
-	public static long findFloats(Buffer vertex, int strideInBytes, Buffer vertices, int numVertices, float epsilon) {
+	public static long findFloats (Buffer vertex, int strideInBytes, Buffer vertices, int numVertices, float epsilon) {
 		return find(vertex, positionInBytes(vertex), strideInBytes, vertices, positionInBytes(vertices), numVertices, epsilon);
 	}
 	
-	public static long findFloats(float[] vertex, int strideInBytes, Buffer vertices, int numVertices, float epsilon) {
+	public static long findFloats (float[] vertex, int strideInBytes, Buffer vertices, int numVertices, float epsilon) {
 		return find(vertex, 0, strideInBytes, vertices, positionInBytes(vertices), numVertices, epsilon);
 	}
 	
-	public static long findFloats(Buffer vertex, int strideInBytes, float[] vertices, int numVertices, float epsilon) {
+	public static long findFloats (Buffer vertex, int strideInBytes, float[] vertices, int numVertices, float epsilon) {
 		return find(vertex, positionInBytes(vertex), strideInBytes, vertices, 0, numVertices, epsilon);
 	}
 	
-	public static long findFloats(float[] vertex, int strideInBytes, float[] vertices, int numVertices, float epsilon) {
+	public static long findFloats (float[] vertex, int strideInBytes, float[] vertices, int numVertices, float epsilon) {
 		return find(vertex, 0, strideInBytes, vertices, 0, numVertices, epsilon);
 	}
 	
-	private static int positionInBytes(final Buffer destination) {
-		return switch (destination) {
-			case ByteBuffer _ -> destination.position();
-			case ShortBuffer _, CharBuffer _ -> destination.position() << 1;
-			case IntBuffer _ -> destination.position() << 2;
-			case LongBuffer _ -> destination.position() << 3;
-			case FloatBuffer _ -> destination.position() << 2;
-			case DoubleBuffer _ -> destination.position() << 3;
-			case null, default -> throw new MicroRuntimeException("Can't copy to buffer instance");
-		};
+	private static int positionInBytes (Buffer dst) {
+		if (dst instanceof ByteBuffer)
+			return dst.position();
+		else if (dst instanceof ShortBuffer)
+			return dst.position() << 1;
+		else if (dst instanceof CharBuffer)
+			return dst.position() << 1;
+		else if (dst instanceof IntBuffer)
+			return dst.position() << 2;
+		else if (dst instanceof LongBuffer)
+			return dst.position() << 3;
+		else if (dst instanceof FloatBuffer)
+			return dst.position() << 2;
+		else if (dst instanceof DoubleBuffer)
+			return dst.position() << 3;
+		else
+			throw new MicroRuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
 	}
 	
-	private static int bytesToElements(Buffer dst, int bytes) {
-		return switch (dst) {
-			case ByteBuffer _ -> bytes;
-			case ShortBuffer _, CharBuffer _ -> bytes >>> 1;
-			case IntBuffer _ -> bytes >>> 2;
-			case LongBuffer _ -> bytes >>> 3;
-			case FloatBuffer _ -> bytes >>> 2;
-			case DoubleBuffer _ -> bytes >>> 3;
-			case null, default -> throw new MicroRuntimeException("Can't copy to buffer instance");
-		};
+	private static int bytesToElements (Buffer dst, int bytes) {
+		if (dst instanceof ByteBuffer)
+			return bytes;
+		else if (dst instanceof ShortBuffer)
+			return bytes >>> 1;
+		else if (dst instanceof CharBuffer)
+			return bytes >>> 1;
+		else if (dst instanceof IntBuffer)
+			return bytes >>> 2;
+		else if (dst instanceof LongBuffer)
+			return bytes >>> 3;
+		else if (dst instanceof FloatBuffer)
+			return bytes >>> 2;
+		else if (dst instanceof DoubleBuffer)
+			return bytes >>> 3;
+		else
+			throw new MicroRuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
 	}
 	
-	private static int elementsToBytes(Buffer dst, int elements) {
-		return switch (dst) {
-			case ByteBuffer _ -> elements;
-			case ShortBuffer _, CharBuffer _ -> elements << 1;
-			case IntBuffer _ -> elements << 2;
-			case LongBuffer _ -> elements << 3;
-			case FloatBuffer _ -> elements << 2;
-			case DoubleBuffer _ -> elements << 3;
-			case null, default -> throw new MicroRuntimeException("Can't copy to buffer instance");
-		};
+	private static int elementsToBytes (Buffer dst, int elements) {
+		if (dst instanceof ByteBuffer)
+			return elements;
+		else if (dst instanceof ShortBuffer)
+			return elements << 1;
+		else if (dst instanceof CharBuffer)
+			return elements << 1;
+		else if (dst instanceof IntBuffer)
+			return elements << 2;
+		else if (dst instanceof LongBuffer)
+			return elements << 3;
+		else if (dst instanceof FloatBuffer)
+			return elements << 2;
+		else if (dst instanceof DoubleBuffer)
+			return elements << 3;
+		else
+			throw new MicroRuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
 	}
 	
-	public static FloatBuffer newFloatBuffer(int numFloats) {
+	public static FloatBuffer newFloatBuffer (int numFloats) {
 		ByteBuffer buffer = ByteBuffer.allocateDirect(numFloats * 4);
 		buffer.order(ByteOrder.nativeOrder());
 		return buffer.asFloatBuffer();
 	}
 	
-	public static DoubleBuffer newDoubleBuffer(int numDoubles) {
+	public static DoubleBuffer newDoubleBuffer (int numDoubles) {
 		ByteBuffer buffer = ByteBuffer.allocateDirect(numDoubles * 8);
 		buffer.order(ByteOrder.nativeOrder());
 		return buffer.asDoubleBuffer();
 	}
 	
-	public static ByteBuffer newByteBuffer(int numBytes) {
+	public static ByteBuffer newByteBuffer (int numBytes) {
 		ByteBuffer buffer = ByteBuffer.allocateDirect(numBytes);
 		buffer.order(ByteOrder.nativeOrder());
 		return buffer;
 	}
 	
-	public static ShortBuffer newShortBuffer(int numShorts) {
+	public static ShortBuffer newShortBuffer (int numShorts) {
 		ByteBuffer buffer = ByteBuffer.allocateDirect(numShorts * 2);
 		buffer.order(ByteOrder.nativeOrder());
 		return buffer.asShortBuffer();
 	}
 	
-	public static CharBuffer newCharBuffer(int numChars) {
+	public static CharBuffer newCharBuffer (int numChars) {
 		ByteBuffer buffer = ByteBuffer.allocateDirect(numChars * 2);
 		buffer.order(ByteOrder.nativeOrder());
 		return buffer.asCharBuffer();
 	}
 	
-	public static IntBuffer newIntBuffer(int numInts) {
+	public static IntBuffer newIntBuffer (int numInts) {
 		ByteBuffer buffer = ByteBuffer.allocateDirect(numInts * 4);
 		buffer.order(ByteOrder.nativeOrder());
 		return buffer.asIntBuffer();
 	}
 	
-	public static LongBuffer newLongBuffer(int numLongs) {
+	public static LongBuffer newLongBuffer (int numLongs) {
 		ByteBuffer buffer = ByteBuffer.allocateDirect(numLongs * 8);
 		buffer.order(ByteOrder.nativeOrder());
 		return buffer.asLongBuffer();
 	}
 	
-	public static void disposeUnsafeByteBuffer(ByteBuffer buffer) {
+	public static void disposeUnsafeByteBuffer (ByteBuffer buffer) {
 		int size = buffer.capacity();
 		synchronized (unsafeBuffers) {
 			if (!unsafeBuffers.removeValue(buffer, true))
@@ -279,13 +307,13 @@ public final class Buffers {
 		freeMemory(buffer);
 	}
 	
-	public static boolean isUnsafeByteBuffer(ByteBuffer buffer) {
+	public static boolean isUnsafeByteBuffer (ByteBuffer buffer) {
 		synchronized (unsafeBuffers) {
 			return unsafeBuffers.contains(buffer, true);
 		}
 	}
 	
-	public static ByteBuffer newUnsafeByteBuffer(int numBytes) {
+	public static ByteBuffer newUnsafeByteBuffer (int numBytes) {
 		ByteBuffer buffer = newDisposableByteBuffer(numBytes);
 		buffer.order(ByteOrder.nativeOrder());
 		allocatedUnsafe += numBytes;
@@ -295,11 +323,11 @@ public final class Buffers {
 		return buffer;
 	}
 	
-	public static long getUnsafeBufferAddress(Buffer buffer) {
+	public static long getUnsafeBufferAddress (Buffer buffer) {
 		return getBufferAddress(buffer) + buffer.position();
 	}
 	
-	public static ByteBuffer newUnsafeByteBuffer(ByteBuffer buffer) {
+	public static ByteBuffer newUnsafeByteBuffer (ByteBuffer buffer) {
 		allocatedUnsafe += buffer.capacity();
 		synchronized (unsafeBuffers) {
 			unsafeBuffers.add(buffer);
@@ -307,65 +335,67 @@ public final class Buffers {
 		return buffer;
 	}
 	
-	public static int getAllocatedBytesUnsafe() {
+	public static int getAllocatedBytesUnsafe () {
 		return allocatedUnsafe;
 	}
 	
+	// @off
 	/*JNI
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
 	*/
 	
-	private static native void freeMemory(ByteBuffer buffer); /*
+	private static native void freeMemory (ByteBuffer buffer); /*
 		free(buffer);
 	 */
 	
-	private static native ByteBuffer newDisposableByteBuffer(int numBytes); /*
+	private static native ByteBuffer newDisposableByteBuffer (int numBytes); /*
 		return env->NewDirectByteBuffer((char*)malloc(numBytes), numBytes);
 	*/
 	
-	private static native long getBufferAddress(Buffer buffer); /*
+	private static native long getBufferAddress (Buffer buffer); /*
 	    return (jlong) buffer;
 	*/
 	
-	public static native void clear(ByteBuffer buffer, int numBytes); /*
+	/** Writes the specified number of zeros to the buffer. This is generally faster than reallocating a new buffer. */
+	public static native void clear (ByteBuffer buffer, int numBytes); /*
 		memset(buffer, 0, numBytes);
 	*/
 	
-	private native static void copyJni(float[] src, Buffer dst, int numFloats, int offset); /*
+	private native static void copyJni (float[] src, Buffer dst, int numFloats, int offset); /*
 		memcpy(dst, src + offset, numFloats << 2 );
 	*/
 	
-	private native static void copyJni(byte[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
+	private native static void copyJni (byte[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
 		memcpy(dst + dstOffset, src + srcOffset, numBytes);
 	*/
 	
-	private native static void copyJni(char[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
+	private native static void copyJni (char[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
 		memcpy(dst + dstOffset, src + srcOffset, numBytes);
 	*/
 	
-	private native static void copyJni(short[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
+	private native static void copyJni (short[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
 		memcpy(dst + dstOffset, src + srcOffset, numBytes);
 	 */
 	
-	private native static void copyJni(int[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
+	private native static void copyJni (int[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
 		memcpy(dst + dstOffset, src + srcOffset, numBytes);
 	*/
 	
-	private native static void copyJni(long[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
+	private native static void copyJni (long[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
 		memcpy(dst + dstOffset, src + srcOffset, numBytes);
 	*/
 	
-	private native static void copyJni(float[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
+	private native static void copyJni (float[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
 		memcpy(dst + dstOffset, src + srcOffset, numBytes);
 	*/
 	
-	private native static void copyJni(double[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
+	private native static void copyJni (double[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
 		memcpy(dst + dstOffset, src + srcOffset, numBytes);
 	*/
 	
-	private native static void copyJni(Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
+	private native static void copyJni (Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes); /*
 		memcpy(dst + dstOffset, src + srcOffset, numBytes);
 	*/
 	
@@ -374,36 +404,36 @@ public final class Buffers {
 	
 	template<> inline void transform<4, 4>(float * const &src, float * const &m, float * const &dst) {
 		const float x = src[0], y = src[1], z = src[2], w = src[3];
-		dst[0] = x * m[ 0] + y * m[ 4] + z * m[ 8] + w * m[12]; 
+		dst[0] = x * m[ 0] + y * m[ 4] + z * m[ 8] + w * m[12];
 		dst[1] = x * m[ 1] + y * m[ 5] + z * m[ 9] + w * m[13];
 		dst[2] = x * m[ 2] + y * m[ 6] + z * m[10] + w * m[14];
-		dst[3] = x * m[ 3] + y * m[ 7] + z * m[11] + w * m[15]; 
+		dst[3] = x * m[ 3] + y * m[ 7] + z * m[11] + w * m[15];
 	}
 	
 	template<> inline void transform<3, 4>(float * const &src, float * const &m, float * const &dst) {
 		const float x = src[0], y = src[1], z = src[2];
-		dst[0] = x * m[ 0] + y * m[ 4] + z * m[ 8] + m[12]; 
+		dst[0] = x * m[ 0] + y * m[ 4] + z * m[ 8] + m[12];
 		dst[1] = x * m[ 1] + y * m[ 5] + z * m[ 9] + m[13];
-		dst[2] = x * m[ 2] + y * m[ 6] + z * m[10] + m[14]; 
+		dst[2] = x * m[ 2] + y * m[ 6] + z * m[10] + m[14];
 	}
 	
 	template<> inline void transform<2, 4>(float * const &src, float * const &m, float * const &dst) {
 		const float x = src[0], y = src[1];
-		dst[0] = x * m[ 0] + y * m[ 4] + m[12]; 
-		dst[1] = x * m[ 1] + y * m[ 5] + m[13]; 
+		dst[0] = x * m[ 0] + y * m[ 4] + m[12];
+		dst[1] = x * m[ 1] + y * m[ 5] + m[13];
 	}
 	
 	template<> inline void transform<3, 3>(float * const &src, float * const &m, float * const &dst) {
 		const float x = src[0], y = src[1], z = src[2];
-		dst[0] = x * m[0] + y * m[3] + z * m[6]; 
+		dst[0] = x * m[0] + y * m[3] + z * m[6];
 		dst[1] = x * m[1] + y * m[4] + z * m[7];
-		dst[2] = x * m[2] + y * m[5] + z * m[8]; 
+		dst[2] = x * m[2] + y * m[5] + z * m[8];
 	}
 	
 	template<> inline void transform<2, 3>(float * const &src, float * const &m, float * const &dst) {
 		const float x = src[0], y = src[1];
-		dst[0] = x * m[0] + y * m[3] + m[6]; 
-		dst[1] = x * m[1] + y * m[4] + m[7]; 
+		dst[0] = x * m[0] + y * m[3] + m[6];
+		dst[1] = x * m[1] + y * m[4] + m[7];
 	}
 	
 	template<size_t n1, size_t n2> void transform(float * const &v, int const &stride, int const &count, float * const &m, int offset) {
@@ -464,43 +494,43 @@ public final class Buffers {
 	}
 	*/
 	
-	private native static void transformV4M4Jni(Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
-		transform<4, 4>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);  
+	private native static void transformV4M4Jni (Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
+		transform<4, 4>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);
 	*/
 	
-	private native static void transformV4M4Jni(float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
-		transform<4, 4>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);  
+	private native static void transformV4M4Jni (float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
+		transform<4, 4>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);
 	*/
 	
-	private native static void transformV3M4Jni(Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
+	private native static void transformV3M4Jni (Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
 		transform<3, 4>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);
 	*/
 	
-	private native static void transformV3M4Jni(float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
+	private native static void transformV3M4Jni (float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
 		transform<3, 4>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);
 	*/
 	
-	private native static void transformV2M4Jni(Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
+	private native static void transformV2M4Jni (Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
 		transform<2, 4>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);
 	*/
 	
-	private native static void transformV2M4Jni(float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
+	private native static void transformV2M4Jni (float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
 		transform<2, 4>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);
 	*/
 	
-	private native static void transformV3M3Jni(Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
+	private native static void transformV3M3Jni (Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
 		transform<3, 3>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);
 	*/
 	
-	private native static void transformV3M3Jni(float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
+	private native static void transformV3M3Jni (float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
 		transform<3, 3>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);
 	*/
 	
-	private native static void transformV2M3Jni(Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
+	private native static void transformV2M3Jni (Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
 		transform<2, 3>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);
 	*/
 	
-	private native static void transformV2M3Jni(float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
+	private native static void transformV2M3Jni (float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes); /*
 		transform<2, 3>((float*)data, strideInBytes / 4, count, (float*)matrix, offsetInBytes / 4);
 	*/
 	
@@ -535,5 +565,4 @@ public final class Buffers {
 	private native static long find(float[] vertex, int vertexOffsetInBytes, int strideInBytes, float[] vertices, int verticesOffsetInBytes, int numVertices, float epsilon); /*
 		return find((float *)&vertex[vertexOffsetInBytes / 4], (unsigned int)(strideInBytes / 4), (float*)&vertices[verticesOffsetInBytes / 4], (unsigned int)numVertices, epsilon);
 	*/
-	
 }
