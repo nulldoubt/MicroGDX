@@ -1,20 +1,16 @@
-configure(subprojects - project(":backends:gdx-backend-android")) {
-	apply plugin: "java"
+configure(subprojects - project(":backends:micro-backend-android")) {
 
-	if (JavaVersion.current().isJava9Compatible()) {
-		compileJava {
-			options.release = versions.java
-		}
-	}
-	sourceCompatibility = versions.java
-	targetCompatibility = versions.java
+    apply(plugin: "java");
 
-	sourceSets.main.java.srcDirs = ["src"]
-	sourceSets.main.resources.srcDirs = ["res"]
+    compileJava() { options.release = versions.java; };
+    sourceCompatibility = versions.java;
+    targetCompatibility = versions.java;
 
+    sourceSets.main.java.srcDirs = ["src"];
+    sourceSets.main.resources.srcDirs = ["res"];
 
-	dependencies {
-		api project(":gdx")
-	}
+    dependencies() {
+        api(project(":micro"));
+    };
 
 }

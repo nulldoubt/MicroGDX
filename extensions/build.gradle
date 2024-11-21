@@ -1,14 +1,18 @@
-subprojects {
-    apply plugin: "java"
+subprojects() {
 
-    if (JavaVersion.current().isJava9Compatible()) {
-        compileJava {
-            options.release = versions.java
-        }
-    }
-    sourceCompatibility = versions.java
-    targetCompatibility = versions.java
+    apply(plugin: "java-library");
+
+    compileJava() { options.release = versions.java; };
+    sourceCompatibility = versions.java;
+    targetCompatibility = versions.java;
 
     sourceSets.main.java.srcDirs = ["src"]
     sourceSets.main.resources.srcDirs = ["res"]
-}
+
+    dependencies() {
+        api(project(":micro"));
+    };
+
+    tasks.withType(Jar) { duplicatesStrategy = DuplicatesStrategy.INCLUDE; };
+
+};

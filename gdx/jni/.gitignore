@@ -1,8 +1,0 @@
-me_nulldoubt_micro_*.h
-me_nulldoubt_micro_*.cpp
-build*.xml
-Android.mk
-Application.mk
-jni-headers
-memcpy_wrap.c
-Info.plist

@@ -1,169 +1,88 @@
-buildscript {
-    apply from: "gradle/dependencies.gradle"
+buildscript() {
+    apply(from: "gradle/dependencies.gradle");
 
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath "com.badlogicgames.gdx:gdx-jnigen-gradle:2.5.2"
-    }
-}
+    repositories() {
+        mavenCentral();
+        gradlePluginPortal();
+    };
 
-plugins {
-    id "de.undercouch.download" version "5.0.1"
-}
+    dependencies() {
+        classpath("com.badlogicgames.gdx:gdx-jnigen-gradle:2.5.2");
+    };
 
-apply from: "gradle/dependencies.gradle"
+};
 
-ext {
-    isReleaseBuild = {
-        return project.hasProperty("RELEASE")
-    }
-}
+plugins() {
+    id "de.undercouch.download" version "5.0.1";
+};
 
-allprojects {
+apply(from: "gradle/dependencies.gradle");
+
+allprojects() {
     group = 'me.nulldoubt.micro'
     version = project.getProperty('version')
 
-    buildscript {
-        repositories {
-            google()
-            mavenLocal()
-            mavenCentral()
-            gradlePluginPortal()
-            maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-            maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-        }
-    }
+    buildscript() {
+        repositories() {
+            google();
+            mavenLocal();
+            mavenCentral();
+            gradlePluginPortal();
+            maven() { url "https://oss.sonatype.org/content/repositories/snapshots/" };
+            maven() { url "https://oss.sonatype.org/content/repositories/releases/" };
+        };
+    };
 
-    repositories {
-        google()
-        mavenLocal()
-        mavenCentral()
-        gradlePluginPortal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-    }
+    repositories() {
+        google();
+        mavenLocal();
+        mavenCentral();
+        gradlePluginPortal();
+        maven() { url "https://oss.sonatype.org/content/repositories/snapshots/" };
+        maven() { url "https://oss.sonatype.org/content/repositories/releases/" };
+    };
 
     tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-    }
+        options.encoding = 'UTF-8';
+    };
+
     tasks.withType(Javadoc) {
-        options.encoding = 'UTF-8'
+        options.encoding = 'UTF-8';
         options.addBooleanOption('use', true);
-    }
+        options.addStringOption('Xdoclint:none,-missing', '-quiet')
+        options.addStringOption("-release", "22");
+    };
+    
+};
 
-    if (JavaVersion.current().isJava8Compatible()) {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none,-missing', '-quiet')
-        }
-    }
+configure(subprojects - project(":backends:micro-backend-android")) {
+    apply(plugin: "java-library");
 
-    if (JavaVersion.current().isJava9Compatible()) {
-        tasks.withType(Javadoc) {
-            options.addStringOption("-release", "22");
-        }
-    }
+    compileJava() {
+        options.fork = true;
+        options.incremental = true;
+    };
 
-}
+    java() {
+        withJavadocJar();
+        withSourcesJar();
+    };
 
-configure(subprojects - project(":backends:gdx-backend-android")) {
-    apply plugin: "java-library"
+};
 
-    compileJava {
-        options.fork = true
-        options.incremental = true
-    }
-
-    java {
-        withJavadocJar()
-        withSourcesJar()
-    }
-}
-
-configure(subprojects - project(":backends") - project(":extensions")/* - project(":extensions:gdx-box2d-parent")*/) {
-    apply plugin: "idea"
-    apply plugin: "eclipse"
-
-    //This has to be done in afterEvaluate due to java/android plugin dependency
-    afterEvaluate {
-        eclipse {
-            project {
-                //hide gradle build folders from eclipse
-                resourceFilter {
-                    appliesTo = 'FOLDERS'
-                    type = 'EXCLUDE_ALL'
-                    matcher {
-                        id = 'org.eclipse.ui.ide.multiFilter'
-                        arguments = '1.0-projectRelativePath-matches-true-false-build'
-                    }
-                }
-            }
-            jdt {
-                file {
-                    withProperties { properties ->
-                        def libgdxJdtProperties = new Properties()
-                        libgdxJdtProperties.load(new FileInputStream(".settings/org.eclipse.jdt.libgdx.prefs"))
-                        properties.putAll(libgdxJdtProperties)
-                    }
-                }
-            }
-            classpath.file {
-                whenMerged { classpath ->
-                    classpath.entries.findAll { entry -> entry.kind == 'lib' || entry.kind == 'src' }*.exported = true
-                }
-            }
-        }
-        //Set all projects to use UTF-8 file encoding for all files
-        eclipseJdt.doLast {
-            File f = new File(projectDir, '.settings/org.eclipse.core.resources.prefs')
-            f.write('eclipse.preferences.version=1\n')
-            f.append('encoding/<project>=UTF-8')
-        }
-    }
-}
+configure(subprojects - project(":backends") - project(":extensions") - project(":extensions:micro-box2d")) {
+    apply(plugin: "idea");
+};
 
 tasks.register('setupExternalNativesDirs') {
-    doLast {
+    doLast() {
         file("build").mkdir();
         file("extensions/gdx-lwjgl3-angle/res").mkdirs();
-    }
-    doNotTrackState("Don't track state")
-}
-
-tasks.register('fetchAngleNativesZIP', Download) {
-    dependsOn setupExternalNativesDirs
-    src 'https://raw.githubusercontent.com/libgdx/gdx-angle-natives/master/gdx-angle-natives.zip'
-    dest 'build/gdx-angle-natives.zip'
-    onlyIfModified true
-    useETag "all"
-}
-
-tasks.register('fetchExternalNatives', Copy) {
-    dependsOn fetchAngleNativesZIP
-    from zipTree("build/gdx-angle-natives.zip")
-    into "./extensions/gdx-lwjgl3-angle/res"
-    doNotTrackState("Don't track state")
-}
-
-tasks.register('fetchGdxNativesZIP', Download) {
-    dependsOn fetchExternalNatives
-    src "https://libgdx-nightlies.s3.eu-central-1.amazonaws.com/libgdx-nightlies/natives.zip"
-    dest "build/natives.zip"
-    onlyIfModified true
-    useETag "all"
-}
-
-tasks.register('fetchNatives', Copy) {
-    dependsOn fetchGdxNativesZIP
-    from zipTree("build/natives.zip")
-    into "."
-    doNotTrackState("Don't track state")
-}
-
+    };
+    doNotTrackState("Don't track state");
+};
 
 if (rootProject.file('override.gradle').exists())
-    apply from: rootProject.file('override.gradle')
+    apply(from: rootProject.file('override.gradle'));
 
-apply from: "gradle/dist.gradle"
+apply(from: "gradle/dist.gradle");
