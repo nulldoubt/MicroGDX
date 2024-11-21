@@ -1,108 +1,71 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.maps;
+
+import me.nulldoubt.micro.utils.collections.Array;
 
 import java.util.Iterator;
 
-import me.nulldoubt.micro.utils.collections.Array;
-import com.nulldoubt.micro.utils.reflect.ClassReflection;
-
-/** @brief Collection of MapObject instances */
 public class MapObjects implements Iterable<MapObject> {
-
-	private Array<MapObject> objects;
-
-	/** Creates an empty set of MapObject instances */
-	public MapObjects () {
-		objects = new Array<MapObject>();
+	
+	private final Array<MapObject> objects;
+	
+	public MapObjects() {
+		objects = new Array<>();
 	}
-
-	/** @param index
-	 * @return the MapObject at the specified index */
-	public MapObject get (int index) {
+	
+	public MapObject get(final int index) {
 		return objects.get(index);
 	}
-
-	/** @param name
-	 * @return the first object having the specified name, if one exists, otherwise null */
-	public MapObject get (String name) {
+	
+	public MapObject get(final String name) {
 		for (int i = 0, n = objects.size; i < n; i++) {
-			MapObject object = objects.get(i);
-			if (name.equals(object.getName())) {
+			final MapObject object = objects.get(i);
+			if (name.equals(object.name))
 				return object;
-			}
 		}
 		return null;
 	}
-
-	/** Get the index of the object having the specified name, or -1 if no such object exists. */
-	public int getIndex (String name) {
+	
+	public int getIndex(final String name) {
 		return getIndex(get(name));
 	}
-
-	/** Get the index of the object in the collection, or -1 if no such object exists. */
-	public int getIndex (MapObject object) {
+	
+	public int getIndex(final MapObject object) {
 		return objects.indexOf(object, true);
 	}
-
-	/** @return number of objects in the collection */
-	public int getCount () {
+	
+	public int getCount() {
 		return objects.size;
 	}
-
-	/** @param object instance to be added to the collection */
-	public void add (MapObject object) {
+	
+	public void add(final MapObject object) {
 		this.objects.add(object);
 	}
-
-	/** @param index removes MapObject instance at index */
-	public void remove (int index) {
+	
+	public void remove(final int index) {
 		objects.removeIndex(index);
 	}
-
-	/** @param object instance to be removed */
-	public void remove (MapObject object) {
+	
+	public void remove(final MapObject object) {
 		objects.removeValue(object, true);
 	}
-
-	/** @param type class of the objects we want to retrieve
-	 * @return array filled with all the objects in the collection matching type */
-	public <T extends MapObject> Array<T> getByType (Class<T> type) {
+	
+	public <T extends MapObject> Array<T> getByType(final Class<T> type) {
 		return getByType(type, new Array<T>());
 	}
-
-	/** @param type class of the objects we want to retrieve
-	 * @param fill collection to put the returned objects in
-	 * @return array filled with all the objects in the collection matching type */
-	public <T extends MapObject> Array<T> getByType (Class<T> type, Array<T> fill) {
+	
+	public <T extends MapObject> Array<T> getByType(final Class<T> type, final Array<T> fill) {
 		fill.clear();
 		for (int i = 0, n = objects.size; i < n; i++) {
-			MapObject object = objects.get(i);
-			if (ClassReflection.isInstance(type, object)) {
-				fill.add((T)object);
-			}
+			final MapObject object = objects.get(i);
+			if (type.isInstance(object))
+				fill.add((T) object);
 		}
 		return fill;
 	}
-
-	/** @return iterator for the objects within the collection */
+	
 	@Override
-	public Iterator<MapObject> iterator () {
+	public Iterator<MapObject> iterator() {
 		return objects.iterator();
 	}
-
+	
 }

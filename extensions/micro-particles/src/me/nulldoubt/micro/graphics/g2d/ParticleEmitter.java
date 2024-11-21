@@ -21,25 +21,25 @@ public class ParticleEmitter {
 	private static final int UPDATE_TINT = 1 << 6;
 	private static final int UPDATE_SPRITE = 1 << 7;
 	
-	private RangedNumericValue delayValue = new RangedNumericValue();
-	private IndependentScaledNumericValue lifeOffsetValue = new IndependentScaledNumericValue();
-	private RangedNumericValue durationValue = new RangedNumericValue();
-	private IndependentScaledNumericValue lifeValue = new IndependentScaledNumericValue();
-	private ScaledNumericValue emissionValue = new ScaledNumericValue();
-	private ScaledNumericValue xScaleValue = new ScaledNumericValue();
-	private ScaledNumericValue yScaleValue = new ScaledNumericValue();
-	private ScaledNumericValue rotationValue = new ScaledNumericValue();
-	private ScaledNumericValue velocityValue = new ScaledNumericValue();
-	private ScaledNumericValue angleValue = new ScaledNumericValue();
-	private ScaledNumericValue windValue = new ScaledNumericValue();
-	private ScaledNumericValue gravityValue = new ScaledNumericValue();
-	private ScaledNumericValue transparencyValue = new ScaledNumericValue();
-	private GradientColorValue tintValue = new GradientColorValue();
-	private RangedNumericValue xOffsetValue = new ScaledNumericValue();
-	private RangedNumericValue yOffsetValue = new ScaledNumericValue();
-	private ScaledNumericValue spawnWidthValue = new ScaledNumericValue();
-	private ScaledNumericValue spawnHeightValue = new ScaledNumericValue();
-	private SpawnShapeValue spawnShapeValue = new SpawnShapeValue();
+	private final RangedNumericValue delayValue = new RangedNumericValue();
+	private final IndependentScaledNumericValue lifeOffsetValue = new IndependentScaledNumericValue();
+	private final RangedNumericValue durationValue = new RangedNumericValue();
+	private final IndependentScaledNumericValue lifeValue = new IndependentScaledNumericValue();
+	private final ScaledNumericValue emissionValue = new ScaledNumericValue();
+	private final ScaledNumericValue xScaleValue = new ScaledNumericValue();
+	private final ScaledNumericValue yScaleValue = new ScaledNumericValue();
+	private final ScaledNumericValue rotationValue = new ScaledNumericValue();
+	private final ScaledNumericValue velocityValue = new ScaledNumericValue();
+	private final ScaledNumericValue angleValue = new ScaledNumericValue();
+	private final ScaledNumericValue windValue = new ScaledNumericValue();
+	private final ScaledNumericValue gravityValue = new ScaledNumericValue();
+	private final ScaledNumericValue transparencyValue = new ScaledNumericValue();
+	private final GradientColorValue tintValue = new GradientColorValue();
+	private final RangedNumericValue xOffsetValue = new ScaledNumericValue();
+	private final RangedNumericValue yOffsetValue = new ScaledNumericValue();
+	private final ScaledNumericValue spawnWidthValue = new ScaledNumericValue();
+	private final ScaledNumericValue spawnHeightValue = new ScaledNumericValue();
+	private final SpawnShapeValue spawnShapeValue = new SpawnShapeValue();
 	
 	private RangedNumericValue[] xSizeValues;
 	private RangedNumericValue[] ySizeValues;
@@ -86,9 +86,9 @@ public class ParticleEmitter {
 	}
 	
 	public ParticleEmitter(ParticleEmitter emitter) {
-		sprites = new Array<Sprite>(emitter.sprites);
+		sprites = new Array<>(emitter.sprites);
 		name = emitter.name;
-		imagePaths = new Array<String>(emitter.imagePaths);
+		imagePaths = new Array<>(emitter.imagePaths);
 		setMaxParticleCount(emitter.maxParticleCount);
 		minParticleCount = emitter.minParticleCount;
 		delayValue.load(emitter.delayValue);
@@ -122,8 +122,8 @@ public class ParticleEmitter {
 	}
 	
 	private void initialize() {
-		sprites = new Array<Sprite>();
-		imagePaths = new Array<String>();
+		sprites = new Array<>();
+		imagePaths = new Array<>();
 		durationValue.setAlwaysActive(true);
 		emissionValue.setAlwaysActive(true);
 		lifeValue.setAlwaysActive(true);
@@ -209,8 +209,8 @@ public class ParticleEmitter {
 					if (emissionDelta >= emissionTime) {
 						int emitCount = (int) (emissionDelta / emissionTime);
 						emitCount = Math.min(emitCount, maxParticleCount - activeCount);
-						emissionDelta -= emitCount * emissionTime;
-						emissionDelta %= emissionTime;
+						emissionDelta -= (int) (emitCount * emissionTime);
+						emissionDelta %= (int) emissionTime;
 						addParticles(emitCount);
 					}
 				}
@@ -316,8 +316,8 @@ public class ParticleEmitter {
 			if (emissionDelta >= emissionTime) {
 				int emitCount = (int) (emissionDelta / emissionTime);
 				emitCount = Math.min(emitCount, maxParticleCount - activeCount);
-				emissionDelta -= emitCount * emissionTime;
-				emissionDelta %= emissionTime;
+				emissionDelta -= (int) (emitCount * emissionTime);
+				emissionDelta %= (int) emissionTime;
 				addParticles(emitCount);
 			}
 		}
@@ -404,16 +404,10 @@ public class ParticleEmitter {
 	}
 	
 	private void activateParticle(int index) {
-		Sprite sprite = null;
-		switch (spriteMode) {
-			case single:
-			case animated:
-				sprite = sprites.first();
-				break;
-			case random:
-				sprite = sprites.random();
-				break;
-		}
+		Sprite sprite = switch (spriteMode) {
+			case single, animated -> sprites.first();
+			case random -> sprites.random();
+		};
 		
 		Particle particle = particles[index];
 		if (particle == null) {
@@ -532,18 +526,11 @@ public class ParticleEmitter {
 					break;
 				float scaleY = radiusX / (float) radiusY;
 				if (spawnShapeValue.edges) {
-					float spawnAngle;
-					switch (spawnShapeValue.side) {
-						case top:
-							spawnAngle = -MathUtils.random(179f);
-							break;
-						case bottom:
-							spawnAngle = MathUtils.random(179f);
-							break;
-						default:
-							spawnAngle = MathUtils.random(360f);
-							break;
-					}
+					float spawnAngle = switch (spawnShapeValue.side) {
+						case top -> -MathUtils.random(179f);
+						case bottom -> MathUtils.random(179f);
+						default -> MathUtils.random(360f);
+					};
 					float cosDeg = MathUtils.cosDeg(spawnAngle);
 					float sinDeg = MathUtils.sinDeg(spawnAngle);
 					x += cosDeg * radiusX;
@@ -708,8 +695,7 @@ public class ParticleEmitter {
 		this.sprites = sprites;
 		if (sprites.size == 0)
 			return;
-		for (int i = 0, n = particles.length; i < n; i++) {
-			Particle particle = particles[i];
+		for (Particle particle : particles) {
 			if (particle == null)
 				break;
 			Sprite sprite = null;
@@ -888,25 +874,10 @@ public class ParticleEmitter {
 		this.additive = additive;
 	}
 	
-	/**
-	 * @return Whether this ParticleEmitter automatically returns the {@link Batch Batch}'s blend
-	 * function to the alpha-blending default (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) when done drawing.
-	 */
 	public boolean cleansUpBlendFunction() {
 		return cleansUpBlendFunction;
 	}
 	
-	/**
-	 * Set whether to automatically return the {@link Batch Batch}'s blend function to the
-	 * alpha-blending default (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) when done drawing. Is true by default. If set to false, the
-	 * Batch's blend function is left as it was for drawing this ParticleEmitter, which prevents the Batch from being flushed
-	 * repeatedly if consecutive ParticleEmitters with the same additive or pre-multiplied alpha state are drawn in a row.
-	 * <p>
-	 * IMPORTANT: If set to false and if the next object to use this Batch expects alpha blending, you are responsible for setting
-	 * the Batch's blend function to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
-	 *
-	 * @param cleansUpBlendFunction
-	 */
 	public void setCleansUpBlendFunction(boolean cleansUpBlendFunction) {
 		this.cleansUpBlendFunction = cleansUpBlendFunction;
 	}
@@ -978,8 +949,7 @@ public class ParticleEmitter {
 		this.flipY = flipY;
 		if (particles == null)
 			return;
-		for (int i = 0, n = particles.length; i < n; i++) {
-			Particle particle = particles[i];
+		for (Particle particle : particles) {
 			if (particle != null)
 				particle.flip(flipX, flipY);
 		}
@@ -1654,7 +1624,7 @@ public class ParticleEmitter {
 	
 	public static class GradientColorValue extends ParticleValue {
 		
-		private static float[] temp = new float[4];
+		private static final float[] temp = new float[4];
 		
 		private float[] colors = {1, 1, 1};
 		float[] timeline = {0};

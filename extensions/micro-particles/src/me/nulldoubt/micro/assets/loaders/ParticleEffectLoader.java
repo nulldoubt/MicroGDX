@@ -28,12 +28,12 @@ public class ParticleEffectLoader extends SynchronousAssetLoader<ParticleEffect,
 	
 	@Override
 	public Array<AssetDescriptor<?>> getDependencies(String fileName, FileHandle file, ParticleEffectParameter param) {
-		Array<AssetDescriptor<?>> deps = null;
+		Array<AssetDescriptor<?>> dependencies = null;
 		if (param != null && param.atlasFile != null) {
-			deps = new Array<>();
-			deps.add(new AssetDescriptor<>(param.atlasFile, TextureAtlas.class));
+			dependencies = new Array<>();
+			dependencies.add(new AssetDescriptor<>(param.atlasFile, TextureAtlas.class));
 		}
-		return deps;
+		return dependencies;
 	}
 	
 	public static class ParticleEffectParameter extends AssetLoaderParameters<ParticleEffect> {

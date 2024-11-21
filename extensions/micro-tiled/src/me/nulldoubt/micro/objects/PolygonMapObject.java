@@ -1,40 +1,22 @@
-/**
- * 
- */
-
 package me.nulldoubt.micro.objects;
 
 import me.nulldoubt.micro.maps.MapObject;
 import me.nulldoubt.micro.math.shapes.Polygon;
 
-/** @brief Represents {@link Polygon} map objects */
 public class PolygonMapObject extends MapObject {
-
-	private Polygon polygon;
-
-	/** @return polygon shape */
-	public Polygon getPolygon () {
-		return polygon;
-	}
-
-	/** @param polygon new object's polygon shape */
-	public void setPolygon (Polygon polygon) {
-		this.polygon = polygon;
-	}
-
-	/** Creates empty polygon map object */
-	public PolygonMapObject () {
+	
+	public Polygon polygon;
+	
+	public PolygonMapObject() {
 		this(new float[0]);
 	}
-
-	/** @param vertices polygon defining vertices (at least 3) */
-	public PolygonMapObject (float[] vertices) {
+	
+	public PolygonMapObject(final float[] vertices) {
 		polygon = new Polygon(vertices);
 	}
-
-	/** @param polygon the polygon */
-	public PolygonMapObject (Polygon polygon) {
+	
+	public PolygonMapObject(final Polygon polygon) {
 		this.polygon = polygon;
 	}
-
+	
 }
