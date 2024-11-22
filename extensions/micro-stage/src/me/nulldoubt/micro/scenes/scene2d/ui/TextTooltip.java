@@ -18,7 +18,7 @@ package me.nulldoubt.micro.scenes.scene2d.ui;
 
 import me.nulldoubt.micro.scenes.scene2d.ui.Label.LabelStyle;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
-import com.nulldoubt.micro.utils.Null;
+
 
 /** A tooltip that shows a label.
  * @author Nathan Sweet */

@@ -13,9 +13,9 @@ import me.nulldoubt.micro.*;
 import me.nulldoubt.micro.backends.android.surfaceview.FillResolutionStrategy;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.Color;
-import me.nulldoubt.micro.utils.natives.MicroNativesLoader;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.SnapshotArray;
+import me.nulldoubt.micro.utils.natives.MicroNativesLoader;
 
 public class AndroidLiveWallpaper implements AndroidApplicationBase {
 	
@@ -28,9 +28,9 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 	protected AndroidClipboard clipboard;
 	protected ApplicationListener listener;
 	protected boolean firstResume = true;
-	protected final Array<Runnable> runnables = new Array<Runnable>();
-	protected final Array<Runnable> executedRunnables = new Array<Runnable>();
-	protected final SnapshotArray<LifecycleListener> lifecycleListeners = new SnapshotArray<LifecycleListener>(
+	protected final Array<Runnable> runnables = new Array<>();
+	protected final Array<Runnable> executedRunnables = new Array<>();
+	protected final SnapshotArray<LifecycleListener> lifecycleListeners = new SnapshotArray<>(
 			LifecycleListener.class);
 	protected int logLevel = LOG_INFO;
 	protected ApplicationLogger applicationLogger;
@@ -49,18 +49,12 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 		graphics = new AndroidGraphicsLiveWallpaper(this, config,
 				config.resolutionStrategy == null ? new FillResolutionStrategy() : config.resolutionStrategy);
 		
-		// factory in use, but note: AndroidInputFactory causes exceptions when obfuscated: java.lang.RuntimeException: Couldn't
-		// construct AndroidInput, this should never happen, proguard deletes constructor used only by reflection
 		input = createInput(this, this.getService(), graphics.view, config);
-		// input = new AndroidInput(this, this.getService(), null, config);
 		
 		audio = createAudio(this.getService(), config);
 		files = createFiles();
 		this.listener = listener;
 		clipboard = new AndroidClipboard(this.getService());
-		
-		// Unlike activity, fragment and daydream applications there's no need for a specialized audio listener.
-		// See description in onPause method.
 		
 		Micro.app = this;
 		Micro.input = input;
@@ -73,30 +67,11 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 		if (AndroidLiveWallpaperService.DEBUG)
 			Log.d(AndroidLiveWallpaperService.TAG, " > AndroidLiveWallpaper - onPause()");
 		
-		// IMPORTANT!
-		// jw: graphics.pause is never called, graphics.pause works on most devices but not on all..
-		// for example on Samsung Galaxy Tab (GT-P6800) on android 4.0.4 invoking graphics.pause causes "Fatal Signal 11"
-		// near mEglHelper.swap() in GLSurfaceView while processing next onPause event.
-		// See related issue:
-		// http://code.google.com/p/libgdx/issues/detail?id=541
-		// the problem with graphics.pause occurs while using OpenGL 2.0 and original GLSurfaceView while rotating device
-		// in lwp preview
-		// in my opinion it is a bug of android not libgdx, even example Cubic live wallpaper from
-		// Android SDK crashes on affected devices.......... and on some configurations of android emulator too.
-		//
-		// My wallpaper was rejected on Samsung Apps because of this issue, so I decided to disable graphics.pause..
-		// also I moved audio lifecycle methods from AndroidGraphicsLiveWallpaper into this class
-		
-		// graphics.pause();
-		// if (AndroidLiveWallpaperService.DEBUG)
-		// Log.d(AndroidLiveWallpaperService.TAG, " > AndroidLiveWallpaper - onPause() application paused!");
 		audio.pause();
-		
 		input.onPause();
 		
-		if (graphics != null) {
+		if (graphics != null)
 			graphics.onPauseGLSurfaceView();
-		}
 		
 		if (AndroidLiveWallpaperService.DEBUG)
 			Log.d(AndroidLiveWallpaperService.TAG, " > AndroidLiveWallpaper - onPause() done!");
@@ -123,27 +98,10 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 	}
 	
 	public void onDestroy() {
-		
-		// it is too late to call graphics.destroy - it needs live gl GLThread and gl context, otherwise it will cause of deadlock
-		// if (graphics != null) {
-		// graphics.clearManagedCaches();
-		// graphics.destroy();
-		// }
-		
-		// so we do what we can..
-		if (graphics != null) {
-			// not necessary - already called in AndroidLiveWallpaperService.onDeepPauseApplication
-			// app.graphics.clearManagedCaches();
-			
-			// kill the GLThread managed by GLSurfaceView
+		if (graphics != null)
 			graphics.onDestroyGLSurfaceView();
-			
-		}
-		
-		if (audio != null) {
-			// dispose audio and free native resources, mandatory since graphics.pause is never called in live wallpaper
+		if (audio != null)
 			audio.dispose();
-		}
 	}
 	
 	@Override
@@ -274,9 +232,7 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 	}
 	
 	@Override
-	public void exit() {
-		// no-op
-	}
+	public void exit() {}
 	
 	@Override
 	public void register(LifecycleListener listener) {
@@ -341,22 +297,16 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 	}
 	
 	protected AndroidFiles createFiles() {
-		// added initialization of android local storage: /data/data/<app package>/files/
-		this.getService().getFilesDir(); // workaround for Android bug #10515463
+		this.getService().getFilesDir();
 		return new DefaultAndroidFiles(this.getService().getAssets(), this.getService(), true);
 	}
 	
 	@Override
 	public void runOnUiThread(Runnable runnable) {
-		if (Looper.myLooper() != Looper.getMainLooper()) {
-			// The current thread is not the UI thread.
-			// Let's post the runnable to the event queue of the UI thread.
+		if (Looper.myLooper() != Looper.getMainLooper())
 			new Handler(Looper.getMainLooper()).post(runnable);
-		} else {
-			// The current thread is the UI thread already.
-			// Let's execute the runnable immediately.
+		else
 			runnable.run();
-		}
 	}
 	
 	@Override
@@ -364,14 +314,6 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase {
 		throw new UnsupportedOperationException();
 	}
 	
-	/**
-	 * Notify the wallpaper engine that the significant colors of the wallpaper have changed. This method may be called before
-	 * initializing the live wallpaper.
-	 *
-	 * @param primaryColor   The most visually significant color.
-	 * @param secondaryColor The second most visually significant color.
-	 * @param tertiaryColor  The third most visually significant color.
-	 */
 	public void notifyColorsChanged(Color primaryColor, Color secondaryColor, Color tertiaryColor) {
 		if (Build.VERSION.SDK_INT < 27)
 			return;

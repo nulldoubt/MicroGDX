@@ -23,7 +23,7 @@ import me.nulldoubt.micro.scenes.scene2d.InputEvent;
 import me.nulldoubt.micro.scenes.scene2d.InputListener;
 import me.nulldoubt.micro.scenes.scene2d.Stage;
 import me.nulldoubt.micro.scenes.scene2d.Touchable;
-import com.nulldoubt.micro.utils.Null;
+
 
 /** A listener that shows a tooltip actor when the mouse is over another actor.
  * @author Nathan Sweet */

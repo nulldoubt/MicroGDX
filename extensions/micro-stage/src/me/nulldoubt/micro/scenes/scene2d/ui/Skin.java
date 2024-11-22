@@ -15,6 +15,11 @@ import me.nulldoubt.micro.scenes.scene2d.utils.*;
 import me.nulldoubt.micro.utils.Disposable;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.ObjectMap;
+import me.nulldoubt.micro.utils.json.Json;
+import me.nulldoubt.micro.utils.json.Json.ReadOnlySerializer;
+import me.nulldoubt.micro.utils.json.JsonValue;
+
+import java.lang.reflect.Method;
 
 public class Skin implements Disposable {
 	
@@ -300,8 +305,7 @@ public class Skin implements Disposable {
 		// Use texture or texture region. If it has splits, use ninepatch. If it has rotation or whitespace stripping, use sprite.
 		try {
 			TextureRegion textureRegion = getRegion(name);
-			if (textureRegion instanceof AtlasRegion) {
-				AtlasRegion region = (AtlasRegion) textureRegion;
+			if (textureRegion instanceof AtlasRegion region) {
 				if (region.findValue("split") != null)
 					drawable = new NinePatchDrawable(getPatch(name));
 				else if (region.rotate || region.packedWidth != region.originalWidth || region.packedHeight != region.originalHeight)
@@ -329,8 +333,7 @@ public class Skin implements Disposable {
 			}
 		}
 		
-		if (drawable instanceof BaseDrawable)
-			((BaseDrawable) drawable).setName(name);
+		((BaseDrawable) drawable).setName(name);
 		
 		add(name, drawable, Drawable.class);
 		return drawable;
@@ -392,36 +395,21 @@ public class Skin implements Disposable {
 		return newDrawable(drawable, new Color(r, g, b, a));
 	}
 	
-	/**
-	 * Returns a tinted copy of a drawable found in the skin via {@link #getDrawable(String)}.
-	 */
 	public Drawable newDrawable(Drawable drawable, Color tint) {
-		Drawable newDrawable;
-		if (drawable instanceof TextureRegionDrawable)
-			newDrawable = ((TextureRegionDrawable) drawable).tint(tint);
-		else if (drawable instanceof NinePatchDrawable)
-			newDrawable = ((NinePatchDrawable) drawable).tint(tint);
-		else if (drawable instanceof SpriteDrawable)
-			newDrawable = ((SpriteDrawable) drawable).tint(tint);
-		else
-			throw new MicroRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
+		Drawable newDrawable = switch (drawable) {
+			case TextureRegionDrawable textureRegionDrawable -> textureRegionDrawable.tint(tint);
+			case NinePatchDrawable ninePatchDrawable -> ninePatchDrawable.tint(tint);
+			case SpriteDrawable spriteDrawable -> spriteDrawable.tint(tint);
+			case null, default ->
+					throw new MicroRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
+		};
 		
-		if (newDrawable instanceof BaseDrawable) {
-			BaseDrawable named = (BaseDrawable) newDrawable;
-			if (drawable instanceof BaseDrawable)
-				named.setName(((BaseDrawable) drawable).getName() + " (" + tint + ")");
-			else
-				named.setName(" (" + tint + ")");
-		}
+		if (newDrawable instanceof BaseDrawable named)
+			named.setName(((BaseDrawable) drawable).getName() + " (" + tint + ")");
 		
 		return newDrawable;
 	}
 	
-	/**
-	 * Scales the drawable's {@link Drawable#getLeftWidth()}, {@link Drawable#getRightWidth()},
-	 * {@link Drawable#getBottomHeight()}, {@link Drawable#getTopHeight()}, {@link Drawable#getMinWidth()}, and
-	 * {@link Drawable#getMinHeight()}.
-	 */
 	public void scale(Drawable drawble) {
 		drawble.setLeftWidth(drawble.getLeftWidth() * scale);
 		drawble.setRightWidth(drawble.getRightWidth() * scale);
@@ -503,7 +491,7 @@ public class Skin implements Disposable {
 			
 			public <T> T readValue(Class<T> type, Class elementType, JsonValue jsonData) {
 				// If the JSON is a string but the type is not, look up the actual value by name.
-				if (jsonData != null && jsonData.isString() && !ClassReflection.isAssignableFrom(CharSequence.class, type))
+				if (jsonData != null && jsonData.isString() && !CharSequence.class.isAssignableFrom(type))
 					return get(jsonData.asString(), type);
 				return super.readValue(type, elementType, jsonData);
 			}
@@ -523,8 +511,7 @@ public class Skin implements Disposable {
 						} catch (MicroRuntimeException ex) { // Parent resource doesn't exist.
 							parentType = parentType.getSuperclass(); // Try resource for super class.
 							if (parentType == Object.class) {
-								SerializationException se = new SerializationException(
-										"Unable to find parent resource with name: " + parentName);
+								SerializationException se = new SerializationException("Unable to find parent resource with name: " + parentName);
 								se.addTrace(jsonMap.child.trace());
 								throw se;
 							}
@@ -537,16 +524,16 @@ public class Skin implements Disposable {
 		json.setTypeName(null);
 		json.setUsePrototypes(false);
 		
-		json.setSerializer(Skin.class, new ReadOnlySerializer<Skin>() {
-			public Skin read(Json json, JsonValue typeToValueMap, Class type) {
+		json.setSerializer(Skin.class, new ReadOnlySerializer<>() {
+			public Skin read(Json json, JsonValue typeToValueMap, Class clazz) {
 				for (JsonValue valueMap = typeToValueMap.child; valueMap != null; valueMap = valueMap.next) {
 					try {
 						Class type = json.getClass(valueMap.name());
 						if (type == null)
-							type = ClassReflection.forName(valueMap.name());
+							type = Class.forName(valueMap.name());
 						readNamedObjects(json, type, valueMap);
-					} catch (ReflectionException ex) {
-						throw new SerializationException(ex);
+					} catch (SecurityException | ClassNotFoundException e) {
+						throw new SerializationException(e);
 					}
 				}
 				return skin;
@@ -560,17 +547,16 @@ public class Skin implements Disposable {
 						continue;
 					try {
 						add(valueEntry.name, object, addType);
-						if (addType != Drawable.class && ClassReflection.isAssignableFrom(Drawable.class, addType))
+						if (addType != Drawable.class && Drawable.class.isAssignableFrom(addType))
 							add(valueEntry.name, object, Drawable.class);
-					} catch (Exception ex) {
-						throw new SerializationException(
-								"Error reading " + ClassReflection.getSimpleName(type) + ": " + valueEntry.name, ex);
+					} catch (Exception e) {
+						throw new SerializationException("Error reading " + type.getSimpleName() + ": " + valueEntry.name, e);
 					}
 				}
 			}
 		});
 		
-		json.setSerializer(BitmapFont.class, new ReadOnlySerializer<BitmapFont>() {
+		json.setSerializer(BitmapFont.class, new ReadOnlySerializer<>() {
 			public BitmapFont read(Json json, JsonValue jsonData, Class type) {
 				String path = json.readValue("file", String.class, jsonData);
 				float scaledSize = json.readValue("scaledSize", float.class, -1f, jsonData);
@@ -615,7 +601,7 @@ public class Skin implements Disposable {
 			}
 		});
 		
-		json.setSerializer(Color.class, new ReadOnlySerializer<Color>() {
+		json.setSerializer(Color.class, new ReadOnlySerializer<>() {
 			public Color read(Json json, JsonValue jsonData, Class type) {
 				if (jsonData.isString())
 					return get(jsonData.asString(), Color.class);
@@ -630,37 +616,30 @@ public class Skin implements Disposable {
 			}
 		});
 		
-		json.setSerializer(TintedDrawable.class, new ReadOnlySerializer() {
-			public Object read(Json json, JsonValue jsonData, Class type) {
+		json.setSerializer(TintedDrawable.class, new ReadOnlySerializer<>() {
+			public TintedDrawable read(Json json, JsonValue jsonData, Class type) {
 				String name = json.readValue("name", String.class, jsonData);
 				Color color = json.readValue("color", Color.class, jsonData);
 				if (color == null)
 					throw new SerializationException("TintedDrawable missing color: " + jsonData);
 				Drawable drawable = newDrawable(name, color);
-				if (drawable instanceof BaseDrawable) {
-					BaseDrawable named = (BaseDrawable) drawable;
+				if (drawable instanceof BaseDrawable named)
 					named.setName(jsonData.name + " (" + name + ", " + color + ")");
-				}
-				return drawable;
+				return (TintedDrawable) drawable;
 			}
 		});
 		
-		for (ObjectMap.Entry<String, Class> entry : jsonClassTags)
+		for (ObjectMap.Entry<String, Class<?>> entry : jsonClassTags)
 			json.addClassTag(entry.key, entry.value);
 		
 		return json;
 	}
 	
-	/**
-	 * Returns a map of {@link Json#addClassTag(String, Class) class tags} that will be used when loading skin JSON. The map can
-	 * be modified before calling {@link #load(FileHandle)}. By default the map is populated with the simple class names of libGDX
-	 * classes commonly used in skins.
-	 */
-	public ObjectMap<String, Class> getJsonClassTags() {
+	public ObjectMap<String, Class<?>> getJsonClassTags() {
 		return jsonClassTags;
 	}
 	
-	private static final Class[] defaultTagClasses = {BitmapFont.class, Color.class, TintedDrawable.class, NinePatchDrawable.class,
+	private static final Class<?>[] defaultTagClasses = {BitmapFont.class, Color.class, TintedDrawable.class, NinePatchDrawable.class,
 			SpriteDrawable.class, TextureRegionDrawable.class, TiledDrawable.class, Button.ButtonStyle.class,
 			CheckBox.CheckBoxStyle.class, ImageButton.ImageButtonStyle.class, ImageTextButton.ImageTextButtonStyle.class,
 			Label.LabelStyle.class, List.ListStyle.class, ProgressBar.ProgressBarStyle.class, ScrollPane.ScrollPaneStyle.class,
@@ -669,18 +648,14 @@ public class Skin implements Disposable {
 			Window.WindowStyle.class};
 	
 	private static Method findMethod(Class type, String name) {
-		Method[] methods = ClassReflection.getMethods(type);
-		for (int i = 0, n = methods.length; i < n; i++) {
-			Method method = methods[i];
+		Method[] methods = type.getMethods();
+		for (Method method : methods) {
 			if (method.getName().equals(name))
 				return method;
 		}
 		return null;
 	}
 	
-	/**
-	 * @author Nathan Sweet
-	 */
 	public static class TintedDrawable {
 		
 		public String name;

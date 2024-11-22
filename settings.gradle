@@ -6,15 +6,16 @@ include(":backends:micro-backend-lwjgl3");
 
 include(":extensions:micro-box2d");
 include(":extensions:micro-box2d-debug");
-include(':extensions:micro-box2d-particles');
-include(':extensions:micro-collections');
+include(":extensions:micro-box2d-particles");
+include(":extensions:micro-collections");
 include(":extensions:micro-compression");
 include(":extensions:micro-freetype");
 include(":extensions:micro-json");
 include(":extensions:micro-lwjgl3-angle");
 include(":extensions:micro-particles");
-include(':extensions:micro-shaperenderer');
-include(':extensions:micro-stage');
+include(":extensions:micro-shaperenderer");
+include(":extensions:micro-stage");
+include(":extensions:micro-stage-particles");
 include(":extensions:micro-tiled");
 
 rootProject.name = "Micro";

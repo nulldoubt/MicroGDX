@@ -1,70 +1,47 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.backends.android;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import me.nulldoubt.micro.Files.FileType;
+import me.nulldoubt.micro.Micro;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.files.FileHandle;
+import me.nulldoubt.micro.utils.Streams;
+
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
-
-import me.nulldoubt.micro.Files.FileType;
-import me.nulldoubt.micro.Micro;
-import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.exceptions.MicroRuntimeException;
-import me.nulldoubt.micro.utils.Streams;
-
-/** @author mzechner
- * @author Nathan Sweet */
 public class AndroidFileHandle extends FileHandle {
-	// The asset manager, or null if this is not an internal file.
-	final private AssetManager assets;
-
-	AndroidFileHandle (AssetManager assets, String fileName, FileType type) {
+	
+	private final AssetManager assets;
+	
+	AndroidFileHandle(AssetManager assets, String fileName, FileType type) {
 		super(fileName.replace('\\', '/'), type);
 		this.assets = assets;
 	}
-
-	AndroidFileHandle (AssetManager assets, File file, FileType type) {
+	
+	AndroidFileHandle(AssetManager assets, File file, FileType type) {
 		super(file, type);
 		this.assets = assets;
 	}
-
-	public FileHandle child (String name) {
+	
+	public FileHandle child(String name) {
 		name = name.replace('\\', '/');
-		if (file.getPath().length() == 0) return new AndroidFileHandle(assets, new File(name), type);
+		if (file.getPath().isEmpty())
+			return new AndroidFileHandle(assets, new File(name), type);
 		return new AndroidFileHandle(assets, new File(file, name), type);
 	}
-
-	public FileHandle sibling (String name) {
+	
+	public FileHandle sibling(String name) {
 		name = name.replace('\\', '/');
-		if (file.getPath().length() == 0) throw new MicroRuntimeException("Cannot get the sibling of the root.");
-		return Micro.files.getFileHandle(new File(file.getParent(), name).getPath(), type); // this way we can find the sibling even
-																														// if it's inside the obb
+		if (file.getPath().isEmpty())
+			throw new MicroRuntimeException("Cannot get the sibling of the root.");
+		return Micro.files.getFileHandle(new File(file.getParent(), name).getPath(), type);
 	}
-
-	public FileHandle parent () {
+	
+	public FileHandle parent() {
 		File parent = file.getParentFile();
 		if (parent == null) {
 			if (type == FileType.Absolute)
@@ -74,8 +51,8 @@ public class AndroidFileHandle extends FileHandle {
 		}
 		return new AndroidFileHandle(assets, parent, type);
 	}
-
-	public InputStream read () {
+	
+	public InputStream read() {
 		if (type == FileType.Internal) {
 			try {
 				return assets.open(file.getPath());
@@ -85,8 +62,8 @@ public class AndroidFileHandle extends FileHandle {
 		}
 		return super.read();
 	}
-
-	public ByteBuffer map (FileChannel.MapMode mode) {
+	
+	public ByteBuffer map(FileChannel.MapMode mode) {
 		if (type == FileType.Internal) {
 			FileInputStream input = null;
 			try {
@@ -105,8 +82,8 @@ public class AndroidFileHandle extends FileHandle {
 		}
 		return super.map(mode);
 	}
-
-	public FileHandle[] list () {
+	
+	public FileHandle[] list() {
 		if (type == FileType.Internal) {
 			try {
 				String[] relativePaths = assets.list(file.getPath());
@@ -120,8 +97,8 @@ public class AndroidFileHandle extends FileHandle {
 		}
 		return super.list();
 	}
-
-	public FileHandle[] list (FileFilter filter) {
+	
+	public FileHandle[] list(FileFilter filter) {
 		if (type == FileType.Internal) {
 			try {
 				String[] relativePaths = assets.list(file.getPath());
@@ -130,7 +107,8 @@ public class AndroidFileHandle extends FileHandle {
 				for (int i = 0, n = handles.length; i < n; i++) {
 					String path = relativePaths[i];
 					FileHandle child = new AndroidFileHandle(assets, new File(file, path), type);
-					if (!filter.accept(child.file())) continue;
+					if (!filter.accept(child.file()))
+						continue;
 					handles[count] = child;
 					count++;
 				}
@@ -146,8 +124,8 @@ public class AndroidFileHandle extends FileHandle {
 		}
 		return super.list(filter);
 	}
-
-	public FileHandle[] list (FilenameFilter filter) {
+	
+	public FileHandle[] list(FilenameFilter filter) {
 		if (type == FileType.Internal) {
 			try {
 				String[] relativePaths = assets.list(file.getPath());
@@ -155,7 +133,8 @@ public class AndroidFileHandle extends FileHandle {
 				int count = 0;
 				for (int i = 0, n = handles.length; i < n; i++) {
 					String path = relativePaths[i];
-					if (!filter.accept(file, path)) continue;
+					if (!filter.accept(file, path))
+						continue;
 					handles[count] = new AndroidFileHandle(assets, new File(file, path), type);
 					count++;
 				}
@@ -171,8 +150,8 @@ public class AndroidFileHandle extends FileHandle {
 		}
 		return super.list(filter);
 	}
-
-	public FileHandle[] list (String suffix) {
+	
+	public FileHandle[] list(String suffix) {
 		if (type == FileType.Internal) {
 			try {
 				String[] relativePaths = assets.list(file.getPath());
@@ -180,7 +159,8 @@ public class AndroidFileHandle extends FileHandle {
 				int count = 0;
 				for (int i = 0, n = handles.length; i < n; i++) {
 					String path = relativePaths[i];
-					if (!path.endsWith(suffix)) continue;
+					if (!path.endsWith(suffix))
+						continue;
 					handles[count] = new AndroidFileHandle(assets, new File(file, path), type);
 					count++;
 				}
@@ -196,8 +176,8 @@ public class AndroidFileHandle extends FileHandle {
 		}
 		return super.list(suffix);
 	}
-
-	public boolean isDirectory () {
+	
+	public boolean isDirectory() {
 		if (type == FileType.Internal) {
 			try {
 				return assets.list(file.getPath()).length > 0;
@@ -207,8 +187,8 @@ public class AndroidFileHandle extends FileHandle {
 		}
 		return super.isDirectory();
 	}
-
-	public boolean exists () {
+	
+	public boolean exists() {
 		if (type == FileType.Internal) {
 			String fileName = file.getPath();
 			try {
@@ -224,8 +204,8 @@ public class AndroidFileHandle extends FileHandle {
 		}
 		return super.exists();
 	}
-
-	public long length () {
+	
+	public long length() {
 		if (type == FileType.Internal) {
 			try (AssetFileDescriptor fileDescriptor = assets.openFd(file.getPath())) {
 				return fileDescriptor.getLength();
@@ -233,19 +213,19 @@ public class AndroidFileHandle extends FileHandle {
 		}
 		return super.length();
 	}
-
-	public long lastModified () {
+	
+	public long lastModified() {
 		return super.lastModified();
 	}
-
-	public File file () {
-		if (type == FileType.Local) return new File(Micro.files.getLocalStoragePath(), file.getPath());
+	
+	public File file() {
+		if (type == FileType.Local)
+			return new File(Micro.files.getLocalStoragePath(), file.getPath());
 		return super.file();
 	}
-
-	/** @return an AssetFileDescriptor for this file or null if the file is not of type Internal
-	 * @throws IOException - thrown by AssetManager.openFd() */
-	public AssetFileDescriptor getAssetFileDescriptor () throws IOException {
+	
+	public AssetFileDescriptor getAssetFileDescriptor() throws IOException {
 		return assets != null ? assets.openFd(path()) : null;
 	}
+	
 }

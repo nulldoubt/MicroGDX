@@ -1,8 +1,5 @@
 package me.nulldoubt.micro.utils.collections;
 
-import me.nulldoubt.micro.exceptions.MicroRuntimeException;
-import me.nulldoubt.micro.utils.strings.StringBuilder;
-
 import java.util.NoSuchElementException;
 
 public class OrderedSet<T> extends ObjectSet<T> {
@@ -140,7 +137,7 @@ public class OrderedSet<T> extends ObjectSet<T> {
 			if (!hasNext)
 				throw new NoSuchElementException();
 			if (!valid)
-				throw new MicroRuntimeException("#iterator() cannot be used nested.");
+				throw new RuntimeException("#iterator() cannot be used nested.");
 			K key = items.get(nextIndex);
 			nextIndex++;
 			hasNext = nextIndex < set.size;

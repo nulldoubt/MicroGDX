@@ -14,22 +14,12 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 		super(lwp, config, resolutionStrategy, false);
 	}
 	
-	// jw: I replaced GL..SurfaceViewLW classes with their original counterparts, if it will work
-	// on known devices, on opengl 1.0 and 2.0, and all possible SDK versions.. You can remove
-	// GL..SurfaceViewLW family of classes completely (there is no use for them).
-	
-	// -> specific for live wallpapers
-	// jw: synchronized access to current wallpaper surface holder
 	SurfaceHolder getSurfaceHolder() {
 		synchronized (((AndroidLiveWallpaper) app).service.sync) {
 			return ((AndroidLiveWallpaper) app).service.getSurfaceHolder();
 		}
 	}
 	
-	// <- specific for live wallpapers
-	
-	// Grabbed from AndroidGraphics superclass and modified to override
-	// getHolder in created GLSurfaceView20 instances
 	@Override
 	protected GLSurfaceView20 createGLSurfaceView(AndroidApplicationBase application,
 												  final ResolutionStrategy resolutionStrategy) {
@@ -57,16 +47,11 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 	public void onDestroyGLSurfaceView() {
 		if (view != null) {
 			try {
-				// onDetachedFromWindow stops GLThread by calling mGLThread.requestExitAndWait()
 				view.onDetachedFromWindow();
 				if (AndroidLiveWallpaperService.DEBUG)
-					Log.d(AndroidLiveWallpaperService.TAG,
-							" > AndroidLiveWallpaper - onDestroy() stopped GLThread managed by GLSurfaceView");
+					Log.d(AndroidLiveWallpaperService.TAG, " > AndroidLiveWallpaper - onDestroy() stopped GLThread managed by GLSurfaceView");
 			} catch (Throwable t) {
-				// error while scheduling exit of GLThread, GLThread will remain live and wallpaper service
-				// wouldn't be able to shutdown completely
-				Log.e(AndroidLiveWallpaperService.TAG,
-						"failed to destroy GLSurfaceView's thread! GLSurfaceView.onDetachedFromWindow impl changed since API lvl 16!");
+				Log.e(AndroidLiveWallpaperService.TAG, "failed to destroy GLSurfaceView's thread! GLSurfaceView.onDetachedFromWindow impl changed since API lvl 16!");
 				t.printStackTrace();
 			}
 		}
@@ -92,12 +77,11 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 	@Override
 	public void onDrawFrame(javax.microedition.khronos.opengles.GL10 gl) {
 		long time = System.nanoTime();
-		// After pause deltaTime can have somewhat huge value that destabilizes the mean, so let's cut it off
-		if (!resume) {
+		
+		if (!resume)
 			deltaTime = (time - lastFrameTime) / 1000000000.0f;
-		} else {
+		else
 			deltaTime = 0;
-		}
 		lastFrameTime = time;
 		
 		boolean lrunning = false;
@@ -128,18 +112,11 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 		}
 		
 		if (lresume) {
-			// ((AndroidAudio)app.getAudio()).resume(); // jw: moved to AndroidLiveWallpaper.onResume
 			app.getApplicationListener().resume();
 			Micro.app.log("AndroidGraphics", "resumed");
 		}
 		
-		// HACK: added null check to handle set wallpaper from preview null
-		// error in renderer
-		// jw: this hack is not working always, renderer ends with error for some devices - because of uninitialized gl context
-		// jw: now it shouldn't be necessary - after wallpaper backend refactoring:)
 		if (lrunning) {
-			
-			// jw: changed
 			synchronized (app.getRunnables()) {
 				app.getExecutedRunnables().clear();
 				app.getExecutedRunnables().addAll(app.getRunnables());
@@ -153,27 +130,19 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 					}
 				}
 			}
-			/*
-			 * synchronized (app.runnables) { for (int i = 0; i < app.runnables.size; i++) { app.runnables.get(i).run(); }
-			 * app.runnables.clear(); }
-			 */
 			
 			app.getInput().processEvents();
 			frameId++;
 			app.getApplicationListener().render();
 		}
 		
-		// jw: never called on lvp, why? see description in AndroidLiveWallpaper.onPause
 		if (lpause) {
 			app.getApplicationListener().pause();
-			// ((AndroidAudio)app.getAudio()).pause(); jw: moved to AndroidLiveWallpaper.onPause
 			Micro.app.log("AndroidGraphics", "paused");
 		}
 		
-		// jw: never called on lwp, why? see description in AndroidLiveWallpaper.onPause
 		if (ldestroy) {
 			app.getApplicationListener().dispose();
-			// ((AndroidAudio)app.getAudio()).dispose(); jw: moved to AndroidLiveWallpaper.onDestroy
 			Micro.app.log("AndroidGraphics", "destroyed");
 		}
 		
@@ -187,10 +156,8 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 	
 	@Override
 	protected void logManagedCachesStatus() {
-		// to prevent creating too many string buffers in live wallpapers
-		if (AndroidLiveWallpaperService.DEBUG) {
+		if (AndroidLiveWallpaperService.DEBUG)
 			super.logManagedCachesStatus();
-		}
 	}
 	
 }

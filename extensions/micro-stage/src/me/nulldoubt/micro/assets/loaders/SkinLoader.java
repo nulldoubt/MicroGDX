@@ -18,47 +18,36 @@ public class SkinLoader extends AsynchronousAssetLoader<Skin, SkinLoader.SkinPar
 	
 	@Override
 	public Array<AssetDescriptor<?>> getDependencies(String fileName, FileHandle file, SkinParameter parameter) {
-		Array<AssetDescriptor<?>> deps = new Array<>();
+		Array<AssetDescriptor<?>> dependencies = new Array<>();
 		if (parameter == null || parameter.textureAtlasPath == null)
-			deps.add(new AssetDescriptor<>(file.pathWithoutExtension() + ".atlas", TextureAtlas.class));
+			dependencies.add(new AssetDescriptor<>(file.pathWithoutExtension() + ".atlas", TextureAtlas.class));
 		else
-			deps.add(new AssetDescriptor<>(parameter.textureAtlasPath, TextureAtlas.class));
-		return deps;
+			dependencies.add(new AssetDescriptor<>(parameter.textureAtlasPath, TextureAtlas.class));
+		return dependencies;
 	}
 	
 	@Override
-	public void loadAsync(AssetManager manager, String fileName, FileHandle file, SkinParameter parameter) {
-	}
+	public void loadAsync(AssetManager manager, String fileName, FileHandle file, SkinParameter parameter) {}
 	
 	@Override
 	public Skin loadSync(AssetManager manager, String fileName, FileHandle file, SkinParameter parameter) {
 		String textureAtlasPath = file.pathWithoutExtension() + ".atlas";
 		ObjectMap<String, Object> resources = null;
 		if (parameter != null) {
-			if (parameter.textureAtlasPath != null) {
+			if (parameter.textureAtlasPath != null)
 				textureAtlasPath = parameter.textureAtlasPath;
-			}
-			if (parameter.resources != null) {
+			if (parameter.resources != null)
 				resources = parameter.resources;
-			}
 		}
 		TextureAtlas atlas = manager.get(textureAtlasPath, TextureAtlas.class);
 		Skin skin = newSkin(atlas);
-		if (resources != null) {
-			for (Entry<String, Object> entry : resources.entries()) {
+		if (resources != null)
+			for (Entry<String, Object> entry : resources.entries())
 				skin.add(entry.key, entry.value);
-			}
-		}
 		skin.load(file);
 		return skin;
 	}
 	
-	/**
-	 * Override to allow subclasses of Skin to be loaded or the skin instance to be configured.
-	 *
-	 * @param atlas The TextureAtlas that the skin will use.
-	 * @return A new Skin (or subclass of Skin) instance based on the provided TextureAtlas.
-	 */
 	protected Skin newSkin(TextureAtlas atlas) {
 		return new Skin(atlas);
 	}

@@ -1,0 +1,4 @@
+dependencies() {
+    api(project(":extensions:micro-stage"));
+    api(project(":extensions:micro-particles"));
+};

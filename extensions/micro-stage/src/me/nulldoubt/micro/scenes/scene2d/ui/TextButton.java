@@ -22,7 +22,7 @@ import me.nulldoubt.micro.graphics.g2d.BitmapFont;
 import me.nulldoubt.micro.scenes.scene2d.ui.Label.LabelStyle;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
 import me.nulldoubt.micro.utils.Align;
-import com.nulldoubt.micro.utils.Null;
+
 
 /** A button with a child {@link Label} to display text.
  * @author Nathan Sweet */

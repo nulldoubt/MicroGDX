@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class OrderedMap<K, V> extends ObjectMap<K, V> {
 	
-	final Array<K> keys;
+	public final Array<K> keys;
 	
 	public OrderedMap() {
 		keys = new Array<>();

@@ -21,7 +21,7 @@ import me.nulldoubt.micro.graphics.g2d.Batch;
 import me.nulldoubt.micro.graphics.g2d.BitmapFont;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
 import me.nulldoubt.micro.utils.Align;
-import com.nulldoubt.micro.utils.Null;
+
 import me.nulldoubt.micro.utils.Scaling;
 
 /** A checkbox is a button that contains an image indicating the checked or unchecked state and a label.

@@ -17,7 +17,7 @@
 package me.nulldoubt.micro.scenes.scene2d.actions;
 
 import me.nulldoubt.micro.math.Interpolation;
-import com.nulldoubt.micro.utils.Null;
+
 
 /** An action that has an int, whose value is transitioned over time.
  * @author Nathan Sweet */

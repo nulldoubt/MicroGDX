@@ -31,7 +31,7 @@ import me.nulldoubt.micro.scenes.scene2d.ui.Label.LabelStyle;
 import me.nulldoubt.micro.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import me.nulldoubt.micro.scenes.scene2d.utils.ChangeListener;
 import me.nulldoubt.micro.scenes.scene2d.utils.FocusListener;
-import com.nulldoubt.micro.utils.Null;
+
 import me.nulldoubt.micro.utils.collections.ObjectMap;
 
 /** Displays a dialog, which is a window with a title, a content table, and a button table. Methods are provided to add a label to

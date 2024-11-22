@@ -1,61 +1,56 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.scenes.scene2d.actions;
 
 import me.nulldoubt.micro.math.Interpolation;
-import com.nulldoubt.micro.utils.Null;
 
-/** An action that has a float, whose value is transitioned over time.
- * @author Nathan Sweet */
+/**
+ * An action that has a float, whose value is transitioned over time.
+ *
+ * @author Nathan Sweet
+ */
 public class FloatAction extends TemporalAction {
+	
 	private float start, end;
 	private float value;
-
-	/** Creates a FloatAction that transitions from 0 to 1. */
-	public FloatAction () {
+	
+	/**
+	 * Creates a FloatAction that transitions from 0 to 1.
+	 */
+	public FloatAction() {
 		start = 0;
 		end = 1;
 	}
-
-	/** Creates a FloatAction that transitions from start to end. */
-	public FloatAction (float start, float end) {
+	
+	/**
+	 * Creates a FloatAction that transitions from start to end.
+	 */
+	public FloatAction(float start, float end) {
 		this.start = start;
 		this.end = end;
 	}
-
-	/** Creates a FloatAction that transitions from start to end. */
-	public FloatAction (float start, float end, float duration) {
+	
+	/**
+	 * Creates a FloatAction that transitions from start to end.
+	 */
+	public FloatAction(float start, float end, float duration) {
 		super(duration);
 		this.start = start;
 		this.end = end;
 	}
-
-	/** Creates a FloatAction that transitions from start to end. */
-	public FloatAction (float start, float end, float duration, Interpolation interpolation) {
+	
+	/**
+	 * Creates a FloatAction that transitions from start to end.
+	 */
+	public FloatAction(float start, float end, float duration, Interpolation interpolation) {
 		super(duration, interpolation);
 		this.start = start;
 		this.end = end;
 	}
-
-	protected void begin () {
+	
+	protected void begin() {
 		value = start;
 	}
-
-	protected void update (float percent) {
+	
+	protected void update(float percent) {
 		if (percent == 0)
 			value = start;
 		else if (percent == 1)
@@ -63,32 +58,41 @@ public class FloatAction extends TemporalAction {
 		else
 			value = start + (end - start) * percent;
 	}
-
-	/** Gets the current float value. */
-	public float getValue () {
+	
+	/**
+	 * Gets the current float value.
+	 */
+	public float getValue() {
 		return value;
 	}
-
-	/** Sets the current float value. */
-	public void setValue (float value) {
+	
+	/**
+	 * Sets the current float value.
+	 */
+	public void setValue(float value) {
 		this.value = value;
 	}
-
-	public float getStart () {
+	
+	public float getStart() {
 		return start;
 	}
-
-	/** Sets the value to transition from. */
-	public void setStart (float start) {
+	
+	/**
+	 * Sets the value to transition from.
+	 */
+	public void setStart(float start) {
 		this.start = start;
 	}
-
-	public float getEnd () {
+	
+	public float getEnd() {
 		return end;
 	}
-
-	/** Sets the value to transition to. */
-	public void setEnd (float end) {
+	
+	/**
+	 * Sets the value to transition to.
+	 */
+	public void setEnd(float end) {
 		this.end = end;
 	}
+	
 }

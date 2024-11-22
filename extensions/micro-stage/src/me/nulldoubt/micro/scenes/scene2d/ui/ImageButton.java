@@ -18,7 +18,7 @@ package me.nulldoubt.micro.scenes.scene2d.ui;
 
 import me.nulldoubt.micro.graphics.g2d.Batch;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
-import com.nulldoubt.micro.utils.Null;
+
 import me.nulldoubt.micro.utils.Scaling;
 
 /** A button with a child {@link Image} to display an image. This is useful when the button must be larger than the image and the

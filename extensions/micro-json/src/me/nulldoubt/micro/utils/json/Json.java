@@ -3,9 +3,9 @@ package me.nulldoubt.micro.utils.json;
 import me.nulldoubt.micro.exceptions.SerializationException;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.utils.Streams;
-import me.nulldoubt.micro.utils.collections.*;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.Queue;
+import me.nulldoubt.micro.utils.collections.*;
 import me.nulldoubt.micro.utils.json.JsonValue.PrettyPrintSettings;
 import me.nulldoubt.micro.utils.json.JsonWriter.OutputType;
 
@@ -305,7 +305,7 @@ public class Json {
 			Field field = metadata.field;
 			try {
 				values[defaultIndex++] = field.get(object);
-			} catch (SecurityException e) {
+			} catch (SecurityException | IllegalAccessException e) {
 				throw new SerializationException("Error accessing field: " + field.getName() + " (" + type.getName() + ")", e);
 			} catch (SerializationException e) {
 				e.addTrace(field + " (" + type.getName() + ")");
@@ -460,13 +460,13 @@ public class Json {
 					if (typeName != null && actualType != ArrayList.class && (knownType == null || knownType != actualType)) {
 						writeObjectStart(actualType, knownType);
 						writeArrayStart("items");
-						for (Object item : (Collection) value)
+						for (Object item : collection)
 							writeValue(item, elementType, null);
 						writeArrayEnd();
 						writeObjectEnd();
 					} else {
 						writeArrayStart();
-						for (Object item : (Collection) value)
+						for (Object item : collection)
 							writeValue(item, elementType, null);
 						writeArrayEnd();
 					}
@@ -486,7 +486,6 @@ public class Json {
 				return;
 			}
 			
-			// JSON object special cases.
 			if (value instanceof ObjectMap) {
 				if (knownType == null)
 					knownType = ObjectMap.class;
@@ -560,17 +559,16 @@ public class Json {
 				writeObjectStart(actualType, knownType);
 				writer.name("values");
 				writeArrayStart();
-				for (IntSetIterator iter = ((IntSet) value).iterator(); iter.hasNext; )
+				for (IntSet.IntSetIterator iter = ((IntSet) value).iterator(); iter.hasNext; )
 					writeValue(iter.next(), Integer.class, null);
 				writeArrayEnd();
 				writeObjectEnd();
 				return;
 			}
-			if (value instanceof ArrayMap) {
+			if (value instanceof ArrayMap map) {
 				if (knownType == null)
 					knownType = ArrayMap.class;
 				writeObjectStart(actualType, knownType);
-				ArrayMap map = (ArrayMap) value;
 				for (int i = 0, n = map.size; i < n; i++) {
 					writer.name(convertToString(map.keys[i]));
 					writeValue(map.values[i], elementType, null);
@@ -996,7 +994,7 @@ public class Json {
 				Class componentType = type.getComponentType();
 				if (elementType == null)
 					elementType = componentType;
-				Object result = java.lang.reflect.Array..newInstance(componentType, jsonData.size);
+				Object result = java.lang.reflect.Array.newInstance(componentType, jsonData.size);
 				int i = 0;
 				for (JsonValue child = jsonData.child; child != null; child = child.next)
 					java.lang.reflect.Array.set(result, i++, readValue(elementType, null, child));
@@ -1082,8 +1080,8 @@ public class Json {
 				throw new SerializationException("To object is missing field: " + entry.key);
 			try {
 				toField.field.set(to, fromField.get(from));
-			} catch (SecurityException ex) {
-				throw new SerializationException("Error copying field: " + fromField.getName(), ex);
+			} catch (SecurityException | IllegalAccessException e) {
+				throw new SerializationException("Error copying field: " + fromField.getName(), e);
 			}
 		}
 	}

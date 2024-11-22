@@ -1,19 +1,3 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.backends.android;
 
 import android.app.Activity;
@@ -24,48 +8,39 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
-
-import me.nulldoubt.micro.Audio;
 import me.nulldoubt.micro.Files.FileType;
 import me.nulldoubt.micro.audio.AudioDevice;
 import me.nulldoubt.micro.audio.AudioRecorder;
 import me.nulldoubt.micro.audio.Music;
 import me.nulldoubt.micro.audio.Sound;
-import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.files.FileHandle;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** An implementation of the {@link Audio} interface for Android.
- * 
- * @author mzechner */
 public class DefaultAndroidAudio implements AndroidAudio {
+	
 	private final SoundPool soundPool;
 	private final AudioManager manager;
-	private final List<AndroidMusic> musics = new ArrayList<AndroidMusic>();
-
-	public DefaultAndroidAudio (Context context, AndroidApplicationConfiguration config) {
+	private final List<AndroidMusic> musics = new ArrayList<>();
+	
+	public DefaultAndroidAudio(Context context, AndroidApplicationConfiguration config) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			AudioAttributes audioAttrib = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME)
-				.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
+					.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
 			soundPool = new SoundPool.Builder().setAudioAttributes(audioAttrib).setMaxStreams(config.maxSimultaneousSounds).build();
-		} else {
+		} else
 			soundPool = new SoundPool(config.maxSimultaneousSounds, AudioManager.STREAM_MUSIC, 0);// srcQuality: the sample-rate
-																																// converter quality. Currently
-																																// has no effect. Use 0 for the
-																																// default.
-		}
-		manager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-		if (context instanceof Activity) {
-			((Activity)context).setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		}
+		manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		if (context instanceof Activity)
+			((Activity) context).setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	}
-
+	
 	@Override
-	public void pause () {
+	public void pause() {
 		synchronized (musics) {
 			for (AndroidMusic music : musics) {
 				if (music.isPlaying()) {
@@ -77,30 +52,29 @@ public class DefaultAndroidAudio implements AndroidAudio {
 		}
 		this.soundPool.autoPause();
 	}
-
+	
 	@Override
-	public void resume () {
+	public void resume() {
 		synchronized (musics) {
 			for (int i = 0; i < musics.size(); i++) {
-				if (musics.get(i).wasPlaying) musics.get(i).play();
+				if (musics.get(i).wasPlaying)
+					musics.get(i).play();
 			}
 		}
 		this.soundPool.autoResume();
 	}
-
-	/** {@inheritDoc} */
+	
 	@Override
-	public AudioDevice newAudioDevice (int samplingRate, boolean mono) {
+	public AudioDevice newAudioDevice(int samplingRate, boolean mono) {
 		return new AndroidAudioDevice(samplingRate, mono);
 	}
-
-	/** {@inheritDoc} */
+	
 	@Override
-	public Music newMusic (FileHandle file) {
-		AndroidFileHandle aHandle = (AndroidFileHandle)file;
-
+	public Music newMusic(FileHandle file) {
+		AndroidFileHandle aHandle = (AndroidFileHandle) file;
+		
 		MediaPlayer mediaPlayer = createMediaPlayer();
-
+		
 		if (aHandle.type() == FileType.Internal) {
 			try {
 				AssetFileDescriptor descriptor = aHandle.getAssetFileDescriptor();
@@ -112,9 +86,8 @@ public class DefaultAndroidAudio implements AndroidAudio {
 					musics.add(music);
 				}
 				return music;
-			} catch (Exception ex) {
-				throw new MicroRuntimeException(
-					"Error loading audio file: " + file + "\nNote: Internal audio files must be placed in the assets directory.", ex);
+			} catch (Exception e) {
+				throw new MicroRuntimeException("Error loading audio file: " + file + "\nNote: Internal audio files must be placed in the assets directory.", e);
 			}
 		} else {
 			try {
@@ -129,47 +102,40 @@ public class DefaultAndroidAudio implements AndroidAudio {
 				throw new MicroRuntimeException("Error loading audio file: " + file, ex);
 			}
 		}
-
+		
 	}
-
+	
 	@Override
-	public boolean switchOutputDevice (String device) {
+	public boolean switchOutputDevice(String device) {
 		return true;
 	}
-
+	
 	@Override
-	public String[] getAvailableOutputDevices () {
+	public String[] getAvailableOutputDevices() {
 		return new String[0];
 	}
-
-	/** Creates a new Music instance from the provided FileDescriptor. It is the caller's responsibility to close the file
-	 * descriptor. It is safe to do so as soon as this call returns.
-	 * 
-	 * @param fd the FileDescriptor from which to create the Music
-	 * 
-	 * @see Audio#newMusic(FileHandle) */
-	public Music newMusic (FileDescriptor fd) {
+	
+	public Music newMusic(FileDescriptor fd) {
 		MediaPlayer mediaPlayer = createMediaPlayer();
-
+		
 		try {
 			mediaPlayer.setDataSource(fd);
 			mediaPlayer.prepare();
-
+			
 			AndroidMusic music = new AndroidMusic(this, mediaPlayer);
 			synchronized (musics) {
 				musics.add(music);
 			}
 			return music;
-		} catch (Exception ex) {
-			throw new MicroRuntimeException("Error loading audio from FileDescriptor", ex);
+		} catch (Exception e) {
+			throw new MicroRuntimeException("Error loading audio from FileDescriptor", e);
 		}
 	}
-
-	/** {@inheritDoc} */
+	
 	@Override
-	public Sound newSound (FileHandle file) {
+	public Sound newSound(FileHandle file) {
 		AndroidSound androidSound;
-		AndroidFileHandle aHandle = (AndroidFileHandle)file;
+		AndroidFileHandle aHandle = (AndroidFileHandle) file;
 		if (aHandle.type() == FileType.Internal) {
 			try {
 				AssetFileDescriptor descriptor = aHandle.getAssetFileDescriptor();
@@ -177,7 +143,7 @@ public class DefaultAndroidAudio implements AndroidAudio {
 				descriptor.close();
 			} catch (IOException ex) {
 				throw new MicroRuntimeException(
-					"Error loading audio file: " + file + "\nNote: Internal audio files must be placed in the assets directory.", ex);
+						"Error loading audio file: " + file + "\nNote: Internal audio files must be placed in the assets directory.", ex);
 			}
 		} else {
 			try {
@@ -188,41 +154,33 @@ public class DefaultAndroidAudio implements AndroidAudio {
 		}
 		return androidSound;
 	}
-
-	/** {@inheritDoc} */
+	
 	@Override
-	public AudioRecorder newAudioRecorder (int samplingRate, boolean mono) {
+	public AudioRecorder newAudioRecorder(int samplingRate, boolean mono) {
 		return new AndroidAudioRecorder(samplingRate, mono);
 	}
-
-	/** Kills the soundpool and all other resources */
+	
 	@Override
-	public void dispose () {
+	public void dispose() {
 		synchronized (musics) {
-			// gah i hate myself.... music.dispose() removes the music from the list...
-			ArrayList<AndroidMusic> musicsCopy = new ArrayList<AndroidMusic>(musics);
-			for (AndroidMusic music : musicsCopy) {
+			final ArrayList<AndroidMusic> musicsCopy = new ArrayList<>(musics);
+			for (AndroidMusic music : musicsCopy)
 				music.dispose();
-			}
 		}
 		soundPool.release();
 	}
-
+	
 	@Override
-	public void notifyMusicDisposed (AndroidMusic music) {
+	public void notifyMusicDisposed(AndroidMusic music) {
 		synchronized (musics) {
 			musics.remove(this);
 		}
 	}
-
-	protected MediaPlayer createMediaPlayer () {
-		MediaPlayer mediaPlayer = new MediaPlayer();
-		if (Build.VERSION.SDK_INT <= 21) {
-			mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		} else {
-			mediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-				.setUsage(AudioAttributes.USAGE_GAME).build());
-		}
+	
+	protected MediaPlayer createMediaPlayer() {
+		final MediaPlayer mediaPlayer = new MediaPlayer();
+		mediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).setUsage(AudioAttributes.USAGE_GAME).build());
 		return mediaPlayer;
 	}
+	
 }

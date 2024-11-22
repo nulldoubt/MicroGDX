@@ -27,7 +27,7 @@ import me.nulldoubt.micro.scenes.scene2d.utils.NinePatchDrawable;
 import me.nulldoubt.micro.scenes.scene2d.utils.TextureRegionDrawable;
 import me.nulldoubt.micro.scenes.scene2d.utils.TransformDrawable;
 import me.nulldoubt.micro.utils.Align;
-import com.nulldoubt.micro.utils.Null;
+
 import me.nulldoubt.micro.utils.Scaling;
 
 /** Displays a {@link Drawable}, scaled various way within the widgets bounds. The preferred size is the min size of the drawable.

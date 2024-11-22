@@ -1,58 +1,54 @@
-
 package me.nulldoubt.micro.backends.android;
 
 import me.nulldoubt.micro.audio.AudioDevice;
 import me.nulldoubt.micro.audio.AudioRecorder;
 import me.nulldoubt.micro.audio.Music;
 import me.nulldoubt.micro.audio.Sound;
-import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.files.FileHandle;
 
 public class DisabledAndroidAudio implements AndroidAudio {
-
+	
 	@Override
-	public void pause () {
-	}
-
+	public void pause() {}
+	
 	@Override
-	public void resume () {
-	}
-
+	public void resume() {}
+	
 	@Override
-	public void notifyMusicDisposed (AndroidMusic music) {
-	}
-
+	public void notifyMusicDisposed(AndroidMusic music) {}
+	
 	@Override
-	public AudioDevice newAudioDevice (int samplingRate, boolean mono) {
+	public AudioDevice newAudioDevice(int samplingRate, boolean mono) {
 		throw new MicroRuntimeException("Android audio is not enabled by the application config");
 	}
-
+	
 	@Override
-	public AudioRecorder newAudioRecorder (int samplingRate, boolean mono) {
+	public AudioRecorder newAudioRecorder(int samplingRate, boolean mono) {
 		throw new MicroRuntimeException("Android audio is not enabled by the application config");
 	}
-
+	
 	@Override
-	public Sound newSound (FileHandle file) {
+	public Sound newSound(FileHandle file) {
 		throw new MicroRuntimeException("Android audio is not enabled by the application config");
 	}
-
+	
 	@Override
-	public Music newMusic (FileHandle file) {
+	public Music newMusic(FileHandle file) {
 		throw new MicroRuntimeException("Android audio is not enabled by the application config");
 	}
-
+	
 	@Override
-	public boolean switchOutputDevice (String device) {
+	public boolean switchOutputDevice(String device) {
 		return false;
 	}
-
+	
 	@Override
-	public String[] getAvailableOutputDevices () {
+	public String[] getAvailableOutputDevices() {
 		return new String[0];
 	}
-
+	
 	@Override
-	public void dispose () {
-	}
+	public void dispose() {}
+	
 }

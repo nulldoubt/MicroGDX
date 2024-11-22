@@ -30,7 +30,7 @@ import me.nulldoubt.micro.scenes.scene2d.Touchable;
 import me.nulldoubt.micro.scenes.scene2d.ui.Label.LabelStyle;
 import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
 import me.nulldoubt.micro.utils.Align;
-import com.nulldoubt.micro.utils.Null;
+
 
 /** A table that can be dragged and act as a modal window. The top padding is used as the window's title height.
  * <p>

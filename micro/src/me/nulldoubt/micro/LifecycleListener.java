@@ -1,11 +1,11 @@
 package me.nulldoubt.micro;
 
-public interface LifecycleListener {
+import me.nulldoubt.micro.utils.Disposable;
+
+public interface LifecycleListener extends Disposable {
 	
-	void pause();
+	default void pause() {}
 	
-	void resume();
-	
-	void dispose();
+	default void resume() {}
 	
 }

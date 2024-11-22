@@ -30,6 +30,7 @@ x86/
 x86_64/
 ipch/
 /dist
+/micro/jni/jni-headers
 
 *.a
 *.a.tvos

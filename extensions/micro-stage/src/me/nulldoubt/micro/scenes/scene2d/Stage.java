@@ -9,17 +9,17 @@ import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.OrthographicCamera;
 import me.nulldoubt.micro.graphics.g2d.Batch;
-import com.nulldoubt.micro.graphics.glutils.ShapeRenderer;
+import me.nulldoubt.micro.graphics.glutils.ShapeRenderer;
 import me.nulldoubt.micro.math.Matrix4;
-import me.nulldoubt.micro.math.shapes.Rectangle;
 import me.nulldoubt.micro.math.Vector2;
+import me.nulldoubt.micro.math.shapes.Rectangle;
 import me.nulldoubt.micro.scenes.scene2d.InputEvent.Type;
 import me.nulldoubt.micro.scenes.scene2d.ui.Table;
 import me.nulldoubt.micro.scenes.scene2d.ui.Table.Debug;
-import me.nulldoubt.micro.scenes.scene2d.utils.FocusListener;
 import me.nulldoubt.micro.scenes.scene2d.utils.FocusListener.FocusEvent;
-import me.nulldoubt.micro.utils.*;
-import com.nulldoubt.micro.utils.*;
+import me.nulldoubt.micro.utils.Disposable;
+import me.nulldoubt.micro.utils.Scaling;
+import me.nulldoubt.micro.utils.Scissors;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.SnapshotArray;
 import me.nulldoubt.micro.utils.pools.Pool.Poolable;
@@ -45,7 +45,7 @@ public class Stage implements InputProcessor, Disposable {
 	private int mouseScreenX, mouseScreenY;
 	private Actor mouseOverActor;
 	private Actor keyboardFocus, scrollFocus;
-	final SnapshotArray<TouchFocus> touchFocuses = new SnapshotArray(true, 4, TouchFocus.class);
+	final SnapshotArray<TouchFocus> touchFocuses = new SnapshotArray<>(true, 4, TouchFocus.class);
 	private boolean actionsRequestRendering = true;
 	
 	private ShapeRenderer debugShapes;
@@ -72,12 +72,6 @@ public class Stage implements InputProcessor, Disposable {
 		ownsBatch = true;
 	}
 	
-	/**
-	 * Creates a stage with the specified viewport and batch. This can be used to specify an existing batch or to customize which
-	 * batch implementation is used.
-	 *
-	 * @param batch Will not be disposed if {@link #dispose()} is called, handle disposal yourself.
-	 */
 	public Stage(Viewport viewport, Batch batch) {
 		if (viewport == null)
 			throw new IllegalArgumentException("viewport cannot be null.");
@@ -93,7 +87,7 @@ public class Stage implements InputProcessor, Disposable {
 	}
 	
 	public void draw() {
-		Camera camera = viewport.getCamera();
+		Camera camera = viewport.camera;
 		camera.update();
 		
 		if (!root.isVisible())
@@ -147,7 +141,7 @@ public class Stage implements InputProcessor, Disposable {
 		}
 		
 		Micro.gl.glEnable(GL20.GL_BLEND);
-		debugShapes.setProjectionMatrix(viewport.getCamera().combined);
+		debugShapes.setProjectionMatrix(viewport.camera.combined);
 		debugShapes.begin();
 		root.drawDebug(debugShapes);
 		debugShapes.end();
@@ -212,7 +206,7 @@ public class Stage implements InputProcessor, Disposable {
 		
 		// Exit overLast.
 		if (overLast != null) {
-			InputEvent event = Pools.obtain(InputEvent.class);
+			InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 			event.setType(InputEvent.Type.exit);
 			event.setStage(this);
 			event.setStageX(tempCoords.x);
@@ -225,7 +219,7 @@ public class Stage implements InputProcessor, Disposable {
 		
 		// Enter over.
 		if (over != null) {
-			InputEvent event = Pools.obtain(InputEvent.class);
+			InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 			event.setType(InputEvent.Type.enter);
 			event.setStage(this);
 			event.setStageX(tempCoords.x);
@@ -240,7 +234,7 @@ public class Stage implements InputProcessor, Disposable {
 	
 	private void fireExit(Actor actor, int screenX, int screenY, int pointer) {
 		screenToStageCoordinates(tempCoords.set(screenX, screenY));
-		InputEvent event = Pools.obtain(InputEvent.class);
+		InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 		event.setType(InputEvent.Type.exit);
 		event.setStage(this);
 		event.setStageX(tempCoords.x);
@@ -265,7 +259,7 @@ public class Stage implements InputProcessor, Disposable {
 		
 		screenToStageCoordinates(tempCoords.set(screenX, screenY));
 		
-		InputEvent event = Pools.obtain(InputEvent.class);
+		InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 		event.setType(Type.touchDown);
 		event.setStage(this);
 		event.setStageX(tempCoords.x);
@@ -300,7 +294,7 @@ public class Stage implements InputProcessor, Disposable {
 		
 		screenToStageCoordinates(tempCoords.set(screenX, screenY));
 		
-		InputEvent event = Pools.obtain(InputEvent.class);
+		InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 		event.setType(Type.touchDragged);
 		event.setStage(this);
 		event.setStageX(tempCoords.x);
@@ -341,7 +335,7 @@ public class Stage implements InputProcessor, Disposable {
 		
 		screenToStageCoordinates(tempCoords.set(screenX, screenY));
 		
-		InputEvent event = Pools.obtain(InputEvent.class);
+		InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 		event.setType(Type.touchUp);
 		event.setStage(this);
 		event.setStageX(tempCoords.x);
@@ -388,7 +382,7 @@ public class Stage implements InputProcessor, Disposable {
 		
 		screenToStageCoordinates(tempCoords.set(screenX, screenY));
 		
-		InputEvent event = Pools.obtain(InputEvent.class);
+		InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 		event.setType(Type.mouseMoved);
 		event.setStage(this);
 		event.setStageX(tempCoords.x);
@@ -413,7 +407,7 @@ public class Stage implements InputProcessor, Disposable {
 		
 		screenToStageCoordinates(tempCoords.set(mouseScreenX, mouseScreenY));
 		
-		InputEvent event = Pools.obtain(InputEvent.class);
+		InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 		event.setType(InputEvent.Type.scrolled);
 		event.setStage(this);
 		event.setStageX(tempCoords.x);
@@ -432,7 +426,7 @@ public class Stage implements InputProcessor, Disposable {
 	 */
 	public boolean keyDown(int keyCode) {
 		Actor target = keyboardFocus == null ? root : keyboardFocus;
-		InputEvent event = Pools.obtain(InputEvent.class);
+		InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 		event.setType(InputEvent.Type.keyDown);
 		event.setStage(this);
 		event.setKeyCode(keyCode);
@@ -448,7 +442,7 @@ public class Stage implements InputProcessor, Disposable {
 	 */
 	public boolean keyUp(int keyCode) {
 		Actor target = keyboardFocus == null ? root : keyboardFocus;
-		InputEvent event = Pools.obtain(InputEvent.class);
+		InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 		event.setType(InputEvent.Type.keyUp);
 		event.setStage(this);
 		event.setKeyCode(keyCode);
@@ -464,7 +458,7 @@ public class Stage implements InputProcessor, Disposable {
 	 */
 	public boolean keyTyped(char character) {
 		Actor target = keyboardFocus == null ? root : keyboardFocus;
-		InputEvent event = Pools.obtain(InputEvent.class);
+		InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 		event.setType(InputEvent.Type.keyTyped);
 		event.setStage(this);
 		event.setCharacter(character);
@@ -474,14 +468,8 @@ public class Stage implements InputProcessor, Disposable {
 		return handled;
 	}
 	
-	/**
-	 * Adds the listener to be notified for all touchDragged and touchUp events for the specified pointer and button. Touch focus
-	 * is added automatically when true is returned from {@link InputListener#touchDown(InputEvent, float, float, int, int)
-	 * touchDown}. The specified actors will be used as the {@link Event#getListenerActor() listener actor} and
-	 * {@link Event#getTarget() target} for the touchDragged and touchUp events.
-	 */
 	public void addTouchFocus(EventListener listener, Actor listenerActor, Actor target, int pointer, int button) {
-		TouchFocus focus = Pools.obtain(TouchFocus.class);
+		TouchFocus focus = Pools.obtain(TouchFocus.class, TouchFocus::new);
 		focus.listenerActor = listenerActor;
 		focus.target = target;
 		focus.listener = listener;
@@ -490,10 +478,6 @@ public class Stage implements InputProcessor, Disposable {
 		touchFocuses.add(focus);
 	}
 	
-	/**
-	 * Removes touch focus for the specified listener, pointer, and button. Note the listener will not receive a touchUp event
-	 * when this method is used.
-	 */
 	public void removeTouchFocus(EventListener listener, Actor listenerActor, Actor target, int pointer, int button) {
 		SnapshotArray<TouchFocus> touchFocuses = this.touchFocuses;
 		for (int i = touchFocuses.size - 1; i >= 0; i--) {
@@ -506,14 +490,7 @@ public class Stage implements InputProcessor, Disposable {
 		}
 	}
 	
-	/**
-	 * Cancels touch focus for all listeners with the specified listener actor.
-	 *
-	 * @see #cancelTouchFocus()
-	 */
 	public void cancelTouchFocus(Actor listenerActor) {
-		// Cancel all current touch focuses for the specified listener, allowing for concurrent modification, and never cancel the
-		// same focus twice.
 		InputEvent event = null;
 		SnapshotArray<TouchFocus> touchFocuses = this.touchFocuses;
 		TouchFocus[] items = touchFocuses.begin();
@@ -525,7 +502,7 @@ public class Stage implements InputProcessor, Disposable {
 				continue; // Touch focus already gone.
 			
 			if (event == null) {
-				event = Pools.obtain(InputEvent.class);
+				event = Pools.obtain(InputEvent.class, InputEvent::new);
 				event.setType(InputEvent.Type.touchUp);
 				event.setStage(this);
 				event.setStageX(Integer.MIN_VALUE);
@@ -554,13 +531,8 @@ public class Stage implements InputProcessor, Disposable {
 		cancelTouchFocusExcept(null, null);
 	}
 	
-	/**
-	 * Cancels touch focus for all listeners except the specified listener.
-	 *
-	 * @see #cancelTouchFocus()
-	 */
 	public void cancelTouchFocusExcept(EventListener exceptListener, Actor exceptActor) {
-		InputEvent event = Pools.obtain(InputEvent.class);
+		InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
 		event.setType(InputEvent.Type.touchUp);
 		event.setStage(this);
 		event.setStageX(Integer.MIN_VALUE);
@@ -597,65 +569,30 @@ public class Stage implements InputProcessor, Disposable {
 		root.addActor(actor);
 	}
 	
-	/**
-	 * Adds an action to the root of the stage.
-	 *
-	 * @see Group#addAction(Action)
-	 */
 	public void addAction(Action action) {
 		root.addAction(action);
 	}
 	
-	/**
-	 * Returns the root's child actors.
-	 *
-	 * @see Group#getChildren()
-	 */
 	public Array<Actor> getActors() {
 		return root.children;
 	}
 	
-	/**
-	 * Adds a listener to the root.
-	 *
-	 * @see Actor#addListener(EventListener)
-	 */
 	public boolean addListener(EventListener listener) {
 		return root.addListener(listener);
 	}
 	
-	/**
-	 * Removes a listener from the root.
-	 *
-	 * @see Actor#removeListener(EventListener)
-	 */
 	public boolean removeListener(EventListener listener) {
 		return root.removeListener(listener);
 	}
 	
-	/**
-	 * Adds a capture listener to the root.
-	 *
-	 * @see Actor#addCaptureListener(EventListener)
-	 */
 	public boolean addCaptureListener(EventListener listener) {
 		return root.addCaptureListener(listener);
 	}
 	
-	/**
-	 * Removes a listener from the root.
-	 *
-	 * @see Actor#removeCaptureListener(EventListener)
-	 */
 	public boolean removeCaptureListener(EventListener listener) {
 		return root.removeCaptureListener(listener);
 	}
 	
-	/**
-	 * Called just before an actor is removed from a group.
-	 * <p>
-	 * The default implementation fires an {@link InputEvent.Type#exit} event if a pointer had entered the actor.
-	 */
 	protected void actorRemoved(Actor actor) {
 		for (int pointer = 0, n = pointerOverActors.length; pointer < n; pointer++) {
 			if (actor == pointerOverActors[pointer]) {
@@ -698,16 +635,10 @@ public class Stage implements InputProcessor, Disposable {
 			setKeyboardFocus(null);
 	}
 	
-	/**
-	 * Sets the actor that will receive key events.
-	 *
-	 * @param actor May be null.
-	 * @return true if the unfocus and focus events were not cancelled by a {@link FocusListener}.
-	 */
 	public boolean setKeyboardFocus(Actor actor) {
 		if (keyboardFocus == actor)
 			return true;
-		FocusEvent event = Pools.obtain(FocusEvent.class);
+		FocusEvent event = Pools.obtain(FocusEvent.class, FocusEvent::new);
 		event.setStage(this);
 		event.setType(FocusEvent.Type.keyboard);
 		Actor oldKeyboardFocus = keyboardFocus;
@@ -741,16 +672,10 @@ public class Stage implements InputProcessor, Disposable {
 		return keyboardFocus;
 	}
 	
-	/**
-	 * Sets the actor that will receive scroll events.
-	 *
-	 * @param actor May be null.
-	 * @return true if the unfocus and focus events were not cancelled by a {@link FocusListener}.
-	 */
 	public boolean setScrollFocus(Actor actor) {
 		if (scrollFocus == actor)
 			return true;
-		FocusEvent event = Pools.obtain(FocusEvent.class);
+		FocusEvent event = Pools.obtain(FocusEvent.class, FocusEvent::new);
 		event.setStage(this);
 		event.setType(FocusEvent.Type.scroll);
 		Actor oldScrollFocus = scrollFocus;
@@ -800,21 +725,21 @@ public class Stage implements InputProcessor, Disposable {
 	 * The viewport's world width.
 	 */
 	public float getWidth() {
-		return viewport.getWorldWidth();
+		return viewport.worldWidth;
 	}
 	
 	/**
 	 * The viewport's world height.
 	 */
 	public float getHeight() {
-		return viewport.getWorldHeight();
+		return viewport.worldHeight;
 	}
 	
 	/**
 	 * The viewport's camera.
 	 */
 	public Camera getCamera() {
-		return viewport.getCamera();
+		return viewport.camera;
 	}
 	
 	/**
@@ -966,12 +891,6 @@ public class Stage implements InputProcessor, Disposable {
 			root.setDebug(false, true);
 	}
 	
-	/**
-	 * If not {@link Debug#none}, debug is enabled only for the first ascendant of the actor under the mouse that is a table. Can
-	 * be combined with {@link #setDebugAll(boolean)}.
-	 *
-	 * @param debugTableUnderMouse May be null for {@link Debug#none}.
-	 */
 	public void setDebugTableUnderMouse(Debug debugTableUnderMouse) {
 		if (debugTableUnderMouse == null)
 			debugTableUnderMouse = Debug.none;
@@ -984,10 +903,6 @@ public class Stage implements InputProcessor, Disposable {
 			root.setDebug(false, true);
 	}
 	
-	/**
-	 * If true, debug is enabled only for the first ascendant of the actor under the mouse that is a table. Can be combined with
-	 * {@link #setDebugAll(boolean)}.
-	 */
 	public void setDebugTableUnderMouse(boolean debugTableUnderMouse) {
 		setDebugTableUnderMouse(debugTableUnderMouse ? Debug.all : Debug.none);
 	}
@@ -1000,23 +915,15 @@ public class Stage implements InputProcessor, Disposable {
 			debugShapes.dispose();
 	}
 	
-	/**
-	 * Check if screen coordinates are inside the viewport's screen area.
-	 */
 	protected boolean isInsideViewport(int screenX, int screenY) {
-		int x0 = viewport.getScreenX();
-		int x1 = x0 + viewport.getScreenWidth();
-		int y0 = viewport.getScreenY();
-		int y1 = y0 + viewport.getScreenHeight();
+		int x0 = viewport.screenX;
+		int x1 = x0 + viewport.screenWidth;
+		int y0 = viewport.screenY;
+		int y1 = y0 + viewport.screenHeight;
 		screenY = Micro.graphics.getHeight() - 1 - screenY;
 		return screenX >= x0 && screenX < x1 && screenY >= y0 && screenY < y1;
 	}
 	
-	/**
-	 * Internal class for managing touch focus. Public only for GWT.
-	 *
-	 * @author Nathan Sweet
-	 */
 	public static final class TouchFocus implements Poolable {
 		
 		EventListener listener;

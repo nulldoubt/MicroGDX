@@ -1,3 +1,5 @@
 dependencies {
+    api(project(":extensions:micro-collections"));
     api(project(":extensions:micro-json"));
+    api(project(":extensions:micro-shaperenderer"));
 }

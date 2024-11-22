@@ -17,7 +17,7 @@
 package me.nulldoubt.micro.scenes.scene2d;
 
 import me.nulldoubt.micro.math.Vector2;
-import com.nulldoubt.micro.utils.Null;
+
 
 /** EventListener for low-level input events. Unpacks {@link InputEvent}s and calls the appropriate method. By default the methods
  * here do nothing with the event. Users are expected to override the methods they are interested in, like this:

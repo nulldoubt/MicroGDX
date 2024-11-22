@@ -33,7 +33,7 @@ import me.nulldoubt.micro.scenes.scene2d.utils.Layout;
 import me.nulldoubt.micro.scenes.scene2d.utils.Selection;
 import me.nulldoubt.micro.scenes.scene2d.utils.UIUtils;
 import me.nulldoubt.micro.utils.collections.Array;
-import com.nulldoubt.micro.utils.Null;
+
 
 /** A tree widget where each node has an icon, actor, and child nodes.
  * <p>
