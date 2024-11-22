@@ -1,12 +1,12 @@
-package me.nulldoubt.micro.utils;
+package me.nulldoubt.micro.utils.base64;
 
 import me.nulldoubt.micro.utils.strings.StringBuilder;
 
 import java.nio.charset.StandardCharsets;
 
-public class Base64Coder {
+public class Base64 {
 	
-	private Base64Coder() {}
+	private Base64() {}
 	
 	public static class CharMap {
 		

@@ -1,8 +1,9 @@
-package me.nulldoubt.micro.utils;
+package me.nulldoubt.micro.utils.xml;
 
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.exceptions.SerializationException;
 import me.nulldoubt.micro.files.FileHandle;
+import me.nulldoubt.micro.utils.Streams;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.ObjectMap;
 import me.nulldoubt.micro.utils.collections.ObjectMap.Entry;

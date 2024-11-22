@@ -1,4 +1,4 @@
-package me.nulldoubt.micro.maps.tiled;
+package me.nulldoubt.micro.maps.tiled.loaders;
 
 import me.nulldoubt.micro.assets.AssetDescriptor;
 import me.nulldoubt.micro.assets.AssetManager;
@@ -12,8 +12,11 @@ import me.nulldoubt.micro.graphics.g2d.TextureAtlas.AtlasRegion;
 import me.nulldoubt.micro.graphics.g2d.TextureRegion;
 import me.nulldoubt.micro.maps.ImageResolver;
 import me.nulldoubt.micro.maps.MapProperties;
-import me.nulldoubt.micro.utils.XmlReader.Element;
+import me.nulldoubt.micro.maps.tiled.TiledMap;
+import me.nulldoubt.micro.maps.tiled.TiledMapTile;
+import me.nulldoubt.micro.maps.tiled.TiledMapTileSet;
 import me.nulldoubt.micro.utils.collections.Array;
+import me.nulldoubt.micro.utils.xml.XmlReader.Element;
 
 public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasTiledMapLoaderParameters> {
 	

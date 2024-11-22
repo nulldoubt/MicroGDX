@@ -1,4 +1,4 @@
-package me.nulldoubt.micro.maps.tiled;
+package me.nulldoubt.micro.maps.tiled.loaders;
 
 import me.nulldoubt.micro.assets.AssetDescriptor;
 import me.nulldoubt.micro.assets.AssetLoaderParameters;
@@ -13,13 +13,14 @@ import me.nulldoubt.micro.maps.ImageResolver;
 import me.nulldoubt.micro.maps.ImageResolver.AssetManagerImageResolver;
 import me.nulldoubt.micro.maps.ImageResolver.DirectImageResolver;
 import me.nulldoubt.micro.maps.MapProperties;
+import me.nulldoubt.micro.maps.tiled.*;
 import me.nulldoubt.micro.maps.tiled.TiledMapTileLayer.Cell;
 import me.nulldoubt.micro.maps.tiled.tiles.AnimatedTiledMapTile;
 import me.nulldoubt.micro.maps.tiled.tiles.StaticTiledMapTile;
-import me.nulldoubt.micro.utils.XmlReader;
-import me.nulldoubt.micro.utils.XmlReader.Element;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.ObjectMap;
+import me.nulldoubt.micro.utils.xml.XmlReader;
+import me.nulldoubt.micro.utils.xml.XmlReader.Element;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
@@ -43,7 +44,7 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
 		try {
 			FileHandle tideFile = resolve(fileName);
 			root = xml.parse(tideFile);
-			ObjectMap<String, Texture> textures = new ObjectMap<String, Texture>();
+			ObjectMap<String, Texture> textures = new ObjectMap<>();
 			for (FileHandle textureFile : loadTileSheets(root, tideFile)) {
 				textures.put(textureFile.path(), new Texture(textureFile));
 			}

@@ -1,4 +1,4 @@
-package me.nulldoubt.micro.maps.tiled;
+package me.nulldoubt.micro.maps.tiled.loaders;
 
 import me.nulldoubt.micro.assets.AssetDescriptor;
 import me.nulldoubt.micro.assets.AssetManager;
@@ -8,12 +8,12 @@ import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.g2d.TextureRegion;
 import me.nulldoubt.micro.maps.ImageResolver;
-import me.nulldoubt.micro.maps.ImageResolver.AssetManagerImageResolver;
-import me.nulldoubt.micro.maps.ImageResolver.DirectImageResolver;
 import me.nulldoubt.micro.maps.MapProperties;
-import me.nulldoubt.micro.utils.XmlReader.Element;
+import me.nulldoubt.micro.maps.tiled.TiledMap;
+import me.nulldoubt.micro.maps.tiled.TiledMapTileSet;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.ObjectMap;
+import me.nulldoubt.micro.utils.xml.XmlReader.Element;
 
 public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters> {
 	
@@ -31,11 +31,12 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters> {
 		return load(fileName, new TmxMapLoader.Parameters());
 	}
 	
-	public TiledMap load(final String fileName, final TmxMapLoader.Parameters parameter) {
-		final FileHandle tmxFile = resolve(fileName);
-		root = xml.parse(tmxFile);
+	public TiledMap load(String fileName, TmxMapLoader.Parameters parameter) {
+		FileHandle tmxFile = resolve(fileName);
 		
-		ObjectMap<String, Texture> textures = new ObjectMap<>();
+		this.root = xml.parse(tmxFile);
+		
+		ObjectMap<String, Texture> textures = new ObjectMap<String, Texture>();
 		
 		final Array<FileHandle> textureFiles = getDependencyFileHandles(tmxFile);
 		for (FileHandle textureFile : textureFiles) {
@@ -44,14 +45,14 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters> {
 			textures.put(textureFile.path(), texture);
 		}
 		
-		TiledMap map = loadTiledMap(tmxFile, parameter, new DirectImageResolver(textures));
+		TiledMap map = loadTiledMap(tmxFile, parameter, new ImageResolver.DirectImageResolver(textures));
 		map.setOwnedResources(textures.values().toArray());
 		return map;
 	}
 	
 	@Override
 	public void loadAsync(AssetManager manager, String fileName, FileHandle tmxFile, Parameters parameter) {
-		this.map = loadTiledMap(tmxFile, parameter, new AssetManagerImageResolver(manager));
+		this.map = loadTiledMap(tmxFile, parameter, new ImageResolver.AssetManagerImageResolver(manager));
 	}
 	
 	@Override
@@ -61,63 +62,66 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters> {
 	
 	@Override
 	protected Array<AssetDescriptor<?>> getDependencyAssetDescriptors(FileHandle tmxFile, TextureLoader.TextureParameter textureParameter) {
-		Array<AssetDescriptor<?>> descriptors = new Array<>();
-		
+		final Array<AssetDescriptor<?>> descriptors = new Array<>();
 		final Array<FileHandle> fileHandles = getDependencyFileHandles(tmxFile);
 		for (FileHandle handle : fileHandles)
 			descriptors.add(new AssetDescriptor<>(handle, Texture.class, textureParameter));
-		
 		return descriptors;
 	}
 	
 	protected Array<FileHandle> getDependencyFileHandles(FileHandle tmxFile) {
 		Array<FileHandle> fileHandles = new Array<>();
 		
-		// TileSet descriptors
-		for (Element tileset : root.getChildrenByNameRecursively("tileset")) {
-			String source = tileset.getAttribute("source", null);
-			if (source != null) {
-				FileHandle tsxFile = getRelativeFileHandle(tmxFile, source);
-				tileset = xml.parse(tsxFile);
-				Element imageElement = tileset.getChildByName("image");
-				if (imageElement != null) {
-					String imageSource = tileset.getChildByName("image").getAttribute("source");
-					FileHandle image = getRelativeFileHandle(tsxFile, imageSource);
-					fileHandles.add(image);
-				} else {
-					for (Element tile : tileset.getChildrenByName("tile")) {
-						String imageSource = tile.getChildByName("image").getAttribute("source");
-						FileHandle image = getRelativeFileHandle(tsxFile, imageSource);
-						fileHandles.add(image);
-					}
-				}
-			} else {
-				Element imageElement = tileset.getChildByName("image");
-				if (imageElement != null) {
-					String imageSource = tileset.getChildByName("image").getAttribute("source");
-					FileHandle image = getRelativeFileHandle(tmxFile, imageSource);
-					fileHandles.add(image);
-				} else {
-					for (Element tile : tileset.getChildrenByName("tile")) {
-						String imageSource = tile.getChildByName("image").getAttribute("source");
-						FileHandle image = getRelativeFileHandle(tmxFile, imageSource);
-						fileHandles.add(image);
-					}
-				}
-			}
-		}
+		for (Element tileset : root.getChildrenByNameRecursively("tileset"))
+			getTileSetDependencyFileHandle(fileHandles, tmxFile, tileset);
 		
-		// ImageLayer descriptors
 		for (Element imageLayer : root.getChildrenByNameRecursively("imagelayer")) {
 			Element image = imageLayer.getChildByName("image");
 			String source = image.getAttribute("source", null);
 			
-			if (source != null) {
-				FileHandle handle = getRelativeFileHandle(tmxFile, source);
-				fileHandles.add(handle);
-			}
+			if (source != null)
+				fileHandles.add(getRelativeFileHandle(tmxFile, source));
 		}
 		
+		return fileHandles;
+	}
+	
+	protected Array<FileHandle> getTileSetDependencyFileHandle(FileHandle tmxFile, Element tileset) {
+		Array<FileHandle> fileHandles = new Array<FileHandle>();
+		return getTileSetDependencyFileHandle(fileHandles, tmxFile, tileset);
+	}
+	
+	protected Array<FileHandle> getTileSetDependencyFileHandle(Array<FileHandle> fileHandles, FileHandle tmxFile, Element tileset) {
+		String source = tileset.getAttribute("source", null);
+		if (source != null) {
+			FileHandle tsxFile = getRelativeFileHandle(tmxFile, source);
+			tileset = xml.parse(tsxFile);
+			Element imageElement = tileset.getChildByName("image");
+			if (imageElement != null) {
+				String imageSource = tileset.getChildByName("image").getAttribute("source");
+				FileHandle image = getRelativeFileHandle(tsxFile, imageSource);
+				fileHandles.add(image);
+			} else {
+				for (Element tile : tileset.getChildrenByName("tile")) {
+					String imageSource = tile.getChildByName("image").getAttribute("source");
+					FileHandle image = getRelativeFileHandle(tsxFile, imageSource);
+					fileHandles.add(image);
+				}
+			}
+		} else {
+			Element imageElement = tileset.getChildByName("image");
+			if (imageElement != null) {
+				String imageSource = tileset.getChildByName("image").getAttribute("source");
+				FileHandle image = getRelativeFileHandle(tmxFile, imageSource);
+				fileHandles.add(image);
+			} else {
+				for (Element tile : tileset.getChildrenByName("tile")) {
+					String imageSource = tile.getChildByName("image").getAttribute("source");
+					FileHandle image = getRelativeFileHandle(tmxFile, imageSource);
+					fileHandles.add(image);
+				}
+			}
+		}
 		return fileHandles;
 	}
 	
@@ -128,9 +132,8 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters> {
 		
 		MapProperties props = tileSet.properties;
 		if (image != null) {
-			// One image for the whole tileSet
-			TextureRegion texture = imageResolver.getImage(image.path());
 			
+			TextureRegion texture = imageResolver.getImage(image.path());
 			props.put("imagesource", imageSource);
 			props.put("imagewidth", imageWidth);
 			props.put("imageheight", imageHeight);
@@ -152,17 +155,15 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters> {
 				}
 			}
 		} else {
-			// Every tile has its own image source
 			for (Element tileElement : tileElements) {
 				Element imageElement = tileElement.getChildByName("image");
 				if (imageElement != null) {
 					imageSource = imageElement.getAttribute("source");
 					
-					if (source != null) {
+					if (source != null)
 						image = getRelativeFileHandle(getRelativeFileHandle(tmxFile, source), imageSource);
-					} else {
+					else
 						image = getRelativeFileHandle(tmxFile, imageSource);
-					}
 				}
 				TextureRegion texture = imageResolver.getImage(image.path());
 				int tileId = firstgid + tileElement.getIntAttribute("id");

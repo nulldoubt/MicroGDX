@@ -4,6 +4,7 @@ include(":backends");
 include(":backends:micro-backend-android");
 include(":backends:micro-backend-lwjgl3");
 
+include(":extensions:micro-base64");
 include(":extensions:micro-box2d");
 include(":extensions:micro-box2d-debug");
 include(":extensions:micro-box2d-particles");
@@ -17,5 +18,6 @@ include(":extensions:micro-shaperenderer");
 include(":extensions:micro-stage");
 include(":extensions:micro-stage-particles");
 include(":extensions:micro-tiled");
+include(":extensions:micro-xml");
 
 rootProject.name = "Micro";
