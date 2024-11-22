@@ -1,7 +1,6 @@
 package me.nulldoubt.micro.utils.viewport;
 
 import me.nulldoubt.micro.graphics.Camera;
-import me.nulldoubt.micro.graphics.OrthographicCamera;
 import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.utils.Scaling;
 
@@ -10,7 +9,7 @@ public class ScalingViewport extends Viewport {
 	public Scaling scaling;
 	
 	public ScalingViewport(final Scaling scaling, final float worldWidth, final float worldHeight) {
-		this(scaling, worldWidth, worldHeight, new OrthographicCamera());
+		this(scaling, worldWidth, worldHeight, new Camera());
 	}
 	
 	public ScalingViewport(final Scaling scaling, final float worldWidth, final float worldHeight, final Camera camera) {

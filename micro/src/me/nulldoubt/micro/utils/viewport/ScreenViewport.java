@@ -1,14 +1,13 @@
 package me.nulldoubt.micro.utils.viewport;
 
 import me.nulldoubt.micro.graphics.Camera;
-import me.nulldoubt.micro.graphics.OrthographicCamera;
 
 public class ScreenViewport extends Viewport {
 	
 	public float unitsPerPixel = 1f;
 	
 	public ScreenViewport() {
-		this(new OrthographicCamera());
+		this(new Camera());
 	}
 	
 	public ScreenViewport(Camera camera) {

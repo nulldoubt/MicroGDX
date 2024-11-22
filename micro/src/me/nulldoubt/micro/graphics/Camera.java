@@ -3,74 +3,85 @@ package me.nulldoubt.micro.graphics;
 import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.math.Matrix4;
 import me.nulldoubt.micro.math.Quaternion;
+import me.nulldoubt.micro.math.Vector2;
 import me.nulldoubt.micro.math.Vector3;
 
-public abstract class Camera {
+public class Camera {
 	
-	/**
-	 * the position of the camera
-	 **/
 	public final Vector3 position = new Vector3();
-	/**
-	 * the unit length direction vector of the camera
-	 **/
 	public final Vector3 direction = new Vector3(0, 0, -1);
-	/**
-	 * the unit length up vector of the camera
-	 **/
 	public final Vector3 up = new Vector3(0, 1, 0);
 	
-	/**
-	 * the projection matrix
-	 **/
 	public final Matrix4 projection = new Matrix4();
-	/**
-	 * the view matrix
-	 **/
 	public final Matrix4 view = new Matrix4();
-	/**
-	 * the combined projection and view matrix
-	 **/
+	
 	public final Matrix4 combined = new Matrix4();
-	/**
-	 * the inverse combined projection and view matrix
-	 **/
 	public final Matrix4 invProjectionView = new Matrix4();
 	
-	/**
-	 * the near clipping plane distance, has to be positive
-	 **/
-	public float near = 1;
-	/**
-	 * the far clipping plane distance, has to be positive
-	 **/
 	public float far = 100;
 	
-	/**
-	 * the viewport width
-	 **/
 	public float viewportWidth = 0;
-	/**
-	 * the viewport height
-	 **/
 	public float viewportHeight = 0;
 	
-	/**
-	 * the frustum
-	 **/
 	private final Vector3 tmpVec = new Vector3();
 	
-	public abstract void update();
+	public float zoom = 1f;
 	
-	public abstract void update(boolean updateFrustum);
+	public Camera() {}
 	
-	/**
-	 * Recalculates the direction of the camera to look at the point (x, y, z). This function assumes the up vector is normalized.
-	 *
-	 * @param x the x-coordinate of the point to look at
-	 * @param y the y-coordinate of the point to look at
-	 * @param z the z-coordinate of the point to look at
-	 */
+	public Camera(final float viewportWidth, final float viewportHeight) {
+		this.viewportWidth = viewportWidth;
+		this.viewportHeight = viewportHeight;
+		update();
+	}
+	
+	public void update() {
+		update(true);
+	}
+	
+	public void update(boolean updateFrustum) {
+		projection.setToOrtho(zoom * -viewportWidth / 2, zoom * (viewportWidth / 2), zoom * -(viewportHeight / 2), zoom * viewportHeight / 2, 0, far);
+		view.setToLookAt(direction, up);
+		view.translate(-position.x, -position.y, -position.z);
+		combined.set(projection);
+		Matrix4.mul(combined.val, view.val);
+		
+		if (updateFrustum) {
+			invProjectionView.set(combined);
+			Matrix4.inv(invProjectionView.val);
+		}
+	}
+	
+	public void setToOrtho(boolean yDown) {
+		setToOrtho(yDown, Micro.graphics.getWidth(), Micro.graphics.getHeight());
+	}
+	
+	public void setToOrtho(boolean yDown, float viewportWidth, float viewportHeight) {
+		if (yDown) {
+			up.set(0, -1, 0);
+			direction.set(0, 0, 1);
+		} else {
+			up.set(0, 1, 0);
+			direction.set(0, 0, -1);
+		}
+		position.set(zoom * viewportWidth / 2.0f, zoom * viewportHeight / 2.0f, 0);
+		this.viewportWidth = viewportWidth;
+		this.viewportHeight = viewportHeight;
+		update();
+	}
+	
+	public void rotate(float angle) {
+		rotate(direction, angle);
+	}
+	
+	public void translate(float x, float y) {
+		translate(x, y, 0);
+	}
+	
+	public void translate(Vector2 vec) {
+		translate(vec.x, vec.y, 0);
+	}
+	
 	public void lookAt(float x, float y, float z) {
 		tmpVec.set(x, y, z).sub(position).nor();
 		if (!tmpVec.isZero()) {
@@ -87,80 +98,35 @@ public abstract class Camera {
 		}
 	}
 	
-	/**
-	 * Recalculates the direction of the camera to look at the point (x, y, z).
-	 *
-	 * @param target the point to look at
-	 */
 	public void lookAt(Vector3 target) {
 		lookAt(target.x, target.y, target.z);
 	}
 	
-	/**
-	 * Normalizes the up vector by first calculating the right vector via a cross product between direction and up, and then
-	 * recalculating the up vector via a cross product between right and direction.
-	 */
 	public void normalizeUp() {
 		tmpVec.set(direction).crs(up);
 		up.set(tmpVec).crs(direction).nor();
 	}
 	
-	/**
-	 * Rotates the direction and up vector of this camera by the given angle around the given axis. The direction and up vector
-	 * will not be orthogonalized.
-	 *
-	 * @param angle the angle
-	 * @param axisX the x-component of the axis
-	 * @param axisY the y-component of the axis
-	 * @param axisZ the z-component of the axis
-	 */
 	public void rotate(float angle, float axisX, float axisY, float axisZ) {
 		direction.rotate(angle, axisX, axisY, axisZ);
 		up.rotate(angle, axisX, axisY, axisZ);
 	}
 	
-	/**
-	 * Rotates the direction and up vector of this camera by the given angle around the given axis. The direction and up vector
-	 * will not be orthogonalized.
-	 *
-	 * @param axis  the axis to rotate around
-	 * @param angle the angle, in degrees
-	 */
 	public void rotate(Vector3 axis, float angle) {
 		direction.rotate(axis, angle);
 		up.rotate(axis, angle);
 	}
 	
-	/**
-	 * Rotates the direction and up vector of this camera by the given rotation matrix. The direction and up vector will not be
-	 * orthogonalized.
-	 *
-	 * @param transform The rotation matrix
-	 */
 	public void rotate(final Matrix4 transform) {
 		direction.rot(transform);
 		up.rot(transform);
 	}
 	
-	/**
-	 * Rotates the direction and up vector of this camera by the given {@link Quaternion}. The direction and up vector will not be
-	 * orthogonalized.
-	 *
-	 * @param quat The quaternion
-	 */
 	public void rotate(final Quaternion quat) {
 		quat.transform(direction);
 		quat.transform(up);
 	}
 	
-	/**
-	 * Rotates the direction and up vector of this camera by the given angle around the given axis, with the axis attached to
-	 * given point. The direction and up vector will not be orthogonalized.
-	 *
-	 * @param point the point to attach the axis to
-	 * @param axis  the axis to rotate around
-	 * @param angle the angle, in degrees
-	 */
 	public void rotateAround(Vector3 point, Vector3 axis, float angle) {
 		tmpVec.set(point);
 		tmpVec.sub(position);
