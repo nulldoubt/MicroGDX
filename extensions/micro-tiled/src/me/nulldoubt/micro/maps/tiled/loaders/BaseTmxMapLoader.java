@@ -237,21 +237,20 @@ public abstract class BaseTmxMapLoader<P extends BaseTiledMapLoader.Parameters> 
 		}
 	}
 	
-	protected void loadImageLayer(TiledMap map, MapLayers parentLayers, Element element, FileHandle tmxFile,
-								  ImageResolver imageResolver) {
+	protected void loadImageLayer(TiledMap map, MapLayers parentLayers, Element element, FileHandle tmxFile, ImageResolver imageResolver) {
 		if (element.getName().equals("imagelayer")) {
-			float x = 0;
-			float y = 0;
-			if (element.hasAttribute("offsetx")) {
+			float x;
+			float y;
+			if (element.hasAttribute("offsetx"))
 				x = Float.parseFloat(element.getAttribute("offsetx", "0"));
-			} else {
+			else
 				x = Float.parseFloat(element.getAttribute("x", "0"));
-			}
-			if (element.hasAttribute("offsety")) {
+			
+			if (element.hasAttribute("offsety"))
 				y = Float.parseFloat(element.getAttribute("offsety", "0"));
-			} else {
+			else
 				y = Float.parseFloat(element.getAttribute("y", "0"));
-			}
+			
 			if (flipY)
 				y = mapHeightInPixels - y;
 			
@@ -322,7 +321,7 @@ public abstract class BaseTmxMapLoader<P extends BaseTiledMapLoader.Parameters> 
 			float height = element.getFloatAttribute("height", 0) * scaleY;
 			
 			if (element.getChildCount() > 0) {
-				Element child = null;
+				Element child;
 				if ((child = element.getChildByName("polygon")) != null) {
 					String[] points = child.getAttribute("points").split(" ");
 					float[] vertices = new float[points.length * 2];
@@ -345,12 +344,12 @@ public abstract class BaseTmxMapLoader<P extends BaseTiledMapLoader.Parameters> 
 					Polyline polyline = new Polyline(vertices);
 					polyline.setPosition(x, y);
 					object = new PolylineMapObject(polyline);
-				} else if ((child = element.getChildByName("ellipse")) != null) {
+				} else if (element.getChildByName("ellipse") != null) {
 					object = new EllipseMapObject(x, flipY ? y - height : y, width, height);
 				}
 			}
 			if (object == null) {
-				String gid = null;
+				String gid;
 				if ((gid = element.getAttribute("gid", null)) != null) {
 					int id = (int) Long.parseLong(gid);
 					boolean flipHorizontally = ((id & FLAG_FLIP_HORIZONTALLY) != 0);
@@ -418,21 +417,10 @@ public abstract class BaseTmxMapLoader<P extends BaseTiledMapLoader.Parameters> 
 				if (type != null && type.equals("object")) {
 					// Wait until the end of [loadTiledMap] to fetch the object
 					try {
-						// Value should be the id of the object being pointed to
 						final int id = Integer.parseInt(value);
-						// Create [Runnable] to fetch object and add it to props
-						Runnable fetch = new Runnable() {
-							@Override
-							public void run() {
-								MapObject object = idToObject.get(id);
-								properties.put(name, object);
-							}
-						};
-						// [Runnable] should not run until the end of [loadTiledMap]
-						runOnEndOfLoadTiled.add(fetch);
+						runOnEndOfLoadTiled.add(() -> properties.put(name, idToObject.get(id)));
 					} catch (Exception exception) {
-						throw new MicroRuntimeException(
-								"Error parsing property [\" + name + \"] of type \"object\" with value: [" + value + "]", exception);
+						throw new MicroRuntimeException("Error parsing property [\" + name + \"] of type \"object\" with value: [" + value + "]", exception);
 					}
 				} else {
 					Object castValue = castProperty(name, value, type);
@@ -612,7 +600,7 @@ public abstract class BaseTmxMapLoader<P extends BaseTiledMapLoader.Parameters> 
 	protected AnimatedTiledMapTile createAnimatedTile(TiledMapTileSet tileSet, TiledMapTile tile, Element tileElement, int firstgid) {
 		Element animationElement = tileElement.getChildByName("animation");
 		if (animationElement != null) {
-			Array<StaticTiledMapTile> staticTiles = new Array<StaticTiledMapTile>();
+			Array<StaticTiledMapTile> staticTiles = new Array<>();
 			IntArray intervals = new IntArray();
 			for (Element frameElement : animationElement.getChildrenByName("frame")) {
 				staticTiles.add((StaticTiledMapTile) tileSet.getTile(firstgid + frameElement.getIntAttribute("tileid")));

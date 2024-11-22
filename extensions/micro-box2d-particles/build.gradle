@@ -1,4 +1,4 @@
 dependencies() {
-    api(project(":extensions:micro-box2d"));
-    api(project(":extensions:micro-particles"));
-};
+    api(project(":extensions:micro-box2d"))
+    api(project(":extensions:micro-particles"))
+}

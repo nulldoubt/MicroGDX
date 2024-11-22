@@ -1,5 +1,5 @@
 dependencies {
-    api(project(":extensions:micro-base64"));
-    api(project(":extensions:micro-json"));
-    api(project(":extensions:micro-xml"));
+    api(project(":extensions:micro-base64"))
+    api(project(":extensions:micro-json"))
+    api(project(":extensions:micro-xml"))
 }

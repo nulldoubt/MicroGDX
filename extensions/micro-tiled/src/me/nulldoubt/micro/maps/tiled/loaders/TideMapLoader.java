@@ -214,16 +214,15 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
 							// Create an AnimatedTile
 							int interval = currentChild.getInt("Interval");
 							Element frames = currentChild.getChildByName("Frames");
-							Array<StaticTiledMapTile> frameTiles = new Array<StaticTiledMapTile>();
+							Array<StaticTiledMapTile> frameTiles = new Array<>();
 							for (int frameChild = 0, frameChildCount = frames.getChildCount(); frameChild < frameChildCount; frameChild++) {
 								Element frame = frames.getChild(frameChild);
 								String frameName = frame.getName();
 								if (frameName.equals("TileSheet")) {
 									currentTileSet = tilesets.getTileSet(frame.getAttribute("Ref"));
 									firstgid = currentTileSet.properties.get("firstgid", Integer.class);
-								} else if (frameName.equals("Static")) {
+								} else if (frameName.equals("Static"))
 									frameTiles.add((StaticTiledMapTile) currentTileSet.getTile(firstgid + frame.getIntAttribute("Index")));
-								}
 							}
 							Cell cell = new Cell();
 							cell.tile = new AnimatedTiledMapTile(interval / 1000f, frameTiles);

@@ -1,22 +1,22 @@
 buildscript() {
-    apply(from: "gradle/dependencies.gradle");
+    apply(from: "gradle/dependencies.gradle")
 
     repositories() {
-        mavenCentral();
-        gradlePluginPortal();
-    };
+        mavenCentral()
+        gradlePluginPortal()
+    }
 
     dependencies() {
-        classpath("com.badlogicgames.gdx:gdx-jnigen-gradle:2.5.2");
-    };
+        classpath("com.badlogicgames.gdx:gdx-jnigen-gradle:2.5.2")
+    }
 
-};
+}
 
 plugins() {
-    id "de.undercouch.download" version "5.6.0";
-};
+    id "de.undercouch.download" version "5.6.0"
+}
 
-apply(from: "gradle/dependencies.gradle");
+apply(from: "gradle/dependencies.gradle")
 
 allprojects() {
     group = 'me.nulldoubt.micro'
@@ -24,65 +24,65 @@ allprojects() {
 
     buildscript() {
         repositories() {
-            google();
-            mavenLocal();
-            mavenCentral();
-            gradlePluginPortal();
-            maven() { url "https://oss.sonatype.org/content/repositories/snapshots/" };
-            maven() { url "https://oss.sonatype.org/content/repositories/releases/" };
-        };
-    };
+            google()
+            mavenLocal()
+            mavenCentral()
+            gradlePluginPortal()
+            maven() { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+            maven() { url "https://oss.sonatype.org/content/repositories/releases/" }
+        }
+    }
 
     repositories() {
-        google();
-        mavenLocal();
-        mavenCentral();
-        gradlePluginPortal();
-        maven() { url "https://oss.sonatype.org/content/repositories/snapshots/" };
-        maven() { url "https://oss.sonatype.org/content/repositories/releases/" };
-    };
+        google()
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+        maven() { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven() { url "https://oss.sonatype.org/content/repositories/releases/" }
+    }
 
     tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8';
-    };
+        options.encoding = 'UTF-8'
+    }
 
     tasks.withType(Javadoc) {
-        options.encoding = 'UTF-8';
-        options.addBooleanOption('use', true);
+        options.encoding = 'UTF-8'
+        options.addBooleanOption('use', true)
         options.addStringOption('Xdoclint:none,-missing', '-quiet')
-        options.addStringOption("-release", "22");
-    };
+        options.addStringOption("-release", "22")
+    }
     
-};
+}
 
 configure(subprojects - project(":backends:micro-backend-android")) {
-    apply(plugin: "java-library");
+    apply(plugin: "java-library")
 
     compileJava() {
-        options.fork = true;
-        options.incremental = true;
-    };
+        options.fork = true
+        options.incremental = true
+    }
 
     java() {
-        withJavadocJar();
-        withSourcesJar();
-    };
+        withJavadocJar()
+        withSourcesJar()
+    }
 
-};
+}
 
 configure(subprojects - project(":backends") - project(":extensions") - project(":extensions:micro-box2d")) {
-    apply(plugin: "idea");
-};
+    apply(plugin: "idea")
+}
 
 tasks.register('setupExternalNativesDirs') {
     doLast() {
-        file("build").mkdir();
-        file("extensions/gdx-lwjgl3-angle/res").mkdirs();
-    };
-    doNotTrackState("Don't track state");
-};
+        file("build").mkdir()
+        file("extensions/gdx-lwjgl3-angle/res").mkdirs()
+    }
+    doNotTrackState("Don't track state")
+}
 
 if (rootProject.file('override.gradle').exists())
-    apply(from: rootProject.file('override.gradle'));
+    apply(from: rootProject.file('override.gradle'))
 
-apply(from: "gradle/dist.gradle");
+apply(from: "gradle/dist.gradle")

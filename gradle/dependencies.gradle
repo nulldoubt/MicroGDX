@@ -1,20 +1,20 @@
 ext() {
-    versions = [:];
-    libraries = [:];
-    natives = [:];
-};
+    versions = [:]
+    libraries = [:]
+    natives = [:]
+}
 
-versions.java = 22;
+versions.java = 22
 versions.lwjgl3 = "3.3.4"
-versions.jlayer = "1.0.1-gdx";
-versions.jorbis = "0.0.17";
-versions.androidPlugin = "8.1.2";
-versions.androidCompileSdk = 33;
-versions.androidMinSdk = 24;
-versions.androidBuildTools = "33.0.2";
-versions.androidFragment = "1.5.7";
+versions.jlayer = "1.0.1-gdx"
+versions.jorbis = "0.0.17"
+versions.androidPlugin = "8.1.2"
+versions.androidCompileSdk = 33
+versions.androidMinSdk = 24
+versions.androidBuildTools = "33.0.2"
+versions.androidFragment = "1.5.7"
 
-libraries.compileOnly = [:];
+libraries.compileOnly = [:]
 
 libraries.lwjgl3 = [
         "org.lwjgl:lwjgl:${versions.lwjgl3}",
@@ -74,7 +74,7 @@ libraries.lwjgl3 = [
 
         "com.badlogicgames.jlayer:jlayer:${versions.jlayer}",
         "org.jcraft:jorbis:${versions.jorbis}"
-];
+]
 
 libraries.lwjgl3GLES = [
         "org.lwjgl:lwjgl-opengles:${versions.lwjgl3}",
@@ -87,12 +87,12 @@ libraries.lwjgl3GLES = [
         "org.lwjgl:lwjgl-opengles:${versions.lwjgl3}:natives-windows",
         "org.lwjgl:lwjgl-opengles:${versions.lwjgl3}:natives-windows-x86",
         "org.lwjgl:lwjgl-egl:${versions.lwjgl3}",
-];
+]
 
 libraries.compileOnly.android = [
         "androidx.fragment:fragment:${versions.androidFragment}"
-];
+]
 
 natives.desktop = [
         files("gdx/libs/gdx-natives.jar")
-];
+]

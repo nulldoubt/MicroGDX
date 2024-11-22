@@ -1,12 +1,12 @@
 configure(subprojects - project(":backends:micro-backend-android")) {
     tasks.register('uberJar', Jar) {
-        archiveClassifier = '';
-        archiveVersion = '';
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE;
+        archiveClassifier = ''
+        archiveVersion = ''
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-        from(sourceSets.main.output);
+        from(sourceSets.main.output)
 
-        dependsOn(configurations.compileClasspath);
+        dependsOn(configurations.compileClasspath)
 
         from() {
             configurations.compileClasspath.findAll() {
@@ -20,13 +20,13 @@ configure(subprojects - project(":backends:micro-backend-android")) {
                         !it.name.contains("platform")
             }.collect() {
                 zipTree(it)
-            };
-        };
-    };
+            }
+        }
+    }
 
     tasks.register("printCompileClasspath") {
         doFirst() {
             sourceSets.main.compileClasspath.each { println it }
-        };
-    };
-};
+        }
+    }
+}

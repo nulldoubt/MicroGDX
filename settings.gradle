@@ -1,23 +1,23 @@
-include(":micro");
+include(":micro")
 
-include(":backends");
-include(":backends:micro-backend-android");
-include(":backends:micro-backend-lwjgl3");
+include(":backends")
+include(":backends:micro-backend-android")
+include(":backends:micro-backend-lwjgl3")
 
-include(":extensions:micro-base64");
-include(":extensions:micro-box2d");
-include(":extensions:micro-box2d-debug");
-include(":extensions:micro-box2d-particles");
-include(":extensions:micro-collections");
-include(":extensions:micro-compression");
-include(":extensions:micro-freetype");
-include(":extensions:micro-json");
-include(":extensions:micro-lwjgl3-angle");
-include(":extensions:micro-particles");
-include(":extensions:micro-shaperenderer");
-include(":extensions:micro-stage");
-include(":extensions:micro-stage-particles");
-include(":extensions:micro-tiled");
-include(":extensions:micro-xml");
+include(":extensions:micro-base64")
+include(":extensions:micro-box2d")
+include(":extensions:micro-box2d-debug")
+include(":extensions:micro-box2d-particles")
+include(":extensions:micro-collections")
+include(":extensions:micro-compression")
+include(":extensions:micro-freetype")
+include(":extensions:micro-json")
+include(":extensions:micro-lwjgl3-angle")
+include(":extensions:micro-particles")
+include(":extensions:micro-shaperenderer")
+include(":extensions:micro-stage")
+include(":extensions:micro-stage-particles")
+include(":extensions:micro-tiled")
+include(":extensions:micro-xml")
 
-rootProject.name = "Micro";
+rootProject.name = "Micro"

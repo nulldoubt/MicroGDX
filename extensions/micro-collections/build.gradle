@@ -1,10 +1,10 @@
-apply(plugin: "java-library");
+apply(plugin: "java-library")
 
-compileJava() { options.release = versions.java; };
-sourceCompatibility = versions.java;
-targetCompatibility = versions.java;
+compileJava() { options.release = versions.java }
+sourceCompatibility = versions.java
+targetCompatibility = versions.java
 
 sourceSets.main.java.srcDirs = ["src"]
 sourceSets.main.resources.srcDirs = ["res"]
 
-tasks.withType(Jar) { duplicatesStrategy = DuplicatesStrategy.EXCLUDE; };
+tasks.withType(Jar) { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }

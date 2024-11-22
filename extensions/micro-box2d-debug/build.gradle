@@ -1,4 +1,4 @@
 dependencies() {
-    api(project(":extensions:micro-box2d"));
-    api(project(":extensions:micro-shaperenderer"));
-};
+    api(project(":extensions:micro-box2d"))
+    api(project(":extensions:micro-shaperenderer"))
+}

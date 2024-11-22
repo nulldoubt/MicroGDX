@@ -1,5 +1,5 @@
 dependencies {
-	api(project(":extensions:micro-collections"));
+	api(project(":extensions:micro-collections"))
 }
 
 apply plugin: "com.badlogicgames.gdx.gdx-jnigen"

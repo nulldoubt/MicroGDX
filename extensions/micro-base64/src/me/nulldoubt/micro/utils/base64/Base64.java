@@ -23,12 +23,10 @@ public class Base64 {
 				encodingMap[i++] = c;
 			encodingMap[i++] = char63;
 			encodingMap[i++] = char64;
-			for (i = 0; i < decodingMap.length; i++) {
+			for (i = 0; i < decodingMap.length; i++)
 				decodingMap[i] = -1;
-			}
-			for (i = 0; i < 64; i++) {
+			for (i = 0; i < 64; i++)
 				decodingMap[encodingMap[i]] = (byte) i;
-			}
 		}
 		
 		public byte[] getDecodingMap() {
