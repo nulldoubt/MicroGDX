@@ -1,11 +1,11 @@
 package me.nulldoubt.micro.graphics;
 
 import me.nulldoubt.micro.Micro;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
-import me.nulldoubt.micro.graphics.g2d.Gdx2DPixmap;
+import me.nulldoubt.micro.graphics.g2d.Micro2DPixmap;
 import me.nulldoubt.micro.utils.Buffers;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -15,46 +15,46 @@ public class Pixmap implements Disposable {
 	public enum Format {
 		Alpha, Intensity, LuminanceAlpha, RGB565, RGBA4444, RGB888, RGBA8888;
 		
-		public static int toGdx2DPixmapFormat(Format format) {
+		public static int toMicro2DPixmapFormat(Format format) {
 			if (format == Alpha)
-				return Gdx2DPixmap.GDX2D_FORMAT_ALPHA;
+				return Micro2DPixmap.MICRO2D_FORMAT_ALPHA;
 			if (format == Intensity)
-				return Gdx2DPixmap.GDX2D_FORMAT_ALPHA;
+				return Micro2DPixmap.MICRO2D_FORMAT_ALPHA;
 			if (format == LuminanceAlpha)
-				return Gdx2DPixmap.GDX2D_FORMAT_LUMINANCE_ALPHA;
+				return Micro2DPixmap.MICRO2D_FORMAT_LUMINANCE_ALPHA;
 			if (format == RGB565)
-				return Gdx2DPixmap.GDX2D_FORMAT_RGB565;
+				return Micro2DPixmap.MICRO2D_FORMAT_RGB565;
 			if (format == RGBA4444)
-				return Gdx2DPixmap.GDX2D_FORMAT_RGBA4444;
+				return Micro2DPixmap.MICRO2D_FORMAT_RGBA4444;
 			if (format == RGB888)
-				return Gdx2DPixmap.GDX2D_FORMAT_RGB888;
+				return Micro2DPixmap.MICRO2D_FORMAT_RGB888;
 			if (format == RGBA8888)
-				return Gdx2DPixmap.GDX2D_FORMAT_RGBA8888;
+				return Micro2DPixmap.MICRO2D_FORMAT_RGBA8888;
 			throw new MicroRuntimeException("Unknown Format: " + format);
 		}
 		
-		public static Format fromGdx2DPixmapFormat(int format) {
-			if (format == Gdx2DPixmap.GDX2D_FORMAT_ALPHA)
+		public static Format fromMicro2DPixmapFormat(int format) {
+			if (format == Micro2DPixmap.MICRO2D_FORMAT_ALPHA)
 				return Alpha;
-			if (format == Gdx2DPixmap.GDX2D_FORMAT_LUMINANCE_ALPHA)
+			if (format == Micro2DPixmap.MICRO2D_FORMAT_LUMINANCE_ALPHA)
 				return LuminanceAlpha;
-			if (format == Gdx2DPixmap.GDX2D_FORMAT_RGB565)
+			if (format == Micro2DPixmap.MICRO2D_FORMAT_RGB565)
 				return RGB565;
-			if (format == Gdx2DPixmap.GDX2D_FORMAT_RGBA4444)
+			if (format == Micro2DPixmap.MICRO2D_FORMAT_RGBA4444)
 				return RGBA4444;
-			if (format == Gdx2DPixmap.GDX2D_FORMAT_RGB888)
+			if (format == Micro2DPixmap.MICRO2D_FORMAT_RGB888)
 				return RGB888;
-			if (format == Gdx2DPixmap.GDX2D_FORMAT_RGBA8888)
+			if (format == Micro2DPixmap.MICRO2D_FORMAT_RGBA8888)
 				return RGBA8888;
-			throw new MicroRuntimeException("Unknown Gdx2DPixmap Format: " + format);
+			throw new MicroRuntimeException("Unknown Micro2DPixmap Format: " + format);
 		}
 		
 		public static int toGlFormat(Format format) {
-			return Gdx2DPixmap.toGlFormat(toGdx2DPixmapFormat(format));
+			return Micro2DPixmap.toGlFormat(toMicro2DPixmapFormat(format));
 		}
 		
 		public static int toGlType(Format format) {
-			return Gdx2DPixmap.toGlType(toGdx2DPixmapFormat(format));
+			return Micro2DPixmap.toGlType(toMicro2DPixmapFormat(format));
 		}
 	}
 	
@@ -79,7 +79,7 @@ public class Pixmap implements Disposable {
 	private Blending blending = Blending.SourceOver;
 	private Filter filter = Filter.BiLinear;
 	
-	final Gdx2DPixmap pixmap;
+	final Micro2DPixmap pixmap;
 	int color = 0;
 	
 	private boolean disposed;
@@ -91,18 +91,18 @@ public class Pixmap implements Disposable {
 	
 	public void setFilter(Filter filter) {
 		this.filter = filter;
-		pixmap.setScale(filter == Filter.NearestNeighbour ? Gdx2DPixmap.GDX2D_SCALE_NEAREST : Gdx2DPixmap.GDX2D_SCALE_LINEAR);
+		pixmap.setScale(filter == Filter.NearestNeighbour ? Micro2DPixmap.MICRO2D_SCALE_NEAREST : Micro2DPixmap.MICRO2D_SCALE_LINEAR);
 	}
 	
 	public Pixmap(int width, int height, Format format) {
-		pixmap = new Gdx2DPixmap(width, height, Format.toGdx2DPixmapFormat(format));
+		pixmap = new Micro2DPixmap(width, height, Format.toMicro2DPixmapFormat(format));
 		setColor(0, 0, 0, 0);
 		fill();
 	}
 	
 	public Pixmap(byte[] encodedData, int offset, int len) {
 		try {
-			pixmap = new Gdx2DPixmap(encodedData, offset, len, 0);
+			pixmap = new Micro2DPixmap(encodedData, offset, len, 0);
 		} catch (IOException e) {
 			throw new MicroRuntimeException("Couldn't load pixmap from image data", e);
 		}
@@ -112,7 +112,7 @@ public class Pixmap implements Disposable {
 		if (!encodedData.isDirect())
 			throw new MicroRuntimeException("Couldn't load pixmap from non-direct ByteBuffer");
 		try {
-			pixmap = new Gdx2DPixmap(encodedData, offset, len, 0);
+			pixmap = new Micro2DPixmap(encodedData, offset, len, 0);
 		} catch (IOException e) {
 			throw new MicroRuntimeException("Couldn't load pixmap from image data", e);
 		}
@@ -125,13 +125,13 @@ public class Pixmap implements Disposable {
 	public Pixmap(FileHandle file) {
 		try {
 			byte[] bytes = file.readBytes();
-			pixmap = new Gdx2DPixmap(bytes, 0, bytes.length, 0);
+			pixmap = new Micro2DPixmap(bytes, 0, bytes.length, 0);
 		} catch (Exception e) {
 			throw new MicroRuntimeException("Couldn't load file: " + file, e);
 		}
 	}
 	
-	public Pixmap(Gdx2DPixmap pixmap) {
+	public Pixmap(Micro2DPixmap pixmap) {
 		this.pixmap = pixmap;
 	}
 	
@@ -246,7 +246,7 @@ public class Pixmap implements Disposable {
 	}
 	
 	public Format getFormat() {
-		return Format.fromGdx2DPixmapFormat(pixmap.getFormat());
+		return Format.fromMicro2DPixmapFormat(pixmap.getFormat());
 	}
 	
 	public Blending getBlending() {

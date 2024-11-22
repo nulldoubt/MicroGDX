@@ -1,88 +1,30 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.utils.collections;
 
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.util.NoSuchElementException;
 
-/**
- * An {@link ObjectMap} that also stores keys in an {@link Array} using the insertion order. Null keys are not allowed. No
- * allocation is done except when growing the table size.
- * <p>
- * Iteration over the {@link #entries()}, {@link #keys()}, and {@link #values()} is ordered and faster than an unordered map. Keys
- * can also be accessed and the order changed using {@link #orderedKeys()}. There is some additional overhead for put and remove.
- * When used for faster iteration versus ObjectMap and the order does not actually matter, copying during remove can be greatly
- * reduced by setting {@link Array#ordered} to false for {@link OrderedMap#orderedKeys()}.
- * <p>
- * This class performs fast contains (typically O(1), worst case O(n) but that is rare in practice). Remove is somewhat slower due
- * to {@link #orderedKeys()}. Add may be slightly slower, depending on hash collisions. Hashcodes are rehashed to reduce
- * collisions and the need to resize. Load factors greater than 0.91 greatly increase the chances to resize to the next higher POT
- * size.
- * <p>
- * Unordered sets and maps are not designed to provide especially fast iteration. Iteration is faster with OrderedSet and
- * OrderedMap.
- * <p>
- * This implementation uses linear probing with the backward shift algorithm for removal. Hashcodes are rehashed using Fibonacci
- * hashing, instead of the more common power-of-two mask, to better distribute poor hashCodes (see <a href=
- * "https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/">Malte
- * Skarupke's blog post</a>). Linear probing continues to work even when all hashCodes collide, just more slowly.
- *
- * @author Nathan Sweet
- * @author Tommy Ettinger
- */
 public class OrderedMap<K, V> extends ObjectMap<K, V> {
 	
-	final Array<K> keys;
+	private final Array<K> keys;
 	
-	/**
-	 * Creates a new map with an initial capacity of 51 and a load factor of 0.8.
-	 */
 	public OrderedMap() {
-		keys = new Array();
+		keys = new Array<>();
 	}
 	
-	/**
-	 * Creates a new map with a load factor of 0.8.
-	 *
-	 * @param initialCapacity The backing array size is initialCapacity / loadFactor, increased to the next power of two.
-	 */
 	public OrderedMap(int initialCapacity) {
 		super(initialCapacity);
-		keys = new Array(initialCapacity);
+		keys = new Array<>(initialCapacity);
 	}
 	
-	/**
-	 * Creates a new map with the specified initial capacity and load factor. This map will hold initialCapacity items before
-	 * growing the backing table.
-	 *
-	 * @param initialCapacity The backing array size is initialCapacity / loadFactor, increased to the next power of two.
-	 */
 	public OrderedMap(int initialCapacity, float loadFactor) {
 		super(initialCapacity, loadFactor);
-		keys = new Array(initialCapacity);
+		keys = new Array<>(initialCapacity);
 	}
 	
-	/**
-	 * Creates a new map containing the items in the specified map.
-	 */
 	public OrderedMap(OrderedMap<? extends K, ? extends V> map) {
 		super(map);
-		keys = new Array(map.keys);
+		keys = new Array<>(map.keys);
 	}
 	
 	public V put(K key, V value) {
@@ -119,16 +61,6 @@ public class OrderedMap<K, V> extends ObjectMap<K, V> {
 		return super.remove(keys.removeIndex(index));
 	}
 	
-	/**
-	 * Changes the key {@code before} to {@code after} without changing its position in the order or its value. Returns true if
-	 * {@code after} has been added to the OrderedMap and {@code before} has been removed; returns false if {@code after} is
-	 * already present or {@code before} is not present. If you are iterating over an OrderedMap and have an index, you should
-	 * prefer {@link #alterIndex(int, Object)}, which doesn't need to search for an index like this does and so can be faster.
-	 *
-	 * @param before a key that must be present for this to succeed
-	 * @param after  a key that must not be in this map for this to succeed
-	 * @return true if {@code before} was removed and {@code after} was added, false otherwise
-	 */
 	public boolean alter(K before, K after) {
 		if (containsKey(after))
 			return false;
@@ -140,15 +72,6 @@ public class OrderedMap<K, V> extends ObjectMap<K, V> {
 		return true;
 	}
 	
-	/**
-	 * Changes the key at the given {@code index} in the order to {@code after}, without changing the ordering of other entries or
-	 * any values. If {@code after} is already present, this returns false; it will also return false if {@code index} is invalid
-	 * for the size of this map. Otherwise, it returns true. Unlike {@link #alter(Object, Object)}, this operates in constant time.
-	 *
-	 * @param index the index in the order of the key to change; must be non-negative and less than {@link #size}
-	 * @param after the key that will replace the contents at {@code index}; this key must not be present for this to succeed
-	 * @return true if {@code after} successfully replaced the key at {@code index}, false otherwise
-	 */
 	public boolean alterIndex(int index, K after) {
 		if (index < 0 || index >= size || containsKey(after))
 			return false;
@@ -210,7 +133,7 @@ public class OrderedMap<K, V> extends ObjectMap<K, V> {
 	
 	public static class OrderedMapEntries<K, V> extends Entries<K, V> {
 		
-		private Array<K> keys;
+		private final Array<K> keys;
 		
 		public OrderedMapEntries(OrderedMap<K, V> map) {
 			super(map);
@@ -248,7 +171,7 @@ public class OrderedMap<K, V> extends ObjectMap<K, V> {
 	
 	public static class OrderedMapKeys<K> extends Keys<K> {
 		
-		private Array<K> keys;
+		private final Array<K> keys;
 		
 		public OrderedMapKeys(OrderedMap<K, ?> map) {
 			super(map);
@@ -289,14 +212,14 @@ public class OrderedMap<K, V> extends ObjectMap<K, V> {
 		}
 		
 		public Array<K> toArray() {
-			return toArray(new Array(true, keys.size - nextIndex));
+			return toArray(new Array<>(true, keys.size - nextIndex));
 		}
 		
 	}
 	
 	public static class OrderedMapValues<V> extends Values<V> {
 		
-		private Array keys;
+		private final Array keys;
 		
 		public OrderedMapValues(OrderedMap<?, V> map) {
 			super(map);
@@ -342,7 +265,7 @@ public class OrderedMap<K, V> extends ObjectMap<K, V> {
 		}
 		
 		public Array<V> toArray() {
-			return toArray(new Array(true, keys.size - nextIndex));
+			return toArray(new Array<>(true, keys.size - nextIndex));
 		}
 		
 	}

@@ -1,15 +1,17 @@
 package me.nulldoubt.micro.graphics;
 
 import me.nulldoubt.micro.Micro;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.Pixmap.Blending;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
+import me.nulldoubt.micro.graphics.PixmapPacker.SkylineStrategy.SkylinePage.Row;
 import me.nulldoubt.micro.graphics.Texture.TextureFilter;
-import com.nulldoubt.micro.graphics.g2d.PixmapPacker.SkylineStrategy.SkylinePage.Row;
+import me.nulldoubt.micro.graphics.g2d.TextureAtlas;
+import me.nulldoubt.micro.graphics.g2d.TextureRegion;
 import me.nulldoubt.micro.graphics.glutils.PixmapTextureData;
 import me.nulldoubt.micro.math.shapes.Rectangle;
-import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.exceptions.MicroRuntimeException;
+import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.collections.OrderedMap;
 
 import java.util.Arrays;

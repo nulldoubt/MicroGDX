@@ -62,6 +62,8 @@ jnigen {
 		cFlags += System.getenv("CC_FLAGS") ?: ""
 		cppFlags += " -DFT2_BUILD_LIBRARY "
 		cppFlags += System.getenv("CPP_FLAGS") ?: ""
+
+		compilerSuffix = ".exe"
 	}
 	add(Windows, x32)
 	add(Windows, x64)

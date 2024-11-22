@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+import com.badlogic.gdx.utils.SharedLibraryLoader;
 import me.nulldoubt.micro.files.FileHandle;
 import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.Pixmap;
@@ -30,7 +31,6 @@ import me.nulldoubt.micro.utils.Buffers;
 import me.nulldoubt.micro.utils.Disposable;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.utils.collections.LongMap;
-import com.nulldoubt.micro.utils.SharedLibraryLoader;
 import me.nulldoubt.micro.utils.Streams;
 
 public class FreeType {
@@ -921,7 +921,7 @@ public class FreeType {
 	public static int FT_STROKER_LINEJOIN_MITER_FIXED    = 3;
 
    public static Library initFreeType() {   	
-   	new SharedLibraryLoader().load("gdx-freetype");
+   	new SharedLibraryLoader().load("micro-freetype");
    	long address = initFreeTypeJni();
    	if(address == 0)
    		throw new MicroRuntimeException("Couldn't initialize FreeType library, FreeType error code: " + getLastErrorCode());

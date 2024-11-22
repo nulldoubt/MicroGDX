@@ -1,46 +1,45 @@
 package me.nulldoubt.micro.graphics.g2d;
 
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.utils.Disposable;
-import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-
-public class Gdx2DPixmap implements Disposable {
+public class Micro2DPixmap implements Disposable {
 	
-	public static final int GDX2D_FORMAT_ALPHA = 1;
-	public static final int GDX2D_FORMAT_LUMINANCE_ALPHA = 2;
-	public static final int GDX2D_FORMAT_RGB888 = 3;
-	public static final int GDX2D_FORMAT_RGBA8888 = 4;
-	public static final int GDX2D_FORMAT_RGB565 = 5;
-	public static final int GDX2D_FORMAT_RGBA4444 = 6;
+	public static final int MICRO2D_FORMAT_ALPHA = 1;
+	public static final int MICRO2D_FORMAT_LUMINANCE_ALPHA = 2;
+	public static final int MICRO2D_FORMAT_RGB888 = 3;
+	public static final int MICRO2D_FORMAT_RGBA8888 = 4;
+	public static final int MICRO2D_FORMAT_RGB565 = 5;
+	public static final int MICRO2D_FORMAT_RGBA4444 = 6;
 	
-	public static final int GDX2D_SCALE_NEAREST = 0;
-	public static final int GDX2D_SCALE_LINEAR = 1;
+	public static final int MICRO2D_SCALE_NEAREST = 0;
+	public static final int MICRO2D_SCALE_LINEAR = 1;
 	
-	public static final int GDX2D_BLEND_NONE = 0;
-	public static final int GDX2D_BLEND_SRC_OVER = 1;
+	public static final int MICRO2D_BLEND_NONE = 0;
+	public static final int MICRO2D_BLEND_SRC_OVER = 1;
 	
 	public static int toGlFormat(int format) {
 		return switch (format) {
-			case GDX2D_FORMAT_ALPHA -> GL20.GL_ALPHA;
-			case GDX2D_FORMAT_LUMINANCE_ALPHA -> GL20.GL_LUMINANCE_ALPHA;
-			case GDX2D_FORMAT_RGB888, GDX2D_FORMAT_RGB565 -> GL20.GL_RGB;
-			case GDX2D_FORMAT_RGBA8888, GDX2D_FORMAT_RGBA4444 -> GL20.GL_RGBA;
+			case MICRO2D_FORMAT_ALPHA -> GL20.GL_ALPHA;
+			case MICRO2D_FORMAT_LUMINANCE_ALPHA -> GL20.GL_LUMINANCE_ALPHA;
+			case MICRO2D_FORMAT_RGB888, MICRO2D_FORMAT_RGB565 -> GL20.GL_RGB;
+			case MICRO2D_FORMAT_RGBA8888, MICRO2D_FORMAT_RGBA4444 -> GL20.GL_RGBA;
 			default -> throw new MicroRuntimeException("Unknown format: " + format);
 		};
 	}
 	
 	public static int toGlType(int format) {
 		return switch (format) {
-			case GDX2D_FORMAT_ALPHA, GDX2D_FORMAT_LUMINANCE_ALPHA, GDX2D_FORMAT_RGB888, GDX2D_FORMAT_RGBA8888 ->
+			case MICRO2D_FORMAT_ALPHA, MICRO2D_FORMAT_LUMINANCE_ALPHA, MICRO2D_FORMAT_RGB888, MICRO2D_FORMAT_RGBA8888 ->
 					GL20.GL_UNSIGNED_BYTE;
-			case GDX2D_FORMAT_RGB565 -> GL20.GL_UNSIGNED_SHORT_5_6_5;
-			case GDX2D_FORMAT_RGBA4444 -> GL20.GL_UNSIGNED_SHORT_4_4_4_4;
+			case MICRO2D_FORMAT_RGB565 -> GL20.GL_UNSIGNED_SHORT_5_6_5;
+			case MICRO2D_FORMAT_RGBA4444 -> GL20.GL_UNSIGNED_SHORT_4_4_4_4;
 			default -> throw new MicroRuntimeException("Unknown format: " + format);
 		};
 	}
@@ -52,7 +51,7 @@ public class Gdx2DPixmap implements Disposable {
 	ByteBuffer pixelPtr;
 	long[] nativeData = new long[4];
 	
-	public Gdx2DPixmap(byte[] encodedData, int offset, int len, int requestedFormat) throws IOException {
+	public Micro2DPixmap(byte[] encodedData, int offset, int len, int requestedFormat) throws IOException {
 		pixelPtr = load(nativeData, encodedData, offset, len);
 		if (pixelPtr == null)
 			throw new IOException("Error loading pixmap: " + getFailureReason());
@@ -67,7 +66,7 @@ public class Gdx2DPixmap implements Disposable {
 		}
 	}
 	
-	public Gdx2DPixmap(ByteBuffer encodedData, int offset, int len, int requestedFormat) throws IOException {
+	public Micro2DPixmap(ByteBuffer encodedData, int offset, int len, int requestedFormat) throws IOException {
 		if (!encodedData.isDirect())
 			throw new IOException("Couldn't load pixmap from non-direct ByteBuffer");
 		pixelPtr = loadByteBuffer(nativeData, encodedData, offset, len);
@@ -84,7 +83,7 @@ public class Gdx2DPixmap implements Disposable {
 		}
 	}
 	
-	public Gdx2DPixmap(InputStream in, int requestedFormat) throws IOException {
+	public Micro2DPixmap(InputStream in, int requestedFormat) throws IOException {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream(1024);
 		byte[] buffer = new byte[1024];
 		int readBytes = 0;
@@ -108,14 +107,10 @@ public class Gdx2DPixmap implements Disposable {
 		}
 	}
 	
-	/**
-	 * @throws MicroRuntimeException if allocation failed.
-	 */
-	public Gdx2DPixmap(int width, int height, int format) throws MicroRuntimeException {
+	public Micro2DPixmap(int width, int height, int format) throws MicroRuntimeException {
 		pixelPtr = newPixmap(nativeData, width, height, format);
 		if (pixelPtr == null)
-			throw new MicroRuntimeException(
-					"Unable to allocate memory for pixmap: " + width + "x" + height + ", " + getFormatString(format));
+			throw new MicroRuntimeException("Unable to allocate memory for pixmap: " + width + "x" + height + ", " + getFormatString(format));
 		
 		this.basePtr = nativeData[0];
 		this.width = (int) nativeData[1];
@@ -123,7 +118,7 @@ public class Gdx2DPixmap implements Disposable {
 		this.format = (int) nativeData[3];
 	}
 	
-	public Gdx2DPixmap(ByteBuffer pixelPtr, long[] nativeData) {
+	public Micro2DPixmap(ByteBuffer pixelPtr, long[] nativeData) {
 		this.pixelPtr = pixelPtr;
 		this.basePtr = nativeData[0];
 		this.width = (int) nativeData[1];
@@ -132,8 +127,8 @@ public class Gdx2DPixmap implements Disposable {
 	}
 	
 	private void convert(int requestedFormat) {
-		Gdx2DPixmap pixmap = new Gdx2DPixmap(width, height, requestedFormat);
-		pixmap.setBlend(GDX2D_BLEND_NONE);
+		Micro2DPixmap pixmap = new Micro2DPixmap(width, height, requestedFormat);
+		pixmap.setBlend(MICRO2D_BLEND_NONE);
 		pixmap.drawPixmap(this, 0, 0, 0, 0, width, height);
 		dispose();
 		this.basePtr = pixmap.basePtr;
@@ -185,11 +180,11 @@ public class Gdx2DPixmap implements Disposable {
 		fillTriangle(basePtr, x1, y1, x2, y2, x3, y3, color);
 	}
 	
-	public void drawPixmap(Gdx2DPixmap src, int srcX, int srcY, int dstX, int dstY, int width, int height) {
+	public void drawPixmap(Micro2DPixmap src, int srcX, int srcY, int dstX, int dstY, int width, int height) {
 		drawPixmap(src.basePtr, basePtr, srcX, srcY, width, height, dstX, dstY, width, height);
 	}
 	
-	public void drawPixmap(Gdx2DPixmap src, int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth,
+	public void drawPixmap(Micro2DPixmap src, int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth,
 						   int dstHeight) {
 		drawPixmap(src.basePtr, basePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight);
 	}
@@ -202,17 +197,17 @@ public class Gdx2DPixmap implements Disposable {
 		setScale(basePtr, scale);
 	}
 	
-	public static Gdx2DPixmap newPixmap(InputStream in, int requestedFormat) {
+	public static Micro2DPixmap newPixmap(InputStream in, int requestedFormat) {
 		try {
-			return new Gdx2DPixmap(in, requestedFormat);
+			return new Micro2DPixmap(in, requestedFormat);
 		} catch (IOException e) {
 			return null;
 		}
 	}
 	
-	public static Gdx2DPixmap newPixmap(int width, int height, int format) {
+	public static Micro2DPixmap newPixmap(int width, int height, int format) {
 		try {
-			return new Gdx2DPixmap(width, height, format);
+			return new Micro2DPixmap(width, height, format);
 		} catch (IllegalArgumentException e) {
 			return null;
 		}
@@ -252,17 +247,17 @@ public class Gdx2DPixmap implements Disposable {
 	
 	private static String getFormatString(int format) {
 		switch (format) {
-			case GDX2D_FORMAT_ALPHA:
+			case MICRO2D_FORMAT_ALPHA:
 				return "alpha";
-			case GDX2D_FORMAT_LUMINANCE_ALPHA:
+			case MICRO2D_FORMAT_LUMINANCE_ALPHA:
 				return "luminance alpha";
-			case GDX2D_FORMAT_RGB888:
+			case MICRO2D_FORMAT_RGB888:
 				return "rgb888";
-			case GDX2D_FORMAT_RGBA8888:
+			case MICRO2D_FORMAT_RGBA8888:
 				return "rgba8888";
-			case GDX2D_FORMAT_RGB565:
+			case MICRO2D_FORMAT_RGB565:
 				return "rgb565";
-			case GDX2D_FORMAT_RGBA4444:
+			case MICRO2D_FORMAT_RGBA4444:
 				return "rgba4444";
 			default:
 				return "Unknown";
@@ -271,19 +266,19 @@ public class Gdx2DPixmap implements Disposable {
 	
 	// @off
 	/*JNI
-	#include <gdx2d/gdx2d.h>
+	#include <micro2d/micro2d.h>
 	#include <stdlib.h>
 	 */
 	
 	private static native ByteBuffer load(long[] nativeData, byte[] buffer, int offset, int len); /*MANUAL
 		const unsigned char* p_buffer = (const unsigned char*)env->GetPrimitiveArrayCritical(buffer, 0);
-		gdx2d_pixmap* pixmap = gdx2d_load(p_buffer + offset, len);
+		micro2d_pixmap* pixmap = micro2d_load(p_buffer + offset, len);
 		env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
 
 		if(pixmap==0)
 			return 0;
 
-		jobject pixel_buffer = env->NewDirectByteBuffer((void*)pixmap->pixels, pixmap->width * pixmap->height * gdx2d_bytes_per_pixel(pixmap->format));
+		jobject pixel_buffer = env->NewDirectByteBuffer((void*)pixmap->pixels, pixmap->width * pixmap->height * micro2d_bytes_per_pixel(pixmap->format));
 		jlong* p_native_data = (jlong*)env->GetPrimitiveArrayCritical(nativeData, 0);
 		p_native_data[0] = (jlong)pixmap;
 		p_native_data[1] = pixmap->width;
@@ -299,12 +294,12 @@ public class Gdx2DPixmap implements Disposable {
 			return 0;
 
 		const unsigned char* p_buffer = (const unsigned char*)env->GetDirectBufferAddress(buffer);
-		gdx2d_pixmap* pixmap = gdx2d_load(p_buffer + offset, len);
+		micro2d_pixmap* pixmap = micro2d_load(p_buffer + offset, len);
 
 		if(pixmap==0)
 			return 0;
 
-		jobject pixel_buffer = env->NewDirectByteBuffer((void*)pixmap->pixels, pixmap->width * pixmap->height * gdx2d_bytes_per_pixel(pixmap->format));
+		jobject pixel_buffer = env->NewDirectByteBuffer((void*)pixmap->pixels, pixmap->width * pixmap->height * micro2d_bytes_per_pixel(pixmap->format));
 		jlong* p_native_data = (jlong*)env->GetPrimitiveArrayCritical(nativeData, 0);
 		p_native_data[0] = (jlong)pixmap;
 		p_native_data[1] = pixmap->width;
@@ -316,11 +311,11 @@ public class Gdx2DPixmap implements Disposable {
 	 */
 	
 	private static native ByteBuffer newPixmap(long[] nativeData, int width, int height, int format); /*MANUAL
-		gdx2d_pixmap* pixmap = gdx2d_new(width, height, format);
+		micro2d_pixmap* pixmap = micro2d_new(width, height, format);
 		if(pixmap==0)
 			return 0;
 
-		jobject pixel_buffer = env->NewDirectByteBuffer((void*)pixmap->pixels, pixmap->width * pixmap->height * gdx2d_bytes_per_pixel(pixmap->format));
+		jobject pixel_buffer = env->NewDirectByteBuffer((void*)pixmap->pixels, pixmap->width * pixmap->height * micro2d_bytes_per_pixel(pixmap->format));
 		jlong* p_native_data = (jlong*)env->GetPrimitiveArrayCritical(nativeData, 0);
 		p_native_data[0] = (jlong)pixmap;
 		p_native_data[1] = pixmap->width;
@@ -332,60 +327,60 @@ public class Gdx2DPixmap implements Disposable {
 	 */
 	
 	private static native void free(long pixmap); /*
-		gdx2d_free((gdx2d_pixmap*)pixmap);
+		micro2d_free((micro2d_pixmap*)pixmap);
 	 */
 	
 	private static native void clear(long pixmap, int color); /*
-		gdx2d_clear((gdx2d_pixmap*)pixmap, color);
+		micro2d_clear((micro2d_pixmap*)pixmap, color);
 	 */
 	
 	private static native void setPixel(long pixmap, int x, int y, int color); /*
-		gdx2d_set_pixel((gdx2d_pixmap*)pixmap, x, y, color);
+		micro2d_set_pixel((micro2d_pixmap*)pixmap, x, y, color);
 	 */
 	
 	private static native int getPixel(long pixmap, int x, int y); /*
-		return gdx2d_get_pixel((gdx2d_pixmap*)pixmap, x, y);
+		return micro2d_get_pixel((micro2d_pixmap*)pixmap, x, y);
 	 */
 	
 	private static native void drawLine(long pixmap, int x, int y, int x2, int y2, int color); /*
-		gdx2d_draw_line((gdx2d_pixmap*)pixmap, x, y, x2, y2, color);
+		micro2d_draw_line((micro2d_pixmap*)pixmap, x, y, x2, y2, color);
 	 */
 	
 	private static native void drawRect(long pixmap, int x, int y, int width, int height, int color); /*
-		gdx2d_draw_rect((gdx2d_pixmap*)pixmap, x, y, width, height, color);
+		micro2d_draw_rect((micro2d_pixmap*)pixmap, x, y, width, height, color);
 	 */
 	
 	private static native void drawCircle(long pixmap, int x, int y, int radius, int color); /*
-		gdx2d_draw_circle((gdx2d_pixmap*)pixmap, x, y, radius, color);
+		micro2d_draw_circle((micro2d_pixmap*)pixmap, x, y, radius, color);
 	 */
 	
 	private static native void fillRect(long pixmap, int x, int y, int width, int height, int color); /*
-		gdx2d_fill_rect((gdx2d_pixmap*)pixmap, x, y, width, height, color);
+		micro2d_fill_rect((micro2d_pixmap*)pixmap, x, y, width, height, color);
 	 */
 	
 	private static native void fillCircle(long pixmap, int x, int y, int radius, int color); /*
-		gdx2d_fill_circle((gdx2d_pixmap*)pixmap, x, y, radius, color);
+		micro2d_fill_circle((micro2d_pixmap*)pixmap, x, y, radius, color);
 	 */
 	
 	private static native void fillTriangle(long pixmap, int x1, int y1, int x2, int y2, int x3, int y3, int color); /*
-		gdx2d_fill_triangle((gdx2d_pixmap*)pixmap, x1, y1, x2, y2, x3, y3, color);
+		micro2d_fill_triangle((micro2d_pixmap*)pixmap, x1, y1, x2, y2, x3, y3, color);
 	 */
 	
 	private static native void drawPixmap(long src, long dst, int srcX, int srcY, int srcWidth, int srcHeight, int dstX,
 										  int dstY, int dstWidth, int dstHeight); /*
-		gdx2d_draw_pixmap((gdx2d_pixmap*)src, (gdx2d_pixmap*)dst, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight);
+		micro2d_draw_pixmap((micro2d_pixmap*)src, (micro2d_pixmap*)dst, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight);
 		 */
 	
 	private static native void setBlend(long src, int blend); /*
-		gdx2d_set_blend((gdx2d_pixmap*)src, blend);
+		micro2d_set_blend((micro2d_pixmap*)src, blend);
 	 */
 	
 	private static native void setScale(long src, int scale); /*
-		gdx2d_set_scale((gdx2d_pixmap*)src, scale);
+		micro2d_set_scale((micro2d_pixmap*)src, scale);
 	 */
 	
 	public static native String getFailureReason(); /*
-     return env->NewStringUTF(gdx2d_get_failure_reason());
+     return env->NewStringUTF(micro2d_get_failure_reason());
 	 */
 	
 }
