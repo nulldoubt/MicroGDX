@@ -418,7 +418,7 @@ public class AndroidGraphics extends AbstractGraphics implements Renderer {
 						Micro.app.error(LOG_TAG, "waiting for pause synchronization took too long; assuming deadlock and killing");
 						android.os.Process.killProcess(android.os.Process.myPid());
 					}
-				} catch (InterruptedException ignored) {
+				} catch (InterruptedException _) {
 					Micro.app.log(LOG_TAG, "waiting for pause synchronization failed!");
 				}
 			}

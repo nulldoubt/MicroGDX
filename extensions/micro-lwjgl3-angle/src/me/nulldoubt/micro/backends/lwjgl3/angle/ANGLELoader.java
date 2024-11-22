@@ -11,13 +11,10 @@ import java.util.zip.CRC32;
 public class ANGLELoader {
 	
 	public static boolean isWindows = System.getProperty("os.name").contains("Windows");
-	public static boolean isLinux = System.getProperty("os.name").contains("Linux")
-			|| System.getProperty("os.name").contains("FreeBSD");
+	public static boolean isLinux = System.getProperty("os.name").contains("Linux") || System.getProperty("os.name").contains("FreeBSD");
 	public static boolean isMac = System.getProperty("os.name").contains("Mac");
-	public static boolean isARM = System.getProperty("os.arch").startsWith("arm")
-			|| System.getProperty("os.arch").startsWith("aarch64");
-	public static boolean is64Bit = System.getProperty("os.arch").contains("64")
-			|| System.getProperty("os.arch").startsWith("armv8");
+	public static boolean isARM = System.getProperty("os.arch").startsWith("arm") || System.getProperty("os.arch").startsWith("aarch64");
+	public static boolean is64Bit = System.getProperty("os.arch").contains("64") || System.getProperty("os.arch").startsWith("armv8");
 	
 	private static final Random random = new Random();
 	private static File egl;
@@ -28,8 +25,7 @@ public class ANGLELoader {
 		if (c != null) {
 			try {
 				c.close();
-			} catch (Throwable ignored) {
-			}
+			} catch (Throwable _) {}
 		}
 	}
 	
@@ -49,7 +45,7 @@ public class ANGLELoader {
 					break;
 				crc.update(buffer, 0, length);
 			}
-		} catch (Exception ex) {
+		} catch (Exception _) {
 		} finally {
 			closeQuietly(input);
 		}
@@ -59,14 +55,12 @@ public class ANGLELoader {
 	private static File extractFile(String sourcePath, File outFile) {
 		try {
 			if (!outFile.getParentFile().exists() && !outFile.getParentFile().mkdirs())
-				throw new MicroRuntimeException(
-						"Couldn't create ANGLE native library output directory " + outFile.getParentFile().getAbsolutePath());
+				throw new MicroRuntimeException("Couldn't create ANGLE native library output directory " + outFile.getParentFile().getAbsolutePath());
 			OutputStream out = null;
 			InputStream in = null;
 			
-			if (outFile.exists()) {
+			if (outFile.exists())
 				return outFile;
-			}
 			
 			try {
 				out = new FileOutputStream(outFile);
@@ -88,19 +82,11 @@ public class ANGLELoader {
 		}
 	}
 	
-	/**
-	 * Returns a path to a file that can be written. Tries multiple locations and verifies writing succeeds.
-	 *
-	 * @return null if a writable path could not be found.
-	 */
 	private static File getExtractedFile(String dirName, String fileName) {
-		// Temp directory with username in path.
-		File idealFile = new File(
-				System.getProperty("java.io.tmpdir") + "/libgdx" + System.getProperty("user.name") + "/" + dirName, fileName);
+		File idealFile = new File(System.getProperty("java.io.tmpdir") + "/libgdx" + System.getProperty("user.name") + "/" + dirName, fileName);
 		if (canWrite(idealFile))
 			return idealFile;
 		
-		// System provided temp directory.
 		try {
 			File file = File.createTempFile(dirName, null);
 			if (file.delete()) {
@@ -108,8 +94,7 @@ public class ANGLELoader {
 				if (canWrite(file))
 					return file;
 			}
-		} catch (IOException ignored) {
-		}
+		} catch (IOException _) {}
 		
 		// User home.
 		File file = new File(System.getProperty("user.home") + "/.libgdx/" + dirName, fileName);
@@ -128,16 +113,12 @@ public class ANGLELoader {
 		return null;
 	}
 	
-	/**
-	 * Returns true if the parent directories of the file can be created and the file can be written.
-	 */
 	private static boolean canWrite(File file) {
 		File parent = file.getParentFile();
 		File testFile;
 		if (file.exists()) {
 			if (!file.canWrite() || !canExecute(file))
 				return false;
-			// Don't overwrite existing file just to check if we can write to directory.
 			testFile = new File(parent, randomUUID().toString());
 		} else {
 			parent.mkdirs();
@@ -147,9 +128,7 @@ public class ANGLELoader {
 		}
 		try {
 			new FileOutputStream(testFile).close();
-			if (!canExecute(testFile))
-				return false;
-			return true;
+			return canExecute(testFile);
 		} catch (Throwable ex) {
 			return false;
 		} finally {
@@ -167,8 +146,7 @@ public class ANGLELoader {
 			setExecutable.invoke(file, true, false);
 			
 			return (Boolean) canExecute.invoke(file);
-		} catch (Exception ignored) {
-		}
+		} catch (Exception _) {}
 		return false;
 	}
 	
@@ -192,8 +170,7 @@ public class ANGLELoader {
 		
 		String eglSource = osDir + "/libEGL" + ext;
 		String glesSource = osDir + "/libGLESv2" + ext;
-		String crc = crc(ANGLELoader.class.getResourceAsStream("/" + eglSource))
-				+ crc(ANGLELoader.class.getResourceAsStream("/" + glesSource));
+		String crc = crc(ANGLELoader.class.getResourceAsStream("/" + eglSource)) + crc(ANGLELoader.class.getResourceAsStream("/" + glesSource));
 		egl = getExtractedFile(crc, new File(eglSource).getName());
 		gles = getExtractedFile(crc, new File(glesSource).getName());
 		
@@ -203,13 +180,6 @@ public class ANGLELoader {
 			extractFile(glesSource, gles);
 			System.load(gles.getAbsolutePath());
 		} else {
-			// On macOS, we can't preload the shared libraries. calling dlopen("path1/lib.dylib")
-			// then calling dlopen("lib.dylib") will not return the dylib loaded in the first dlopen()
-			// call, but instead perform the dlopen library search algorithm anew. Since the dylibs
-			// we extract are not in any paths dlopen knows about, GLFW fails to load them.
-			// Instead, we need to copy the shared libraries to the current working directory (which
-			// we can't temporarily change in pure Java either...). The dylibs will get deleted
-			// in postGlfwInit() once the first window has been created, and GLFW has loaded the dylibs.
 			lastWorkingDir = new File(".");
 			extractFile(eglSource, new File(lastWorkingDir, egl.getName()));
 			extractFile(glesSource, new File(lastWorkingDir, gles.getName()));

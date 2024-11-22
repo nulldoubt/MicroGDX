@@ -435,10 +435,6 @@ public class TimSort<T> {
 		}
 		stackSize--;
 		
-		/*
-		 * Find where the first element of run2 goes in run1. Prior elements in run1 can be ignored (because they're already in
-		 * place).
-		 */
 		int k = gallopRight(a[base2], a, base1, len1, 0, c);
 		if (DEBUG)
 			assert k >= 0;
@@ -448,8 +444,6 @@ public class TimSort<T> {
 			return;
 		
 		/*
-		 * Find where the last element of run1 goes in run2. Subsequent elements in run2 can be ignored (because they're already in
-		 * place).
 		 */
 		len2 = gallopLeft(a[base1 + len1 - 1], a, base2, len2, len2 - 1, c);
 		if (DEBUG)

@@ -218,8 +218,7 @@ public class AndroidFileHandle extends FileHandle {
 				// This is SUPER slow! but we need it for directories.
 				try {
 					return assets.list(fileName).length > 0;
-				} catch (Exception ignored) {
-				}
+				} catch (Exception _) {}
 				return false;
 			}
 		}
@@ -228,20 +227,9 @@ public class AndroidFileHandle extends FileHandle {
 
 	public long length () {
 		if (type == FileType.Internal) {
-			AssetFileDescriptor fileDescriptor = null;
-			try {
-				fileDescriptor = assets.openFd(file.getPath());
+			try (AssetFileDescriptor fileDescriptor = assets.openFd(file.getPath())) {
 				return fileDescriptor.getLength();
-			} catch (IOException ignored) {
-			} finally {
-				if (fileDescriptor != null) {
-					try {
-						fileDescriptor.close();
-					} catch (IOException e) {
-					}
-					;
-				}
-			}
+			} catch (IOException _) {}
 		}
 		return super.length();
 	}

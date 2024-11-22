@@ -256,8 +256,7 @@ public class Timer {
 					try {
 						if (waitMillis > 0)
 							threadLock.wait(waitMillis);
-					} catch (InterruptedException ignored) {
-					}
+					} catch (InterruptedException _) {}
 				}
 			}
 			dispose();

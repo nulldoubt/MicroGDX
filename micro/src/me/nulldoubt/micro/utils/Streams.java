@@ -75,8 +75,7 @@ public final class Streams {
 		if (c != null) {
 			try {
 				c.close();
-			} catch (Throwable ignored) {
-			}
+			} catch (Throwable _) {}
 		}
 	}
 	

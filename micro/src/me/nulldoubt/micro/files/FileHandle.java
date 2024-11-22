@@ -500,7 +500,7 @@ public class FileHandle {
 			InputStream input = read();
 			try {
 				return input.available();
-			} catch (Exception ignored) {
+			} catch (Exception _) {
 			} finally {
 				Streams.closeQuietly(input);
 			}

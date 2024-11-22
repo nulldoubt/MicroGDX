@@ -132,7 +132,6 @@ public abstract class Value {
 		};
 	}
 
-	/** Returns a value that is a percentage of the specified actor's width. The context actor is ignored. */
 	public static Value percentWidth (final float percent, final Actor actor) {
 		if (actor == null) throw new IllegalArgumentException("actor cannot be null.");
 		return new Value() {
@@ -142,7 +141,6 @@ public abstract class Value {
 		};
 	}
 
-	/** Returns a value that is a percentage of the specified actor's height. The context actor is ignored. */
 	public static Value percentHeight (final float percent, final Actor actor) {
 		if (actor == null) throw new IllegalArgumentException("actor cannot be null.");
 		return new Value() {

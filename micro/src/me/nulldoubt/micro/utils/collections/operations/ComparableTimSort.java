@@ -383,10 +383,6 @@ public class ComparableTimSort {
 		}
 		stackSize--;
 		
-		/*
-		 * Find where the first element of run2 goes in run1. Prior elements in run1 can be ignored (because they're already in
-		 * place).
-		 */
 		int k = gallopRight((Comparable<Object>) a[base2], a, base1, len1, 0);
 		if (DEBUG)
 			assert k >= 0;
@@ -396,8 +392,6 @@ public class ComparableTimSort {
 			return;
 		
 		/*
-		 * Find where the last element of run1 goes in run2. Subsequent elements in run2 can be ignored (because they're already in
-		 * place).
 		 */
 		len2 = gallopLeft((Comparable<Object>) a[base1 + len1 - 1], a, base2, len2, len2 - 1);
 		if (DEBUG)

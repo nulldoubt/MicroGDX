@@ -15,7 +15,7 @@ public final class MicroNativesLoader {
 		if (disableNativesLoading)
 			return;
 		
-		new SharedLibraryLoader().load("gdx");
+		new SharedLibraryLoader().load("micro");
 		nativesLoaded = true;
 	}
 	

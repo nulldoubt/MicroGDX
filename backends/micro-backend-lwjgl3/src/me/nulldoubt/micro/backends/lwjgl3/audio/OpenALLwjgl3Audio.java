@@ -134,7 +134,7 @@ public class OpenALLwjgl3Audio implements Lwjgl3Audio {
 					}
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException ignored) {
+					} catch (InterruptedException _) {
 						return;
 					}
 				}

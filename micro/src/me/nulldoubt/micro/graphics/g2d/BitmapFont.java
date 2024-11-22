@@ -499,8 +499,7 @@ public class BitmapFont implements Disposable {
 				if (common.length >= 6 && common[5] != null && common[5].startsWith("pages=")) {
 					try {
 						pageCount = Math.max(1, Integer.parseInt(common[5].substring(6)));
-					} catch (NumberFormatException ignored) { // Use one page.
-					}
+					} catch (NumberFormatException _) {}
 				}
 				
 				imagePaths = new String[pageCount];
@@ -582,8 +581,7 @@ public class BitmapFont implements Disposable {
 					if (tokens.hasMoreTokens()) {
 						try {
 							glyph.page = Integer.parseInt(tokens.nextToken());
-						} catch (NumberFormatException ignored) {
-						}
+						} catch (NumberFormatException _) {}
 					}
 					
 					if (glyph.width > 0 && glyph.height > 0)

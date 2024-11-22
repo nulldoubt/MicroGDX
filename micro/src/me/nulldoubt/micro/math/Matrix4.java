@@ -54,30 +54,17 @@ public final class Matrix4 implements Serializable {
 	 * source Y component and added to the target Z component.
 	 */
 	public static final int M21 = 6;
-	/**
-	 * ZZ: Typically the unrotated Z component for scaling, also the cosine of the angle when rotated on the X and/or Y axis. On
-	 * Vector3 multiplication this value is multiplied with the source Z component and added to the target Z component.
-	 */
+	
 	public static final int M22 = 10;
-	/**
-	 * ZW: Typically the translation of the Z component. On Vector3 multiplication this value is added to the target Z
-	 * component.
-	 */
+	
 	public static final int M23 = 14;
-	/**
-	 * WX: Typically the value zero. On Vector3 multiplication this value is ignored.
-	 */
+	
 	public static final int M30 = 3;
-	/**
-	 * WY: Typically the value zero. On Vector3 multiplication this value is ignored.
-	 */
 	public static final int M31 = 7;
 	/**
-	 * WZ: Typically the value zero. On Vector3 multiplication this value is ignored.
 	 */
 	public static final int M32 = 11;
 	/**
-	 * WW: Typically the value one. On Vector3 multiplication this value is ignored.
 	 */
 	public static final int M33 = 15;
 	

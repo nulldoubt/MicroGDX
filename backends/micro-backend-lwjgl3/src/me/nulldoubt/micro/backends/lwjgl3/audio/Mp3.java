@@ -56,9 +56,7 @@ public class Mp3 {
 					}
 					try {
 						decoder.decodeFrame(header, bitstream);
-					} catch (Exception ignored) {
-						// JLayer's decoder throws ArrayIndexOutOfBoundsException sometimes!?
-					}
+					} catch (Exception _) {}
 					bitstream.closeFrame();
 					
 					int length = outputBuffer.reset();
@@ -77,8 +75,7 @@ public class Mp3 {
 				return;
 			try {
 				bitstream.close();
-			} catch (BitstreamException ignored) {
-			}
+			} catch (BitstreamException _) {}
 			bitstream = null;
 		}
 		
@@ -111,9 +108,7 @@ public class Mp3 {
 					}
 					try {
 						decoder.decodeFrame(header, bitstream);
-					} catch (Exception ignored) {
-						// JLayer's decoder throws ArrayIndexOutOfBoundsException sometimes!?
-					}
+					} catch (Exception _) {}
 					bitstream.closeFrame();
 					output.write(outputBuffer.getBuffer(), 0, outputBuffer.reset());
 				}

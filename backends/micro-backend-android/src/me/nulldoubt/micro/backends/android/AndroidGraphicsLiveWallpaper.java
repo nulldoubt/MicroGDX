@@ -82,7 +82,7 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics {
 				try {
 					requestRendering();
 					synch.wait();
-				} catch (InterruptedException ignored) {
+				} catch (InterruptedException _) {
 					Micro.app.log("AndroidGraphics", "waiting for resume synchronization failed!");
 				}
 			}

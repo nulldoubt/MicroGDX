@@ -275,7 +275,6 @@ public interface GL30 extends GL20 {
 	public final int GL_CONDITION_SATISFIED = 0x911C;
 	public final int GL_WAIT_FAILED = 0x911D;
 	public final int GL_SYNC_FLUSH_COMMANDS_BIT = 0x00000001;
-	// GL_TIMEOUT_IGNORED is defined as 0xFFFFFFFFFFFFFFFFull in C.
 	public final long GL_TIMEOUT_IGNORED = -1;
 	public final int GL_VERTEX_ATTRIB_ARRAY_DIVISOR = 0x88FE;
 	public final int GL_ANY_SAMPLES_PASSED = 0x8C2F;

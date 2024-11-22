@@ -425,12 +425,6 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
-	 *
-	 * @param vector The translation vector. (The z-component of the vector is ignored because this is a 3x3 matrix)
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 trn(Vector3 vector) {
 		val[M02] += vector.x;
 		val[M12] += vector.y;
@@ -636,12 +630,6 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Scale this matrix using the x and y components of the vector but leave the rest of the matrix alone.
-	 *
-	 * @param scale The {@link Vector3} to use to scale this matrix. The z component will be ignored.
-	 * @return This matrix for the purpose of chaining methods together.
-	 */
 	public Matrix3 scl(Vector3 scale) {
 		val[M00] *= scale.x;
 		val[M11] *= scale.y;

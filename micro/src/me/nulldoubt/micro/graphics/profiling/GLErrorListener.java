@@ -22,8 +22,7 @@ public interface GLErrorListener {
 					break;
 				}
 			}
-		} catch (Exception ignored) {
-		}
+		} catch (Exception _) {}
 		
 		if (place != null)
 			Micro.app.error("GLProfiler", "Error " + resolveErrorNumber(error) + " from " + place);

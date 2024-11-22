@@ -83,9 +83,7 @@ public class FreeType {
 			ByteBuffer buffer = null;
 			try {
 				buffer = fontFile.map();
-			} catch (MicroRuntimeException ignored) {
-				// OK to ignore, some platforms do not support file mapping.
-			}
+			} catch (MicroRuntimeException _) {}
 			if (buffer == null) {
 				InputStream input = fontFile.read();
 				try {
