@@ -24,9 +24,10 @@ jar {
 
 processResources.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-dependencies {
-    api "com.badlogicgames.gdx:gdx-jnigen-loader:2.5.2"
-}
+dependencies() {
+    api("com.badlogicgames.gdx:gdx-jnigen-loader:2.5.2");
+    api(project(":extensions:micro-collections"));
+};
 
 apply plugin: "com.badlogicgames.gdx.gdx-jnigen"
 jnigen {

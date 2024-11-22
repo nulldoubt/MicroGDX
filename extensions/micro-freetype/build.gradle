@@ -1,3 +1,7 @@
+dependencies {
+	api(project(":extensions:micro-collections"));
+}
+
 apply plugin: "com.badlogicgames.gdx.gdx-jnigen"
 jnigen {
 	sharedLibName = "gdx-freetype"
