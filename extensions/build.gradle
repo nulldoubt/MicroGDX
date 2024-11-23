@@ -15,6 +15,6 @@ configure(subprojects - project(":extensions:micro-collections")) {
         api(project(":micro"))
     }
 
-    tasks.withType(Jar) { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
+    tasks.withType(Jar).tap { configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE } }
 
 }

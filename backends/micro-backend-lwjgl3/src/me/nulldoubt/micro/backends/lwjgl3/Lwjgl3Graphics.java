@@ -76,8 +76,7 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 			this.gl20 = this.gl30 = new Lwjgl3GL30();
 		} else {
 			try {
-				this.gl20 = window.getConfig().glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL20 ? new Lwjgl3GL20()
-						: (GL20) Class.forName("com.nulldoubt.micro.backends.lwjgl3.angle.Lwjgl3GLES20").newInstance();
+				this.gl20 = window.getConfig().glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL20 ? new Lwjgl3GL20() : (GL20) Class.forName("com.nulldoubt.micro.backends.lwjgl3.angle.Lwjgl3GLES20").newInstance();
 			} catch (Throwable t) {
 				throw new MicroRuntimeException("Couldn't instantiate GLES20.", t);
 			}
@@ -93,23 +92,6 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 		String vendorString = gl20.glGetString(GL11.GL_VENDOR);
 		String rendererString = gl20.glGetString(GL11.GL_RENDERER);
 		glVersion = new GLVersion(Application.ApplicationType.Desktop, versionString, vendorString, rendererString);
-		if (supportsCubeMapSeamless()) {
-			enableCubeMapSeamless(true);
-		}
-	}
-	
-	/**
-	 * @return whether cubemap seamless feature is supported.
-	 */
-	public boolean supportsCubeMapSeamless() {
-		return glVersion.isVersionEqualToOrHigher(3, 2) || supportsExtension("GL_ARB_seamless_cube_map");
-	}
-	
-	public void enableCubeMapSeamless(boolean enable) {
-		if (enable)
-			gl20.glEnable(org.lwjgl.opengl.GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS);
-		else
-			gl20.glDisable(org.lwjgl.opengl.GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	}
 	
 	public Lwjgl3Window getWindow() {
@@ -314,11 +296,7 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 		
 		for (Monitor monitor : monitors) {
 			DisplayMode mode = getDisplayMode(monitor);
-			
-			overlap = Math.max(0,
-					Math.min(windowX + windowWidth, monitor.virtualX + mode.width) - Math.max(windowX, monitor.virtualX))
-					* Math.max(0, Math.min(windowY + windowHeight, monitor.virtualY + mode.height) - Math.max(windowY, monitor.virtualY));
-			
+			overlap = Math.max(0, Math.min(windowX + windowWidth, monitor.virtualX + mode.width) - Math.max(windowX, monitor.virtualX)) * Math.max(0, Math.min(windowY + windowHeight, monitor.virtualY + mode.height) - Math.max(windowY, monitor.virtualY));
 			if (bestOverlap < overlap) {
 				bestOverlap = overlap;
 				result = monitor;
@@ -375,8 +353,7 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 			storeCurrentWindowPositionAndDisplayMode();
 			
 			// switch from windowed to fullscreen
-			GLFW.glfwSetWindowMonitor(window.getWindowHandle(), newMode.getMonitor(), 0, 0, newMode.width, newMode.height,
-					newMode.refreshRate);
+			GLFW.glfwSetWindowMonitor(window.getWindowHandle(), newMode.getMonitor(), 0, 0, newMode.width, newMode.height, newMode.refreshRate);
 		}
 		updateFramebufferInfo();
 		

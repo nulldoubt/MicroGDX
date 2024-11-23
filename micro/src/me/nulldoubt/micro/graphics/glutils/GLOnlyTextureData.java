@@ -1,21 +1,18 @@
 package me.nulldoubt.micro.graphics.glutils;
 
 import me.nulldoubt.micro.Micro;
+import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.graphics.TextureData;
-import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 
 public class GLOnlyTextureData implements TextureData {
 	
-	/**
-	 * width and height
-	 */
-	int width = 0;
-	int height = 0;
+	int width;
+	int height;
 	boolean isPrepared = false;
 	
-	int mipLevel = 0;
+	int mipLevel;
 	int internalFormat;
 	int format;
 	int type;
