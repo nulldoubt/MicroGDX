@@ -117,8 +117,7 @@ public class FrameBuffer implements me.nulldoubt.micro.utils.Disposable {
 	}
 	
 	protected Texture createTexture(FrameBufferTextureAttachmentSpec attachmentSpec) {
-		final GLOnlyTextureData data = new GLOnlyTextureData(bufferBuilder.width, bufferBuilder.height, 0, attachmentSpec.internalFormat, attachmentSpec.format, attachmentSpec.type);
-		final Texture result = new Texture(data);
+		final Texture result = new Texture(new FrameBufferTextureData(bufferBuilder.width, bufferBuilder.height, 0, attachmentSpec.internalFormat, attachmentSpec.format, attachmentSpec.type));
 		result.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		result.setWrap(TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
 		return result;
@@ -482,6 +481,54 @@ public class FrameBuffer implements me.nulldoubt.micro.utils.Disposable {
 		
 		public FrameBuffer build() {
 			return new FrameBuffer(this);
+		}
+		
+	}
+	
+	private static class FrameBufferTextureData implements TextureData {
+		
+		protected int width;
+		protected int height;
+		protected int mipLevel;
+		protected int internalFormat;
+		protected int format;
+		protected int type;
+		
+		public FrameBufferTextureData(int width, int height, int mipMapLevel, int internalFormat, int format, int type) {
+			this.width = width;
+			this.height = height;
+			this.mipLevel = mipMapLevel;
+			this.internalFormat = internalFormat;
+			this.format = format;
+			this.type = type;
+		}
+		
+		@Override
+		public boolean isPrepared() {
+			return true;
+		}
+		
+		@Override
+		public void prepare() {}
+		
+		@Override
+		public void consume(final int target, final int mipMapLevel) {
+			Micro.gl.glTexImage2D(target, mipLevel, internalFormat, width, height, 0, format, type, null);
+		}
+		
+		@Override
+		public int getWidth() {
+			return width;
+		}
+		
+		@Override
+		public int getHeight() {
+			return height;
+		}
+		
+		@Override
+		public boolean isManaged() {
+			return false;
 		}
 		
 	}
