@@ -63,9 +63,9 @@ public class BinTree extends InWindow {
 			return false;
 		_cutValue = 16 + (matchMaxLen >> 1);
 		
-		int windowReservSize = (historySize + keepAddBufferBefore + matchMaxLen + keepAddBufferAfter) / 2 + 256;
+		int windowReserveSize = (historySize + keepAddBufferBefore + matchMaxLen + keepAddBufferAfter) / 2 + 256;
 		
-		super.Create(historySize + keepAddBufferBefore, matchMaxLen + keepAddBufferAfter, windowReservSize);
+		super.Create(historySize + keepAddBufferBefore, matchMaxLen + keepAddBufferAfter, windowReserveSize);
 		
 		_matchMaxLen = matchMaxLen;
 		

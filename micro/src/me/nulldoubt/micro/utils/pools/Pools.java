@@ -12,7 +12,7 @@ public class Pools {
 	public static <T> Pool<T> get(final Class<T> type, final int max, final Supplier<T> supplier) {
 		Pool<T> pool = (Pool<T>) typePools.get(type);
 		if (pool == null)
-			set(type, new SupplierPool<>(supplier, 4, max));
+			set(type, (pool = new SupplierPool<>(supplier, 4, max)));
 		return pool;
 	}
 	

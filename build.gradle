@@ -1,4 +1,5 @@
 buildscript() {
+
     apply(from: "gradle/dependencies.gradle")
 
     repositories() {
@@ -12,15 +13,9 @@ buildscript() {
 
 }
 
-plugins() {
-    id "de.undercouch.download" version "5.6.0"
-}
-
-apply(from: "gradle/dependencies.gradle")
-
 allprojects() {
     group = 'me.nulldoubt.micro'
-    version = project.getProperty('version')
+    version = project.getProperties().get('version')
 
     buildscript() {
         repositories() {
@@ -42,17 +37,16 @@ allprojects() {
         maven() { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
     }
 
-    tasks.withType(Javadoc) {
+    tasks.withType(Javadoc).configureEach {
         options.encoding = 'UTF-8'
         options.addBooleanOption('use', true)
         options.addStringOption('Xdoclint:none,-missing', '-quiet')
         options.addStringOption("-release", "22")
     }
-    
 }
 
 configure(subprojects - project(":backends:micro-backend-android")) {
@@ -60,6 +54,7 @@ configure(subprojects - project(":backends:micro-backend-android")) {
 
     compileJava() {
         options.fork = true
+        options.release = versions.java
         options.incremental = true
     }
 
@@ -67,22 +62,10 @@ configure(subprojects - project(":backends:micro-backend-android")) {
         withJavadocJar()
         withSourcesJar()
     }
-
 }
 
-configure(subprojects - project(":backends") - project(":extensions") - project(":extensions:micro-box2d")) {
+configure(subprojects - project(":backends") - project(":extensions")) {
     apply(plugin: "idea")
 }
 
-tasks.register('setupExternalNativesDirs') {
-    doLast() {
-        file("build").mkdir()
-        file("extensions/gdx-lwjgl3-angle/res").mkdirs()
-    }
-    doNotTrackState("Don't track state")
-}
-
-if (rootProject.file('override.gradle').exists())
-    apply(from: rootProject.file('override.gradle'))
-
-apply(from: "gradle/dist.gradle")
+apply from: rootProject.file("publish.gradle")

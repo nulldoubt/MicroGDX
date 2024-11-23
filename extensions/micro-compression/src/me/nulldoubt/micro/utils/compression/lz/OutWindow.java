@@ -1,5 +1,3 @@
-// LZ.OutWindow
-
 package me.nulldoubt.micro.utils.compression.lz;
 
 import java.io.IOException;

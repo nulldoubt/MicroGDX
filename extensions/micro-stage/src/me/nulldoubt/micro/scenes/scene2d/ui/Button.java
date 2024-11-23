@@ -1,19 +1,3 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.scenes.scene2d.ui;
 
 import me.nulldoubt.micro.Micro;
@@ -29,20 +13,6 @@ import me.nulldoubt.micro.scenes.scene2d.utils.Drawable;
 import me.nulldoubt.micro.utils.collections.Array;
 import me.nulldoubt.micro.utils.pools.Pools;
 
-/**
- * A button is a {@link Table} with a checked state and additional {@link ButtonStyle style} fields for pressed, unpressed, and
- * checked. Each time a button is clicked, the checked state is toggled. Being a table, a button can contain any other actors.<br>
- * <br>
- * The button's padding is set to the background drawable's padding when the background changes, overwriting any padding set
- * manually. Padding can still be set on the button's table cells.
- * <p>
- * {@link ChangeEvent} is fired when the button is clicked. Cancelling the event will restore the checked button state to what is
- * was previously.
- * <p>
- * The preferred size of the button is determined by the background and the button contents.
- *
- * @author Nathan Sweet
- */
 public class Button extends Table implements Disableable {
 	
 	private ButtonStyle style;

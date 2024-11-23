@@ -1,12 +1,7 @@
-plugins {
-    id "java-library"
+plugins() {
+    id("java-library")
 }
 
-if (JavaVersion.current().isJava9Compatible()) {
-    compileJava {
-        options.release = versions.java
-    }
-}
 sourceCompatibility = versions.java
 targetCompatibility = versions.java
 
@@ -15,14 +10,13 @@ sourceSets.main.resources.srcDirs = ["res"]
 
 compileJava {
     options.fork = true
+    options.release = versions.java
     options.incremental = true
 }
 
-jar {
+tasks.withType(AbstractCopyTask).configureEach() {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-
-processResources.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
 dependencies() {
     api("com.badlogicgames.gdx:gdx-jnigen-loader:2.5.2")

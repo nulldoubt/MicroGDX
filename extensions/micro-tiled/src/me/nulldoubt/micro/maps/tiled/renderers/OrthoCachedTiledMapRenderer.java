@@ -1,9 +1,9 @@
 package me.nulldoubt.micro.maps.tiled.renderers;
 
 import me.nulldoubt.micro.Micro;
+import me.nulldoubt.micro.graphics.Camera;
 import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.GL20;
-import me.nulldoubt.micro.graphics.OrthographicCamera;
 import me.nulldoubt.micro.graphics.Texture;
 import me.nulldoubt.micro.graphics.g2d.SpriteCache;
 import me.nulldoubt.micro.graphics.g2d.TextureRegion;
@@ -63,7 +63,7 @@ public class OrthoCachedTiledMapRenderer implements TiledMapRenderer, Disposable
 	}
 	
 	@Override
-	public void setView(OrthographicCamera camera) {
+	public void setView(Camera camera) {
 		spriteCache.setProjectionMatrix(camera.combined);
 		float width = camera.viewportWidth * camera.zoom + maxTileWidth * 2 * unitScale;
 		float height = camera.viewportHeight * camera.zoom + maxTileHeight * 2 * unitScale;

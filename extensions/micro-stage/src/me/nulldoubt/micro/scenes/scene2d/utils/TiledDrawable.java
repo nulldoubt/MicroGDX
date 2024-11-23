@@ -1,19 +1,3 @@
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 package me.nulldoubt.micro.scenes.scene2d.utils;
 
 import me.nulldoubt.micro.graphics.Color;
@@ -22,40 +6,38 @@ import me.nulldoubt.micro.graphics.g2d.Batch;
 import me.nulldoubt.micro.graphics.g2d.TextureRegion;
 import me.nulldoubt.micro.utils.Align;
 
-/** Draws a {@link TextureRegion} repeatedly to fill the area, instead of stretching it.
- * @author Nathan Sweet
- * @author Thomas Creutzenberg */
 public class TiledDrawable extends TextureRegionDrawable {
+	
 	private final Color color = new Color(1, 1, 1, 1);
 	private float scale = 1;
 	private int align = Align.bottomLeft;
-
-	public TiledDrawable () {
+	
+	public TiledDrawable() {
 		super();
 	}
-
-	public TiledDrawable (TextureRegion region) {
+	
+	public TiledDrawable(TextureRegion region) {
 		super(region);
 	}
-
-	public TiledDrawable (TextureRegionDrawable drawable) {
+	
+	public TiledDrawable(TextureRegionDrawable drawable) {
 		super(drawable);
 	}
-
-	public void draw (Batch batch, float x, float y, float width, float height) {
+	
+	public void draw(Batch batch, float x, float y, float width, float height) {
 		float oldColor = batch.getPackedColor();
 		batch.setColor(batch.getColor().mul(color));
-
+		
 		draw(batch, getRegion(), x, y, width, height, scale, align);
-
+		
 		batch.setPackedColor(oldColor);
 	}
-
-	public static void draw (Batch batch, TextureRegion textureRegion, float x, float y, float width, float height, float scale,
-		int align) {
+	
+	public static void draw(Batch batch, TextureRegion textureRegion, float x, float y, float width, float height, float scale,
+							int align) {
 		final float regionWidth = textureRegion.getRegionWidth() * scale;
 		final float regionHeight = textureRegion.getRegionHeight() * scale;
-
+		
 		final Texture texture = textureRegion.getTexture();
 		final float textureWidth = texture.getWidth() * scale;
 		final float textureHeight = texture.getHeight() * scale;
@@ -63,8 +45,8 @@ public class TiledDrawable extends TextureRegionDrawable {
 		final float v = textureRegion.getV();
 		final float u2 = textureRegion.getU2();
 		final float v2 = textureRegion.getV2();
-
-		int fullX = (int)(width / regionWidth);
+		
+		int fullX = (int) (width / regionWidth);
 		final float leftPartialWidth;
 		final float rightPartialWidth;
 		if (Align.isLeft(align)) {
@@ -84,7 +66,7 @@ public class TiledDrawable extends TextureRegionDrawable {
 				rightPartialWidth = 0f;
 			}
 		}
-		int fullY = (int)(height / regionHeight);
+		int fullY = (int) (height / regionHeight);
 		final float topPartialHeight;
 		final float bottomPartialHeight;
 		if (Align.isTop(align)) {
@@ -104,21 +86,21 @@ public class TiledDrawable extends TextureRegionDrawable {
 				bottomPartialHeight = 0f;
 			}
 		}
-
+		
 		float drawX = x;
 		float drawY = y;
-
+		
 		// Left edge
 		if (leftPartialWidth > 0f) {
 			final float leftEdgeU = u2 - (leftPartialWidth / textureWidth);
-
+			
 			// Left bottom partial
 			if (bottomPartialHeight > 0f) {
 				final float leftBottomV = v + (bottomPartialHeight / textureHeight);
 				batch.draw(texture, drawX, drawY, leftPartialWidth, bottomPartialHeight, leftEdgeU, leftBottomV, u2, v);
 				drawY += bottomPartialHeight;
 			}
-
+			
 			// Left center partials
 			if (fullY == 0 && Align.isCenterVertical(align)) {
 				final float vOffset = 0.5f * (v2 - v) * (1f - (height / regionHeight));
@@ -132,23 +114,23 @@ public class TiledDrawable extends TextureRegionDrawable {
 					drawY += regionHeight;
 				}
 			}
-
+			
 			// Left top partial
 			if (topPartialHeight > 0f) {
 				final float leftTopV = v2 - (topPartialHeight / textureHeight);
 				batch.draw(texture, drawX, drawY, leftPartialWidth, topPartialHeight, leftEdgeU, v2, u2, leftTopV);
 			}
 		}
-
+		
 		// Center full texture regions
 		{
 			// Center bottom partials
 			if (bottomPartialHeight > 0f) {
 				drawX = x + leftPartialWidth;
 				drawY = y;
-
+				
 				final float centerBottomV = v + (bottomPartialHeight / textureHeight);
-
+				
 				if (fullX == 0 && Align.isCenterHorizontal(align)) {
 					final float uOffset = 0.5f * (u2 - u) * (1f - (width / regionWidth));
 					final float centerBottomU = u + uOffset;
@@ -162,14 +144,14 @@ public class TiledDrawable extends TextureRegionDrawable {
 					}
 				}
 			}
-
+			
 			// Center full texture regions
 			{
 				drawX = x + leftPartialWidth;
-
+				
 				final int originalFullX = fullX;
 				final int originalFullY = fullY;
-
+				
 				float centerCenterDrawWidth = regionWidth;
 				float centerCenterDrawHeight = regionHeight;
 				float centerCenterU = u;
@@ -194,22 +176,22 @@ public class TiledDrawable extends TextureRegionDrawable {
 					drawY = y + bottomPartialHeight;
 					for (int ii = 0; ii < fullY; ii++) {
 						batch.draw(texture, drawX, drawY, centerCenterDrawWidth, centerCenterDrawHeight, centerCenterU, centerCenterV,
-							centerCenterU2, centerCenterV2);
+								centerCenterU2, centerCenterV2);
 						drawY += centerCenterDrawHeight;
 					}
 					drawX += centerCenterDrawWidth;
 				}
-
+				
 				fullX = originalFullX;
 				fullY = originalFullY;
 			}
-
+			
 			// Center top partials
 			if (topPartialHeight > 0f) {
 				drawX = x + leftPartialWidth;
-
+				
 				final float centerTopV = v2 - (topPartialHeight / textureHeight);
-
+				
 				if (fullX == 0 && Align.isCenterHorizontal(align)) {
 					final float uOffset = 0.5f * (u2 - u) * (1f - (width / regionWidth));
 					final float centerTopU = u + uOffset;
@@ -224,20 +206,20 @@ public class TiledDrawable extends TextureRegionDrawable {
 				}
 			}
 		}
-
+		
 		// Right edge
 		if (rightPartialWidth > 0f) {
 			drawY = y;
-
+			
 			final float rightEdgeU2 = u + (rightPartialWidth / textureWidth);
-
+			
 			// Right bottom partial
 			if (bottomPartialHeight > 0f) {
 				final float rightBottomV = v + (bottomPartialHeight / textureHeight);
 				batch.draw(texture, drawX, drawY, rightPartialWidth, bottomPartialHeight, u, rightBottomV, rightEdgeU2, v);
 				drawY += bottomPartialHeight;
 			}
-
+			
 			// Right center partials
 			if (fullY == 0 && Align.isCenterVertical(align)) {
 				final float vOffset = 0.5f * (v2 - v) * (1f - (height / regionHeight));
@@ -251,7 +233,7 @@ public class TiledDrawable extends TextureRegionDrawable {
 					drawY += regionHeight;
 				}
 			}
-
+			
 			// Right top partial
 			if (topPartialHeight > 0f) {
 				final float rightTopV = v2 - (topPartialHeight / textureHeight);
@@ -259,33 +241,33 @@ public class TiledDrawable extends TextureRegionDrawable {
 			}
 		}
 	}
-
-	public void draw (Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
-		float scaleY, float rotation) {
+	
+	public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
+					 float scaleY, float rotation) {
 		throw new UnsupportedOperationException();
 	}
-
-	public Color getColor () {
+	
+	public Color getColor() {
 		return color;
 	}
-
-	public void setScale (float scale) {
+	
+	public void setScale(float scale) {
 		this.scale = scale;
 	}
-
-	public float getScale () {
+	
+	public float getScale() {
 		return scale;
 	}
-
-	public int getAlign () {
+	
+	public int getAlign() {
 		return align;
 	}
-
-	public void setAlign (int align) {
+	
+	public void setAlign(int align) {
 		this.align = align;
 	}
-
-	public TiledDrawable tint (Color tint) {
+	
+	public TiledDrawable tint(Color tint) {
 		TiledDrawable drawable = new TiledDrawable(this);
 		drawable.color.set(tint);
 		drawable.setLeftWidth(getLeftWidth());
@@ -294,4 +276,5 @@ public class TiledDrawable extends TextureRegionDrawable {
 		drawable.setBottomHeight(getBottomHeight());
 		return drawable;
 	}
+	
 }

@@ -1,6 +1,7 @@
 apply plugin: "com.badlogicgames.gdx.gdx-jnigen"
 jnigen {
     sharedLibName = "micro-box2d"
+    all() { compilerSuffix = ".exe" }
     add(Windows, x32)
     add(Windows, x64)
     add(Linux, x64)

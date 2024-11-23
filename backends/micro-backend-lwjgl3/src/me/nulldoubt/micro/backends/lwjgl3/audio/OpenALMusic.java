@@ -120,35 +120,22 @@ public abstract class OpenALMusic implements Music {
 		return isPlaying;
 	}
 	
-	/**
-	 * Fills as much of the buffer as possible and returns the number of bytes filled. Returns <= 0 to indicate the end of the
-	 * stream.
-	 */
 	public abstract int read(byte[] buffer);
 	
 	public void setLooping(boolean isLooping) {
 		this.isLooping = isLooping;
 	}
 	
-	/**
-	 * Resets the stream to the beginning.
-	 */
 	public abstract void reset();
 	
 	public boolean isLooping() {
 		return isLooping;
 	}
 	
-	/**
-	 * By default, does just the same as reset(). Used to add special behaviour in Ogg.Music.
-	 */
 	protected void loop() {
 		reset();
 	}
 	
-	/**
-	 * @param volume Must be > 0.
-	 */
 	public void setVolume(float volume) {
 		if (volume < 0)
 			throw new IllegalArgumentException("volume cannot be < 0: " + volume);
@@ -210,7 +197,6 @@ public abstract class OpenALMusic implements Music {
 				onCompletionListener.onCompletion(this);
 		}
 		
-		// A buffer underflow will cause the source to stop.
 		if (isPlaying && alGetSourcei(sourceID, AL_SOURCE_STATE) != AL_PLAYING)
 			alSourcePlay(sourceID);
 	}

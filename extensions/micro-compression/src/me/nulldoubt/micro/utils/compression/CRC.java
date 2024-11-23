@@ -1,10 +1,9 @@
-// SevenZip/CRC.java
-
 package me.nulldoubt.micro.utils.compression;
 
 public class CRC {
-	public static int[] Table = new int[256];
-
+	
+	public static final int[] table = new int[256];
+	
 	static {
 		for (int i = 0; i < 256; i++) {
 			int r = i;
@@ -13,32 +12,28 @@ public class CRC {
 					r = (r >>> 1) ^ 0xEDB88320;
 				else
 					r >>>= 1;
-			Table[i] = r;
+			table[i] = r;
 		}
 	}
-
-	int _value = -1;
-
-	public void Init () {
-		_value = -1;
-	}
-
-	public void Update (byte[] data, int offset, int size) {
+	
+	private int _value = -1;
+	
+	public void update(byte[] data, int offset, int size) {
 		for (int i = 0; i < size; i++)
-			_value = Table[(_value ^ data[offset + i]) & 0xFF] ^ (_value >>> 8);
+			_value = table[(_value ^ data[offset + i]) & 0xFF] ^ (_value >>> 8);
 	}
-
-	public void Update (byte[] data) {
-		int size = data.length;
-		for (int i = 0; i < size; i++)
-			_value = Table[(_value ^ data[i]) & 0xFF] ^ (_value >>> 8);
+	
+	public void update(final byte[] data) {
+		for (final byte datum : data)
+			_value = table[(_value ^ datum) & 0xFF] ^ (_value >>> 8);
 	}
-
-	public void UpdateByte (int b) {
-		_value = Table[(_value ^ b) & 0xFF] ^ (_value >>> 8);
+	
+	public void update(final int b) {
+		_value = table[(_value ^ b) & 0xFF] ^ (_value >>> 8);
 	}
-
-	public int GetDigest () {
-		return _value ^ (-1);
+	
+	public int getDigest() {
+		return ~_value;
 	}
+	
 }

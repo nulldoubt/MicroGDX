@@ -7,7 +7,6 @@ import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.graphics.Camera;
 import me.nulldoubt.micro.graphics.Color;
 import me.nulldoubt.micro.graphics.GL20;
-import me.nulldoubt.micro.graphics.OrthographicCamera;
 import me.nulldoubt.micro.graphics.g2d.Batch;
 import me.nulldoubt.micro.graphics.glutils.ShapeRenderer;
 import me.nulldoubt.micro.math.Matrix4;
@@ -49,24 +48,15 @@ public class Stage implements InputProcessor, Disposable {
 	private boolean actionsRequestRendering = true;
 	
 	private ShapeRenderer debugShapes;
-	private boolean debugInvisible, debugAll, debugUnderMouse, debugParentUnderMouse;
+	private boolean debugAll, debugUnderMouse, debugParentUnderMouse;
 	private Debug debugTableUnderMouse = Debug.none;
 	private final Color debugColor = new Color(0, 1, 0, 0.85f);
 	
-	/**
-	 * Creates a stage with a {@link ScalingViewport} set to {@link Scaling#stretch}. The stage will use its own {@link Batch}
-	 * which will be disposed when the stage is disposed.
-	 */
 	public Stage() {
-		this(new ScalingViewport(Scaling.stretch, Micro.graphics.getWidth(), Micro.graphics.getHeight(), new OrthographicCamera()),
-				new Batch());
+		this(new ScalingViewport(Scaling.stretch, Micro.graphics.getWidth(), Micro.graphics.getHeight(), new Camera()), new Batch());
 		ownsBatch = true;
 	}
 	
-	/**
-	 * Creates a stage with the specified viewport. The stage will use its own {@link Batch} which will be disposed when the stage
-	 * is disposed.
-	 */
 	public Stage(Viewport viewport) {
 		this(viewport, new Batch());
 		ownsBatch = true;
@@ -838,13 +828,6 @@ public class Stage implements InputProcessor, Disposable {
 	 */
 	public Color getDebugColor() {
 		return debugColor;
-	}
-	
-	/**
-	 * If true, debug lines are shown for actors even when {@link Actor#isVisible()} is false.
-	 */
-	public void setDebugInvisible(boolean debugInvisible) {
-		this.debugInvisible = debugInvisible;
 	}
 	
 	/**

@@ -1,7 +1,7 @@
 package me.nulldoubt.micro.maps.tiled.renderers;
 
+import me.nulldoubt.micro.graphics.Camera;
 import me.nulldoubt.micro.graphics.Color;
-import me.nulldoubt.micro.graphics.OrthographicCamera;
 import me.nulldoubt.micro.graphics.g2d.Batch;
 import me.nulldoubt.micro.graphics.g2d.TextureRegion;
 import me.nulldoubt.micro.maps.MapGroupLayer;
@@ -82,7 +82,7 @@ public abstract class BatchTiledMapRenderer implements TiledMapRenderer, Disposa
 	}
 	
 	@Override
-	public void setView(OrthographicCamera camera) {
+	public void setView(Camera camera) {
 		batch.setProjectionMatrix(camera.combined);
 		float width = camera.viewportWidth * camera.zoom;
 		float height = camera.viewportHeight * camera.zoom;

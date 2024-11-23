@@ -1,6 +1,5 @@
 dependencies {
-	api libraries.lwjgl3
-	api natives.desktop
+	api(libraries.lwjgl3)
 }
 
 

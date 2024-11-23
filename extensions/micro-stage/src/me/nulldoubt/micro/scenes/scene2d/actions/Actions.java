@@ -184,7 +184,7 @@ public class Actions {
 	
 	public static RotateByAction rotateBy(float rotationAmount, float duration, Interpolation interpolation) {
 		RotateByAction action = action(RotateByAction.class, RotateByAction::new);
-		action.setAmount(rotationAmount);
+		action.amount = rotationAmount;
 		action.setDuration(duration);
 		action.setInterpolation(interpolation);
 		return action;
@@ -256,13 +256,13 @@ public class Actions {
 	
 	public static VisibleAction visible(boolean visible) {
 		VisibleAction action = action(VisibleAction.class, VisibleAction::new);
-		action.setVisible(visible);
+		action.visible = visible;
 		return action;
 	}
 	
 	public static TouchableAction touchable(Touchable touchable) {
 		TouchableAction action = action(TouchableAction.class, TouchableAction::new);
-		action.setTouchable(touchable);
+		action.touchable = touchable;
 		return action;
 	}
 	
@@ -278,20 +278,20 @@ public class Actions {
 	
 	public static DelayAction delay(float duration) {
 		DelayAction action = action(DelayAction.class, DelayAction::new);
-		action.setDuration(duration);
+		action.duration = duration;
 		return action;
 	}
 	
 	public static DelayAction delay(float duration, Action delayedAction) {
 		DelayAction action = action(DelayAction.class, DelayAction::new);
-		action.setDuration(duration);
+		action.duration = duration;
 		action.setAction(delayedAction);
 		return action;
 	}
 	
 	public static TimeScaleAction timeScale(float scale, Action scaledAction) {
 		TimeScaleAction action = action(TimeScaleAction.class, TimeScaleAction::new);
-		action.setScale(scale);
+		action.scale = scale;
 		action.setAction(scaledAction);
 		return action;
 	}
@@ -400,27 +400,27 @@ public class Actions {
 	
 	public static RepeatAction repeat(int count, Action repeatedAction) {
 		RepeatAction action = action(RepeatAction.class, RepeatAction::new);
-		action.setCount(count);
+		action.repeatCount = count;
 		action.setAction(repeatedAction);
 		return action;
 	}
 	
 	public static RepeatAction forever(Action repeatedAction) {
 		RepeatAction action = action(RepeatAction.class, RepeatAction::new);
-		action.setCount(RepeatAction.FOREVER);
+		action.repeatCount = RepeatAction.FOREVER;
 		action.setAction(repeatedAction);
 		return action;
 	}
 	
 	public static RunnableAction run(Runnable runnable) {
 		RunnableAction action = action(RunnableAction.class, RunnableAction::new);
-		action.setRunnable(runnable);
+		action.runnable = runnable;
 		return action;
 	}
 	
 	public static LayoutAction layout(boolean enabled) {
 		LayoutAction action = action(LayoutAction.class, LayoutAction::new);
-		action.setLayoutEnabled(enabled);
+		action.enabled = enabled;
 		return action;
 	}
 	
@@ -460,13 +460,6 @@ public class Actions {
 		return addAction;
 	}
 	
-	/**
-	 * Sets the target of an action and returns the action.
-	 *
-	 * @param target the desired target of the action
-	 * @param action the action on which to set the target
-	 * @return the action with its target set
-	 */
 	public static Action targeting(Actor target, Action action) {
 		action.setTarget(target);
 		return action;

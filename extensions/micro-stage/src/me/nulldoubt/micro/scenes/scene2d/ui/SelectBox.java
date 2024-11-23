@@ -75,24 +75,14 @@ public class SelectBox<T> extends Widget implements Disableable {
 		});
 	}
 	
-	/**
-	 * Allows a subclass to customize the scroll pane shown when the select box is open.
-	 */
 	protected SelectBoxScrollPane<T> newScrollPane() {
 		return new SelectBoxScrollPane(this);
 	}
 	
-	/**
-	 * Set the max number of items to display when the select box is opened. Set to 0 (the default) to display as many as fit in
-	 * the stage height.
-	 */
 	public void setMaxListCount(int maxListCount) {
 		scrollPane.maxListCount = maxListCount;
 	}
 	
-	/**
-	 * @return Max number of items to display when the box is opened, or <= 0 to display them all.
-	 */
 	public int getMaxListCount() {
 		return scrollPane.maxListCount;
 	}
@@ -115,17 +105,10 @@ public class SelectBox<T> extends Widget implements Disableable {
 		invalidateHierarchy();
 	}
 	
-	/**
-	 * Returns the select box's style. Modifying the returned style may not have an effect until {@link #setStyle(SelectBoxStyle)}
-	 * is called.
-	 */
 	public SelectBoxStyle getStyle() {
 		return style;
 	}
 	
-	/**
-	 * Set the backing Array that makes up the choices available in the SelectBox
-	 */
 	public void setItems(T... newItems) {
 		if (newItems == null)
 			throw new IllegalArgumentException("newItems cannot be null.");
@@ -141,9 +124,6 @@ public class SelectBox<T> extends Widget implements Disableable {
 			invalidateHierarchy();
 	}
 	
-	/**
-	 * Sets the items visible in the select box.
-	 */
 	public void setItems(Array<T> newItems) {
 		if (newItems == null)
 			throw new IllegalArgumentException("newItems cannot be null.");
@@ -170,9 +150,6 @@ public class SelectBox<T> extends Widget implements Disableable {
 		invalidateHierarchy();
 	}
 	
-	/**
-	 * Returns the internal items array. If modified, {@link #setItems(Array)} must be called to reflect the changes.
-	 */
 	public Array<T> getItems() {
 		return items;
 	}
@@ -224,9 +201,6 @@ public class SelectBox<T> extends Widget implements Disableable {
 		layoutPool.free(layout);
 	}
 	
-	/**
-	 * Returns appropriate background drawable from the style based on the current select box state.
-	 */
 	protected Drawable getBackgroundDrawable() {
 		if (isDisabled() && style.backgroundDisabled != null)
 			return style.backgroundDisabled;
@@ -237,9 +211,6 @@ public class SelectBox<T> extends Widget implements Disableable {
 		return style.background;
 	}
 	
-	/**
-	 * Returns the appropriate label font color from the style based on the current button state.
-	 */
 	protected Color getFontColor() {
 		if (isDisabled() && style.disabledFontColor != null)
 			return style.disabledFontColor;
@@ -283,35 +254,18 @@ public class SelectBox<T> extends Widget implements Disableable {
 		return font.draw(batch, string, x, y, 0, string.length(), width, alignment, false, "...");
 	}
 	
-	/**
-	 * Sets the alignment of the selected item in the select box. See {@link #getList()} and {@link List#setAlignment(int)} to set
-	 * the alignment in the list shown when the select box is open.
-	 *
-	 * @param alignment See {@link Align}.
-	 */
 	public void setAlignment(int alignment) {
 		this.alignment = alignment;
 	}
 	
-	/**
-	 * Get the set of selected items, useful when multiple items are selected
-	 *
-	 * @return a Selection object containing the selected elements
-	 */
 	public ArraySelection<T> getSelection() {
 		return selection;
 	}
 	
-	/**
-	 * Returns the first selected item, or null. For multiple selections use {@link SelectBox#getSelection()}.
-	 */
 	public T getSelected() {
 		return selection.first();
 	}
 	
-	/**
-	 * Sets the selection to only the passed item, if it is a possible choice, else selects the first item.
-	 */
 	public void setSelected(T item) {
 		if (items.contains(item, false))
 			selection.set(item);
@@ -321,24 +275,15 @@ public class SelectBox<T> extends Widget implements Disableable {
 			selection.clear();
 	}
 	
-	/**
-	 * @return The index of the first selected item. The top item has an index of 0. Nothing selected has an index of -1.
-	 */
 	public int getSelectedIndex() {
 		ObjectSet<T> selected = selection.items();
 		return selected.size == 0 ? -1 : items.indexOf(selected.first(), false);
 	}
 	
-	/**
-	 * Sets the selection to only the selected index.
-	 */
 	public void setSelectedIndex(int index) {
 		selection.set(items.get(index));
 	}
 	
-	/**
-	 * When true the pref width is based on the selected item.
-	 */
 	public void setSelectedPrefWidth(boolean selectedPrefWidth) {
 		this.selectedPrefWidth = selectedPrefWidth;
 	}
@@ -347,10 +292,6 @@ public class SelectBox<T> extends Widget implements Disableable {
 		return selectedPrefWidth;
 	}
 	
-	/**
-	 * Returns the pref width of the select box if the widest item was selected, for use when
-	 * {@link #setSelectedPrefWidth(boolean)} is true.
-	 */
 	public float getMaxSelectedPrefWidth() {
 		Pool<GlyphLayout> layoutPool = Pools.get(GlyphLayout.class, GlyphLayout::new);
 		GlyphLayout layout = layoutPool.obtain();
@@ -404,37 +345,20 @@ public class SelectBox<T> extends Widget implements Disableable {
 			scrollPane.show(getStage());
 	}
 	
-	/**
-	 * @deprecated Use {@link #hideScrollPane()}.
-	 */
-	@Deprecated
-	public void hideList() {
-		hideScrollPane();
-	}
-	
 	public void hideScrollPane() {
 		scrollPane.hide();
 	}
 	
-	/**
-	 * Returns the list shown when the select box is open.
-	 */
 	public List<T> getList() {
 		return scrollPane.list;
 	}
 	
-	/**
-	 * Disables scrolling of the list shown when the select box is open.
-	 */
 	public void setScrollingDisabled(boolean y) {
 		scrollPane.setScrollingDisabled(true, y);
 		invalidateHierarchy();
 	}
 	
-	/**
-	 * Returns the scroll pane containing the list that is shown when the select box is open.
-	 */
-	public SelectBoxScrollPane getScrollPane() {
+	public SelectBoxScrollPane<T> getScrollPane() {
 		return scrollPane;
 	}
 	
@@ -456,18 +380,13 @@ public class SelectBox<T> extends Widget implements Disableable {
 		scrollPane.addAction(sequence(fadeOut(0.15f, Interpolation.fade), removeActor()));
 	}
 	
-	/**
-	 * The scroll pane shown when a select box is open.
-	 *
-	 * @author Nathan Sweet
-	 */
 	public static class SelectBoxScrollPane<T> extends ScrollPane {
 		
 		final SelectBox<T> selectBox;
 		int maxListCount;
 		private final Vector2 stagePosition = new Vector2();
 		final List<T> list;
-		private InputListener hideListener;
+		private final InputListener hideListener;
 		private Actor previousScrollFocus;
 		
 		public SelectBoxScrollPane(final SelectBox<T> selectBox) {
@@ -537,10 +456,6 @@ public class SelectBox<T> extends Widget implements Disableable {
 			};
 		}
 		
-		/**
-		 * Allows a subclass to customize the select box list. The default implementation returns a list that delegates
-		 * {@link List#toString(Object)} to {@link SelectBox#toString(Object)}.
-		 */
 		protected List<T> newList() {
 			return new List<T>(selectBox.style.listStyle) {
 				public String toString(T obj) {
@@ -665,12 +580,6 @@ public class SelectBox<T> extends Widget implements Disableable {
 		
 	}
 	
-	/**
-	 * The style for a select box, see {@link SelectBox}.
-	 *
-	 * @author mzechner
-	 * @author Nathan Sweet
-	 */
 	public static class SelectBoxStyle {
 		
 		public BitmapFont font;
