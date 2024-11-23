@@ -168,12 +168,10 @@ public class FrameBuffer implements me.nulldoubt.micro.utils.Disposable {
 		if (bufferBuilder.hasStencilRenderBuffer) {
 			stencilbufferHandle = gl.glGenRenderbuffer();
 			gl.glBindRenderbuffer(GL20.GL_RENDERBUFFER, stencilbufferHandle);
-			if (bufferBuilder.samples > 0) {
-				Micro.gl31.glRenderbufferStorageMultisample(GL20.GL_RENDERBUFFER, bufferBuilder.samples,
-						bufferBuilder.stencilRenderBufferSpec.internalFormat, width, height);
-			} else {
-				gl.glRenderbufferStorage(GL20.GL_RENDERBUFFER, bufferBuilder.stencilRenderBufferSpec.internalFormat, width, height);
-			}
+			if (bufferBuilder.samples > 0)
+				Micro.gl31.glRenderbufferStorageMultisample(GL20.GL_RENDERBUFFER, bufferBuilder.samples, bufferBuilder.stencilRenderBufferSpec, width, height);
+			else
+				gl.glRenderbufferStorage(GL20.GL_RENDERBUFFER, bufferBuilder.stencilRenderBufferSpec, width, height);
 		}
 		
 		isMRT = bufferBuilder.textureAttachmentSpecs.size > 1;
@@ -195,13 +193,13 @@ public class FrameBuffer implements me.nulldoubt.micro.utils.Disposable {
 			gl.glBindTexture(texture.glTarget, texture.getTextureObjectHandle());
 		}
 		
-		for (FrameBufferRenderBufferAttachmentSpec colorBufferSpec : bufferBuilder.colorRenderBufferSpecs) {
+		for (int colorBufferSpec : bufferBuilder.colorRenderBufferSpecs) {
 			final int colorBufferHandle = gl.glGenRenderbuffer();
 			gl.glBindRenderbuffer(GL20.GL_RENDERBUFFER, colorBufferHandle);
 			if (bufferBuilder.samples > 0)
-				Micro.gl31.glRenderbufferStorageMultisample(GL20.GL_RENDERBUFFER, bufferBuilder.samples, colorBufferSpec.internalFormat, width, height);
+				Micro.gl31.glRenderbufferStorageMultisample(GL20.GL_RENDERBUFFER, bufferBuilder.samples, colorBufferSpec, width, height);
 			else
-				gl.glRenderbufferStorage(GL20.GL_RENDERBUFFER, colorBufferSpec.internalFormat, width, height);
+				gl.glRenderbufferStorage(GL20.GL_RENDERBUFFER, colorBufferSpec, width, height);
 			Micro.gl.glFramebufferRenderbuffer(GL20.GL_FRAMEBUFFER, GL20.GL_COLOR_ATTACHMENT0 + colorAttachmentCounter, GL20.GL_RENDERBUFFER, colorBufferHandle);
 			colorBufferHandles.add(colorBufferHandle);
 			colorAttachmentCounter++;
@@ -251,16 +249,16 @@ public class FrameBuffer implements me.nulldoubt.micro.utils.Disposable {
 			gl.glDeleteFramebuffer(framebufferHandle);
 			
 			if (result == GL20.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT)
-				throw new IllegalStateException("Frame buffer couldn't be constructed: incomplete attachment");
+				throw new IllegalStateException("FrameBuffer couldn't be constructed: incomplete attachment");
 			if (result == GL20.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS)
-				throw new IllegalStateException("Frame buffer couldn't be constructed: incomplete dimensions");
+				throw new IllegalStateException("FrameBuffer couldn't be constructed: incomplete dimensions");
 			if (result == GL20.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT)
-				throw new IllegalStateException("Frame buffer couldn't be constructed: missing attachment");
+				throw new IllegalStateException("FrameBuffer couldn't be constructed: missing attachment");
 			if (result == GL20.GL_FRAMEBUFFER_UNSUPPORTED)
-				throw new IllegalStateException("Frame buffer couldn't be constructed: unsupported combination of formats");
+				throw new IllegalStateException("FrameBuffer couldn't be constructed: unsupported combination of formats");
 			if (result == GL31.GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE)
-				throw new IllegalStateException("Frame buffer couldn't be constructed: multisample mismatch");
-			throw new IllegalStateException("Frame buffer couldn't be constructed: unknown error " + result);
+				throw new IllegalStateException("FrameBuffer couldn't be constructed: multisample mismatch");
+			throw new IllegalStateException("FrameBuffer couldn't be constructed: unknown error " + result);
 		}
 		
 		addManagedFrameBuffer(Micro.app, this);
@@ -408,24 +406,14 @@ public class FrameBuffer implements me.nulldoubt.micro.utils.Disposable {
 		
 	}
 	
-	protected static class FrameBufferRenderBufferAttachmentSpec {
-		
-		int internalFormat;
-		
-		public FrameBufferRenderBufferAttachmentSpec(int internalFormat) {
-			this.internalFormat = internalFormat;
-		}
-		
-	}
-	
 	public static class FrameBufferBuilder {
 		
 		protected int width, height, samples;
 		
 		protected Array<FrameBufferTextureAttachmentSpec> textureAttachmentSpecs = new Array<>();
-		protected Array<FrameBufferRenderBufferAttachmentSpec> colorRenderBufferSpecs = new Array<>();
+		protected Array<Integer> colorRenderBufferSpecs = new Array<>();
 		
-		protected FrameBufferRenderBufferAttachmentSpec stencilRenderBufferSpec;
+		protected int stencilRenderBufferSpec;
 		protected boolean hasStencilRenderBuffer;
 		
 		public FrameBufferBuilder(int width, int height) {
@@ -452,20 +440,19 @@ public class FrameBuffer implements me.nulldoubt.micro.utils.Disposable {
 		}
 		
 		public FrameBufferBuilder addStencilTextureAttachment(int internalFormat, int type) {
-			FrameBufferTextureAttachmentSpec spec = new FrameBufferTextureAttachmentSpec(internalFormat, GL30.GL_STENCIL_ATTACHMENT,
-					type);
+			final FrameBufferTextureAttachmentSpec spec = new FrameBufferTextureAttachmentSpec(internalFormat, GL30.GL_STENCIL_ATTACHMENT, type);
 			spec.isStencil = true;
 			textureAttachmentSpecs.add(spec);
 			return this;
 		}
 		
 		public FrameBufferBuilder addColorRenderBuffer(int internalFormat) {
-			colorRenderBufferSpecs.add(new FrameBufferRenderBufferAttachmentSpec(internalFormat));
+			colorRenderBufferSpecs.add(internalFormat);
 			return this;
 		}
 		
 		public FrameBufferBuilder addStencilRenderBuffer(int internalFormat) {
-			stencilRenderBufferSpec = new FrameBufferRenderBufferAttachmentSpec(internalFormat);
+			stencilRenderBufferSpec = internalFormat;
 			hasStencilRenderBuffer = true;
 			return this;
 		}
