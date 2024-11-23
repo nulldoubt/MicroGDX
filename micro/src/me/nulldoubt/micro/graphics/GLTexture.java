@@ -283,46 +283,16 @@ public abstract class GLTexture implements Disposable {
 		delete();
 	}
 	
-	protected static void uploadImageData(int target, TextureData data) {
+	protected static void uploadImageData(final int target, final TextureData data) {
 		uploadImageData(target, data, 0);
 	}
 	
-	public static void uploadImageData(int target, TextureData data, int miplevel) {
-		if (data == null) {
-			// FIXME: remove texture on target?
+	public static void uploadImageData(final int target, final TextureData data, final int mipMapLevel) {
+		if (data == null)
 			return;
-		}
-		
 		if (!data.isPrepared())
 			data.prepare();
-		
-		if (data.isCustom()) {
-			data.consumeCustomData(target);
-			return;
-		}
-		
-		Pixmap pixmap = data.consumePixmap();
-		boolean disposePixmap = data.disposePixmap();
-		if (data.getFormat() != pixmap.getFormat()) {
-			Pixmap tmp = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), data.getFormat());
-			tmp.setBlending(Blending.None);
-			tmp.drawPixmap(pixmap, 0, 0, 0, 0, pixmap.getWidth(), pixmap.getHeight());
-			if (data.disposePixmap()) {
-				pixmap.dispose();
-			}
-			pixmap = tmp;
-			disposePixmap = true;
-		}
-		
-		Micro.gl.glPixelStorei(GL20.GL_UNPACK_ALIGNMENT, 1);
-		if (data.useMipMaps()) {
-			MipMapGenerator.generateMipMap(target, pixmap, pixmap.getWidth(), pixmap.getHeight());
-		} else {
-			Micro.gl.glTexImage2D(target, miplevel, pixmap.getGLInternalFormat(), pixmap.getWidth(), pixmap.getHeight(), 0,
-					pixmap.getGLFormat(), pixmap.getGLType(), pixmap.getPixels());
-		}
-		if (disposePixmap)
-			pixmap.dispose();
+		data.consume(target, mipMapLevel);
 	}
 	
 }

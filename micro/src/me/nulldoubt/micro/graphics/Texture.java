@@ -124,10 +124,6 @@ public class Texture extends GLTexture {
 		Micro.gl.glBindTexture(glTarget, 0);
 	}
 	
-	/**
-	 * Used internally to reload after context loss. Creates a new GL handle then calls {@link #load(TextureData)}. Use this only
-	 * if you know what you do!
-	 */
 	@Override
 	protected void reload() {
 		if (!isManaged())
@@ -136,14 +132,6 @@ public class Texture extends GLTexture {
 		load(data);
 	}
 	
-	/**
-	 * Draws the given {@link Pixmap} to the texture at position x, y. No clipping is performed so you have to make sure that you
-	 * draw only inside the texture region. Note that this will only draw to mipmap level 0!
-	 *
-	 * @param pixmap The Pixmap
-	 * @param x      The x coordinate in pixels
-	 * @param y      The y coordinate in pixels
-	 */
 	public void draw(Pixmap pixmap, int x, int y) {
 		if (data.isManaged())
 			throw new MicroRuntimeException("can't draw to a managed texture");
@@ -172,21 +160,11 @@ public class Texture extends GLTexture {
 		return data;
 	}
 	
-	/**
-	 * @return whether this texture is managed or not.
-	 */
 	public boolean isManaged() {
 		return data.isManaged();
 	}
 	
-	/**
-	 * Disposes all resources associated with the texture
-	 */
 	public void dispose() {
-		// this is a hack. reason: we have to set the glHandle to 0 for textures that are
-		// reloaded through the asset manager as we first remove (and thus dispose) the texture
-		// and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
-		// removal from the asset manager.
 		if (glHandle == 0)
 			return;
 		delete();
@@ -209,16 +187,10 @@ public class Texture extends GLTexture {
 		managedTextures.put(app, managedTextureArray);
 	}
 	
-	/**
-	 * Clears all managed textures. This is an internal method. Do not use it!
-	 */
 	public static void clearAllTextures(Application app) {
 		managedTextures.remove(app);
 	}
 	
-	/**
-	 * Invalidate all managed textures. This is an internal method. Do not use it!
-	 */
 	public static void invalidateAllTextures(Application app) {
 		Array<Texture> managedTextureArray = managedTextures.get(app);
 		if (managedTextureArray == null)
@@ -230,37 +202,26 @@ public class Texture extends GLTexture {
 				texture.reload();
 			}
 		} else {
-			// first we have to make sure the AssetManager isn't loading anything anymore,
-			// otherwise the ref counting trick below wouldn't work (when a texture is
-			// currently on the task stack of the manager.)
 			assetManager.finishLoading();
 			
-			// next we go through each texture and reload either directly or via the
-			// asset manager.
-			Array<Texture> textures = new Array<Texture>(managedTextureArray);
+			Array<Texture> textures = new Array<>(managedTextureArray);
 			for (Texture texture : textures) {
 				String fileName = assetManager.getAssetFileName(texture);
 				if (fileName == null) {
 					texture.reload();
 				} else {
-					// get the ref count of the texture, then set it to 0 so we
-					// can actually remove it from the assetmanager. Also set the
-					// handle to zero, otherwise we might accidentially dispose
-					// already reloaded textures.
 					final int refCount = assetManager.getReferenceCount(fileName);
 					assetManager.setReferenceCount(fileName, 0);
 					texture.glHandle = 0;
 					
-					// create the parameters, passing the reference to the texture as
-					// well as a callback that sets the ref count.
 					TextureParameter params = new TextureParameter();
 					params.textureData = texture.getTextureData();
 					params.minFilter = texture.getMinFilter();
 					params.magFilter = texture.getMagFilter();
 					params.wrapU = texture.getUWrap();
 					params.wrapV = texture.getVWrap();
-					params.genMipMaps = texture.data.useMipMaps(); // not sure about this?
-					params.texture = texture; // special parameter which will ensure that the references stay the same.
+					params.genMipMaps = texture.data.useMipMaps();
+					params.texture = texture;
 					params.loadedCallback = (assetManager, fileName1, _) -> assetManager.setReferenceCount(fileName1, refCount);
 					
 					assetManager.unload(fileName);

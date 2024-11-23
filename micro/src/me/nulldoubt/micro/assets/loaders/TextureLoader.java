@@ -21,8 +21,6 @@ public class TextureLoader extends AsynchronousAssetLoader<Texture, TextureLoade
 		
 	}
 	
-	;
-	
 	TextureLoaderInfo info = new TextureLoaderInfo();
 	
 	public TextureLoader(FileHandleResolver resolver) {
@@ -76,19 +74,12 @@ public class TextureLoader extends AsynchronousAssetLoader<Texture, TextureLoade
 	
 	public static class TextureParameter extends AssetLoaderParameters<Texture> {
 		
-		/**
-		 * the format of the final Texture. Uses the source images format if null
-		 **/
 		public Format format = null;
-		/**
-		 * whether to generate mipmaps
-		 **/
 		public boolean genMipMaps = false;
-		/**
-		 * The texture to put the {@link TextureData} in, optional.
-		 **/
+		
 		public Texture texture = null;
 		/**
+		 *
 		 */
 		public TextureData textureData = null;
 		public TextureFilter minFilter = TextureFilter.Nearest;

@@ -1,22 +1,24 @@
 package me.nulldoubt.micro.graphics.glutils;
 
+import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.exceptions.MicroRuntimeException;
 import me.nulldoubt.micro.files.FileHandle;
+import me.nulldoubt.micro.graphics.GL20;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.graphics.Pixmap.Format;
 import me.nulldoubt.micro.graphics.TextureData;
 
 public class FileTextureData implements TextureData {
 	
-	final FileHandle file;
-	int width = 0;
-	int height = 0;
-	Format format;
-	Pixmap pixmap;
-	boolean useMipMaps;
-	boolean isPrepared = false;
+	protected final FileHandle file;
+	protected int width = 0;
+	protected int height = 0;
+	protected Format format;
+	protected Pixmap pixmap;
+	protected boolean useMipMaps;
+	protected boolean prepared = false;
 	
-	public FileTextureData(FileHandle file, Pixmap preloadedPixmap, Format format, boolean useMipMaps) {
+	public FileTextureData(final FileHandle file, final Pixmap preloadedPixmap, final Format format, final boolean useMipMaps) {
 		this.file = file;
 		this.pixmap = preloadedPixmap;
 		this.format = format;
@@ -31,12 +33,12 @@ public class FileTextureData implements TextureData {
 	
 	@Override
 	public boolean isPrepared() {
-		return isPrepared;
+		return prepared;
 	}
 	
 	@Override
 	public void prepare() {
-		if (isPrepared)
+		if (prepared)
 			throw new MicroRuntimeException("Already prepared");
 		if (pixmap == null) {
 			pixmap = new Pixmap(file);
@@ -45,22 +47,33 @@ public class FileTextureData implements TextureData {
 			if (format == null)
 				format = pixmap.getFormat();
 		}
-		isPrepared = true;
+		prepared = true;
 	}
 	
 	@Override
-	public Pixmap consumePixmap() {
-		if (!isPrepared)
-			throw new MicroRuntimeException("Call prepare() before calling getPixmap()");
-		isPrepared = false;
+	public void consume(final int target, final int mipMapLevel) {
+		if (!prepared)
+			throw new MicroRuntimeException("Not prepared");
+		prepared = false;
+		
 		Pixmap pixmap = this.pixmap;
 		this.pixmap = null;
-		return pixmap;
-	}
-	
-	@Override
-	public boolean disposePixmap() {
-		return true;
+		
+		if (format != pixmap.getFormat()) {
+			final Pixmap temp = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), format);
+			temp.setBlending(Pixmap.Blending.None);
+			temp.drawPixmap(pixmap, 0, 0, 0, 0, pixmap.getWidth(), pixmap.getHeight());
+			pixmap.dispose();
+			pixmap = temp;
+		}
+		
+		Micro.gl.glPixelStorei(GL20.GL_UNPACK_ALIGNMENT, 1);
+		if (useMipMaps)
+			MipMapGenerator.generateMipMap(target, pixmap, pixmap.getWidth(), pixmap.getHeight());
+		else
+			Micro.gl.glTexImage2D(target, mipMapLevel, pixmap.getGLInternalFormat(), pixmap.getWidth(), pixmap.getHeight(), 0, pixmap.getGLFormat(), pixmap.getGLType(), pixmap.getPixels());
+		
+		pixmap.dispose();
 	}
 	
 	@Override
@@ -74,8 +87,8 @@ public class FileTextureData implements TextureData {
 	}
 	
 	@Override
-	public Format getFormat() {
-		return format;
+	public boolean isManaged() {
+		return true;
 	}
 	
 	@Override
@@ -83,18 +96,8 @@ public class FileTextureData implements TextureData {
 		return useMipMaps;
 	}
 	
-	@Override
-	public boolean isManaged() {
-		return true;
-	}
-	
 	public FileHandle getFileHandle() {
 		return file;
-	}
-	
-	@Override
-	public void consumeCustomData(int target) {
-		throw new MicroRuntimeException("This TextureData implementation does not upload data itself");
 	}
 	
 	public String toString() {

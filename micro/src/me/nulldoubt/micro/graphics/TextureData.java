@@ -6,29 +6,21 @@ import me.nulldoubt.micro.graphics.glutils.FileTextureData;
 
 public interface TextureData {
 	
-	default boolean isCustom() {
-		return false;
-	}
-	
 	boolean isPrepared();
 	
 	void prepare();
 	
-	Pixmap consumePixmap();
-	
-	boolean disposePixmap();
-	
-	void consumeCustomData(int target);
+	void consume(final int target, final int mipMapLevel);
 	
 	int getWidth();
 	
 	int getHeight();
 	
-	Format getFormat();
-	
-	boolean useMipMaps();
-	
 	boolean isManaged();
+	
+	default boolean useMipMaps() {
+		return false;
+	}
 	
 	class Factory {
 		
