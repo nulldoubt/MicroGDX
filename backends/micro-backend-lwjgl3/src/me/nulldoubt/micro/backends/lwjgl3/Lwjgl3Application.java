@@ -18,7 +18,6 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.Callback;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.nio.IntBuffer;
 
@@ -129,8 +128,8 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 	static long createGlfwWindow(Lwjgl3ApplicationConfiguration config, long sharedContextWindow) {
 		GLFW.glfwDefaultWindowHints();
 		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
-		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, config.windowResizable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-		GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED, config.windowMaximized ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, config.resizable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+		GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED, config.maximized ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
 		GLFW.glfwWindowHint(GLFW.GLFW_AUTO_ICONIFY, config.autoIconify ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
 		
 		GLFW.glfwWindowHint(GLFW.GLFW_RED_BITS, config.r);
@@ -138,18 +137,13 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 		GLFW.glfwWindowHint(GLFW.GLFW_BLUE_BITS, config.b);
 		GLFW.glfwWindowHint(GLFW.GLFW_ALPHA_BITS, config.a);
 		GLFW.glfwWindowHint(GLFW.GLFW_STENCIL_BITS, config.stencil);
-		GLFW.glfwWindowHint(GLFW.GLFW_DEPTH_BITS, config.depth);
+		GLFW.glfwWindowHint(GLFW.GLFW_DEPTH_BITS, 0);
 		GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, config.samples);
 		
-		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL30
-				|| config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL31
-				|| config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL32) {
+		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL30 || config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL31 || config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL32) {
 			GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, config.gles30ContextMajorVersion);
 			GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, config.gles30ContextMinorVersion);
 			if (SharedLibraryLoader.os == Os.MacOsX) {
-				// hints mandatory on OS X for GL 3.2+ context creation, but fail on Windows if the
-				// WGL_ARB_create_context extension is not available
-				// see: http://www.glfw.org/docs/latest/compat.html
 				GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE);
 				GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
 			}
@@ -162,41 +156,39 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 			}
 		}
 		
-		if (config.transparentFramebuffer) {
+		if (config.transparentFramebuffer)
 			GLFW.glfwWindowHint(GLFW.GLFW_TRANSPARENT_FRAMEBUFFER, GLFW.GLFW_TRUE);
-		}
 		
-		if (config.debug) {
+		if (config.debug)
 			GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_DEBUG_CONTEXT, GLFW.GLFW_TRUE);
-		}
 		
 		long windowHandle = 0;
 		
-		if (config.fullscreenMode != null) {
-			GLFW.glfwWindowHint(GLFW.GLFW_REFRESH_RATE, config.fullscreenMode.refreshRate);
-			windowHandle = GLFW.glfwCreateWindow(config.fullscreenMode.width, config.fullscreenMode.height, config.title,
-					config.fullscreenMode.getMonitor(), sharedContextWindow);
+		if (config.fullscreen != null) {
+			GLFW.glfwWindowHint(GLFW.GLFW_REFRESH_RATE, config.fullscreen.refreshRate);
+			windowHandle = GLFW.glfwCreateWindow(config.fullscreen.width, config.fullscreen.height, config.title,
+					config.fullscreen.getMonitor(), sharedContextWindow);
 		} else {
-			GLFW.glfwWindowHint(GLFW.GLFW_DECORATED, config.windowDecorated ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-			windowHandle = GLFW.glfwCreateWindow(config.windowWidth, config.windowHeight, config.title, 0, sharedContextWindow);
+			GLFW.glfwWindowHint(GLFW.GLFW_DECORATED, config.decorated ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+			windowHandle = GLFW.glfwCreateWindow(config.width, config.height, config.title, 0, sharedContextWindow);
 		}
 		if (windowHandle == 0) {
 			throw new MicroRuntimeException("Couldn't create window");
 		}
-		Lwjgl3Window.setSizeLimits(windowHandle, config.windowMinWidth, config.windowMinHeight, config.windowMaxWidth,
-				config.windowMaxHeight);
-		if (config.fullscreenMode == null) {
+		Lwjgl3Window.setSizeLimits(windowHandle, config.minWidth, config.minHeight, config.maxWidth,
+				config.maxHeight);
+		if (config.fullscreen == null) {
 			if (GLFW.glfwGetPlatform() != GLFW.GLFW_PLATFORM_WAYLAND) {
-				if (config.windowX == -1 && config.windowY == -1) { // i.e., center the window
-					int windowWidth = Math.max(config.windowWidth, config.windowMinWidth);
-					int windowHeight = Math.max(config.windowHeight, config.windowMinHeight);
-					if (config.windowMaxWidth > -1)
-						windowWidth = Math.min(windowWidth, config.windowMaxWidth);
-					if (config.windowMaxHeight > -1)
-						windowHeight = Math.min(windowHeight, config.windowMaxHeight);
+				if (config.x == -1 && config.y == -1) { // i.e., center the window
+					int windowWidth = Math.max(config.width, config.minWidth);
+					int windowHeight = Math.max(config.height, config.minHeight);
+					if (config.maxWidth > -1)
+						windowWidth = Math.min(windowWidth, config.maxWidth);
+					if (config.maxHeight > -1)
+						windowHeight = Math.min(windowHeight, config.maxHeight);
 					
 					long monitorHandle = GLFW.glfwGetPrimaryMonitor();
-					if (config.windowMaximized && config.maximizedMonitor != null) {
+					if (config.maximized && config.maximizedMonitor != null) {
 						monitorHandle = config.maximizedMonitor.monitorHandle;
 					}
 					
@@ -204,19 +196,19 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 							Lwjgl3ApplicationConfiguration.toLwjgl3Monitor(monitorHandle), windowWidth, windowHeight);
 					GLFW.glfwSetWindowPos(windowHandle, newPos.x, newPos.y);
 				} else {
-					GLFW.glfwSetWindowPos(windowHandle, config.windowX, config.windowY);
+					GLFW.glfwSetWindowPos(windowHandle, config.x, config.y);
 				}
 			}
 			
-			if (config.windowMaximized) {
+			if (config.maximized) {
 				GLFW.glfwMaximizeWindow(windowHandle);
 			}
 		}
-		if (config.windowIconPaths != null) {
-			Lwjgl3Window.setIcon(windowHandle, config.windowIconPaths, config.windowIconFileType);
+		if (config.iconPaths != null) {
+			Lwjgl3Window.setIcon(windowHandle, config.iconPaths, config.iconFileType);
 		}
 		GLFW.glfwMakeContextCurrent(windowHandle);
-		GLFW.glfwSwapInterval(config.vSyncEnabled ? 1 : 0);
+		GLFW.glfwSwapInterval(config.vSync ? 1 : 0);
 		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) {
 			try {
 				Class gles = Class.forName("org.lwjgl.opengles.GLES");
@@ -271,17 +263,9 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 	}
 	
 	private static boolean supportsFBO() {
-		// FBO is in core since OpenGL 3.0, see https://www.opengl.org/wiki/Framebuffer_Object
-		return glVersion.isVersionEqualToOrHigher(3, 0) || GLFW.glfwExtensionSupported("GL_EXT_framebuffer_object")
-				|| GLFW.glfwExtensionSupported("GL_ARB_framebuffer_object");
+		return glVersion.isVersionEqualToOrHigher(3, 0) || GLFW.glfwExtensionSupported("GL_EXT_framebuffer_object") || GLFW.glfwExtensionSupported("GL_ARB_framebuffer_object");
 	}
 	
-	/**
-	 * Enables or disables GL debug messages for the specified severity level. Returns false if the severity level could not be
-	 * set (e.g. the NOTIFICATION level is not supported by the ARB and AMD extensions).
-	 * <p>
-	 * See {@link Lwjgl3ApplicationConfiguration#enableGLDebugOutput(boolean, PrintStream)}
-	 */
 	public static boolean setGLDebugMessageControl(GLDebugMessageSeverity severity, boolean enabled) {
 		GLCapabilities caps = GL.getCapabilities();
 		final int GL_DONT_CARE = 0x1100; // not defined anywhere yet
@@ -571,11 +555,11 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 	void createWindow(Lwjgl3Window window, Lwjgl3ApplicationConfiguration config, long sharedContext) {
 		long windowHandle = createGlfwWindow(config, sharedContext);
 		window.create(windowHandle);
-		window.setVisible(config.initialVisible);
+		window.setVisible(config.visible);
 		
 		for (int i = 0; i < 2; i++) {
-			window.getGraphics().gl20.glClearColor(config.initialBackgroundColor.r, config.initialBackgroundColor.g,
-					config.initialBackgroundColor.b, config.initialBackgroundColor.a);
+			window.getGraphics().gl20.glClearColor(config.backgroundColor.r, config.backgroundColor.g,
+					config.backgroundColor.b, config.backgroundColor.a);
 			window.getGraphics().gl20.glClear(GL11.GL_COLOR_BUFFER_BIT);
 			GLFW.glfwSwapBuffers(windowHandle);
 		}

@@ -124,8 +124,7 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 		Lwjgl3Graphics.this.logicalWidth = tmpBuffer.get(0);
 		Lwjgl3Graphics.this.logicalHeight = tmpBuffer2.get(0);
 		Lwjgl3ApplicationConfiguration config = window.getConfig();
-		bufferFormat = new BufferFormat(config.r, config.g, config.b, config.a, config.depth, config.stencil, config.samples,
-				false);
+		bufferFormat = new BufferFormat(config.r, config.g, config.b, config.a, 0, config.stencil, config.samples, false);
 	}
 	
 	void update() {
@@ -381,7 +380,7 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 		}
 		updateFramebufferInfo();
 		
-		setVSync(window.getConfig().vSyncEnabled);
+		setVSync(window.getConfig().vSync);
 		
 		return true;
 	}
@@ -429,19 +428,19 @@ public class Lwjgl3Graphics extends AbstractGraphics implements Disposable {
 	
 	@Override
 	public void setUndecorated(boolean undecorated) {
-		getWindow().getConfig().setDecorated(!undecorated);
+		getWindow().getConfig().decorated = !undecorated;
 		GLFW.glfwSetWindowAttrib(window.getWindowHandle(), GLFW.GLFW_DECORATED, undecorated ? GLFW.GLFW_FALSE : GLFW.GLFW_TRUE);
 	}
 	
 	@Override
 	public void setResizable(boolean resizable) {
-		getWindow().getConfig().setResizable(resizable);
+		getWindow().getConfig().resizable = resizable;
 		GLFW.glfwSetWindowAttrib(window.getWindowHandle(), GLFW.GLFW_RESIZABLE, resizable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
 	}
 	
 	@Override
 	public void setVSync(boolean vsync) {
-		getWindow().getConfig().vSyncEnabled = vsync;
+		getWindow().getConfig().vSync = vsync;
 		GLFW.glfwSwapInterval(vsync ? 1 : 0);
 	}
 	

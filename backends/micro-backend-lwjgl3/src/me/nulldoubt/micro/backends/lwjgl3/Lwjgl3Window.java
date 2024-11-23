@@ -160,7 +160,7 @@ public class Lwjgl3Window implements Disposable {
 				 Lwjgl3ApplicationBase application) {
 		this.listener = listener;
 		this.lifecycleListeners = lifecycleListeners;
-		this.windowListener = config.windowListener;
+		this.windowListener = config.listener;
 		this.config = config;
 		this.application = application;
 		this.tmpBuffer = BufferUtils.createIntBuffer(1);
