@@ -2,8 +2,8 @@ plugins() {
     id("java-library")
 }
 
-sourceCompatibility = versions.java
-targetCompatibility = versions.java
+java.sourceCompatibility = versions.java
+java.targetCompatibility = versions.java
 
 sourceSets.main.java.srcDirs = ["src"]
 sourceSets.main.resources.srcDirs = ["res"]
@@ -27,7 +27,10 @@ apply plugin: "com.badlogicgames.gdx.gdx-jnigen"
 jnigen {
     sharedLibName = "micro"
     temporaryDir = file("build/target/native").absolutePath
-    all() { compilerSuffix = ".exe" }
+    all() {
+        compilerSuffix = ".exe"
+        cFlags += " -O4"
+    }
     add(Windows, x32)
     add(Windows, x64)
     add(Linux, x64)
