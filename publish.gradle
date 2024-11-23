@@ -1,0 +1,23 @@
+configure(subprojects - project(":backends") - project(":extensions") - project(":backends:micro-backend-android")) {
+    apply plugin: 'maven-publish'
+    afterEvaluate { project ->
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    if (components.hasProperty("java"))
+                        from components.java
+                    if (components.hasProperty("release"))
+                        from components.release
+                }
+                if (project.tasks.findByName('jnigen')) {
+                    mavenPlatform(MavenPublication) {
+                        if (project.tasks.findByName('jnigenJarNativesDesktop'))
+                            artifact jnigenJarNativesDesktop {
+                                archiveClassifier = "natives-desktop"
+                            }
+                    }
+                }
+            }
+        }
+    }
+}
