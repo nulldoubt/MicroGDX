@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 public class XmlReader {
 	
@@ -51,9 +52,7 @@ public class XmlReader {
 	
 	public Element parse(InputStream input) {
 		try {
-			return parse(new InputStreamReader(input, "UTF-8"));
-		} catch (IOException ex) {
-			throw new SerializationException(ex);
+			return parse(new InputStreamReader(input, StandardCharsets.UTF_8));
 		} finally {
 			Streams.closeQuietly(input);
 		}
@@ -68,18 +67,14 @@ public class XmlReader {
 	}
 	
 	public Element parse(char[] data, int offset, int length) {
-		int cs, p = offset, pe = length;
+		int cs, p = offset;
 		
 		int s = 0;
 		String attributeName = null;
 		boolean hasBody = false;
 		
-		// line 3 "XmlReader.java"
-		{
-			cs = xml_start;
-		}
+		cs = xml_start;
 		
-		// line 7 "XmlReader.java"
 		{
 			int _klen;
 			int _trans = 0;
@@ -92,12 +87,8 @@ public class XmlReader {
 			while (true) {
 				switch (_goto_targ) {
 					case 0:
-						if (p == pe) {
+						if (p == length) {
 							_goto_targ = 4;
-							continue _goto;
-						}
-						if (cs == 0) {
-							_goto_targ = 5;
 							continue _goto;
 						}
 					case 1:
@@ -110,10 +101,7 @@ public class XmlReader {
 								int _lower = _keys;
 								int _mid;
 								int _upper = _keys + _klen - 1;
-								while (true) {
-									if (_upper < _lower)
-										break;
-									
+								while (_upper >= _lower) {
 									_mid = _lower + ((_upper - _lower) >> 1);
 									if (data[p] < _xml_trans_keys[_mid])
 										_upper = _mid - 1;
@@ -133,10 +121,7 @@ public class XmlReader {
 								int _lower = _keys;
 								int _mid;
 								int _upper = _keys + (_klen << 1) - 2;
-								while (true) {
-									if (_upper < _lower)
-										break;
-									
+								while (_upper >= _lower) {
 									_mid = _lower + (((_upper - _lower) >> 1) & ~1);
 									if (data[p] < _xml_trans_keys[_mid])
 										_upper = _mid - 2;
@@ -151,23 +136,18 @@ public class XmlReader {
 							}
 						} while (false);
 						
-						_trans = _xml_indicies[_trans];
+						_trans = _xml_indices[_trans];
 						cs = _xml_trans_targs[_trans];
 						
 						if (_xml_trans_actions[_trans] != 0) {
 							_acts = _xml_trans_actions[_trans];
-							_nacts = (int) _xml_actions[_acts++];
+							_nacts = _xml_actions[_acts++];
 							while (_nacts-- > 0) {
 								switch (_xml_actions[_acts++]) {
 									case 0:
-										// line 97 "XmlReader.rl"
-									{
 										s = p;
-									}
-									break;
-									case 1:
-										// line 98 "XmlReader.rl"
-									{
+										break;
+									case 1: {
 										char c = data[s];
 										if (c == '?' || c == '!') {
 											if (data[s + 1] == '[' && //
@@ -193,59 +173,40 @@ public class XmlReader {
 											{
 												cs = 15;
 												_goto_targ = 2;
-												if (true)
-													continue _goto;
+												continue _goto;
 											}
 										}
 										hasBody = true;
 										open(new String(data, s, p - s));
 									}
 									break;
-									case 2:
-										// line 127 "XmlReader.rl"
-									{
+									case 2: {
 										hasBody = false;
 										close();
-										{
-											cs = 15;
-											_goto_targ = 2;
-											if (true)
-												continue _goto;
-										}
+										cs = 15;
+										_goto_targ = 2;
+										continue _goto;
 									}
-									break;
-									case 3:
-										// line 132 "XmlReader.rl"
-									{
+									case 3: {
 										close();
 										{
 											cs = 15;
 											_goto_targ = 2;
-											if (true)
-												continue _goto;
+											continue _goto;
 										}
 									}
-									break;
-									case 4:
-										// line 136 "XmlReader.rl"
-									{
+									case 4: {
 										if (hasBody) {
 											cs = 15;
 											_goto_targ = 2;
-											if (true)
-												continue _goto;
+											continue _goto;
 										}
 									}
 									break;
 									case 5:
-										// line 139 "XmlReader.rl"
-									{
 										attributeName = new String(data, s, p - s);
-									}
-									break;
-									case 6:
-										// line 142 "XmlReader.rl"
-									{
+										break;
+									case 6: {
 										int end = p;
 										while (end != s) {
 											switch (data[end - 1]) {
@@ -286,18 +247,11 @@ public class XmlReader {
 									}
 									break;
 									case 7:
-										// line 178 "XmlReader.rl"
-									{
 										attribute(attributeName, entitiesText);
-									}
-									break;
+										break;
 									case 8:
-										// line 181 "XmlReader.rl"
-									{
 										text(entitiesText);
-									}
-									break;
-									// line 201 "XmlReader.java"
+										break;
 								}
 							}
 						}
@@ -305,11 +259,11 @@ public class XmlReader {
 					case 2:
 						if (cs == 0) {
 							_goto_targ = 5;
-							continue _goto;
+							continue;
 						}
-						if (++p != pe) {
+						if (++p != length) {
 							_goto_targ = 1;
-							continue _goto;
+							continue;
 						}
 					case 4:
 					case 5:
@@ -318,17 +272,14 @@ public class XmlReader {
 			}
 		}
 		
-		// line 195 "XmlReader.rl"
-		
 		entitiesText = null;
 		
-		if (p < pe) {
+		if (p < length) {
 			int lineNumber = 1;
 			for (int i = 0; i < p; i++)
 				if (data[i] == '\n')
 					lineNumber++;
-			throw new SerializationException(
-					"Error parsing XML on line " + lineNumber + " near: " + new String(data, p, Math.min(32, pe - p)));
+			throw new SerializationException("Error parsing XML on line " + lineNumber + " near: " + new String(data, p, Math.min(32, length - p)));
 		} else if (elements.size != 0) {
 			Element element = elements.peek();
 			elements.clear();
@@ -339,19 +290,18 @@ public class XmlReader {
 		return root;
 	}
 	
-	// line 221 "XmlReader.java"
 	private static byte[] init__xml_actions_0() {
 		return new byte[] {0, 1, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 2, 1, 4, 2, 2, 4, 2, 6, 7, 2, 6, 8, 3, 0, 6, 7};
 	}
 	
-	private static final byte _xml_actions[] = init__xml_actions_0();
+	private static final byte[] _xml_actions = init__xml_actions_0();
 	
 	private static byte[] init__xml_key_offsets_0() {
 		return new byte[] {0, 0, 4, 9, 14, 20, 26, 30, 35, 36, 37, 42, 46, 50, 51, 52, 56, 57, 62, 67, 73, 79, 83, 88, 89, 90, 95,
 				99, 103, 104, 108, 109, 110, 111, 112, 115};
 	}
 	
-	private static final byte _xml_key_offsets[] = init__xml_key_offsets_0();
+	private static final byte[] _xml_key_offsets = init__xml_key_offsets_0();
 	
 	private static char[] init__xml_trans_keys_0() {
 		return new char[] {32, 60, 9, 13, 32, 47, 62, 9, 13, 32, 47, 62, 9, 13, 32, 47, 61, 62, 9, 13, 32, 47, 61, 62, 9, 13, 32,
@@ -360,28 +310,27 @@ public class XmlReader {
 				47, 62, 9, 13, 32, 62, 9, 13, 32, 62, 9, 13, 60, 32, 47, 9, 13, 62, 62, 39, 39, 32, 9, 13, 0};
 	}
 	
-	private static final char _xml_trans_keys[] = init__xml_trans_keys_0();
+	private static final char[] _xml_trans_keys = init__xml_trans_keys_0();
 	
 	private static byte[] init__xml_single_lengths_0() {
-		return new byte[] {0, 2, 3, 3, 4, 4, 2, 3, 1, 1, 3, 2, 2, 1, 1, 2, 1, 3, 3, 4, 4, 2, 3, 1, 1, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1,
-				0};
+		return new byte[] {0, 2, 3, 3, 4, 4, 2, 3, 1, 1, 3, 2, 2, 1, 1, 2, 1, 3, 3, 4, 4, 2, 3, 1, 1, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0};
 	}
 	
-	private static final byte _xml_single_lengths[] = init__xml_single_lengths_0();
+	private static final byte[] _xml_single_lengths = init__xml_single_lengths_0();
 	
 	private static byte[] init__xml_range_lengths_0() {
 		return new byte[] {0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1,
 				0};
 	}
 	
-	private static final byte _xml_range_lengths[] = init__xml_range_lengths_0();
+	private static final byte[] _xml_range_lengths = init__xml_range_lengths_0();
 	
 	private static short[] init__xml_index_offsets_0() {
 		return new short[] {0, 0, 4, 9, 14, 20, 26, 30, 35, 37, 39, 44, 48, 52, 54, 56, 60, 62, 67, 72, 78, 84, 88, 93, 95, 97, 102,
 				106, 110, 112, 116, 118, 120, 122, 124, 127};
 	}
 	
-	private static final short _xml_index_offsets[] = init__xml_index_offsets_0();
+	private static final short[] _xml_index_offsets = init__xml_index_offsets_0();
 	
 	private static byte[] init__xml_indicies_0() {
 		return new byte[] {0, 2, 0, 1, 2, 1, 1, 2, 3, 5, 6, 7, 5, 4, 9, 10, 1, 11, 9, 8, 13, 1, 14, 1, 13, 12, 15, 16, 15, 1, 16,
@@ -391,7 +340,7 @@ public class XmlReader {
 				1, 0};
 	}
 	
-	private static final byte _xml_indicies[] = init__xml_indicies_0();
+	private static final byte[] _xml_indices = init__xml_indicies_0();
 	
 	private static byte[] init__xml_trans_targs_0() {
 		return new byte[] {1, 0, 2, 3, 3, 4, 11, 34, 5, 4, 11, 34, 5, 6, 7, 6, 7, 8, 13, 9, 10, 9, 10, 12, 34, 12, 14, 14, 16, 15,
@@ -399,14 +348,14 @@ public class XmlReader {
 				33, 33, 34};
 	}
 	
-	private static final byte _xml_trans_targs[] = init__xml_trans_targs_0();
+	private static final byte[] _xml_trans_targs = init__xml_trans_targs_0();
 	
 	private static byte[] init__xml_trans_actions_0() {
 		return new byte[] {0, 0, 0, 1, 0, 3, 3, 13, 1, 0, 0, 9, 0, 11, 11, 0, 0, 0, 0, 1, 25, 0, 19, 5, 16, 0, 1, 0, 1, 0, 0, 0, 22,
 				1, 0, 0, 3, 3, 13, 1, 0, 0, 9, 0, 11, 11, 0, 0, 0, 0, 1, 25, 0, 19, 5, 16, 0, 0, 0, 7, 1, 0, 0};
 	}
 	
-	private static final byte _xml_trans_actions[] = init__xml_trans_actions_0();
+	private static final byte[] _xml_trans_actions = init__xml_trans_actions_0();
 	
 	static final int xml_start = 1;
 	static final int xml_first_final = 34;
@@ -414,8 +363,6 @@ public class XmlReader {
 	
 	static final int xml_en_elementBody = 15;
 	static final int xml_en_main = 1;
-	
-	// line 215 "XmlReader.rl"
 	
 	protected void open(String name) {
 		Element child = new Element(name, current);
@@ -431,16 +378,23 @@ public class XmlReader {
 	}
 	
 	protected String entity(String name) {
-		if (name.equals("lt"))
-			return "<";
-		if (name.equals("gt"))
-			return ">";
-		if (name.equals("amp"))
-			return "&";
-		if (name.equals("apos"))
-			return "'";
-		if (name.equals("quot"))
-			return "\"";
+		switch (name) {
+			case "lt" -> {
+				return "<";
+			}
+			case "gt" -> {
+				return ">";
+			}
+			case "amp" -> {
+				return "&";
+			}
+			case "apos" -> {
+				return "'";
+			}
+			case "quot" -> {
+				return "\"";
+			}
+		}
 		if (name.startsWith("#x"))
 			return Character.toString((char) Integer.parseInt(name.substring(2), 16));
 		return null;
@@ -462,7 +416,7 @@ public class XmlReader {
 		private ObjectMap<String, String> attributes;
 		private Array<Element> children;
 		private String text;
-		private Element parent;
+		private final Element parent;
 		
 		public Element(String name, Element parent) {
 			this.name = name;
@@ -477,9 +431,6 @@ public class XmlReader {
 			return attributes;
 		}
 		
-		/**
-		 * @throws MicroRuntimeException if the attribute was not found.
-		 */
 		public String getAttribute(String name) {
 			if (attributes == null)
 				throw new MicroRuntimeException("Element " + this.name + " doesn't have attribute: " + name);
@@ -506,7 +457,7 @@ public class XmlReader {
 		
 		public void setAttribute(String name, String value) {
 			if (attributes == null)
-				attributes = new ObjectMap(8);
+				attributes = new ObjectMap<>(8);
 			attributes.put(name, value);
 		}
 		
@@ -520,9 +471,6 @@ public class XmlReader {
 			return children;
 		}
 		
-		/**
-		 * @throws MicroRuntimeException if the element has no children.
-		 */
 		public Element getChild(int index) {
 			if (children == null)
 				throw new MicroRuntimeException("Element has no children: " + name);
@@ -531,7 +479,7 @@ public class XmlReader {
 		
 		public void addChild(Element element) {
 			if (children == null)
-				children = new Array(8);
+				children = new Array<>(8);
 			children.add(element);
 		}
 		
@@ -588,12 +536,12 @@ public class XmlReader {
 					buffer.append('\"');
 				}
 			}
-			if (children == null && (text == null || text.length() == 0))
+			if (children == null && (text == null || text.isEmpty()))
 				buffer.append("/>");
 			else {
 				buffer.append(">\n");
 				String childIndent = indent + '\t';
-				if (text != null && text.length() > 0) {
+				if (text != null && !text.isEmpty()) {
 					buffer.append(childIndent);
 					buffer.append(text);
 					buffer.append('\n');
@@ -612,10 +560,6 @@ public class XmlReader {
 			return buffer.toString();
 		}
 		
-		/**
-		 * @param name the name of the child {@link Element}
-		 * @return the first child having the given name or null, does not recurse
-		 */
 		public Element getChildByName(String name) {
 			if (children == null)
 				return null;
@@ -633,10 +577,6 @@ public class XmlReader {
 			return getChildByName(name) != null;
 		}
 		
-		/**
-		 * @param name the name of the child {@link Element}
-		 * @return the first child having the given name or null, recurses
-		 */
 		public Element getChildByNameRecursive(String name) {
 			if (children == null)
 				return null;
@@ -657,10 +597,6 @@ public class XmlReader {
 			return getChildByNameRecursive(name) != null;
 		}
 		
-		/**
-		 * @param name the name of the children
-		 * @return the children with the given name or an empty {@link Array}
-		 */
 		public Array<Element> getChildrenByName(String name) {
 			Array<Element> result = new Array<Element>();
 			if (children == null)
@@ -673,10 +609,6 @@ public class XmlReader {
 			return result;
 		}
 		
-		/**
-		 * @param name the name of the children
-		 * @return the children with the given name or an empty {@link Array}
-		 */
 		public Array<Element> getChildrenByNameRecursively(String name) {
 			Array<Element> result = new Array<Element>();
 			getChildrenByNameRecursively(name, result);
@@ -694,9 +626,6 @@ public class XmlReader {
 			}
 		}
 		
-		/**
-		 * @throws MicroRuntimeException if the attribute was not found.
-		 */
 		public float getFloatAttribute(String name) {
 			return Float.parseFloat(getAttribute(name));
 		}
@@ -708,9 +637,6 @@ public class XmlReader {
 			return Float.parseFloat(value);
 		}
 		
-		/**
-		 * @throws MicroRuntimeException if the attribute was not found.
-		 */
 		public int getIntAttribute(String name) {
 			return Integer.parseInt(getAttribute(name));
 		}
@@ -722,9 +648,6 @@ public class XmlReader {
 			return Integer.parseInt(value);
 		}
 		
-		/**
-		 * @throws MicroRuntimeException if the attribute was not found.
-		 */
 		public boolean getBooleanAttribute(String name) {
 			return Boolean.parseBoolean(getAttribute(name));
 		}
@@ -736,11 +659,6 @@ public class XmlReader {
 			return Boolean.parseBoolean(value);
 		}
 		
-		/**
-		 * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-		 *
-		 * @throws MicroRuntimeException if no attribute or child was not found.
-		 */
 		public String get(String name) {
 			String value = get(name, null);
 			if (value == null)
@@ -748,11 +666,6 @@ public class XmlReader {
 			return value;
 		}
 		
-		/**
-		 * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-		 *
-		 * @throws MicroRuntimeException if no attribute or child was not found.
-		 */
 		public String get(String name, String defaultValue) {
 			if (attributes != null) {
 				String value = attributes.get(name);
@@ -768,11 +681,6 @@ public class XmlReader {
 			return value;
 		}
 		
-		/**
-		 * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-		 *
-		 * @throws MicroRuntimeException if no attribute or child was not found.
-		 */
 		public int getInt(String name) {
 			String value = get(name, null);
 			if (value == null)
@@ -780,11 +688,6 @@ public class XmlReader {
 			return Integer.parseInt(value);
 		}
 		
-		/**
-		 * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-		 *
-		 * @throws MicroRuntimeException if no attribute or child was not found.
-		 */
 		public int getInt(String name, int defaultValue) {
 			String value = get(name, null);
 			if (value == null)
@@ -792,11 +695,6 @@ public class XmlReader {
 			return Integer.parseInt(value);
 		}
 		
-		/**
-		 * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-		 *
-		 * @throws MicroRuntimeException if no attribute or child was not found.
-		 */
 		public float getFloat(String name) {
 			String value = get(name, null);
 			if (value == null)
@@ -804,11 +702,6 @@ public class XmlReader {
 			return Float.parseFloat(value);
 		}
 		
-		/**
-		 * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-		 *
-		 * @throws MicroRuntimeException if no attribute or child was not found.
-		 */
 		public float getFloat(String name, float defaultValue) {
 			String value = get(name, null);
 			if (value == null)
@@ -816,11 +709,6 @@ public class XmlReader {
 			return Float.parseFloat(value);
 		}
 		
-		/**
-		 * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-		 *
-		 * @throws MicroRuntimeException if no attribute or child was not found.
-		 */
 		public boolean getBoolean(String name) {
 			String value = get(name, null);
 			if (value == null)
@@ -828,11 +716,6 @@ public class XmlReader {
 			return Boolean.parseBoolean(value);
 		}
 		
-		/**
-		 * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-		 *
-		 * @throws MicroRuntimeException if no attribute or child was not found.
-		 */
 		public boolean getBoolean(String name, boolean defaultValue) {
 			String value = get(name, null);
 			if (value == null)

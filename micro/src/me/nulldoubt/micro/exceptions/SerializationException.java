@@ -4,7 +4,7 @@ import me.nulldoubt.micro.utils.strings.StringBuilder;
 
 public class SerializationException extends RuntimeException {
 	
-	private me.nulldoubt.micro.utils.strings.StringBuilder trace;
+	private StringBuilder trace;
 	
 	public SerializationException() {
 		super();
@@ -22,9 +22,6 @@ public class SerializationException extends RuntimeException {
 		super("", cause);
 	}
 	
-	/**
-	 * Returns true if any of the exceptions that caused this exception are of the specified type.
-	 */
 	public boolean causedBy(Class type) {
 		return causedBy(this, type);
 	}
@@ -43,17 +40,13 @@ public class SerializationException extends RuntimeException {
 			return super.getMessage();
 		me.nulldoubt.micro.utils.strings.StringBuilder sb = new me.nulldoubt.micro.utils.strings.StringBuilder(512);
 		sb.append(super.getMessage());
-		if (sb.length() > 0)
+		if (!sb.isEmpty())
 			sb.append('\n');
 		sb.append("Serialization trace:");
 		sb.append(trace);
 		return sb.toString();
 	}
 	
-	/**
-	 * Adds information to the exception message about where in the the object graph serialization failure occurred. Serializers
-	 * can catch {@link SerializationException}, add trace information, and rethrow the exception.
-	 */
 	public void addTrace(String info) {
 		if (info == null)
 			throw new IllegalArgumentException("info cannot be null.");

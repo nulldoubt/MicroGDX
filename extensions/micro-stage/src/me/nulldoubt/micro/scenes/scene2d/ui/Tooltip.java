@@ -13,20 +13,14 @@ public class Tooltip<T extends Actor> extends InputListener {
 	boolean instant, always, touchIndependent;
 	Actor targetActor;
 	
-	/**
-	 * @param contents May be null.
-	 */
 	public Tooltip(T contents) {
 		this(contents, TooltipManager.getInstance());
 	}
 	
-	/**
-	 * @param contents May be null.
-	 */
 	public Tooltip(T contents, TooltipManager manager) {
 		this.manager = manager;
 		
-		container = new Container(contents) {
+		container = new Container<>(contents) {
 			public void act(float delta) {
 				super.act(delta);
 				if (targetActor != null && targetActor.getStage() == null)
@@ -52,23 +46,14 @@ public class Tooltip<T extends Actor> extends InputListener {
 		return container.getActor();
 	}
 	
-	/**
-	 * If true, this tooltip is shown without delay when hovered.
-	 */
 	public void setInstant(boolean instant) {
 		this.instant = instant;
 	}
 	
-	/**
-	 * If true, this tooltip is shown even when tooltips are not {@link TooltipManager#enabled}.
-	 */
 	public void setAlways(boolean always) {
 		this.always = always;
 	}
 	
-	/**
-	 * If true, this tooltip will be shown even when screen is touched simultaneously with entering tooltip's targetActor
-	 */
 	public void setTouchIndependent(boolean touchIndependent) {
 		this.touchIndependent = touchIndependent;
 	}

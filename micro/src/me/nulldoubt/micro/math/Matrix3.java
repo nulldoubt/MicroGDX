@@ -16,7 +16,7 @@ public final class Matrix3 implements Serializable {
 	public static final int M21 = 5;
 	public static final int M22 = 8;
 	public float[] val = new float[9];
-	private float[] tmp = new float[9];
+	private final float[] tmp = new float[9];
 	
 	{
 		tmp[M22] = 1;
@@ -30,22 +30,10 @@ public final class Matrix3 implements Serializable {
 		set(matrix);
 	}
 	
-	/**
-	 * Constructs a matrix from the given float array. The array must have at least 9 elements; the first 9 will be copied.
-	 *
-	 * @param values The float array to copy. Remember that this matrix is in
-	 *               <a href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">column major</a> order. (The float array
-	 *               is not modified.)
-	 */
 	public Matrix3(float[] values) {
 		this.set(values);
 	}
 	
-	/**
-	 * Sets this matrix to the identity matrix
-	 *
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Matrix3 idt() {
 		float[] val = this.val;
 		val[M00] = 1;
@@ -60,16 +48,6 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Postmultiplies this matrix with the provided matrix and stores the result in this matrix. For example:
-	 *
-	 * <pre>
-	 * A.mul(B) results in A := AB
-	 * </pre>
-	 *
-	 * @param m Matrix to multiply by.
-	 * @return This matrix for the purpose of chaining operations together.
-	 */
 	public Matrix3 mul(Matrix3 m) {
 		float[] val = this.val;
 		
@@ -98,16 +76,6 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Premultiplies this matrix with the provided matrix and stores the result in this matrix. For example:
-	 *
-	 * <pre>
-	 * A.mulLeft(B) results in A := BA
-	 * </pre>
-	 *
-	 * @param m The other Matrix to multiply by
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Matrix3 mulLeft(Matrix3 m) {
 		float[] val = this.val;
 		
@@ -136,22 +104,10 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Sets this matrix to a rotation matrix that will rotate any vector in counter-clockwise direction around the z-axis.
-	 *
-	 * @param degrees the angle in degrees.
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Matrix3 setToRotation(float degrees) {
 		return setToRotationRad(MathUtils.degreesToRadians * degrees);
 	}
 	
-	/**
-	 * Sets this matrix to a rotation matrix that will rotate any vector in counter-clockwise direction around the z-axis.
-	 *
-	 * @param radians the angle in radians.
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Matrix3 setToRotationRad(float radians) {
 		float cos = (float) Math.cos(radians);
 		float sin = (float) Math.sin(radians);
@@ -191,13 +147,6 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Sets this matrix to a translation matrix.
-	 *
-	 * @param x the translation in x
-	 * @param y the translation in y
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Matrix3 setToTranslation(float x, float y) {
 		float[] val = this.val;
 		
@@ -216,12 +165,6 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Sets this matrix to a translation matrix.
-	 *
-	 * @param translation The translation vector.
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Matrix3 setToTranslation(Vector2 translation) {
 		float[] val = this.val;
 		
@@ -240,13 +183,6 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Sets this matrix to a scaling matrix.
-	 *
-	 * @param scaleX the scale in x
-	 * @param scaleY the scale in y
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Matrix3 setToScaling(float scaleX, float scaleY) {
 		float[] val = this.val;
 		val[M00] = scaleX;
@@ -261,12 +197,6 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Sets this matrix to a scaling matrix.
-	 *
-	 * @param scale The scale vector.
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Matrix3 setToScaling(Vector2 scale) {
 		float[] val = this.val;
 		val[M00] = scale.x;
@@ -288,21 +218,12 @@ public final class Matrix3 implements Serializable {
 				+ "[" + val[M20] + "|" + val[M21] + "|" + val[M22] + "]";
 	}
 	
-	/**
-	 * @return The determinant of this matrix
-	 */
 	public float det() {
 		float[] val = this.val;
 		return val[M00] * val[M11] * val[M22] + val[M01] * val[M12] * val[M20] + val[M02] * val[M10] * val[M21]
 				- val[M00] * val[M12] * val[M21] - val[M01] * val[M10] * val[M22] - val[M02] * val[M11] * val[M20];
 	}
 	
-	/**
-	 * Inverts this matrix given that the determinant is != 0.
-	 *
-	 * @return This matrix for the purpose of chaining operations.
-	 * @throws MicroRuntimeException if the matrix is singular (not invertible)
-	 */
 	public Matrix3 inv() {
 		float det = det();
 		if (det == 0)
@@ -334,26 +255,13 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Copies the values from the provided matrix to this matrix.
-	 *
-	 * @param mat The matrix to copy.
-	 * @return This matrix for the purposes of chaining.
-	 */
 	public Matrix3 set(Matrix3 mat) {
 		System.arraycopy(mat.val, 0, val, 0, val.length);
 		return this;
 	}
 	
-	/**
-	 * Copies the values from the provided affine matrix to this matrix. The last row is set to (0, 0, 1).
-	 *
-	 * @param affine The affine matrix to copy.
-	 * @return This matrix for the purposes of chaining.
-	 */
 	public Matrix3 set(Affine2 affine) {
 		float[] val = this.val;
-		
 		val[M00] = affine.m00;
 		val[M10] = affine.m10;
 		val[M20] = 0;
@@ -363,16 +271,9 @@ public final class Matrix3 implements Serializable {
 		val[M02] = affine.m02;
 		val[M12] = affine.m12;
 		val[M22] = 1;
-		
 		return this;
 	}
 	
-	/**
-	 * Sets this 3x3 matrix to the top left 3x3 corner of the provided 4x4 matrix.
-	 *
-	 * @param mat The matrix whose top left corner will be copied. This matrix will not be modified.
-	 * @return This matrix for the purpose of chaining operations.
-	 */
 	public Matrix3 set(Matrix4 mat) {
 		float[] val = this.val;
 		val[M00] = mat.val[Matrix4.M00];
@@ -387,38 +288,17 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Sets the matrix to the given matrix as a float array. The float array must have at least 9 elements; the first 9 will be
-	 * copied.
-	 *
-	 * @param values The matrix, in float form, that is to be copied. Remember that this matrix is in
-	 *               <a href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">column major</a> order.
-	 * @return This matrix for the purpose of chaining methods together.
-	 */
 	public Matrix3 set(float[] values) {
 		System.arraycopy(values, 0, val, 0, val.length);
 		return this;
 	}
 	
-	/**
-	 * Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
-	 *
-	 * @param vector The translation vector.
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 trn(Vector2 vector) {
 		val[M02] += vector.x;
 		val[M12] += vector.y;
 		return this;
 	}
 	
-	/**
-	 * Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
-	 *
-	 * @param x The x-component of the translation vector.
-	 * @param y The y-component of the translation vector.
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 trn(float x, float y) {
 		val[M02] += x;
 		val[M12] += y;
@@ -431,73 +311,38 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Postmultiplies this matrix by a translation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 *
-	 * @param x The x-component of the translation vector.
-	 * @param y The y-component of the translation vector.
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 translate(float x, float y) {
 		float[] tmp = this.tmp;
 		tmp[M00] = 1;
 		tmp[M10] = 0;
-		// tmp[M20] = 0;
 		
 		tmp[M01] = 0;
 		tmp[M11] = 1;
-		// tmp[M21] = 0;
 		
 		tmp[M02] = x;
 		tmp[M12] = y;
-		// tmp[M22] = 1;
 		mul(val, tmp);
 		return this;
 	}
 	
-	/**
-	 * Postmultiplies this matrix by a translation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 *
-	 * @param translation The translation vector.
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 translate(Vector2 translation) {
 		float[] tmp = this.tmp;
 		tmp[M00] = 1;
 		tmp[M10] = 0;
-		// tmp[M20] = 0;
 		
 		tmp[M01] = 0;
 		tmp[M11] = 1;
-		// tmp[M21] = 0;
 		
 		tmp[M02] = translation.x;
 		tmp[M12] = translation.y;
-		// tmp[M22] = 1;
 		mul(val, tmp);
 		return this;
 	}
 	
-	/**
-	 * Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 *
-	 * @param degrees The angle in degrees
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 rotate(float degrees) {
 		return rotateRad(MathUtils.degreesToRadians * degrees);
 	}
 	
-	/**
-	 * Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 *
-	 * @param radians The angle in radians
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 rotateRad(float radians) {
 		if (radians == 0)
 			return this;
@@ -507,76 +352,47 @@ public final class Matrix3 implements Serializable {
 		float[] tmp = this.tmp;
 		tmp[M00] = cos;
 		tmp[M10] = sin;
-		// tmp[M20] = 0;
 		
 		tmp[M01] = -sin;
 		tmp[M11] = cos;
-		// tmp[M21] = 0;
 		
 		tmp[M02] = 0;
 		tmp[M12] = 0;
-		// tmp[M22] = 1;
 		
 		mul(val, tmp);
 		return this;
 	}
 	
-	/**
-	 * Postmultiplies this matrix with a scale matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 *
-	 * @param scaleX The scale in the x-axis.
-	 * @param scaleY The scale in the y-axis.
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 scale(float scaleX, float scaleY) {
 		float[] tmp = this.tmp;
 		tmp[M00] = scaleX;
 		tmp[M10] = 0;
-		// tmp[M20] = 0;
 		
 		tmp[M01] = 0;
 		tmp[M11] = scaleY;
-		// tmp[M21] = 0;
 		
 		tmp[M02] = 0;
 		tmp[M12] = 0;
-		// tmp[M22] = 1;
 		
 		mul(val, tmp);
 		return this;
 	}
 	
-	/**
-	 * Postmultiplies this matrix with a scale matrix. Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 *
-	 * @param scale The vector to scale the matrix by.
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 scale(Vector2 scale) {
 		float[] tmp = this.tmp;
 		tmp[M00] = scale.x;
 		tmp[M10] = 0;
-		// tmp[M20] = 0;
 		
 		tmp[M01] = 0;
 		tmp[M11] = scale.y;
-		// tmp[M21] = 0;
 		
 		tmp[M02] = 0;
 		tmp[M12] = 0;
-		// tmp[M22] = 1;
 		
 		mul(val, tmp);
 		return this;
 	}
 	
-	/**
-	 * Get the values in this matrix.
-	 *
-	 * @return The float values that make up this matrix in column-major order.
-	 */
 	public float[] getValues() {
 		return val;
 	}
@@ -587,10 +403,6 @@ public final class Matrix3 implements Serializable {
 		return position;
 	}
 	
-	/**
-	 * @param scale The vector which will receive the (non-negative) scale components on each axis.
-	 * @return The provided vector for chaining.
-	 */
 	public Vector2 getScale(Vector2 scale) {
 		float[] val = this.val;
 		scale.x = (float) Math.sqrt(val[M00] * val[M00] + val[M01] * val[M01]);
@@ -606,24 +418,12 @@ public final class Matrix3 implements Serializable {
 		return (float) Math.atan2(val[M10], val[M00]);
 	}
 	
-	/**
-	 * Scale the matrix in the both the x and y components by the scalar value.
-	 *
-	 * @param scale The single value that will be used to scale both the x and y components.
-	 * @return This matrix for the purpose of chaining methods together.
-	 */
 	public Matrix3 scl(float scale) {
 		val[M00] *= scale;
 		val[M11] *= scale;
 		return this;
 	}
 	
-	/**
-	 * Scale this matrix using the x and y components of the vector but leave the rest of the matrix alone.
-	 *
-	 * @param scale The {@link Vector3} to use to scale this matrix.
-	 * @return This matrix for the purpose of chaining methods together.
-	 */
 	public Matrix3 scl(Vector2 scale) {
 		val[M00] *= scale.x;
 		val[M11] *= scale.y;
@@ -636,13 +436,7 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Transposes the current matrix.
-	 *
-	 * @return This matrix for the purpose of chaining methods together.
-	 */
 	public Matrix3 transpose() {
-		// Where MXY you do not have to change MXX
 		float[] val = this.val;
 		float v01 = val[M10];
 		float v02 = val[M20];
@@ -659,16 +453,6 @@ public final class Matrix3 implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Multiplies matrix a with matrix b in the following manner:
-	 *
-	 * <pre>
-	 * mul(A, B) => A := AB
-	 * </pre>
-	 *
-	 * @param mata The float array representing the first matrix. Must have at least 9 elements.
-	 * @param matb The float array representing the second matrix. Must have at least 9 elements.
-	 */
 	private static void mul(float[] mata, float[] matb) {
 		float v00 = mata[M00] * matb[M00] + mata[M01] * matb[M10] + mata[M02] * matb[M20];
 		float v01 = mata[M00] * matb[M01] + mata[M01] * matb[M11] + mata[M02] * matb[M21];

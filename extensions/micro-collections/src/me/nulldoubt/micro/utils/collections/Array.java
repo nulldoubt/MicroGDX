@@ -79,7 +79,7 @@ public class Array<T> implements Iterable<T> {
 	public void add(T value1, T value2, T value3, T value4) {
 		T[] items = this.items;
 		if (size + 3 >= items.length)
-			items = resize(Math.max(8, (int) (size * 1.8f))); // 1.75 isn't enough when size=5.
+			items = resize(Math.max(8, (int) (size * 1.8f)));
 		items[size] = value1;
 		items[size + 1] = value2;
 		items[size + 2] = value3;
@@ -137,10 +137,6 @@ public class Array<T> implements Iterable<T> {
 		items[index] = value;
 	}
 	
-	/**
-	 * Inserts the specified number of items at the specified index. The new items will have values equal to the values at those
-	 * indices before the insertion.
-	 */
 	public void insertRange(int index, int count) {
 		if (index > size)
 			throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
@@ -162,12 +158,6 @@ public class Array<T> implements Iterable<T> {
 		items[second] = firstValue;
 	}
 	
-	/**
-	 * Returns true if this array contains the specified value.
-	 *
-	 * @param value    May be null.
-	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
-	 */
 	public boolean contains(T value, boolean identity) {
 		T[] items = this.items;
 		int i = size - 1;
@@ -183,12 +173,6 @@ public class Array<T> implements Iterable<T> {
 		return false;
 	}
 	
-	/**
-	 * Returns true if this array contains all the specified values.
-	 *
-	 * @param values   May contains nulls.
-	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
-	 */
 	public boolean containsAll(Array<? extends T> values, boolean identity) {
 		T[] items = values.items;
 		for (int i = 0, n = values.size; i < n; i++)
@@ -197,12 +181,6 @@ public class Array<T> implements Iterable<T> {
 		return true;
 	}
 	
-	/**
-	 * Returns true if this array contains any the specified values.
-	 *
-	 * @param values   May contains nulls.
-	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
-	 */
 	public boolean containsAny(Array<? extends T> values, boolean identity) {
 		T[] items = values.items;
 		for (int i = 0, n = values.size; i < n; i++)
@@ -211,13 +189,6 @@ public class Array<T> implements Iterable<T> {
 		return false;
 	}
 	
-	/**
-	 * Returns the index of first occurrence of value in the array, or -1 if no such value exists.
-	 *
-	 * @param value    May be null.
-	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
-	 * @return An index of first occurrence of value in array or -1 if no such value exists
-	 */
 	public int indexOf(T value, boolean identity) {
 		T[] items = this.items;
 		if (identity || value == null) {
@@ -232,14 +203,6 @@ public class Array<T> implements Iterable<T> {
 		return -1;
 	}
 	
-	/**
-	 * Returns an index of last occurrence of value in array or -1 if no such value exists. Search is started from the end of an
-	 * array.
-	 *
-	 * @param value    May be null.
-	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
-	 * @return An index of last occurrence of value in array or -1 if no such value exists
-	 */
 	public int lastIndexOf(T value, boolean identity) {
 		T[] items = this.items;
 		if (identity || value == null) {
@@ -254,13 +217,6 @@ public class Array<T> implements Iterable<T> {
 		return -1;
 	}
 	
-	/**
-	 * Removes the first instance of the specified value in the array.
-	 *
-	 * @param value    May be null.
-	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
-	 * @return true if value was found and removed, false otherwise
-	 */
 	public boolean removeValue(T value, boolean identity) {
 		T[] items = this.items;
 		if (identity || value == null) {
@@ -281,9 +237,6 @@ public class Array<T> implements Iterable<T> {
 		return false;
 	}
 	
-	/**
-	 * Removes and returns the item at the specified index.
-	 */
 	public T removeIndex(int index) {
 		if (index >= size)
 			throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
@@ -298,9 +251,6 @@ public class Array<T> implements Iterable<T> {
 		return value;
 	}
 	
-	/**
-	 * Removes the items between the specified indices, inclusive.
-	 */
 	public void removeRange(int start, int end) {
 		int n = size;
 		if (end >= n)
@@ -320,12 +270,6 @@ public class Array<T> implements Iterable<T> {
 		size = n - count;
 	}
 	
-	/**
-	 * Removes from this array all of elements contained in the specified array.
-	 *
-	 * @param identity True to use ==, false to use .equals().
-	 * @return true if this array was modified.
-	 */
 	public boolean removeAll(Array<? extends T> array, boolean identity) {
 		int size = this.size;
 		int startSize = size;
@@ -356,9 +300,6 @@ public class Array<T> implements Iterable<T> {
 		return size != startSize;
 	}
 	
-	/**
-	 * Removes and returns the last item.
-	 */
 	public T pop() {
 		if (size == 0)
 			throw new IllegalStateException("Array is empty.");
@@ -368,34 +309,22 @@ public class Array<T> implements Iterable<T> {
 		return item;
 	}
 	
-	/**
-	 * Returns the last item.
-	 */
 	public T peek() {
 		if (size == 0)
 			throw new IllegalStateException("Array is empty.");
 		return items[size - 1];
 	}
 	
-	/**
-	 * Returns the first item.
-	 */
 	public T first() {
 		if (size == 0)
 			throw new IllegalStateException("Array is empty.");
 		return items[0];
 	}
 	
-	/**
-	 * Returns true if the array has one or more items.
-	 */
 	public boolean notEmpty() {
 		return size > 0;
 	}
 	
-	/**
-	 * Returns true if the array is empty.
-	 */
 	public boolean isEmpty() {
 		return size == 0;
 	}
@@ -405,24 +334,12 @@ public class Array<T> implements Iterable<T> {
 		size = 0;
 	}
 	
-	/**
-	 * Reduces the size of the backing array to the size of the actual items. This is useful to release memory when many items
-	 * have been removed, or if it is known that more items will not be added.
-	 *
-	 * @return {@link #items}
-	 */
 	public T[] shrink() {
 		if (items.length != size)
 			resize(size);
 		return items;
 	}
 	
-	/**
-	 * Increases the size of the backing array to accommodate the specified number of additional items. Useful before adding many
-	 * items to avoid multiple backing array resizes.
-	 *
-	 * @return {@link #items}
-	 */
 	public T[] ensureCapacity(int additionalCapacity) {
 		if (additionalCapacity < 0)
 			throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
@@ -440,9 +357,6 @@ public class Array<T> implements Iterable<T> {
 		return items;
 	}
 	
-	/**
-	 * Creates a new backing array with the specified size containing the current items.
-	 */
 	protected T[] resize(int newSize) {
 		T[] items = this.items;
 		T[] newItems = (T[]) java.lang.reflect.Array.newInstance(items.getClass().getComponentType(), newSize);
@@ -451,17 +365,10 @@ public class Array<T> implements Iterable<T> {
 		return newItems;
 	}
 	
-	/**
-	 * Sorts this array. The array elements must implement {@link Comparable}. This method is not thread safe (uses
-	 * {@link Sort#instance()}).
-	 */
 	public void sort() {
 		Sort.instance().sort(items, 0, size);
 	}
 	
-	/**
-	 * Sorts the array. This method is not thread safe (uses {@link Sort#instance()}).
-	 */
 	public void sort(Comparator<? super T> comparator) {
 		Sort.instance().sort(items, comparator, 0, size);
 	}
@@ -542,9 +449,6 @@ public class Array<T> implements Iterable<T> {
 		return h;
 	}
 	
-	/**
-	 * Returns false if either array is unordered.
-	 */
 	public boolean equals(Object object) {
 		if (object == this)
 			return true;
@@ -633,8 +537,6 @@ public class Array<T> implements Iterable<T> {
 		int index;
 		boolean valid = true;
 		
-		// ArrayIterable<T> iterable;
-		
 		public ArrayIterator(Array<T> array) {
 			this(array, true);
 		}
@@ -645,20 +547,16 @@ public class Array<T> implements Iterable<T> {
 		}
 		
 		public boolean hasNext() {
-			if (!valid) {
-				// System.out.println(iterable.lastAcquire);
+			if (!valid)
 				throw new RuntimeException("#iterator() cannot be used nested.");
-			}
 			return index < array.size;
 		}
 		
 		public T next() {
 			if (index >= array.size)
 				throw new NoSuchElementException(String.valueOf(index));
-			if (!valid) {
-				// System.out.println(iterable.lastAcquire);
+			if (!valid)
 				throw new RuntimeException("#iterator() cannot be used nested.");
-			}
 			return array.items[index++];
 		}
 		
@@ -675,26 +573,6 @@ public class Array<T> implements Iterable<T> {
 		
 		public ArrayIterator<T> iterator() {
 			return this;
-		}
-		
-	}
-	
-	public static class ArrayIterable<T> implements Iterable<T> {
-		
-		private final Array<T> array;
-		private final boolean allowRemove;
-		
-		public ArrayIterable(Array<T> array) {
-			this(array, true);
-		}
-		
-		public ArrayIterable(Array<T> array, boolean allowRemove) {
-			this.array = array;
-			this.allowRemove = allowRemove;
-		}
-		
-		public ArrayIterator<T> iterator() {
-			return new ArrayIterator<T>(array, allowRemove);
 		}
 		
 	}

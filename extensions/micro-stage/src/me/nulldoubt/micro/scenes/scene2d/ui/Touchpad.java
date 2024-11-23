@@ -114,7 +114,6 @@ public class Touchpad extends Widget {
 	}
 	
 	public void layout() {
-		// Recalc pad and deadzone bounds
 		float halfWidth = getWidth() / 2;
 		float halfHeight = getHeight() / 2;
 		float radius = Math.min(halfWidth, halfHeight);
@@ -123,7 +122,6 @@ public class Touchpad extends Widget {
 			radius -= Math.max(style.knob.getMinWidth(), style.knob.getMinHeight()) / 2;
 		knobBounds.set(halfWidth, halfHeight, radius);
 		deadzoneBounds.set(halfWidth, halfHeight, deadzoneRadius);
-		// Recalc pad values and knob position
 		knobPosition.set(halfWidth, halfHeight);
 		knobPercent.set(0, 0);
 	}
@@ -167,16 +165,10 @@ public class Touchpad extends Widget {
 		return resetOnTouchUp;
 	}
 	
-	/**
-	 * @param reset Whether to reset the knob to the center on touch up.
-	 */
 	public void setResetOnTouchUp(boolean reset) {
 		this.resetOnTouchUp = reset;
 	}
 	
-	/**
-	 * @param deadzoneRadius The distance in pixels from the center of the touchpad required for the knob to be moved.
-	 */
 	public void setDeadzone(float deadzoneRadius) {
 		if (deadzoneRadius < 0)
 			throw new IllegalArgumentException("deadzoneRadius must be > 0");
@@ -184,51 +176,28 @@ public class Touchpad extends Widget {
 		invalidate();
 	}
 	
-	/**
-	 * Returns the x-position of the knob relative to the center of the widget. The positive direction is right.
-	 */
 	public float getKnobX() {
 		return knobPosition.x;
 	}
 	
-	/**
-	 * Returns the y-position of the knob relative to the center of the widget. The positive direction is up.
-	 */
 	public float getKnobY() {
 		return knobPosition.y;
 	}
 	
-	/**
-	 * Returns the x-position of the knob as a percentage from the center of the touchpad to the edge of the circular movement
-	 * area. The positive direction is right.
-	 */
 	public float getKnobPercentX() {
 		return knobPercent.x;
 	}
 	
-	/**
-	 * Returns the y-position of the knob as a percentage from the center of the touchpad to the edge of the circular movement
-	 * area. The positive direction is up.
-	 */
 	public float getKnobPercentY() {
 		return knobPercent.y;
 	}
 	
-	/**
-	 * The style for a {@link Touchpad}.
-	 *
-	 * @author Josh Street
-	 */
 	public static class TouchpadStyle {
 		
-		/**
-		 * Stretched in both directions.
-		 */
 		public Drawable background;
 		public Drawable knob;
 		
-		public TouchpadStyle() {
-		}
+		public TouchpadStyle() {}
 		
 		public TouchpadStyle(Drawable background, Drawable knob) {
 			this.background = background;

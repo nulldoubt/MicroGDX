@@ -200,10 +200,6 @@ public class Window extends Table {
 		invalidateHierarchy();
 	}
 	
-	/**
-	 * Returns the window's style. Modifying the returned style may not have an effect until {@link #setStyle(WindowStyle)} is
-	 * called.
-	 */
 	public WindowStyle getStyle() {
 		return style;
 	}
@@ -238,8 +234,7 @@ public class Window extends Table {
 			if (style.stageBackground != null) {
 				stageToLocalCoordinates(tmpPosition.set(0, 0));
 				stageToLocalCoordinates(tmpSize.set(stage.getWidth(), stage.getHeight()));
-				drawStageBackground(batch, parentAlpha, getX() + tmpPosition.x, getY() + tmpPosition.y, getX() + tmpSize.x,
-						getY() + tmpSize.y);
+				drawStageBackground(batch, parentAlpha, getX() + tmpPosition.x, getY() + tmpPosition.y, getX() + tmpSize.x, getY() + tmpSize.y);
 			}
 		}
 		super.draw(batch, parentAlpha);
@@ -254,14 +249,13 @@ public class Window extends Table {
 	protected void drawBackground(Batch batch, float parentAlpha, float x, float y) {
 		super.drawBackground(batch, parentAlpha, x, y);
 		
-		// Manually draw the title table before clipping is done.
 		titleTable.getColor().a = getColor().a;
 		float padTop = getPadTop(), padLeft = getPadLeft();
 		titleTable.setSize(getWidth() - padLeft - getPadRight(), padTop);
 		titleTable.setPosition(padLeft, getHeight() - padTop);
 		drawTitleTable = true;
 		titleTable.draw(batch, parentAlpha);
-		drawTitleTable = false; // Avoid drawing the title table again in drawChildren.
+		drawTitleTable = false;
 	}
 	
 	public Actor hit(float x, float y, boolean touchable) {
@@ -274,7 +268,6 @@ public class Window extends Table {
 		if (hit == null || hit == this)
 			return hit;
 		if (y <= height && y >= height - getPadTop() && x >= 0 && x <= getWidth()) {
-			// Hit the title bar, don't use the hit child if it is in the Window's table.
 			Actor current = hit;
 			while (current.getParent() != this)
 				current = current.getParent();
@@ -332,11 +325,6 @@ public class Window extends Table {
 		return titleLabel;
 	}
 	
-	/**
-	 * The style for a window, see {@link Window}.
-	 *
-	 * @author Nathan Sweet
-	 */
 	public static class WindowStyle {
 		
 		public Drawable background;
@@ -344,8 +332,7 @@ public class Window extends Table {
 		public Color titleFontColor = new Color(1, 1, 1, 1);
 		public Drawable stageBackground;
 		
-		public WindowStyle() {
-		}
+		public WindowStyle() {}
 		
 		public WindowStyle(BitmapFont titleFont, Color titleFontColor, Drawable background) {
 			this.titleFont = titleFont;

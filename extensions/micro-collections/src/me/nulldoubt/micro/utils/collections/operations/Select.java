@@ -7,9 +7,6 @@ public class Select {
 	private static Select instance;
 	private QuickSelect quickSelect;
 	
-	/**
-	 * Provided for convenience
-	 */
 	public static Select instance() {
 		if (instance == null)
 			instance = new Select();
@@ -28,39 +25,28 @@ public class Select {
 			throw new RuntimeException("Kth rank is larger than size. k: " + kthLowest + ", size: " + size);
 		}
 		int idx;
-		// naive partial selection sort almost certain to outperform quickselect where n is min or max
-		if (kthLowest == 1) {
-			// find min
+		if (kthLowest == 1)
 			idx = fastMin(items, comp, size);
-		} else if (kthLowest == size) {
-			// find max
+		else if (kthLowest == size)
 			idx = fastMax(items, comp, size);
-		} else {
-			// quickselect a better choice for cases of k between min and max
+		else {
 			if (quickSelect == null)
-				quickSelect = new QuickSelect();
+				quickSelect = new QuickSelect<>();
 			idx = quickSelect.select(items, comp, kthLowest, size);
 		}
 		return idx;
 	}
 	
-	/**
-	 * Faster than quickselect for n = min
-	 */
 	private <T> int fastMin(T[] items, Comparator<T> comp, int size) {
 		int lowestIdx = 0;
 		for (int i = 1; i < size; i++) {
 			int comparison = comp.compare(items[i], items[lowestIdx]);
-			if (comparison < 0) {
+			if (comparison < 0)
 				lowestIdx = i;
-			}
 		}
 		return lowestIdx;
 	}
 	
-	/**
-	 * Faster than quickselect for n = max
-	 */
 	private <T> int fastMax(T[] items, Comparator<T> comp, int size) {
 		int highestIdx = 0;
 		for (int i = 1; i < size; i++) {

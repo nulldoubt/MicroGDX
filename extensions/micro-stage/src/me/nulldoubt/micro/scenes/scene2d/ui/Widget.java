@@ -66,9 +66,6 @@ public class Widget extends Actor implements Layout {
 		layout();
 	}
 	
-	/**
-	 * Returns true if the widget's layout has been {@link #invalidate() invalidated}.
-	 */
 	public boolean needsLayout() {
 		return needsLayout;
 	}
@@ -99,14 +96,10 @@ public class Widget extends Actor implements Layout {
 		this.fillParent = fillParent;
 	}
 	
-	/**
-	 * If this method is overridden, the super method or {@link #validate()} should be called to ensure the widget is laid out.
-	 */
 	public void draw(Batch batch, float parentAlpha) {
 		validate();
 	}
 	
-	public void layout() {
-	}
+	public void layout() {}
 	
 }

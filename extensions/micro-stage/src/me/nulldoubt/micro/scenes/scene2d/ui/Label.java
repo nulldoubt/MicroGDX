@@ -37,18 +37,10 @@ public class Label extends Widget {
 		this(text, skin.get(styleName, LabelStyle.class));
 	}
 	
-	/**
-	 * Creates a label, using a {@link LabelStyle} that has a BitmapFont with the specified name from the skin and the specified
-	 * color.
-	 */
 	public Label(CharSequence text, Skin skin, String fontName, Color color) {
 		this(text, new LabelStyle(skin.getFont(fontName), color));
 	}
 	
-	/**
-	 * Creates a label, using a {@link LabelStyle} that has a BitmapFont with the specified name and the specified color from the
-	 * skin.
-	 */
 	public Label(CharSequence text, Skin skin, String fontName, String colorName) {
 		this(text, new LabelStyle(skin.getFont(fontName), skin.getColor(colorName)));
 	}
@@ -57,7 +49,7 @@ public class Label extends Widget {
 		if (text != null)
 			this.text.append(text);
 		setStyle(style);
-		if (text != null && text.length() > 0)
+		if (text != null && !text.isEmpty())
 			setSize(getPrefWidth(), getPrefHeight());
 	}
 	
@@ -72,20 +64,10 @@ public class Label extends Widget {
 		invalidateHierarchy();
 	}
 	
-	/**
-	 * Returns the label's style. Modifying the returned style may not have an effect until {@link #setStyle(LabelStyle)} is
-	 * called.
-	 */
 	public LabelStyle getStyle() {
 		return style;
 	}
 	
-	/**
-	 * Sets the text to the specified integer value. If the text is already equivalent to the specified value, a string is not
-	 * allocated.
-	 *
-	 * @return true if the text was changed.
-	 */
 	public boolean setText(int value) {
 		if (this.intValue == value)
 			return false;
@@ -96,9 +78,6 @@ public class Label extends Widget {
 		return true;
 	}
 	
-	/**
-	 * @param newText If null, "" will be used.
-	 */
 	public void setText(CharSequence newText) {
 		if (newText == null) {
 			if (text.length == 0)
@@ -196,11 +175,9 @@ public class Label extends Widget {
 		GlyphLayout layout = this.layout;
 		float textWidth, textHeight;
 		if (wrap || text.indexOf("\n") != -1) {
-			// If the text can span multiple lines, determine the text's actual size so it can be aligned within the label.
 			layout.setText(font, text, 0, text.length, Color.WHITE, width, lineAlign, wrap, ellipsis);
 			textWidth = layout.width;
 			textHeight = layout.height;
-			
 			if ((labelAlign & Align.left) == 0) {
 				if ((labelAlign & Align.right) != 0)
 					x += width - textWidth;
@@ -275,15 +252,6 @@ public class Label extends Widget {
 		return layout;
 	}
 	
-	/**
-	 * If false, the text will only wrap where it contains newlines (\n). The preferred size of the label will be the text bounds.
-	 * If true, the text will word wrap using the width of the label. The preferred width of the label will be 0, it is expected
-	 * that something external will set the width of the label. Wrapping will not occur when ellipsis is enabled. Default is false.
-	 * <p>
-	 * When wrap is enabled, the label's preferred height depends on the width of the label. In some cases the parent of the label
-	 * will need to layout twice: once to set the width of the label and a second time to adjust to the label's new preferred
-	 * height.
-	 */
 	public void setWrap(boolean wrap) {
 		this.wrap = wrap;
 		invalidateHierarchy();
@@ -301,20 +269,10 @@ public class Label extends Widget {
 		return lineAlign;
 	}
 	
-	/**
-	 * @param alignment Aligns all the text within the label (default left center) and each line of text horizontally (default
-	 *                  left).
-	 * @see Align
-	 */
 	public void setAlignment(int alignment) {
 		setAlignment(alignment, alignment);
 	}
 	
-	/**
-	 * @param labelAlign Aligns all the text within the label (default left center).
-	 * @param lineAlign  Aligns each line of text horizontally (default left).
-	 * @see Align
-	 */
 	public void setAlignment(int labelAlign, int lineAlign) {
 		this.labelAlign = labelAlign;
 		
@@ -355,18 +313,10 @@ public class Label extends Widget {
 		setFontScale(fontScaleX, fontScaleY);
 	}
 	
-	/**
-	 * When non-null the text will be truncated "..." if it does not fit within the width of the label. Wrapping will not occur
-	 * when ellipsis is enabled. Default is false.
-	 */
 	public void setEllipsis(String ellipsis) {
 		this.ellipsis = ellipsis;
 	}
 	
-	/**
-	 * When true the text will be truncated "..." if it does not fit within the width of the label. Wrapping will not occur when
-	 * ellipsis is true. Default is false.
-	 */
 	public void setEllipsis(boolean ellipsis) {
 		if (ellipsis)
 			this.ellipsis = "...";
@@ -374,9 +324,6 @@ public class Label extends Widget {
 			this.ellipsis = null;
 	}
 	
-	/**
-	 * Allows subclasses to access the cache in {@link #draw(Batch, float)}.
-	 */
 	protected BitmapFontCache getBitmapFontCache() {
 		return cache;
 	}
@@ -392,19 +339,13 @@ public class Label extends Widget {
 		return (className.indexOf('$') != -1 ? "Label " : "") + className + ": " + text;
 	}
 	
-	/**
-	 * The style for a label, see {@link Label}.
-	 *
-	 * @author Nathan Sweet
-	 */
 	public static class LabelStyle {
 		
 		public BitmapFont font;
 		public Color fontColor;
 		public Drawable background;
 		
-		public LabelStyle() {
-		}
+		public LabelStyle() {}
 		
 		public LabelStyle(BitmapFont font, Color fontColor) {
 			this.font = font;

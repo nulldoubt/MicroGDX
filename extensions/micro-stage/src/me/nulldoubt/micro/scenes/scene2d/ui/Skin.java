@@ -65,9 +65,6 @@ public class Skin implements Disposable {
 		}
 	}
 	
-	/**
-	 * Adds all named texture regions from the atlas. The atlas will not be automatically disposed when the skin is disposed.
-	 */
 	public void addRegions(TextureAtlas atlas) {
 		Array<AtlasRegion> regions = atlas.getRegions();
 		for (int i = 0, n = regions.size; i < n; i++) {
@@ -91,7 +88,7 @@ public class Skin implements Disposable {
 			throw new IllegalArgumentException("resource cannot be null.");
 		ObjectMap<String, Object> typeResources = resources.get(type);
 		if (typeResources == null) {
-			typeResources = new ObjectMap(type == TextureRegion.class || type == Drawable.class || type == Sprite.class ? 256 : 64);
+			typeResources = new ObjectMap<>(type == TextureRegion.class || type == Drawable.class || type == Sprite.class ? 256 : 64);
 			resources.put(type, typeResources);
 		}
 		typeResources.put(name, resource);
@@ -104,20 +101,10 @@ public class Skin implements Disposable {
 		typeResources.remove(name);
 	}
 	
-	/**
-	 * Returns a resource named "default" for the specified type.
-	 *
-	 * @throws MicroRuntimeException if the resource was not found.
-	 */
 	public <T> T get(Class<T> type) {
 		return get("default", type);
 	}
 	
-	/**
-	 * Returns a named resource of the specified type.
-	 *
-	 * @throws MicroRuntimeException if the resource was not found.
-	 */
 	public <T> T get(String name, Class<T> type) {
 		if (name == null)
 			throw new IllegalArgumentException("name cannot be null.");
@@ -142,11 +129,6 @@ public class Skin implements Disposable {
 		return (T) resource;
 	}
 	
-	/**
-	 * Returns a named resource of the specified type.
-	 *
-	 * @return null if not found.
-	 */
 	public <T> T optional(String name, Class<T> type) {
 		if (name == null)
 			throw new IllegalArgumentException("name cannot be null.");
@@ -165,9 +147,6 @@ public class Skin implements Disposable {
 		return typeResources.containsKey(name);
 	}
 	
-	/**
-	 * Returns the name to resource mapping for the specified type, or null if no resources of that type exist.
-	 */
 	public <T> ObjectMap<String, T> getAll(Class<T> type) {
 		return (ObjectMap<String, T>) resources.get(type);
 	}
@@ -180,10 +159,6 @@ public class Skin implements Disposable {
 		return get(name, BitmapFont.class);
 	}
 	
-	/**
-	 * Returns a registered texture region. If no region is found but a texture exists with the name, a region is created from the
-	 * texture and stored in the skin.
-	 */
 	public TextureRegion getRegion(String name) {
 		TextureRegion region = optional(name, TextureRegion.class);
 		if (region != null)
@@ -197,9 +172,6 @@ public class Skin implements Disposable {
 		return region;
 	}
 	
-	/**
-	 * @return an array with the {@link TextureRegion} that have an index != -1, or null if none are found.
-	 */
 	public Array<TextureRegion> getRegions(String regionName) {
 		Array<TextureRegion> regions = null;
 		int i = 0;
@@ -214,10 +186,6 @@ public class Skin implements Disposable {
 		return regions;
 	}
 	
-	/**
-	 * Returns a registered tiled drawable. If no tiled drawable is found but a region exists with the name, a tiled drawable is
-	 * created from the region and stored in the skin.
-	 */
 	public TiledDrawable getTiledDrawable(String name) {
 		TiledDrawable tiled = optional(name, TiledDrawable.class);
 		if (tiled != null)
@@ -233,11 +201,6 @@ public class Skin implements Disposable {
 		return tiled;
 	}
 	
-	/**
-	 * Returns a registered ninepatch. If no ninepatch is found but a region exists with the name, a ninepatch is created from the
-	 * region and stored in the skin. If the region is an {@link AtlasRegion} then its split {@link AtlasRegion#values} are used,
-	 * otherwise the ninepatch will have the region as the center patch.
-	 */
 	public NinePatch getPatch(String name) {
 		NinePatch patch = optional(name, NinePatch.class);
 		if (patch != null)
@@ -265,11 +228,6 @@ public class Skin implements Disposable {
 		}
 	}
 	
-	/**
-	 * Returns a registered sprite. If no sprite is found but a region exists with the name, a sprite is created from the region
-	 * and stored in the skin. If the region is an {@link AtlasRegion} then an {@link AtlasSprite} is used if the region has been
-	 * whitespace stripped or packed rotated 90 degrees.
-	 */
 	public Sprite getSprite(String name) {
 		Sprite sprite = optional(name, Sprite.class);
 		if (sprite != null)
@@ -277,8 +235,7 @@ public class Skin implements Disposable {
 		
 		try {
 			TextureRegion textureRegion = getRegion(name);
-			if (textureRegion instanceof AtlasRegion) {
-				AtlasRegion region = (AtlasRegion) textureRegion;
+			if (textureRegion instanceof AtlasRegion region) {
 				if (region.rotate || region.packedWidth != region.originalWidth || region.packedHeight != region.originalHeight)
 					sprite = new AtlasSprite(region);
 			}
@@ -293,16 +250,11 @@ public class Skin implements Disposable {
 		}
 	}
 	
-	/**
-	 * Returns a registered drawable. If no drawable is found but a region, ninepatch, or sprite exists with the name, then the
-	 * appropriate drawable is created and stored in the skin.
-	 */
 	public Drawable getDrawable(String name) {
 		Drawable drawable = optional(name, Drawable.class);
 		if (drawable != null)
 			return drawable;
 		
-		// Use texture or texture region. If it has splits, use ninepatch. If it has rotation or whitespace stripping, use sprite.
 		try {
 			TextureRegion textureRegion = getRegion(name);
 			if (textureRegion instanceof AtlasRegion region) {
@@ -318,7 +270,6 @@ public class Skin implements Disposable {
 			}
 		} catch (MicroRuntimeException _) {}
 		
-		// Check for explicit registration of ninepatch, sprite, or tiled drawable.
 		if (drawable == null) {
 			NinePatch patch = optional(name, NinePatch.class);
 			if (patch != null)
@@ -328,8 +279,7 @@ public class Skin implements Disposable {
 				if (sprite != null)
 					drawable = new SpriteDrawable(sprite);
 				else
-					throw new MicroRuntimeException(
-							"No Drawable, NinePatch, TextureRegion, Texture, or Sprite registered with name: " + name);
+					throw new MicroRuntimeException("No Drawable, NinePatch, TextureRegion, Texture, or Sprite registered with name: " + name);
 			}
 		}
 		
@@ -339,10 +289,6 @@ public class Skin implements Disposable {
 		return drawable;
 	}
 	
-	/**
-	 * Returns the name of the specified style object, or null if it is not in the skin. This compares potentially every style
-	 * object in the skin of the same type as the specified style, which may be a somewhat expensive operation.
-	 */
 	public String find(Object resource) {
 		if (resource == null)
 			throw new IllegalArgumentException("style cannot be null.");
@@ -352,45 +298,30 @@ public class Skin implements Disposable {
 		return typeResources.findKey(resource, true);
 	}
 	
-	/**
-	 * Returns a copy of a drawable found in the skin via {@link #getDrawable(String)}.
-	 */
 	public Drawable newDrawable(String name) {
 		return newDrawable(getDrawable(name));
 	}
 	
-	/**
-	 * Returns a tinted copy of a drawable found in the skin via {@link #getDrawable(String)}.
-	 */
 	public Drawable newDrawable(String name, float r, float g, float b, float a) {
 		return newDrawable(getDrawable(name), new Color(r, g, b, a));
 	}
 	
-	/**
-	 * Returns a tinted copy of a drawable found in the skin via {@link #getDrawable(String)}.
-	 */
 	public Drawable newDrawable(String name, Color tint) {
 		return newDrawable(getDrawable(name), tint);
 	}
 	
-	/**
-	 * Returns a copy of the specified drawable.
-	 */
 	public Drawable newDrawable(Drawable drawable) {
-		if (drawable instanceof TiledDrawable)
-			return new TiledDrawable((TiledDrawable) drawable);
-		if (drawable instanceof TextureRegionDrawable)
-			return new TextureRegionDrawable((TextureRegionDrawable) drawable);
-		if (drawable instanceof NinePatchDrawable)
-			return new NinePatchDrawable((NinePatchDrawable) drawable);
-		if (drawable instanceof SpriteDrawable)
-			return new SpriteDrawable((SpriteDrawable) drawable);
+		if (drawable instanceof TiledDrawable titledDrawable)
+			return new TiledDrawable(titledDrawable);
+		if (drawable instanceof TextureRegionDrawable textureRegionDrawable)
+			return new TextureRegionDrawable(textureRegionDrawable);
+		if (drawable instanceof NinePatchDrawable ninePatchDrawable)
+			return new NinePatchDrawable(ninePatchDrawable);
+		if (drawable instanceof SpriteDrawable spriteDrawable)
+			return new SpriteDrawable(spriteDrawable);
 		throw new MicroRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
 	}
 	
-	/**
-	 * Returns a tinted copy of a drawable found in the skin via {@link #getDrawable(String)}.
-	 */
 	public Drawable newDrawable(Drawable drawable, float r, float g, float b, float a) {
 		return newDrawable(drawable, new Color(r, g, b, a));
 	}
@@ -410,35 +341,20 @@ public class Skin implements Disposable {
 		return newDrawable;
 	}
 	
-	public void scale(Drawable drawble) {
-		drawble.setLeftWidth(drawble.getLeftWidth() * scale);
-		drawble.setRightWidth(drawble.getRightWidth() * scale);
-		drawble.setBottomHeight(drawble.getBottomHeight() * scale);
-		drawble.setTopHeight(drawble.getTopHeight() * scale);
-		drawble.setMinWidth(drawble.getMinWidth() * scale);
-		drawble.setMinHeight(drawble.getMinHeight() * scale);
+	public void scale(Drawable drawable) {
+		drawable.setLeftWidth(drawable.getLeftWidth() * scale);
+		drawable.setRightWidth(drawable.getRightWidth() * scale);
+		drawable.setBottomHeight(drawable.getBottomHeight() * scale);
+		drawable.setTopHeight(drawable.getTopHeight() * scale);
+		drawable.setMinWidth(drawable.getMinWidth() * scale);
+		drawable.setMinHeight(drawable.getMinHeight() * scale);
 	}
 	
-	/**
-	 * The scale used to size drawables created by this skin.
-	 * <p>
-	 * This can be useful when scaling an entire UI (eg with a stage's viewport) then using an atlas with images whose resolution
-	 * matches the UI scale. The skin can then be scaled the opposite amount so that the larger or smaller images are drawn at the
-	 * original size. For example, if the UI is scaled 2x, the atlas would have images that are twice the size, then the skin's
-	 * scale would be set to 0.5.
-	 */
 	public void setScale(float scale) {
 		this.scale = scale;
 	}
 	
-	/**
-	 * Sets the style on the actor to disabled or enabled. This is done by appending "-disabled" to the style name when enabled is
-	 * false, and removing "-disabled" from the style name when enabled is true. A method named "getStyle" is called the actor via
-	 * reflection and the name of that style is found in the skin. If the actor doesn't have a "getStyle" method or the style was
-	 * not found in the skin, no exception is thrown and the actor is left unchanged.
-	 */
 	public void setEnabled(Actor actor, boolean enabled) {
-		// Get current style.
 		Method method = findMethod(actor.getClass(), "getStyle");
 		if (method == null)
 			return;
@@ -448,13 +364,11 @@ public class Skin implements Disposable {
 		} catch (Exception _) {
 			return;
 		}
-		// Determine new style.
 		String name = find(style);
 		if (name == null)
 			return;
 		name = name.replace("-disabled", "") + (enabled ? "" : "-disabled");
 		style = get(name, style.getClass());
-		// Set new style.
 		method = findMethod(actor.getClass(), "setStyle");
 		if (method == null)
 			return;
@@ -463,16 +377,10 @@ public class Skin implements Disposable {
 		} catch (Exception _) {}
 	}
 	
-	/**
-	 * Returns the {@link TextureAtlas} passed to this skin constructor, or null.
-	 */
 	public TextureAtlas getAtlas() {
 		return atlas;
 	}
 	
-	/**
-	 * Disposes the {@link TextureAtlas} and all {@link Disposable} resources in the skin.
-	 */
 	public void dispose() {
 		if (atlas != null)
 			atlas.dispose();
@@ -570,7 +478,6 @@ public class Skin implements Disposable {
 				if (!fontFile.exists())
 					throw new SerializationException("Font file not found: " + fontFile);
 				
-				// Use a region with the same name as the font, else use a PNG file in the same directory as the FNT file.
 				String regionName = fontFile.nameWithoutExtension();
 				try {
 					BitmapFont font;
@@ -591,7 +498,6 @@ public class Skin implements Disposable {
 					}
 					font.getData().markupEnabled = markupEnabled;
 					font.setUseIntegerPositions(useIntegerPositions);
-					// Scaled size is the desired cap height to scale the font to.
 					if (scaledSize != -1)
 						font.getData().setScale(scaledSize / font.getCapHeight());
 					return font;

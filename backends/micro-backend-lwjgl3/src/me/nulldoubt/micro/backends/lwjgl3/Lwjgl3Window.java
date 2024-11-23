@@ -2,7 +2,10 @@ package me.nulldoubt.micro.backends.lwjgl3;
 
 import com.badlogic.gdx.utils.Os;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
-import me.nulldoubt.micro.*;
+import me.nulldoubt.micro.ApplicationListener;
+import me.nulldoubt.micro.Files;
+import me.nulldoubt.micro.LifecycleListener;
+import me.nulldoubt.micro.Micro;
 import me.nulldoubt.micro.graphics.Pixmap;
 import me.nulldoubt.micro.utils.Disposable;
 import me.nulldoubt.micro.utils.collections.Array;
@@ -244,16 +247,10 @@ public class Lwjgl3Window implements Disposable {
 		}
 	}
 	
-	/**
-	 * @return the {@link ApplicationListener} associated with this window
-	 **/
 	public ApplicationListener getListener() {
 		return listener;
 	}
 	
-	/**
-	 * @return the {@link Lwjgl3WindowListener} set on this window
-	 **/
 	public Lwjgl3WindowListener getWindowListener() {
 		return windowListener;
 	}
@@ -262,58 +259,35 @@ public class Lwjgl3Window implements Disposable {
 		this.windowListener = listener;
 	}
 	
-	/**
-	 * Post a {@link Runnable} to this window's event queue. Use this if you access statics like {@link Micro#graphics} in your
-	 * runnable instead of {@link Application#post(Runnable)}.
-	 */
 	public void postRunnable(Runnable runnable) {
 		synchronized (runnables) {
 			runnables.add(runnable);
 		}
 	}
 	
-	/**
-	 * Sets the position of the window in logical coordinates. All monitors span a virtual surface together. The coordinates are
-	 * relative to the first monitor in the virtual surface.
-	 **/
 	public void setPosition(int x, int y) {
 		if (GLFW.glfwGetPlatform() == GLFW.GLFW_PLATFORM_WAYLAND)
 			return;
 		GLFW.glfwSetWindowPos(windowHandle, x, y);
 	}
 	
-	/**
-	 * @return the window position in logical coordinates. All monitors span a virtual surface together. The coordinates are
-	 * relative to the first monitor in the virtual surface.
-	 **/
 	public int getPositionX() {
 		GLFW.glfwGetWindowPos(windowHandle, tmpBuffer, tmpBuffer2);
 		return tmpBuffer.get(0);
 	}
 	
-	/**
-	 * @return the window position in logical coordinates. All monitors span a virtual surface together. The coordinates are
-	 * relative to the first monitor in the virtual surface.
-	 **/
 	public int getPositionY() {
 		GLFW.glfwGetWindowPos(windowHandle, tmpBuffer, tmpBuffer2);
 		return tmpBuffer2.get(0);
 	}
 	
-	/**
-	 * Sets the visibility of the window. Invisible windows will still call their {@link ApplicationListener}
-	 */
 	public void setVisible(boolean visible) {
-		if (visible) {
+		if (visible)
 			GLFW.glfwShowWindow(windowHandle);
-		} else {
+		else
 			GLFW.glfwHideWindow(windowHandle);
-		}
 	}
 	
-	/**
-	 * Closes this window and pauses and disposes the associated {@link ApplicationListener}.
-	 */
 	public void closeWindow() {
 		GLFW.glfwSetWindowShouldClose(windowHandle, true);
 	}

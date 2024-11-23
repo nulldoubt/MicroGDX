@@ -485,9 +485,6 @@ public class Cell<T extends Actor> implements Poolable {
 		return this;
 	}
 	
-	/**
-	 * Sets fillY to 1.
-	 */
 	public Cell<T> fillY() {
 		fillY = 1f;
 		return this;

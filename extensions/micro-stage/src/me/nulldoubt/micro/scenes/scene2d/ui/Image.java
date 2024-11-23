@@ -20,66 +20,34 @@ public class Image extends Widget {
 	private float imageX, imageY, imageWidth, imageHeight;
 	private Drawable drawable;
 	
-	/**
-	 * Creates an image with no drawable, stretched, and aligned center.
-	 */
 	public Image() {
 		this((Drawable) null);
 	}
 	
-	/**
-	 * Creates an image stretched, and aligned center.
-	 *
-	 * @param patch May be null.
-	 */
 	public Image(NinePatch patch) {
 		this(new NinePatchDrawable(patch), Scaling.stretch, Align.center);
 	}
 	
-	/**
-	 * Creates an image stretched, and aligned center.
-	 *
-	 * @param region May be null.
-	 */
 	public Image(TextureRegion region) {
 		this(new TextureRegionDrawable(region), Scaling.stretch, Align.center);
 	}
 	
-	/**
-	 * Creates an image stretched, and aligned center.
-	 */
 	public Image(Texture texture) {
 		this(new TextureRegionDrawable(new TextureRegion(texture)));
 	}
 	
-	/**
-	 * Creates an image stretched, and aligned center.
-	 */
 	public Image(Skin skin, String drawableName) {
 		this(skin.getDrawable(drawableName), Scaling.stretch, Align.center);
 	}
 	
-	/**
-	 * Creates an image stretched, and aligned center.
-	 *
-	 * @param drawable May be null.
-	 */
 	public Image(Drawable drawable) {
 		this(drawable, Scaling.stretch, Align.center);
 	}
 	
-	/**
-	 * Creates an image aligned center.
-	 *
-	 * @param drawable May be null.
-	 */
 	public Image(Drawable drawable, Scaling scaling) {
 		this(drawable, scaling, Align.center);
 	}
 	
-	/**
-	 * @param drawable May be null.
-	 */
 	public Image(Drawable drawable, Scaling scaling, int align) {
 		setDrawable(drawable);
 		this.scaling = scaling;
@@ -142,12 +110,6 @@ public class Image extends Widget {
 		setDrawable(skin.getDrawable(drawableName));
 	}
 	
-	/**
-	 * Sets a new drawable for the image. The image's pref size is the drawable's min size. If using the image actor's size rather
-	 * than the pref size, {@link #pack()} can be used to size the image to its pref size.
-	 *
-	 * @param drawable May be null.
-	 */
 	public void setDrawable(Drawable drawable) {
 		if (this.drawable == drawable)
 			return;
@@ -159,9 +121,6 @@ public class Image extends Widget {
 		this.drawable = drawable;
 	}
 	
-	/**
-	 * @return May be null.
-	 */
 	public Drawable getDrawable() {
 		return drawable;
 	}

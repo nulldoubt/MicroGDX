@@ -53,9 +53,6 @@ public class Button extends Table implements Disableable {
 		setSize(getPrefWidth(), getPrefHeight());
 	}
 	
-	/**
-	 * Creates a button without setting the style or size. At least a style must be set before using this button.
-	 */
 	public Button() {
 		initialize();
 	}
@@ -130,17 +127,10 @@ public class Button extends Table implements Disableable {
 		return isDisabled;
 	}
 	
-	/**
-	 * When true, the button will not toggle {@link #isChecked()} when clicked and will not fire a {@link ChangeEvent}.
-	 */
 	public void setDisabled(boolean isDisabled) {
 		this.isDisabled = isDisabled;
 	}
 	
-	/**
-	 * If false, {@link #setChecked(boolean)} and {@link #toggle()} will not fire {@link ChangeEvent}. The event will only be
-	 * fired only when the user clicks the button
-	 */
 	public void setProgrammaticChangeEvents(boolean programmaticChangeEvents) {
 		this.programmaticChangeEvents = programmaticChangeEvents;
 	}
@@ -153,24 +143,14 @@ public class Button extends Table implements Disableable {
 		setBackground(getBackgroundDrawable());
 	}
 	
-	/**
-	 * Returns the button's style. Modifying the returned style may not have an effect until {@link #setStyle(ButtonStyle)} is
-	 * called.
-	 */
 	public ButtonStyle getStyle() {
 		return style;
 	}
 	
-	/**
-	 * @return May be null.
-	 */
 	public ButtonGroup getButtonGroup() {
 		return buttonGroup;
 	}
 	
-	/**
-	 * Returns appropriate background drawable from the style based on the current button state.
-	 */
 	protected Drawable getBackgroundDrawable() {
 		if (isDisabled() && style.disabled != null)
 			return style.disabled;
@@ -267,11 +247,6 @@ public class Button extends Table implements Disableable {
 		return getPrefHeight();
 	}
 	
-	/**
-	 * The style for a button, see {@link Button}.
-	 *
-	 * @author mzechner
-	 */
 	public static class ButtonStyle {
 		
 		public Drawable up, down, over, focused, disabled;
