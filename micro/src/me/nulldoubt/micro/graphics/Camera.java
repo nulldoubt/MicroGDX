@@ -18,8 +18,6 @@ public class Camera {
 	public final Matrix4 combined = new Matrix4();
 	public final Matrix4 invProjectionView = new Matrix4();
 	
-	public float far = 100;
-	
 	public float viewportWidth = 0;
 	public float viewportHeight = 0;
 	
@@ -40,7 +38,7 @@ public class Camera {
 	}
 	
 	public void update(boolean updateFrustum) {
-		projection.setToOrtho(zoom * -viewportWidth / 2, zoom * (viewportWidth / 2), zoom * -(viewportHeight / 2), zoom * viewportHeight / 2, 0, far);
+		projection.setToOrtho(zoom * -viewportWidth / 2, zoom * (viewportWidth / 2), zoom * -(viewportHeight / 2), zoom * viewportHeight / 2, 0, (float) 100);
 		view.setToLookAt(direction, up);
 		view.translate(-position.x, -position.y, -position.z);
 		combined.set(projection);
